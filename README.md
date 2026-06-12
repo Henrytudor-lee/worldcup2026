@@ -2,7 +2,7 @@
 
 > **Mavis PDP** = **Mavis Positional Dixon-Coles Poisson**（位置化 Dixon-Coles 泊松模型）
 >
-> 48 队实力排名 + 104 场（72 小组 + 32 淘汰）全预测 · 后端驱动 + 客户端 SPA + 16 系数实时可调
+> 48 队实力排名 + 104 场（72 小组 + 32 淘汰）全预测 · 后端驱动 + 客户端 SPA + 18 系数实时可调
 
 ## ⚡ 快速启动（30 秒）
 
@@ -34,7 +34,7 @@ WorldCup2026/
 ├── backend/                    ⭐ FastAPI 后端（v2.1 新增）
 │   ├── server.py               4 个接口
 │   ├── predictor.py            算法包装层（接受 weights）
-│   ├── weights_schema.py       16 系数 schema + 6 preset
+│   ├── weights_schema.py       18 系数 schema + 6 preset
 │   └── README.md               启动文档
 │
 ├── 4_比赛预测/                 ⭐ 主战场
@@ -57,7 +57,7 @@ WorldCup2026/
 | `GET` | `/api/ranking?weights=...` | 48 队排名 |
 | `GET` | `/api/predictions?weights=...` | 104 场预测 + 决赛 + 季军 + 小组排名 |
 | `GET` | `/api/players?team=...` | 1248 球员（按国家过滤） |
-| `GET` | `/api/weights/default` | 16 系数默认值 |
+| `GET` | `/api/weights/default` | 18 系数默认值 |
 | `GET` | `/api/weights/presets` | 6 个 preset (default/high_value/high_form/low_value/coach_heavy/balance_343) |
 
 **weights 入参**：JSON 字符串（`encodeURIComponent(JSON.stringify(weights))`）或 preset 名（`coach_heavy`）
@@ -66,7 +66,7 @@ WorldCup2026/
 
 1. **⚽ 球队** — 48 队卡片 + 详情 modal
 2. **📅 赛程** — 72 场小组赛 + 详情
-3. **🎛️ 配置** — 16 系数滑块 + 6 preset + "开始预测"按钮
+3. **🎛️ 配置** — 18 系数滑块 + 6 preset + "开始预测"按钮
 4. **🏆 预测** — 顺读 5 列 KO bracket + 上下半区小组赛
 5. **🆚 对比** — 两队 4 维 λ 横向对比
 6. **🔍 搜索** — 全局球员/球队/比赛
@@ -86,7 +86,7 @@ WorldCup2026/
 λ_away_score = 1.3 + (λ_away_attack - λ_home_defense) × 1.5
 ```
 
-### 16 系数
+### 18 系数
 - `position_top_n` (4) · `status_weights` (4) · `nat_intl` (2) · `def_gk_weights` (5) · `player_to_total` (2) · `smoothing` (3)
 
 ## 🔧 数据完整性
