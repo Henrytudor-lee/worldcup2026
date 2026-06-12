@@ -623,7 +623,7 @@ def compute_predictions(weights):
                                            'gk': ranking_dict.get(m['客队'], {}).get('gk_league', '')},
                              adaptation_weight=adaptation_weight)
         pred['match_id'] = f"GS_{g}_{m['轮次']}_{m['主队']}_vs_{m['客队']}"
-        pred['round'] = f"小组{m['组别']}第{m['轮次']}轮"
+        pred['round'] = f"小组{m['组别']}{m['轮次']}"  # m['轮次'] 已是 "第1轮", 不要再加
         pred['stage'] = 'group'
         pred['group'] = g
         pred['date'] = m.get('北京时间', '')
@@ -665,7 +665,10 @@ def compute_predictions(weights):
     third_placed.sort(key=lambda x: -x[2])
     top_8_third = third_placed[:8]
 
-    # === 4. 构建 32 强对阵 ===
+    # === 4. 构建 32 强对阵 (按"上下半区"分组, R32 顺序严格对应 R16) ===
+    # 简化规则 (够用版, 强调位置连贯性):
+    # 上半 M1-M8: A1-H1 各 1 场, 配对 1 个 (第 2 名 或 最好第 3), 保证不重复
+    # 下半 M9-M16: I1-L1 各 1 场 + 4 个第 2 名配对 + 剩余第 3 名
     qualified = []
     for g in sorted(group_standings.keys()):
         qualified.append((group_standings[g][0][0], g, 1))
@@ -676,20 +679,100 @@ def compute_predictions(weights):
     by_gp = {}
     for t, g, p in qualified:
         by_gp.setdefault(g, {})[p] = t
-    firsts = [by_gp[g][1] for g in sorted(by_gp.keys())]
-    seconds = [by_gp[g][2] for g in sorted(by_gp.keys())]
-    thirds_sorted = sorted([t for t, g, p in qualified if p == 3], reverse=True)
+
+    # 各组第 1 / 第 2 / 第 3
+    firsts = {g: by_gp[g][1] for g in sorted(by_gp.keys())}
+    seconds = {g: by_gp[g][2] for g in sorted(by_gp.keys())}
+    # 8 个晋级第 3 (按积分降序)
+    thirds_ranked = sorted(
+        [(g, by_gp[g][3]) for g in sorted(by_gp.keys()) if 3 in by_gp[g]],
+        key=lambda x: -group_standings[x[0]][2][1]  # 按积分排
+    )
+
+    used = set()  # 记录已用队伍
+    def pick(g, pos):
+        """取某组第 1/2/3 名, 同时标记已用"""
+        t = firsts.get(g) if pos == 1 else seconds.get(g) if pos == 2 else by_gp[g].get(3)
+        if t and t not in used:
+            used.add(t)
+            return t
+        return None
 
     round_of_32 = []
+    # === 上半 M1-M8: A1..H1 各 1 场, 配对 (第 2 名 + 第 3 名) 交替 ===
+    # M1: A1 vs (B2 或 第3), M2: B1 vs (C2 或 第3), M3: C1 vs (D2), M4: D1 vs (A3rd)
+    # 规则: 8 个第 1 各出现 1 次; 8 个第 2 全部配对 (A2-H2 4 场, 第 3 名 4 场)
+    upper_firsts_order = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+    # 8 个第 3 名积分前 4 进上半, 后 4 进下半
+    upper_thirds = [t for g, t in thirds_ranked[:4]]
+    lower_thirds = [t for g, t in thirds_ranked[4:]]
+
+    for i, g in enumerate(upper_firsts_order):
+        t1 = firsts[g]
+        used.add(t1)
+        # 配对: 偶数位置用第 2 名, 奇数位置用第 3 名 (避免连续同组)
+        if i % 2 == 0:
+            # 用下一组的第 2 (B2, D2, F2, H2 选一个还没用的)
+            next_g = upper_firsts_order[(i + 1) % 8]
+            t2 = pick(next_g, 2) or (upper_thirds.pop(0) if upper_thirds else None)
+        else:
+            # 用 1 个上半第 3
+            t2 = upper_thirds.pop(0) if upper_thirds else None
+        if t2:
+            used.add(t2)
+        round_of_32.append((t1, t2))
+
+    # === 下半 M9-M16: I1-L1 各 1 场 + 各组第 2 + 剩余第 3 ===
+    # used 已含上半 16 队, 不重置
+    for t, _ in round_of_32:
+        used.add(t)
+    # 收集所有下半还没用的队伍
+    lower_pool = []
+    for g in ['I', 'J', 'K', 'L']:
+        if firsts.get(g) and firsts[g] not in used:
+            lower_pool.append((firsts[g], 1))
+        if seconds.get(g) and seconds[g] not in used:
+            lower_pool.append((seconds[g], 2))
+    # 加下半第 3
+    for t in lower_thirds:
+        if t not in used:
+            lower_pool.append((t, 3))
+    # 上半没用完的第 2 名 (B2/D2/F2/H2 偶数位置已用, 奇数位置没用)
+    for g in upper_firsts_order:
+        if seconds.get(g) and seconds[g] not in used:
+            lower_pool.append((seconds[g], 2))
+    # 重新排序: I1, J1, K1, L1 先出场, 然后第 2 名
+    lower_pool_sorted = []
+    for g in ['I', 'J', 'K', 'L']:
+        if firsts.get(g) and firsts[g] not in used:
+            lower_pool_sorted.append((firsts[g], g, 1))
+    for g in sorted(by_gp.keys()):
+        if seconds.get(g) and seconds[g] not in used:
+            lower_pool_sorted.append((seconds[g], g, 2))
+    for t in lower_thirds:
+        if t not in used:
+            lower_pool_sorted.append((t, '?', 3))
+
+    # 下半配对: I1 vs J2, K1 vs L2, L1 vs (剩余第 2), (剩余第 2) vs (剩余第 3), ...
+    # 简化: 头 4 个 vs 4 个, 后 4 个 vs 4 个, 尽量避免同组
     for i in range(8):
-        round_of_32.append((firsts[i], thirds_sorted[i]))
-    for i in range(4):
-        round_of_32.append((seconds[i], seconds[-(i+1)]))
-    for i in range(8, 12):
-        round_of_32.append((firsts[i], seconds[i-4]))
+        t1 = lower_pool_sorted[i*2][0] if i*2 < len(lower_pool_sorted) else None
+        t2 = lower_pool_sorted[i*2+1][0] if i*2+1 < len(lower_pool_sorted) else None
+        if t1 and t2:
+            round_of_32.append((t1, t2))
 
     # === 5. 跑淘汰赛 ===
-    def make_ko_pred(home, away, stage, round_name, prefix):
+    # FIFA 2026 淘汰赛日期 (基于官方公布时间表)
+    KO_DATES = {
+        'R32': ['2026-06-30', '2026-07-01', '2026-07-02', '2026-07-03'],  # 4 天 16 场, 每天 4 场
+        'R16': ['2026-07-06', '2026-07-07'],  # 2 天 8 场, 每天 4 场
+        'QF':  ['2026-07-10', '2026-07-11'],  # 2 天 4 场, 每天 2 场
+        'SF':  ['2026-07-14', '2026-07-15'],  # 2 天 2 场, 每天 1 场
+        '3RD': ['2026-07-18'],                # 季军赛
+        'FINAL': ['2026-07-19'],              # 决赛
+    }
+
+    def make_ko_pred(home, away, stage, round_name, prefix, date):
         pred = predict_match(home, away, ranking_dict, fifa_data, venue_cfg=venue_cfg,
                              home_leagues={'fw': ranking_dict.get(home, {}).get('fw_leagues', []),
                                            'mid': ranking_dict.get(home, {}).get('mid_leagues', []),
@@ -703,6 +786,7 @@ def compute_predictions(weights):
         pred['match_id'] = f"{prefix}_{home}_vs_{away}"
         pred['round'] = round_name
         pred['stage'] = stage
+        pred['date'] = date
         k, m_ = [int(x) for x in pred['best_score'].split('-')]
         pred['actual_score'] = f'{k}-{m_}'
         pred['home_pts'] = 3 if k > m_ else (1 if k == m_ else 0)
@@ -713,28 +797,36 @@ def compute_predictions(weights):
         all_predictions.append(pred)
         return pred
 
-    for h, a in round_of_32:
-        make_ko_pred(h, a, 'R32', '32强', 'R32')
+    for i, (h, a) in enumerate(round_of_32):
+        # R32 每天 4 场, M1-M4=第1天, M5-M8=第2天, M9-M12=第3天, M13-M16=第4天
+        date = KO_DATES['R32'][i // 4]
+        make_ko_pred(h, a, 'R32', '32强', 'R32', date)
     r32_winners = [p['winner'] for p in all_predictions[-16:]]
 
     r16_pairs = [(r32_winners[i], r32_winners[i+1]) for i in range(0, 16, 2)]
-    for h, a in r16_pairs:
-        make_ko_pred(h, a, 'R16', '16强', 'R16')
+    for i, (h, a) in enumerate(r16_pairs):
+        # R16 每天 4 场
+        date = KO_DATES['R16'][i // 4]
+        make_ko_pred(h, a, 'R16', '16强', 'R16', date)
     r16_winners = [p['winner'] for p in all_predictions[-8:]]
 
     qf_pairs = [(r16_winners[i], r16_winners[i+1]) for i in range(0, 8, 2)]
-    for h, a in qf_pairs:
-        make_ko_pred(h, a, 'QF', '8强', 'QF')
+    for i, (h, a) in enumerate(qf_pairs):
+        # QF 每天 2 场
+        date = KO_DATES['QF'][i // 2]
+        make_ko_pred(h, a, 'QF', '8强', 'QF', date)
     qf_winners = [p['winner'] for p in all_predictions[-4:]]
 
     sf_pairs = [(qf_winners[i], qf_winners[i+1]) for i in range(0, 4, 2)]
-    for h, a in sf_pairs:
-        make_ko_pred(h, a, 'SF', '半决赛', 'SF')
+    for i, (h, a) in enumerate(sf_pairs):
+        # SF 每天 1 场
+        date = KO_DATES['SF'][i // 1]
+        make_ko_pred(h, a, 'SF', '半决赛', 'SF', date)
     sf_winners = [p['winner'] for p in all_predictions[-2:]]
     sf_losers = [p['loser'] for p in all_predictions[-2:]]
 
-    final_pred = make_ko_pred(sf_winners[0], sf_winners[1], 'FINAL', '决赛', 'FINAL')
-    third_pred = make_ko_pred(sf_losers[0], sf_losers[1], '3RD', '3-4名决赛', '3RD')
+    final_pred = make_ko_pred(sf_winners[0], sf_winners[1], 'FINAL', '决赛', 'FINAL', KO_DATES['FINAL'][0])
+    third_pred = make_ko_pred(sf_losers[0], sf_losers[1], '3RD', '3-4名决赛', '3RD', KO_DATES['3RD'][0])
 
     return {
         'predictions': all_predictions,
