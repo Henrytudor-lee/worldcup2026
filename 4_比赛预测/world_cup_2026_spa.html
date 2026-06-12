@@ -772,6 +772,7 @@ const SLIDER_RANGES = {
   def_gk_weights: { base_factor: [0.5, 1.5, 0.05], honors_per_champ: [0, 100, 5], wc_per_ga: [10, 1000, 50] },
   player_to_total: { player_share: [0.0, 1.0, 0.05], coach_share: [0.0, 1.0, 0.05] },
   smoothing: { player_div: [500, 50000, 500], coach_div: [10, 1000, 10], rank_div: [100, 10000, 100] },
+  venue_weights: { altitude_threshold: [500, 4000, 100], altitude_penalty: [0.5, 1.0, 0.05], temp_threshold: [15, 50, 1], temp_penalty: [0.5, 1.0, 0.05] },
 };
 
 // 6 个预设 - 由 buildPresets() 在后端数据加载后填充
@@ -1256,6 +1257,43 @@ function openMatchDetail(matchId) {
     <p>${escHtml(p.stadium)} · ${escHtml(p.city || '')}</p>
     <p class="muted">${escHtml(p.weather_note || '')}</p>
   </div>` : ''}
+  
+  ${p.algorithm_breakdown?.venue ? `<div class="detail-section">
+    <h4>⛰️ 海拔/温度影响</h4>
+    <p class="muted" style="font-size:11px;margin:4px 0 8px;">
+      阈值与惩罚来自当前 weights.venue_weights, 海拔/温度取自 schedule.csv
+    </p>
+    <table class="lambda-table">
+      <tr>
+        <td>⛰️ 实际海拔</td>
+        <td><b>${p.algorithm_breakdown.venue.alt} m</b>
+          ${p.algorithm_breakdown.venue.alt_triggered
+            ? `<span style="color:var(--accent)"> ≥ ${p.algorithm_breakdown.venue.alt_threshold}m 触发</span>`
+            : `<span class="muted"> (未达 ${p.algorithm_breakdown.venue.alt_threshold}m)</span>`}
+        </td>
+      </tr>
+      <tr>
+        <td>　客队高原惩罚</td>
+        <td>×${p.algorithm_breakdown.venue.alt_penalty}
+          ${p.algorithm_breakdown.venue.alt_triggered ? '<span style="color:var(--accent)"> 生效</span>' : '<span class="muted"> 未生效</span>'}
+        </td>
+      </tr>
+      <tr>
+        <td>🌡️ 实际温度</td>
+        <td><b>${p.algorithm_breakdown.venue.temp}°C</b>
+          ${p.algorithm_breakdown.venue.temp_triggered
+            ? `<span style="color:var(--accent)"> > ${p.algorithm_breakdown.venue.temp_threshold}°C 触发</span>`
+            : `<span class="muted"> (未超 ${p.algorithm_breakdown.venue.temp_threshold}°C)</span>`}
+        </td>
+      </tr>
+      <tr>
+        <td>　高温双方惩罚</td>
+        <td>×${p.algorithm_breakdown.venue.temp_penalty}
+          ${p.algorithm_breakdown.venue.temp_triggered ? '<span style="color:var(--accent)"> 生效</span>' : '<span class="muted"> 未生效</span>'}
+        </td>
+      </tr>
+    </table>
+  </div>` : ''}
   `;
   
   $id('matchModalContent').innerHTML = html;
@@ -1293,6 +1331,12 @@ function renderSliders() {
       { f: 'player_div', label: '球员分母' },
       { f: 'coach_div', label: '教练分母' },
       { f: 'rank_div', label: '排名分母' }
+    ]},
+    { key: 'venue_weights', label: '场地 / 海拔 / 温度', icon: '🏟️', sub: [
+      { f: 'altitude_threshold', label: '海拔阈值 (米)' },
+      { f: 'altitude_penalty', label: '客队高原惩罚' },
+      { f: 'temp_threshold', label: '高温阈值 (°C)' },
+      { f: 'temp_penalty', label: '高温双方惩罚' }
     ]}
   ];
   

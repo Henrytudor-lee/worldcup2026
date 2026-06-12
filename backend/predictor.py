@@ -266,8 +266,17 @@ def fifa_coef(rank):
     return 0.90
 
 
-def team_metrics(country, ranking_dict, fifa_data, is_home=True, venue_alt=0, venue_temp=25):
-    """算单队 λ 计算所需系数"""
+def team_metrics(country, ranking_dict, fifa_data, is_home=True, venue_alt=0, venue_temp=25,
+                 venue_cfg=None):
+    """算单队 λ 计算所需系数
+
+    venue_cfg: {altitude_threshold, altitude_penalty, temp_threshold, temp_penalty}
+              None = 用默认值 (2000m / 0.90 / 32°C / 0.97)
+    """
+    if venue_cfg is None:
+        venue_cfg = {'altitude_threshold': 2000, 'altitude_penalty': 0.90,
+                     'temp_threshold': 32, 'temp_penalty': 0.97}
+
     r = ranking_dict.get(country, {})
     rank_r = r.get('rank_r', 80)
     coach_score = r.get('coach_score', 0)
@@ -290,22 +299,24 @@ def team_metrics(country, ranking_dict, fifa_data, is_home=True, venue_alt=0, ve
     fifa_c = fifa_coef(fifa_data.get(country, {}).get('FIFA排名', '50'))
 
     venue_coef = 1.00
-    if venue_alt >= 2000 and not is_home:
-        venue_coef *= 0.90
-    if venue_temp > 32:
-        venue_coef *= 0.97
+    if venue_alt >= venue_cfg['altitude_threshold'] and not is_home:
+        venue_coef *= venue_cfg['altitude_penalty']
+    if venue_temp > venue_cfg['temp_threshold']:
+        venue_coef *= venue_cfg['temp_penalty']
 
     return {'attack': attack, 'defense': defense, 'possession': poss,
             'coach_coef': coach_coef, 'fifa_coef': fifa_c, 'venue_coef': venue_coef,
-            'rank_r': rank_r}
+            'rank_r': rank_r,
+            'venue_alt': venue_alt, 'venue_temp': venue_temp,
+            'venue_cfg': venue_cfg}
 
 
-def calc_lambda(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25):
+def calc_lambda(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25, venue_cfg=None):
     """算主/客队 λ（4 维对位）"""
     H = team_metrics(home, ranking_dict, fifa_data, is_home=True,
-                     venue_alt=venue_alt, venue_temp=venue_temp)
+                     venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg)
     A = team_metrics(away, ranking_dict, fifa_data, is_home=False,
-                     venue_alt=venue_alt, venue_temp=venue_temp)
+                     venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg)
 
     home_attack = H['attack']
     home_lambda = 1.3 * H['possession'] * math.sqrt(home_attack * 0.001) * H['coach_coef'] * H['venue_coef'] * H['fifa_coef']
@@ -323,13 +334,14 @@ def poisson_pmf(lam, k):
     return math.exp(-lam) * (lam ** k) / math.factorial(k)
 
 
-def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25, venue_humidity=60, weather_note=''):
+def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25,
+                  venue_humidity=60, weather_note='', venue_cfg=None):
     """预测单场比赛"""
     H = team_metrics(home, ranking_dict, fifa_data, is_home=True,
-                     venue_alt=venue_alt, venue_temp=venue_temp)
+                     venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg)
     A = team_metrics(away, ranking_dict, fifa_data, is_home=False,
-                     venue_alt=venue_alt, venue_temp=venue_temp)
-    lh, la = calc_lambda(home, away, ranking_dict, fifa_data, venue_alt, venue_temp)
+                     venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg)
+    lh, la = calc_lambda(home, away, ranking_dict, fifa_data, venue_alt, venue_temp, venue_cfg)
 
     score_probs = {}
     for k in range(7):
@@ -372,6 +384,17 @@ def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=2
         },
         'formula': 'λ = 1.3 × 持球率 × √(attack × 0.001) × 教练 × 场地 × FIFA',
         'poisson': f'P(X=k) = (λ^k × e^-λ) / k!  |  P(主{k}, 客{m}) = P_home(k) × P_away(m)',
+        'venue': {
+            'alt': H.get('venue_alt', 0),
+            'temp': H.get('venue_temp', 25),
+            'humidity': venue_humidity,
+            'alt_triggered': H.get('venue_alt', 0) >= (venue_cfg or {}).get('altitude_threshold', 2000),
+            'temp_triggered': H.get('venue_temp', 25) > (venue_cfg or {}).get('temp_threshold', 32),
+            'alt_threshold': (venue_cfg or {}).get('altitude_threshold', 2000),
+            'alt_penalty': (venue_cfg or {}).get('altitude_penalty', 0.90),
+            'temp_threshold': (venue_cfg or {}).get('temp_threshold', 32),
+            'temp_penalty': (venue_cfg or {}).get('temp_penalty', 0.97),
+        },
     }
 
     # 36 个比分完整概率（前端渲染分布表用）
@@ -405,6 +428,10 @@ def compute_predictions(weights):
     ranking_dict = {r['team']: r for r in ranking}
     fifa_data = load_fifa()
     schedule = load_schedule()
+    venue_cfg = weights.get('venue_weights', {
+        'altitude_threshold': 2000, 'altitude_penalty': 0.90,
+        'temp_threshold': 32, 'temp_penalty': 0.97,
+    })
 
     # === 1. 跑 72 场小组赛 ===
     group_matches = defaultdict(list)
@@ -428,7 +455,8 @@ def compute_predictions(weights):
         weather = f"{m.get('城市','')} {m.get('体育场','')} | 海拔{alt}m 高温{temp}°C 湿度{hum}% 顶棚:{roof}"
 
         pred = predict_match(m['主队'], m['客队'], ranking_dict, fifa_data,
-                             venue_alt=alt, venue_temp=temp, venue_humidity=hum, weather_note=weather)
+                             venue_alt=alt, venue_temp=temp, venue_humidity=hum,
+                             weather_note=weather, venue_cfg=venue_cfg)
         pred['match_id'] = f"GS_{g}_{m['轮次']}_{m['主队']}_vs_{m['客队']}"
         pred['round'] = f"小组{m['组别']}第{m['轮次']}轮"
         pred['stage'] = 'group'
@@ -497,7 +525,7 @@ def compute_predictions(weights):
 
     # === 5. 跑淘汰赛 ===
     def make_ko_pred(home, away, stage, round_name, prefix):
-        pred = predict_match(home, away, ranking_dict, fifa_data)
+        pred = predict_match(home, away, ranking_dict, fifa_data, venue_cfg=venue_cfg)
         pred['match_id'] = f"{prefix}_{home}_vs_{away}"
         pred['round'] = round_name
         pred['stage'] = stage

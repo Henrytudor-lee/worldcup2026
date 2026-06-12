@@ -37,6 +37,12 @@ DEFAULT = {
         "coach_div": 100,        # 教练分平滑分母
         "rank_div": 1000,        # 总分平滑分母
     },
+    "venue_weights": {
+        "altitude_threshold": 2000,  # 海拔阈值 (米) - 超过则客队受罚
+        "altitude_penalty": 0.90,    # 客队高原惩罚 (0.90 = -10%)
+        "temp_threshold": 32,        # 温度阈值 (°C) - 超过则双方都受罚
+        "temp_penalty": 0.97,        # 高温惩罚 (0.97 = -3%)
+    },
 }
 
 # 范围约束（防止用户拖极端值）
@@ -67,6 +73,12 @@ RANGES = {
         "player_div": (500, 50000),
         "coach_div": (10, 1000),
         "rank_div": (100, 10000),
+    },
+    "venue_weights": {
+        "altitude_threshold": (500, 4000),
+        "altitude_penalty": (0.5, 1.0),
+        "temp_threshold": (15, 50),
+        "temp_penalty": (0.5, 1.0),
     },
 }
 
