@@ -974,7 +974,20 @@ function renderTeams() {
 function buildTeamDetailHTML(teamName) {
   const r = RANKING.find(x => x.team === teamName);
   if (!r) return '';
-  const players = PLAYERS[teamName] || [];
+
+  // 字段名归一化: 兼容老 v22 (p.n/p.p/p.c) 和新 csv (球员/位置/俱乐部/身价_万欧)
+  const players = (PLAYERS[teamName] || []).map(p => ({
+    n: p.球员 || p.n || '',
+    p: p.位置 || p.p || '',
+    c: p.俱乐部 || p.c || '',
+    l: p.联赛 || p.l || '',
+    v: p.身价_万欧 || p.v || '0',
+    ng: p.国家队进球 || p.ng || '',
+    na: p.国家队助攻 || p.na || '',
+    wg: p.本赛季俱乐部_进球 || p.wg || '',
+    wa: p.本赛季俱乐部_助攻 || p.wa || '',
+    j: p.号码 || p.j || '',
+  }));
 
   // 球员按位置分
   const byPos = { '前锋': [], '中场': [], '后卫': [], '门将': [] };
