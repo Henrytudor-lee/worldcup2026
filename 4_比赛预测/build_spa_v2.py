@@ -1180,7 +1180,12 @@ function openMatchDetail(matchId) {
   if (!p) return;
   
   let html = `<div class="modal-header">
-    <h2>${escHtml(p.home)} vs ${escHtml(p.away)}</h2>
+    <div>
+      <h2>${escHtml(p.home)} vs ${escHtml(p.away)}</h2>
+      <p class="muted" style="font-size:12px;margin-top:4px;">
+        ${escHtml(p.round || p.stage || '')}${p.date ? ' · ' + escHtml(p.date) : ''}${p.stadium ? ' · ' + escHtml(p.stadium) : ''}
+      </p>
+    </div>
     <button class="modal-close" onclick="closeMatchModal()">×</button>
   </div>
   
