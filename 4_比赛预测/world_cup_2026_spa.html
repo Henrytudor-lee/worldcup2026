@@ -1201,9 +1201,12 @@ function openMatchDetail(matchId) {
         </tr>
       </thead>
       <tbody>
-        <tr><td>⚔️ 攻击 (锋+中)</td><td>${fmtNum(p.algorithm_breakdown.home.attack)}</td><td>${fmtNum(p.algorithm_breakdown.away.attack)}</td></tr>
+        <tr><td>⚔️ 进攻 (锋+中)</td><td>${fmtNum(p.algorithm_breakdown.home.attack)}</td><td>${fmtNum(p.algorithm_breakdown.away.attack)}</td></tr>
         <tr><td>　├ 锋线分</td><td>${fmtNum(p.algorithm_breakdown.home.fw_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.fw_score)}</td></tr>
         <tr><td>　└ 中场分</td><td>${fmtNum(p.algorithm_breakdown.home.mid_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.mid_score)}</td></tr>
+        <tr><td>🛡️ 防守 (后+门)</td><td>${fmtNum(p.algorithm_breakdown.home.defense)}</td><td>${fmtNum(p.algorithm_breakdown.away.defense)}</td></tr>
+        <tr><td>　├ 后卫分</td><td>${fmtNum(p.algorithm_breakdown.home.def_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.def_score)}</td></tr>
+        <tr><td>　└ 门将分</td><td>${fmtNum(p.algorithm_breakdown.home.gk_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.gk_score)}</td></tr>
         <tr><td>📊 持球率</td><td>${(p.algorithm_breakdown.home.possession * 100).toFixed(0)}%</td><td>${(p.algorithm_breakdown.away.possession * 100).toFixed(0)}%</td></tr>
         <tr><td>👔 教练系数</td><td>×${p.algorithm_breakdown.home.coach_coef}</td><td>×${p.algorithm_breakdown.away.coach_coef}</td></tr>
         <tr><td>🏟️ 场地系数</td><td>×${p.algorithm_breakdown.home.venue_coef}</td><td>×${p.algorithm_breakdown.away.venue_coef}</td></tr>
