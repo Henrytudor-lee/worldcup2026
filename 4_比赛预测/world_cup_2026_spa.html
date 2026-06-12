@@ -1396,11 +1396,19 @@ function openMatchDetail(matchId) {
     </table>
   </div>` : ''}
   `;
-  
+
   $id('matchModalContent').innerHTML = html;
   $id('matchModal').classList.add('open');
+  // 自动滑出双方球队详情 (左主右客)
+  openMatchDrawer(p.home, 'left');
+  openMatchDrawer(p.away, 'right');
 }
-function closeMatchModal() { $id('matchModal').classList.remove('open'); }
+function closeMatchModal() {
+  $id('matchModal').classList.remove('open');
+  // 关闭比赛 modal 时同时隐藏球队详情抽屉
+  closeMatchDrawer('left');
+  closeMatchDrawer('right');
+}
 
 // ============== 配置 (滑块) ==============
 function renderSliders() {
