@@ -24,7 +24,7 @@ curl http://localhost:8765/
 | GET | `/api/ranking?weights=...` | 48 队排名 | ~50ms |
 | GET | `/api/predictions?weights=...` | 104 场预测 | ~50ms |
 | GET | `/api/players?team=...` | 1248 球员 | ~30ms |
-| GET | `/api/weights/default` | 18 系数默认值 | <1ms |
+| GET | `/api/weights/default` | 23 系数默认值 | <1ms |
 | GET | `/api/weights/presets` | 6 preset 元数据 | <1ms |
 
 **weights 入参格式**：
@@ -35,7 +35,7 @@ curl http://localhost:8765/
 
 - `server.py` — FastAPI 入口
 - `predictor.py` — 算法包装层（接受 weights 注入到 ranking + predictions）
-- `weights_schema.py` — 18 系数 schema + 范围校验 + 6 preset
+- `weights_schema.py` — 23 系数 schema + 范围校验 + 6 preset
 - `README.md` — 本文件
 
 ## 与前端的协作
