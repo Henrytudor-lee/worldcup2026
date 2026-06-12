@@ -96,6 +96,19 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 /* 球队详情 Modal */
 .modal-overlay { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); overflow: auto; }
 .modal-overlay.open { display: flex; align-items: center; justify-content: center; }
+
+/* 比赛 modal 侧边抽屉 (点国家名滑出) */
+.match-drawer { position: fixed; top: 0; bottom: 0; width: 480px; max-width: 95vw; background: var(--bg-2); border: 1px solid var(--border); z-index: 1100; box-shadow: -4px 0 16px rgba(0,0,0,0.5); transform: translateX(-100%); transition: transform 0.25s ease; overflow-y: auto; }
+.match-drawer.right { right: 0; left: auto; transform: translateX(100%); box-shadow: 4px 0 16px rgba(0,0,0,0.5); border-left: 1px solid var(--border); border-right: none; }
+.match-drawer.open { transform: translateX(0); }
+.match-drawer .drawer-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-3) 100%); position: sticky; top: 0; z-index: 1; }
+.match-drawer .drawer-header h3 { color: var(--text); font-size: 18px; }
+.match-drawer .drawer-close { background: none; border: none; color: var(--text-3); font-size: 22px; cursor: pointer; }
+.match-drawer .drawer-close:hover { color: var(--red); }
+.match-drawer .drawer-body { padding: 16px 20px; }
+.team-link { color: var(--accent-2); cursor: pointer; text-decoration: underline dotted; }
+.team-link:hover { color: var(--accent); text-decoration: underline; }
+@media (max-width: 768px) { .match-drawer { width: 100vw; } }
 .modal { background: var(--bg-2); border-radius: 12px; max-width: 1100px; width: 95%; max-height: 90vh; overflow: auto; padding: 24px; border: 1px solid var(--border); }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
 .modal-close { background: none; border: none; color: var(--text-3); font-size: 24px; cursor: pointer; }
@@ -704,6 +717,22 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
   <div class="modal" id="matchModalContent"></div>
 </div>
 
+<!-- 比赛 modal 侧边抽屉: 点国家名滑出球队详情 (左主/右客) -->
+<div class="match-drawer" id="matchDrawerLeft">
+  <div class="drawer-header">
+    <h3 id="drawerLeftTitle"></h3>
+    <button class="drawer-close" onclick="closeMatchDrawer('left')">×</button>
+  </div>
+  <div class="drawer-body" id="drawerLeftBody"></div>
+</div>
+<div class="match-drawer right" id="matchDrawerRight">
+  <div class="drawer-header">
+    <h3 id="drawerRightTitle"></h3>
+    <button class="drawer-close" onclick="closeMatchDrawer('right')">×</button>
+  </div>
+  <div class="drawer-body" id="drawerRightBody"></div>
+</div>
+
 <!-- 数据从后端 fetch（不再嵌入） -->
 <script>
 // ============== 后端数据加载 ==============
@@ -942,11 +971,11 @@ function renderTeams() {
 }
 
 // ============== 球队详情 ==============
-function openTeamDetail(teamName) {
+function buildTeamDetailHTML(teamName) {
   const r = RANKING.find(x => x.team === teamName);
-  if (!r) return;
+  if (!r) return '';
   const players = PLAYERS[teamName] || [];
-  
+
   // 球员按位置分
   const byPos = { '前锋': [], '中场': [], '后卫': [], '门将': [] };
   players.forEach(p => {
@@ -1055,22 +1084,47 @@ function openTeamDetail(teamName) {
     </div>
   </div>
   `;
-  
+  return html;
+}
+
+function openTeamDetail(teamName) {
+  const html = buildTeamDetailHTML(teamName);
+  if (!html) return;
   $id('modalContent').innerHTML = html;
   $id('detailModal').classList.add('open');
-  
-  // mini tabs
-  document.querySelectorAll('#teamModalTabs .tab-mini').forEach(btn => {
+  bindTeamMiniTabs('#modalContent');
+}
+
+// 绑定球队详情 mini tabs (在 #modalContent 或 drawer body 里)
+function bindTeamMiniTabs(containerSelector) {
+  document.querySelectorAll(`${containerSelector} .tab-mini`).forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('#teamModalTabs .tab-mini').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll(`${containerSelector} .tab-mini`).forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      document.querySelectorAll('#modalContent .mini-content').forEach(c => c.style.display = 'none');
-      document.querySelector(`#modalContent .mini-content[data-mini="${btn.dataset.mini}"]`).style.display = 'block';
+      document.querySelectorAll(`${containerSelector} .mini-content`).forEach(c => c.style.display = 'none');
+      document.querySelector(`${containerSelector} .mini-content[data-mini="${btn.dataset.mini}"]`).style.display = 'block';
     });
   });
 }
 
 function closeModal() { $id('detailModal').classList.remove('open'); }
+
+// ============== 比赛 modal 侧边抽屉 ==============
+function openMatchDrawer(teamName, side) {
+  // side: 'left' 主队 / 'right' 客队
+  const html = buildTeamDetailHTML(teamName);
+  if (!html) return;
+  const titleEl = $id(`drawer${side === 'left' ? 'Left' : 'Right'}Title`);
+  const bodyEl = $id(`drawer${side === 'left' ? 'Left' : 'Right'}Body`);
+  titleEl.textContent = teamName;
+  bodyEl.innerHTML = html;
+  $id(`matchDrawer${side === 'left' ? 'Left' : 'Right'}`).classList.add('open');
+  bindTeamMiniTabs(`#drawer${side === 'left' ? 'Left' : 'Right'}Body`);
+}
+
+function closeMatchDrawer(side) {
+  $id(`matchDrawer${side === 'left' ? 'Left' : 'Right'}`).classList.remove('open');
+}
 
 // ============== 球员详情 (复用 detailModal) ==============
 function openPlayerDetail(teamName, playerName) {
@@ -1181,7 +1235,7 @@ function openMatchDetail(matchId) {
   
   let html = `<div class="modal-header">
     <div>
-      <h2>${escHtml(p.home)} vs ${escHtml(p.away)}</h2>
+      <h2><a class="team-link" onclick="openMatchDrawer('${escHtml(p.home)}', 'left'); event.stopPropagation();">${escHtml(p.home)}</a> vs <a class="team-link" onclick="openMatchDrawer('${escHtml(p.away)}', 'right'); event.stopPropagation();">${escHtml(p.away)}</a></h2>
       <p class="muted" style="font-size:12px;margin-top:4px;">
         ${escHtml(p.round || p.stage || '')}${p.date ? ' · ' + escHtml(p.date) : ''}${p.stadium ? ' · ' + escHtml(p.stadium) : ''}
       </p>
@@ -1191,7 +1245,7 @@ function openMatchDetail(matchId) {
   
   <div class="lambda-grid">
     <div class="lambda-card">
-      <h5>${escHtml(p.home)}</h5>
+      <h5><a class="team-link" onclick="openMatchDrawer('${escHtml(p.home)}', 'left'); event.stopPropagation();">${escHtml(p.home)}</a></h5>
       <div class="lam-val">λ = ${fmtNum(p.lambda_home)}</div>
       <div class="lam-detail">胜率: ${(p.p_home_win * 100).toFixed(1)}%</div>
     </div>
@@ -1201,7 +1255,7 @@ function openMatchDetail(matchId) {
       <div class="lam-detail">比分: ${escHtml(p.best_score || '-')}</div>
     </div>
     <div class="lambda-card">
-      <h5>${escHtml(p.away)}</h5>
+      <h5><a class="team-link" onclick="openMatchDrawer('${escHtml(p.away)}', 'right'); event.stopPropagation();">${escHtml(p.away)}</a></h5>
       <div class="lam-val">λ = ${fmtNum(p.lambda_away)}</div>
       <div class="lam-detail">胜率: ${(p.p_away_win * 100).toFixed(1)}%</div>
     </div>
