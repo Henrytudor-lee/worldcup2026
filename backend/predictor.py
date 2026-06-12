@@ -332,6 +332,10 @@ def poisson_pmf(lam, k):
 
 def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25, venue_humidity=60, weather_note=''):
     """预测单场比赛"""
+    H = team_metrics(home, ranking_dict, fifa_data, is_home=True,
+                     venue_alt=venue_alt, venue_temp=venue_temp)
+    A = team_metrics(away, ranking_dict, fifa_data, is_home=False,
+                     venue_alt=venue_alt, venue_temp=venue_temp)
     lh, la = calc_lambda(home, away, ranking_dict, fifa_data, venue_alt, venue_temp)
 
     score_probs = {}
@@ -351,6 +355,35 @@ def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=2
     expected_total = lh + la
     expected_diff = lh - la
 
+    # 算法分解（给前端 modal 展示用）
+    algorithm_breakdown = {
+        'home': {
+            'team': home,
+            'fw_score': H.get('attack', 0) * 0.59,  # 锋+中合=attack; fw 占比约 0.59 (匹配 calc_lambda)
+            'mid_score': H.get('attack', 0) * 0.41,
+            'attack': round(H.get('attack', 0), 2),
+            'possession': round(H.get('possession', 0), 3),
+            'coach_coef': round(H.get('coach_coef', 1), 3),
+            'fifa_coef': round(H.get('fifa_coef', 1), 3),
+            'venue_coef': round(H.get('venue_coef', 1), 3),
+        },
+        'away': {
+            'team': away,
+            'fw_score': A.get('attack', 0) * 0.59,
+            'mid_score': A.get('attack', 0) * 0.41,
+            'attack': round(A.get('attack', 0), 2),
+            'possession': round(A.get('possession', 0), 3),
+            'coach_coef': round(A.get('coach_coef', 1), 3),
+            'fifa_coef': round(A.get('fifa_coef', 1), 3),
+            'venue_coef': round(A.get('venue_coef', 1), 3),
+        },
+        'formula': 'λ = 1.3 × 持球率 × √(attack × 0.001) × 教练 × 场地 × FIFA',
+        'poisson': f'P(X=k) = (λ^k × e^-λ) / k!  |  P(主{k}, 客{m}) = P_home(k) × P_away(m)',
+    }
+
+    # 36 个比分完整概率（前端渲染分布表用）
+    score_dist = {f'{k}-{m}': round(p, 4) for (k, m), p in score_probs.items()}
+
     return {
         'home': home, 'away': away,
         'lambda_home': round(lh, 3), 'lambda_away': round(la, 3),
@@ -365,6 +398,8 @@ def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=2
         'venue_temp': venue_temp,
         'venue_humidity': venue_humidity,
         'weather_note': weather_note,
+        'algorithm_breakdown': algorithm_breakdown,
+        'score_distribution': score_dist,
     }
 
 

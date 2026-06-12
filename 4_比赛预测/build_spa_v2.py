@@ -425,6 +425,18 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 .pd-stat-v { font-size: 18px; font-weight: bold; color: var(--accent); }
 .pd-stat-l { font-size: 11px; color: var(--text-3); margin-top: 2px; }
 .lambda-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+.lambda-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+.lambda-table th, .lambda-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: left; }
+.lambda-table th { background: var(--bg-3); color: var(--text-2); font-weight: normal; }
+.poisson-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.poisson-cell { background: var(--bg-3); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; text-align: center; position: relative; overflow: hidden; }
+.poisson-cell.best { border-color: var(--gold); background: linear-gradient(135deg, rgba(255,215,0,0.15) 0%, var(--bg-3) 100%); }
+.poisson-score { font-size: 14px; font-weight: bold; color: var(--text); }
+.poisson-cell.best .poisson-score { color: var(--gold); }
+.poisson-pct { font-size: 12px; color: var(--text-2); margin: 2px 0; }
+.poisson-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 4px; }
+.poisson-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent-2) 0%, var(--accent) 100%); }
+@media (max-width: 768px) { .poisson-grid { grid-template-columns: repeat(3, 1fr); } }
 .lambda-card { background: var(--bg-3); padding: 10px; border-radius: 6px; }
 .lambda-card h5 { color: var(--accent); font-size: 12px; margin-bottom: 4px; }
 .lambda-card .lam-val { font-size: 20px; font-weight: bold; color: var(--accent); }
@@ -1182,6 +1194,75 @@ function openMatchDetail(matchId) {
     <p>比分: <strong>${escHtml(p.actual_score || '-')}</strong> ${p.went_to_pen ? '(点球大战)' : ''} ${p.home_pts !== undefined ? `· 主队 ${p.home_pts} 分 客队 ${p.away_pts} 分` : ''}</p>
     <p>预期总进球: ${fmtNum(p.expected_total || 0)} · 预期净胜: ${fmtNum(p.expected_diff || 0)}</p>
   </div>
+  
+  ${p.algorithm_breakdown ? `<div class="detail-section">
+    <h4>🧮 λ 算法分解</h4>
+    <p class="muted" style="font-family:monospace;font-size:12px;margin:4px 0 8px;">λ = 1.3 × 持球率 × √(attack × 0.001) × 教练 × 场地 × FIFA</p>
+    <table class="lambda-table">
+      <thead>
+        <tr>
+          <th>系数</th>
+          <th>${escHtml(p.algorithm_breakdown.home.team)} (主)</th>
+          <th>${escHtml(p.algorithm_breakdown.away.team)} (客)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>⚔️ 攻击 (锋+中)</td><td>${fmtNum(p.algorithm_breakdown.home.attack)}</td><td>${fmtNum(p.algorithm_breakdown.away.attack)}</td></tr>
+        <tr><td>　├ 锋线分</td><td>${fmtNum(p.algorithm_breakdown.home.fw_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.fw_score)}</td></tr>
+        <tr><td>　└ 中场分</td><td>${fmtNum(p.algorithm_breakdown.home.mid_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.mid_score)}</td></tr>
+        <tr><td>📊 持球率</td><td>${(p.algorithm_breakdown.home.possession * 100).toFixed(0)}%</td><td>${(p.algorithm_breakdown.away.possession * 100).toFixed(0)}%</td></tr>
+        <tr><td>👔 教练系数</td><td>×${p.algorithm_breakdown.home.coach_coef}</td><td>×${p.algorithm_breakdown.away.coach_coef}</td></tr>
+        <tr><td>🏟️ 场地系数</td><td>×${p.algorithm_breakdown.home.venue_coef}</td><td>×${p.algorithm_breakdown.away.venue_coef}</td></tr>
+        <tr><td>🌍 FIFA 系数</td><td>×${p.algorithm_breakdown.home.fifa_coef}</td><td>×${p.algorithm_breakdown.away.fifa_coef}</td></tr>
+        <tr style="background:var(--bg-3)"><td><b>🎯 λ 最终</b></td><td><b>${fmtNum(p.lambda_home)}</b></td><td><b>${fmtNum(p.lambda_away)}</b></td></tr>
+      </tbody>
+    </table>
+  </div>` : ''}
+  
+  ${p.score_distribution ? `<div class="detail-section">
+    <h4>📈 泊松分布 · 全 36 比分概率</h4>
+    <p class="muted" style="font-size:12px;margin:4px 0 8px;">
+      P(X=k) = (λ<sup>k</sup> × e<sup>-λ</sup>) / k!  →  P(主 ${fmtNum(p.lambda_home)}, 客 ${fmtNum(p.lambda_away)}) = P<sub>主</sub>(k) × P<sub>客</sub>(m)
+    </p>
+    <p class="muted" style="font-size:11px;margin-bottom:8px;">
+      ⭐ = 最可能比分 · 期望 ${fmtNum(p.expected_total)} 球是"长期平均"，单场抽中 1-0 (${(p.best_score_prob*100).toFixed(1)}%) 完全正常
+    </p>
+    <div class="poisson-grid">
+      ${(() => {
+        const dist = p.score_distribution;
+        const best = p.best_score;
+        const entries = Object.entries(dist).sort((a,b) => b[1] - a[1]);
+        // 找前 12 个最高概率
+        const top = entries.slice(0, 12);
+        return top.map(([score, prob]) => {
+          const pct = (prob * 100).toFixed(1);
+          const isBest = score === best;
+          return `<div class="poisson-cell ${isBest ? 'best' : ''}">
+            <div class="poisson-score">${isBest ? '⭐ ' : ''}${score}</div>
+            <div class="poisson-pct">${pct}%</div>
+            <div class="poisson-bar"><div class="poisson-bar-fill" style="width:${Math.min(prob*500, 100)}%"></div></div>
+          </div>`;
+        }).join('');
+      })()}
+    </div>
+    <details style="margin-top:8px">
+      <summary style="cursor:pointer;color:var(--text-2);font-size:12px">📜 显示全部 36 个比分</summary>
+      <div class="poisson-grid" style="margin-top:8px">
+        ${(() => {
+          const dist = p.score_distribution;
+          const best = p.best_score;
+          return Object.entries(dist).map(([score, prob]) => {
+            const pct = (prob * 100).toFixed(1);
+            const isBest = score === best;
+            return `<div class="poisson-cell ${isBest ? 'best' : ''}" style="font-size:11px">
+              <div class="poisson-score">${isBest ? '⭐ ' : ''}${score}</div>
+              <div class="poisson-pct">${pct}%</div>
+            </div>`;
+          }).join('');
+        })()}
+      </div>
+    </details>
+  </div>` : ''}
   
   ${p.stadium ? `<div class="detail-section">
     <h4>🏟️ 场地</h4>
