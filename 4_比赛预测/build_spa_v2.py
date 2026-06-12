@@ -1,0 +1,1943 @@
+#!/usr/bin/env python3
+"""
+build_spa_v2.py - SPA 生成器（v2.1 后端驱动版）
+读取: 模板字符串
+输出: /4_比赛预测/world_cup_2026_spa.html
+
+⚠️ v2.1 改动：
+- 不再嵌入 4 个 JSON 到 HTML
+- HTML 通过 fetch 调 backend (http://localhost:8765)
+- 启动顺序: 先 python3 backend/server.py，再 python3 build_spa_v2.py
+"""
+
+import os
+
+ROOT = "/Users/garcia/Desktop/WorldCup2026"
+OUT_DIR = f"{ROOT}/4_比赛预测"
+OUT_FILE = f"{OUT_DIR}/world_cup_2026_spa.html"
+
+# ---------- 输出 ----------
+os.makedirs(OUT_DIR, exist_ok=True)
+
+print(f"v2.1 模式：HTML 不再嵌入数据，调后端 fetch")
+
+# ---------- HTML 模板 ----------
+HTML = r"""<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏆 2026 世界杯预测 · Mavis PDP v2.1</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --bg-2: #161b22;
+  --bg-3: #21262d;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-2: #adbac7;
+  --text-3: #7d8590;
+  --accent: #f0883e;
+  --accent-2: #58a6ff;
+  --green: #3fb950;
+  --red: #f85149;
+  --gold: #ffd700;
+  --silver: #c0c0c0;
+  --bronze: #cd7f32;
+}
+[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-2: #f6f8fa;
+  --bg-3: #eaeef2;
+  --border: #d0d7de;
+  --text: #1f2328;
+  --text-2: #59636e;
+  --text-3: #818b98;
+  --accent: #cf222e;
+  --accent-2: #0969da;
+  --green: #1a7f37;
+  --red: #cf222e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; background: var(--bg); color: var(--text); padding: 0; transition: background 0.3s, color 0.3s; }
+.app { max-width: 1700px; margin: 0 auto; padding: 20px; }
+.top-bar { background: linear-gradient(90deg, #1f6feb 0%, #8957e5 100%); padding: 24px 32px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+.top-bar h1 { color: #fff; font-size: 24px; }
+.top-bar .stats { display: flex; gap: 12px; flex-wrap: wrap; }
+.stat { background: rgba(0,0,0,0.3); padding: 8px 14px; border-radius: 6px; }
+.stat .label { font-size: 11px; color: #adbac7; }
+.stat .value { font-size: 16px; font-weight: bold; color: #fff; margin-top: 2px; }
+.stat.gold .value { color: var(--gold); }
+.stat.silver .value { color: var(--silver); }
+.stat.bronze .value { color: var(--bronze); }
+.top-bar-actions { display: flex; gap: 8px; }
+.top-bar-actions button { background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+.top-bar-actions button:hover { background: rgba(0,0,0,0.5); }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 20px; overflow-x: auto; }
+.tab { background: none; border: none; color: var(--text-2); padding: 12px 20px; cursor: pointer; font-size: 14px; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+.tab:hover { color: var(--text); background: var(--bg-2); }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.section-title { font-size: 18px; font-weight: bold; margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); color: var(--accent); }
+.muted { color: var(--text-3); font-size: 12px; }
+
+/* ⚽ 球队 */
+.teams-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.group-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+.group-header { background: linear-gradient(90deg, #1f6feb, #8957e5); color: #fff; padding: 6px 12px; border-radius: 4px; font-weight: bold; text-align: center; margin-bottom: 10px; font-size: 14px; }
+.team-card { display: flex; align-items: center; padding: 8px; border-radius: 4px; cursor: pointer; transition: background 0.2s; gap: 10px; }
+.team-card:hover { background: var(--bg-3); }
+.team-rank { color: var(--accent); font-weight: bold; min-width: 24px; }
+.team-flag { font-size: 18px; }
+.team-name { flex: 1; font-size: 14px; }
+.team-rating { font-size: 12px; color: var(--text-3); }
+
+/* 球队详情 Modal */
+.modal-overlay { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); overflow: auto; }
+.modal-overlay.open { display: flex; align-items: center; justify-content: center; }
+.modal { background: var(--bg-2); border-radius: 12px; max-width: 1100px; width: 95%; max-height: 90vh; overflow: auto; padding: 24px; border: 1px solid var(--border); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.modal-close { background: none; border: none; color: var(--text-3); font-size: 24px; cursor: pointer; }
+.modal-close:hover { color: var(--red); }
+.tabs-mini { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+.tab-mini { background: none; border: none; color: var(--text-2); padding: 8px 14px; cursor: pointer; font-size: 13px; border-bottom: 2px solid transparent; }
+.tab-mini.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* 📅 赛程 */
+.schedule-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+.schedule-tab { background: var(--bg-2); border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+.schedule-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.schedule-list { display: grid; gap: 8px; }
+.match-row { background: var(--bg-2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; display: grid; grid-template-columns: 100px 1fr 200px; gap: 12px; align-items: center; cursor: pointer; }
+.match-row:hover { border-color: var(--accent-2); }
+.match-date { font-size: 12px; color: var(--text-3); }
+.match-teams { font-size: 14px; display: flex; align-items: center; gap: 6px; }
+.match-vs { color: var(--text-3); font-size: 11px; }
+.match-meta { font-size: 12px; color: var(--text-2); text-align: right; }
+
+/* 🎛️ 配置 */
+.config-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; }
+.config-panel { background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.preset-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.preset-btn { background: var(--bg-3); border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 6px; cursor: pointer; text-align: left; font-size: 13px; }
+.preset-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.preset-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.slider-group { margin-bottom: 12px; }
+.slider-group label { display: block; font-size: 12px; color: var(--text-2); margin-bottom: 4px; }
+.slider-group .value { color: var(--accent); font-weight: bold; }
+.slider-group input[type=range] { width: 100%; }
+.config-action { display: flex; gap: 8px; margin-top: 16px; }
+.btn { background: var(--accent); color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; }
+.btn:hover { filter: brightness(1.1); }
+.btn-secondary { background: var(--bg-3); color: var(--text); }
+.btn-secondary:hover { background: var(--accent); color: #fff; }
+
+.preview-area { background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; min-height: 400px; }
+.preview-rank-changed { background: rgba(248, 81, 73, 0.1); }
+.preview-rank-up { color: var(--green); }
+.preview-rank-down { color: var(--red); }
+
+/* 🏆 预测 */
+.bracket-container { background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; overflow-x: auto; }
+.bracket-flow { display: flex; gap: 0; min-width: max-content; position: relative; }
+.bracket-stage { min-width: 200px; position: relative; }
+.bracket-stage h3 { font-size: 14px; color: var(--accent); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); text-align: center; }
+.bracket-stage .stage-matches { display: flex; flex-direction: column; gap: 10px; }
+/* ===================================================== */
+/* 🏆 KO 淘汰赛 - 卡片视觉系统 */
+/* ===================================================== */
+.bracket-match {
+  background: linear-gradient(180deg, var(--bg-2), var(--bg));
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);  /* 左侧色条 (胜者绿/败者灰) */
+  border-radius: 6px;
+  padding: 3px 6px 3px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  min-width: 0;
+  overflow: hidden;
+  transition: all 0.18s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+/* R32 三段卡片: 队1 顶 / 日期-城市 中 / 队2 底 (3 段撑开) */
+.bracket-match.has-sched {
+  justify-content: space-between;
+}
+.bracket-match:hover { border-color: var(--accent); border-left-color: var(--accent); transform: translateX(2px); box-shadow: 0 2px 8px rgba(240,136,62,0.15); }
+.bracket-match.has-winner { border-left: 3px solid var(--green); }
+
+/* Wiki 风格: 顶部日期+城市 (蓝色 wiki 链接样式) */
+.bracket-match .match-date-city {
+  font-size: 10px;
+  color: #58a6ff;
+  font-weight: 500;
+  margin-bottom: 1px;
+  padding-bottom: 1px;
+  border-bottom: 1px dotted rgba(88,166,255,0.25);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.0;
+  flex-shrink: 0;
+}
+.bracket-match .match-date-city .sep { color: var(--text-3); margin: 0 1px; }
+
+/* Wiki 风格: 底部赛事编号+胜方 (灰色一行) */
+.bracket-match .match-winner-line {
+  font-size: 10px;
+  color: var(--text-3);
+  margin-top: 1px;
+  padding-top: 1px;
+  border-top: 1px dotted rgba(125,133,144,0.25);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.1;
+  flex-shrink: 0;
+}
+
+.bracket-match .team {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1px 0;
+  min-width: 0;
+  position: relative;
+  line-height: 1.15;
+  flex-shrink: 0;
+}
+.bracket-match .team + .team {
+  border-top: 1px dashed rgba(125,133,144,0.2);
+  margin-top: 2px;
+  padding-top: 4px;
+}
+.bracket-match .team > span:first-child {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  gap: 4px;
+}
+.bracket-match .winner {
+  color: var(--green);
+  font-weight: 600;
+}
+.bracket-match .loser {
+  color: var(--text-3);
+  opacity: 0.65;
+  text-decoration: line-through;
+  text-decoration-color: rgba(125,133,144,0.4);
+}
+.bracket-match .score {
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-left: 4px;
+  min-width: 18px;
+  text-align: center;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--bg-3);
+  color: var(--text);
+}
+.bracket-match .winner .score {
+  background: rgba(63, 185, 80, 0.18);
+  color: var(--green);
+}
+.bracket-match .loser .score {
+  background: transparent;
+  color: var(--text-3);
+}
+.bracket-match .team-rank {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 3px;
+  margin-left: 4px;
+  flex-shrink: 0;
+  background: rgba(125,133,144,0.15);
+  color: var(--text-3);
+  letter-spacing: 0.3px;
+}
+.bracket-match .winner .team-rank {
+  background: rgba(63, 185, 80, 0.2);
+  color: var(--green);
+}
+.bracket-match .flag {
+  flex-shrink: 0;
+  font-size: 13px;
+  line-height: 1;
+}
+.bracket-match .pen {
+  color: var(--gold);
+  font-size: 9px;
+  font-weight: bold;
+  margin-left: 2px;
+  background: rgba(255, 215, 0, 0.12);
+  padding: 1px 3px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+}
+
+/* 🏆 决赛卡: 金色立体感 */
+.bracket-match.final {
+  background: linear-gradient(135deg, rgba(255,215,0,0.18), rgba(255,165,0,0.05), var(--bg-2));
+  border: 2px solid var(--gold);
+  border-left: 3px solid var(--gold);
+  box-shadow: 0 0 24px rgba(255,215,0,0.25), inset 0 1px 0 rgba(255,255,255,0.08);
+  padding: 3px 6px 3px 8px;
+  position: relative;
+  overflow: hidden;
+}
+.bracket-match.final::before {
+  content: '';
+  display: none;  /* emoji 改在 F I N A L 标签里, 不再叠加 */
+}
+.bracket-match.final .team { padding: 2px 0; }
+.bracket-match.final .score { font-size: 17px; padding: 2px 9px; }
+.bracket-match.final .flag { font-size: 16px; }
+.bracket-match.final .winner .score {
+  background: rgba(255, 215, 0, 0.25);
+  color: var(--gold);
+  text-shadow: 0 0 8px rgba(255,215,0,0.4);
+}
+.bracket-match.final .winner { color: var(--gold); }
+.bracket-match.final .winner .team-rank { background: rgba(255,215,0,0.2); color: var(--gold); }
+
+/* 🥉 季军赛: 铜色 */
+.bracket-match.third {
+  background: linear-gradient(135deg, rgba(205,127,50,0.18), rgba(180,90,40,0.05), var(--bg-2));
+  border: 2px solid var(--bronze);
+  border-left: 3px solid var(--bronze);
+  box-shadow: 0 0 18px rgba(205,127,50,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+  position: relative;
+  overflow: visible;
+}
+.bracket-match.third::before {
+  content: '🥉';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  z-index: 2;
+}
+
+/* 折线: 胜者路径更粗, 失败路径细灰色 */
+.bracket-connector path {
+  fill: none;
+}
+.bracket-connector path.winner-path {
+  filter: drop-shadow(0 0 3px rgba(63, 185, 80, 0.4));
+}
+.bracket-connector { position: absolute; pointer-events: none; }
+.bracket-connector line { stroke: var(--border); stroke-width: 1.5; fill: none; }
+.bracket-connector line.winner-line { stroke: var(--green); stroke-width: 2; opacity: 0.6; }
+
+/* 小组赛 */
+.group-stage { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.group-block { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+.group-block-header { background: linear-gradient(90deg, #1f6feb, #8957e5); color: #fff; padding: 6px 12px; border-radius: 4px; font-weight: bold; text-align: center; margin-bottom: 10px; font-size: 13px; }
+.standings-mini { font-size: 11px; margin-bottom: 8px; border-collapse: collapse; width: 100%; }
+.standings-mini th, .standings-mini td { padding: 3px 6px; text-align: left; }
+.standings-mini th { color: var(--text-3); font-weight: normal; font-size: 10px; border-bottom: 1px solid var(--border); }
+.standings-mini .pos-1 { background: rgba(63, 185, 80, 0.15); }
+.standings-mini .pos-2 { background: rgba(63, 185, 80, 0.05); }
+.standings-mini .pos-3 { background: rgba(248, 81, 73, 0.1); }
+.standings-mini .rank-cell { color: var(--accent); font-weight: bold; width: 20px; }
+.matches-mini { display: flex; flex-direction: column; gap: 4px; }
+.match-mini { background: var(--bg-3); padding: 5px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; display: flex; justify-content: space-between; }
+.match-mini:hover { background: var(--accent-2); color: #fff; }
+.match-mini .winner { color: var(--green); font-weight: bold; }
+.match-mini .loser { color: var(--text-3); }
+.match-mini .score { color: var(--text-2); margin-left: 8px; }
+
+.predict-section { margin-top: 24px; }
+.predict-section-title { font-size: 16px; font-weight: bold; color: var(--accent); margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.predict-section-title .count { color: var(--text-3); font-weight: normal; font-size: 13px; }
+
+/* 🆚 对比 */
+.compare-grid { display: grid; grid-template-columns: 1fr 60px 1fr; gap: 12px; }
+.compare-side { background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.compare-side h3 { color: var(--accent); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.compare-vs { display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--text-3); }
+.compare-row { display: grid; grid-template-columns: 1fr auto 1fr; padding: 6px 0; border-bottom: 1px solid var(--border); align-items: center; }
+.compare-row .left, .compare-row .right { font-size: 13px; }
+.compare-row .diff { background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+
+/* 详情弹窗 */
+.detail-section { margin-bottom: 20px; }
+.detail-section h4 { color: var(--accent); font-size: 14px; margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+.player-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+.player-item { background: var(--bg-3); padding: 8px 10px; border-radius: 4px; font-size: 12px; }
+.player-item .pname { font-weight: bold; }
+.player-item .pmeta { color: var(--text-3); font-size: 11px; margin-top: 2px; }
+
+/* 球员按位置分块 */
+.player-by-pos { display: flex; flex-direction: column; gap: 14px; }
+.pos-block { background: var(--bg-3); border-radius: 6px; padding: 8px 12px; }
+.pos-header { font-size: 13px; font-weight: bold; color: var(--accent); margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.pos-count { color: var(--text-3); font-size: 11px; font-weight: normal; }
+.pos-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 6px; }
+.player-item-click {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg-2); padding: 6px 10px; border-radius: 4px;
+  font-size: 12px; cursor: pointer; transition: all 0.15s;
+  border: 1px solid transparent;
+}
+.player-item-click:hover { background: var(--bg); border-color: var(--accent); transform: translateX(2px); }
+.player-item-click .p-jersey { color: var(--accent); font-weight: bold; min-width: 28px; }
+.player-item-click .p-name { flex: 1; font-weight: 500; }
+.player-item-click .p-club { color: var(--text-3); font-size: 11px; }
+.player-item-click .p-val { color: var(--text-2); font-size: 11px; }
+
+/* 教练详情块 */
+.coach-block { display: flex; flex-direction: column; gap: 6px; }
+.coach-name { font-size: 16px; font-weight: bold; color: var(--accent); }
+.coach-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.coach-tag { background: var(--bg-3); padding: 3px 8px; border-radius: 4px; font-size: 11px; color: var(--text-2); }
+.coach-tag strong { color: var(--accent); }
+.coach-row { font-size: 12px; color: var(--text-2); line-height: 1.6; }
+.coach-row b { color: var(--text); }
+
+/* 球员详情 */
+.player-detail { display: flex; flex-direction: column; gap: 18px; }
+.pd-header { display: flex; align-items: center; gap: 16px; padding: 12px; background: var(--bg-3); border-radius: 8px; }
+.pd-jersey { font-size: 32px; font-weight: bold; color: var(--accent); min-width: 60px; text-align: center; }
+.pd-info { display: flex; flex-direction: column; gap: 4px; }
+.pd-pos { font-size: 14px; color: var(--accent); font-weight: bold; }
+.pd-club { font-size: 13px; color: var(--text-2); }
+.pd-val { font-size: 16px; font-weight: bold; color: var(--gold); }
+.pd-section h4 { color: var(--accent); font-size: 13px; margin-bottom: 8px; }
+.pd-section p { font-size: 13px; line-height: 1.7; color: var(--text-2); }
+.pd-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+.pd-stat { background: var(--bg-3); padding: 10px; border-radius: 6px; text-align: center; }
+.pd-stat-v { font-size: 18px; font-weight: bold; color: var(--accent); }
+.pd-stat-l { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.lambda-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+.lambda-card { background: var(--bg-3); padding: 10px; border-radius: 6px; }
+.lambda-card h5 { color: var(--accent); font-size: 12px; margin-bottom: 4px; }
+.lambda-card .lam-val { font-size: 20px; font-weight: bold; color: var(--accent); }
+.lambda-card .lam-detail { font-size: 11px; color: var(--text-2); margin-top: 4px; }
+
+/* 搜索 */
+.search-box { width: 100%; padding: 10px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 14px; margin-bottom: 16px; }
+.search-results { display: grid; gap: 8px; }
+.search-result { background: var(--bg-2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; cursor: pointer; }
+.search-result:hover { border-color: var(--accent-2); }
+.search-result .sr-type { font-size: 10px; color: var(--accent); display: inline-block; padding: 2px 6px; border-radius: 3px; background: rgba(240,136,62,0.1); margin-right: 8px; }
+.search-result .sr-name { font-weight: bold; }
+
+/* footer */
+.footer { margin-top: 40px; padding: 20px; text-align: center; color: var(--text-3); font-size: 12px; border-top: 1px solid var(--border); }
+
+/* ========================================================== */
+/* 📱 移动端响应式 (≤ 768px 平板 + ≤ 480px 手机) */
+/* ========================================================== */
+
+/* 平板: ≤ 768px */
+@media (max-width: 768px) {
+  body { padding: 10px; font-size: 14px; }
+  .app { padding: 10px; }
+  .top-bar { padding: 16px 18px; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .top-bar h1 { font-size: 18px; }
+  .top-bar .stats { width: 100%; gap: 6px; }
+  .stat { flex: 1 1 calc(33.333% - 4px); min-width: 0; padding: 6px 8px; }
+  .stat .value { font-size: 13px; }
+  .top-bar-actions { width: 100%; justify-content: flex-end; }
+  .top-bar-actions button { padding: 6px 10px; font-size: 12px; }
+
+  /* Tab 改成 3 列 grid */
+  .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; border-bottom: none; }
+  .tab { padding: 10px 4px; font-size: 12px; text-align: center; border-radius: 6px 6px 0 0; }
+
+  /* 球队 tab */
+  .team-card-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  .team-card { padding: 10px; }
+
+  /* 小组赛 grid: 2 列 */
+  .group-stage { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .group-block { padding: 8px; }
+  .group-block-header { font-size: 12px; padding: 4px 8px; }
+  .standings-mini { font-size: 11px; }
+  .standings-mini th, .standings-mini td { padding: 3px 4px; }
+
+  /* 权重 6 分类 → 单列 */
+  .weights-grid { grid-template-columns: 1fr; }
+
+  /* Modal 全屏化 */
+  .modal { width: 100%; max-width: 100%; max-height: 100vh; height: 100vh; border-radius: 0; padding: 16px; }
+  .modal-overlay.open { align-items: flex-start; }
+
+  /* 比赛预测折线: 容器宽度跟随卡片 */
+  .bracket-container { padding: 8px; }
+
+  /* 对比 grid: 左右两列纵向堆叠, vs 缩小 */
+  .compare-grid { grid-template-columns: 1fr; gap: 8px; }
+  .compare-vs { font-size: 18px; padding: 4px; }
+
+  /* 预测 section 标题缩小 */
+  .predict-section-title { font-size: 14px; }
+}
+
+/* 手机: ≤ 480px */
+@media (max-width: 480px) {
+  body { padding: 6px; font-size: 13px; }
+  .app { padding: 6px; }
+  .top-bar { padding: 12px 14px; }
+  .top-bar h1 { font-size: 16px; }
+
+  /* Tab 改成 2 列 grid (6 个 tab 排 3 行) */
+  .tabs { grid-template-columns: repeat(2, 1fr); }
+
+  /* Stat 卡 6 个变 3×2 grid */
+  .stat { flex: 1 1 calc(50% - 3px); min-width: 0; padding: 4px 6px; }
+  .stat .label { font-size: 10px; }
+  .stat .value { font-size: 12px; }
+
+  /* 球队 tab 卡片最小 130px */
+  .team-card-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 6px; }
+
+  /* 小组赛 grid: 1 列 */
+  .group-stage { grid-template-columns: 1fr; }
+
+  /* 比赛预测 tab 标题 + 描述更小 */
+  .section-title { font-size: 16px; }
+  .muted { font-size: 12px; }
+
+  /* Modal 边距 */
+  .modal { padding: 12px; }
+  .modal-header { margin-bottom: 12px; padding-bottom: 8px; }
+  .modal-header h2 { font-size: 16px; }
+
+  /* 滑块标签 */
+  .weight-row { padding: 6px 8px; }
+  .weight-row label { font-size: 11px; }
+  .weight-row input[type=range] { width: 100px; }
+  .weight-row .weight-value { font-size: 11px; min-width: 30px; }
+
+  /* search input */
+  .search-box { font-size: 13px; padding: 8px 12px; }
+
+  /* footer */
+  .footer { font-size: 10px; padding: 12px; }
+
+  /* 触摸优化: 卡片可点 */
+  .tab, .btn, .team-card, .group-block { -webkit-tap-highlight-color: rgba(240,136,62,0.3); }
+
+  /* 弹窗里 4 维 λ 改成单列 */
+  .lambda-grid { grid-template-columns: 1fr; }
+  .lambda-cell { padding: 8px; }
+
+  /* 球员卡片 grid 单列 */
+  .player-card-grid { grid-template-columns: 1fr; }
+}
+
+/* 触摸设备: 鼠标 hover 效果去除 */
+@media (hover: none) {
+  .team-card:hover, .search-result:hover, .bracket-match:hover { transform: none; box-shadow: none; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- 顶栏 -->
+  <div class="top-bar">
+    <div>
+      <h1>🏆 2026 世界杯预测 · Mavis PDP v2.1</h1>
+      <div class="stats" id="topStats">
+        <div class="stat"><div class="label">球队</div><div class="value" id="statTeams">48</div></div>
+        <div class="stat"><div class="label">比赛</div><div class="value" id="statMatches">104</div></div>
+        <div class="stat gold"><div class="label">🏆 冠军</div><div class="value" id="statChampion">-</div></div>
+        <div class="stat silver"><div class="label">🥈 亚军</div><div class="value" id="statRunnerUp">-</div></div>
+        <div class="stat bronze"><div class="label">🥉 季军</div><div class="value" id="statThird">-</div></div>
+      </div>
+    </div>
+    <div class="top-bar-actions">
+      <button onclick="toggleTheme()" id="themeBtn">🌙 暗色</button>
+      <button onclick="exportConfig()">📤 导出配置</button>
+      <button onclick="window.print()">🖨️ 打印</button>
+    </div>
+  </div>
+
+  <!-- Tab 导航 -->
+  <div class="tabs">
+    <button class="tab active" data-tab="teams">⚽ 球队</button>
+    <button class="tab" data-tab="schedule">📅 赛程</button>
+    <button class="tab" data-tab="config">🎛️ 配置</button>
+    <button class="tab" data-tab="predict">🏆 预测</button>
+    <button class="tab" data-tab="compare">🆚 对比</button>
+    <button class="tab" data-tab="search">🔍 搜索</button>
+  </div>
+
+  <!-- ⚽ 球队 -->
+  <div class="tab-content active" id="tab-teams">
+    <div class="section-title">分组与排名</div>
+    <p class="muted" style="margin-bottom:16px">点击任意球队查看详情（球员/教练/4 维 λ 分解）</p>
+    <div class="teams-groups" id="teamsContainer"></div>
+  </div>
+
+  <!-- 📅 赛程 -->
+  <div class="tab-content" id="tab-schedule">
+    <div class="section-title">赛程时间线</div>
+    <div class="schedule-tabs" id="scheduleStageTabs">
+      <button class="schedule-tab active" data-stage="all">全部</button>
+      <button class="schedule-tab" data-stage="group">小组赛</button>
+      <button class="schedule-tab" data-stage="R32">32 强</button>
+      <button class="schedule-tab" data-stage="R16">16 强</button>
+      <button class="schedule-tab" data-stage="QF">8 强</button>
+      <button class="schedule-tab" data-stage="SF">半决赛</button>
+      <button class="schedule-tab" data-stage="FINAL">决赛</button>
+    </div>
+    <div class="schedule-list" id="scheduleList"></div>
+  </div>
+
+  <!-- 🎛️ 配置 -->
+  <div class="tab-content" id="tab-config">
+    <div class="section-title">算法参数配置</div>
+    <p class="muted" style="margin-bottom:16px">调整 16 个算法系数 → 点击「开始预测」→ 浏览器 1 秒内刷新 32 强</p>
+    <div class="config-layout">
+      <div class="config-panel">
+        <h3 style="margin-bottom:12px">📋 预设</h3>
+        <div class="preset-list" id="presetList"></div>
+        <div class="config-action">
+          <button class="btn" onclick="runPrediction()">🚀 开始预测</button>
+          <button class="btn btn-secondary" onclick="resetConfig()">重置</button>
+        </div>
+        <div class="config-action">
+          <button class="btn btn-secondary" onclick="saveAsPreset()">💾 存为新预设</button>
+        </div>
+      </div>
+      <div class="config-panel">
+        <div id="slidersContainer"></div>
+      </div>
+    </div>
+    <div class="section-title">📊 32 强排名（实时）</div>
+    <div class="preview-area" id="previewArea"></div>
+  </div>
+
+  <!-- 🏆 预测 -->
+  <div class="tab-content" id="tab-predict">
+    <div class="section-title">完整 104 场预测</div>
+    <p class="muted" style="margin-bottom:16px">FIFA 2026 官方 bracket 风格：上半区小组赛 (A-F, 6 组) → 淘汰赛 → 下半区小组赛 (G-L, 6 组)</p>
+    
+    <div class="predict-section">
+      <div class="predict-section-title">📋 上半区小组赛 (A-F, 6 组 · 24 场) <span class="count" id="upperGroupCount"></span></div>
+      <div class="group-stage" id="upperGroupContainer"></div>
+    </div>
+    
+    <div class="predict-section">
+      <div class="predict-section-title">🏆 淘汰赛 (32 场 · 左半区 + 右半区 + 居中决赛 + 季军赛) <span class="count" id="koMatchCount"></span></div>
+      <div class="bracket-container">
+        <div class="bracket-flow" id="bracketFlow"></div>
+      </div>
+    </div>
+    
+    <div class="predict-section">
+      <div class="predict-section-title">📋 下半区小组赛 (G-L, 6 组 · 24 场) <span class="count" id="lowerGroupCount"></span></div>
+      <div class="group-stage" id="lowerGroupContainer"></div>
+    </div>
+  </div>
+
+  <!-- 🆚 对比 -->
+  <div class="tab-content" id="tab-compare">
+    <div class="section-title">预设对比</div>
+    <p class="muted" style="margin-bottom:16px">选两套预设，横向对比 32 强排序</p>
+    <div style="display:flex;gap:12px;margin-bottom:16px">
+      <div style="flex:1">
+        <label>左: 预设 A</label>
+        <select id="cmpLeft" class="search-box" style="margin-top:4px"></select>
+      </div>
+      <div style="flex:1">
+        <label>右: 预设 B</label>
+        <select id="cmpRight" class="search-box" style="margin-top:4px"></select>
+      </div>
+    </div>
+    <div class="compare-grid">
+      <div class="compare-side" id="cmpLeftOut"></div>
+      <div class="compare-vs">vs</div>
+      <div class="compare-side" id="cmpRightOut"></div>
+    </div>
+  </div>
+
+  <!-- 🔍 搜索 -->
+  <div class="tab-content" id="tab-search">
+    <div class="section-title">全局搜索</div>
+    <input class="search-box" id="searchInput" placeholder="搜球员姓名 / 球队 / 比赛 / 城市..." oninput="doSearch(this.value)">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+
+  <div class="footer">
+    © Mavis PDP v2.1 · 数据 2026-06 · 单文件离线可跑 · <a href="https://github.com/Henrytudor-lee/worldcup2026" style="color:var(--accent)">Henrytudor-lee/worldcup2026</a>
+  </div>
+</div>
+
+<!-- 详情 Modal -->
+<div class="modal-overlay" id="detailModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<!-- 比赛详情 Modal -->
+<div class="modal-overlay" id="matchModal" onclick="if(event.target===this)closeMatchModal()">
+  <div class="modal" id="matchModalContent"></div>
+</div>
+
+<!-- 数据从后端 fetch（不再嵌入） -->
+<script>
+// ============== 后端数据加载 ==============
+const API_BASE = "http://localhost:8765";
+let WEIGHTS = null;       // 默认 weights
+let RANKING = [];         // 48 队排名（数组）
+let PREDICTIONS = [];     // 104 场预测
+let PLAYERS = {};         // {team: [player, ...]}
+
+async function loadFromBackend() {
+  // 1) 默认 weights
+  const wRes = await fetch(`${API_BASE}/api/weights/default`);
+  WEIGHTS = await wRes.json();
+  // 2) 排名
+  const rRes = await fetch(`${API_BASE}/api/ranking`);
+  const rData = await rRes.json();
+  RANKING = rData.ranking;
+  // 3) 预测
+  const pRes = await fetch(`${API_BASE}/api/predictions`);
+  const pData = await pRes.json();
+  PREDICTIONS = pData.predictions;
+  // 4) 球员（一次拉全部，按国家分组）
+  const plRes = await fetch(`${API_BASE}/api/players`);
+  const plData = await plRes.json();
+  PLAYERS = {};
+  for (const p of plData.players) {
+    if (!PLAYERS[p['国家']]) PLAYERS[p['国家']] = [];
+    PLAYERS[p['国家']].push(p);
+  }
+  // 5) 渲染（先建 PRESETS / currentWeights，再 initAll）
+  currentWeights = JSON.parse(JSON.stringify(WEIGHTS));
+  buildPresets();
+  initAll();
+}
+
+function buildPresets() {
+  // 用后端返回的 WEIGHTS 构造前端 6 个 preset
+  PRESETS['default'] = { name: '默认 (均衡)', icon: '⚖️', weights: JSON.parse(JSON.stringify(WEIGHTS)) };
+  PRESETS['high_value'] = { name: '身价优先', icon: '💰', weights: {
+    position_top_n: {FW:5, MID:5, DEF:6, GK:1},
+    status_weights: {g_per_goal: 60, a_per_assist: 90, who_bonus_base: 8, who_bonus_denom: 4},
+    nat_intl: {g_per_goal: 300, a_per_assist: 400},
+    def_gk_weights: {base_factor: 0.85, honors_per_champ: 10, starter_jersey_max: 12, starter_bonus: 30, wc_per_ga: 80},
+    player_to_total: {player_share: 0.85, coach_share: 0.15},
+    smoothing: {player_div: 3000, coach_div: 100, rank_div: 800}
+  }};
+  PRESETS['high_form'] = { name: '状态优先', icon: '🔥', weights: {
+    position_top_n: {FW:3, MID:3, DEF:4, GK:1},
+    status_weights: {g_per_goal: 25, a_per_assist: 40, who_bonus_base: 10, who_bonus_denom: 3},
+    nat_intl: {g_per_goal: 100, a_per_assist: 200},
+    def_gk_weights: {base_factor: 1.0, honors_per_champ: 20, starter_jersey_max: 16, starter_bonus: 80, wc_per_ga: 120},
+    player_to_total: {player_share: 0.75, coach_share: 0.25},
+    smoothing: {player_div: 6000, coach_div: 100, rank_div: 1200}
+  }};
+  PRESETS['low_value'] = { name: '低身价 (反身价)', icon: '📉', weights: {
+    position_top_n: {FW:4, MID:4, DEF:5, GK:1},
+    status_weights: {g_per_goal: 50, a_per_assist: 70, who_bonus_base: 7, who_bonus_denom: 4},
+    nat_intl: {g_per_goal: 250, a_per_assist: 350},
+    def_gk_weights: {base_factor: 0.95, honors_per_champ: 15, starter_jersey_max: 14, starter_bonus: 50, wc_per_ga: 100},
+    player_to_total: {player_share: 0.70, coach_share: 0.30},
+    smoothing: {player_div: 5000, coach_div: 100, rank_div: 1000}
+  }};
+  PRESETS['coach_heavy'] = { name: '教练为王', icon: '👔', weights: {
+    position_top_n: {FW:3, MID:3, DEF:4, GK:1},
+    status_weights: {g_per_goal: 40, a_per_assist: 60, who_bonus_base: 6.5, who_bonus_denom: 4},
+    nat_intl: {g_per_goal: 200, a_per_assist: 300},
+    def_gk_weights: {base_factor: 0.95, honors_per_champ: 25, starter_jersey_max: 14, starter_bonus: 80, wc_per_ga: 120},
+    player_to_total: {player_share: 0.30, coach_share: 0.70},
+    smoothing: {player_div: 5000, coach_div: 50, rank_div: 800}
+  }};
+  PRESETS['balance_343'] = { name: '3-4-3 阵型倾向', icon: '⚔️', weights: {
+    position_top_n: {FW:5, MID:3, DEF:3, GK:1},
+    status_weights: {g_per_goal: 35, a_per_assist: 55, who_bonus_base: 7, who_bonus_denom: 4},
+    nat_intl: {g_per_goal: 180, a_per_assist: 280},
+    def_gk_weights: {base_factor: 1.0, honors_per_champ: 12, starter_jersey_max: 13, starter_bonus: 40, wc_per_ga: 90},
+    player_to_total: {player_share: 0.78, coach_share: 0.22},
+    smoothing: {player_div: 4500, coach_div: 100, rank_div: 900}
+  }};
+}
+
+// 当前权重 (可变) - 由 loadFromBackend 异步填充
+let currentWeights = {};
+
+// 6 个预设 - 由 buildPresets() 在后端数据加载后填充
+const PRESETS = {};
+
+// ============== 48 强国旗 + 组别映射 ==============
+const FLAGS = {
+  // 亚洲 (8)
+  '韩国': '🇰🇷', '日本': '🇯🇵', '伊朗': '🇮🇷', '沙特阿拉伯': '🇸🇦',
+  '澳大利亚': '🇦🇺', '卡塔尔': '🇶🇦', '阿联酋': '🇦🇪', '伊拉克': '🇮🇶',
+  // 欧洲 (16)
+  '英格兰': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', '法国': '🇫🇷', '西班牙': '🇪🇸', '德国': '🇩🇪',
+  '葡萄牙': '🇵🇹', '荷兰': '🇳🇱', '比利时': '🇧🇪', '意大利': '🇮🇹',
+  '克罗地亚': '🇭🇷', '瑞士': '🇨🇭', '奥地利': '🇦🇹', '捷克': '🇨🇿',
+  '丹麦': '🇩🇰', '瑞典': '🇸🇪', '挪威': '🇳🇴', '波兰': '🇵🇱',
+  '苏格兰': '🏴󠁧󠁢󠁳󠁣󠁴󠁿', '土耳其': '🇹🇷', '塞尔维亚': '🇷🇸', '罗马尼亚': '🇷🇴',
+  // 美洲 (8)
+  '巴西': '🇧🇷', '阿根廷': '🇦🇷', '乌拉圭': '🇺🇾', '哥伦比亚': '🇨🇴',
+  '厄瓜多尔': '🇪🇨', '智利': '🇨🇱', '巴拉圭': '🇵🇾', '秘鲁': '🇵🇪',
+  '墨西哥': '🇲🇽', '美国': '🇺🇸', '加拿大': '🇨🇦',
+  // 非洲 (8)
+  '摩洛哥': '🇲🇦', '塞内加尔': '🇸🇳', '尼日利亚': '🇳🇬', '加纳': '🇬🇭',
+  '喀麦隆': '🇨🇲', '科特迪瓦': '🇨🇮', '埃及': '🇪🇬', '突尼斯': '🇹🇳',
+  '阿尔及利亚': '🇩🇿', '南非': '🇿🇦', '民主刚果': '🇨🇩', '佛得角': '🇨🇻',
+  // 大洋洲 (1)
+  '新西兰': '🇳🇿',
+  // 欧亚混合
+  '波黑': '🇧🇦', '乌克兰': '🇺🇦', '威尔士': '🏴󠁧󠁢󠁷󠁬󠁳󠁿', '以色列': '🇮🇱',
+  '挪威': '🇳🇴', '俄罗斯': '🇷🇺', '北马其顿': '🇲🇰', '格鲁吉亚': '🇬🇪'
+};
+
+// 从 group matches 算出每组的最终排名 (1/2/3/4)
+function computeGroupRankings() {
+  const gs = {};  // { group: { team: {p, gf, ga, gp} } }
+  PREDICTIONS.filter(p => p.stage === 'group').forEach(p => {
+    if (!gs[p.group]) gs[p.group] = {};
+    if (!gs[p.group][p.home]) gs[p.group][p.home] = {p:0, gf:0, ga:0, gp:0};
+    if (!gs[p.group][p.away]) gs[p.group][p.away] = {p:0, gf:0, ga:0, gp:0};
+    const [hs, as] = p.actual_score.split('-').map(Number);
+    gs[p.group][p.home].gp++;
+    gs[p.group][p.away].gp++;
+    gs[p.group][p.home].gf += hs;
+    gs[p.group][p.away].gf += as;
+    gs[p.group][p.home].ga += as;
+    gs[p.group][p.away].ga += hs;
+    if (p.home_pts === 3) gs[p.group][p.home].p += 3;
+    else if (p.home_pts === 1) { gs[p.group][p.home].p += 1; gs[p.group][p.away].p += 1; }
+    else gs[p.group][p.away].p += 3;
+  });
+  const rank = {};  // { team: 'A1'/'A2'/... }
+  Object.keys(gs).forEach(g => {
+    const sorted = Object.entries(gs[g])
+      .map(([team, s]) => ({ team, ...s, gd: s.gf - s.ga }))
+      .sort((a, b) => b.p - a.p || b.gd - a.gd || b.gf - a.gf);
+    sorted.forEach((t, i) => { rank[t.team] = `${g}${i + 1}`; });
+  });
+  return rank;
+}
+const GROUP_RANK = computeGroupRankings();
+
+function teamTag(team) {
+  const flag = FLAGS[team] || '🏳️';
+  const rk = GROUP_RANK[team] || '?';
+  return { flag, rk };
+}
+
+// ============== 工具函数 ==============
+function $id(id) { return document.getElementById(id); }
+function escHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+function fmtNum(n) { return Number(n).toLocaleString('zh-CN', {maximumFractionDigits: 1}); }
+
+// ============== 主题切换 ==============
+function toggleTheme() {
+  const html = document.documentElement;
+  const isLight = html.getAttribute('data-theme') === 'light';
+  html.setAttribute('data-theme', isLight ? 'dark' : 'light');
+  $id('themeBtn').textContent = isLight ? '☀️ 亮色' : '🌙 暗色';
+  localStorage.setItem('theme', isLight ? 'dark' : 'light');
+}
+(function initTheme() {
+  const saved = localStorage.getItem('theme') || 'dark';
+  if (saved === 'light') { document.documentElement.setAttribute('data-theme', 'light'); $id('themeBtn').textContent = '☀️ 亮色'; }
+})();
+
+// ============== Tab 切换 ==============
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    $id('tab-' + tab.dataset.tab).classList.add('active');
+    // 切到预测时重画
+    if (tab.dataset.tab === 'predict') renderBracket();
+  });
+});
+
+// ============== 球队分组渲染 ==============
+function renderTeams() {
+  // 按组聚合
+  const byGroup = {};
+  RANKING.forEach(t => {
+    // 从原始数据补 group 字段 (这里用字母推断 A-L)
+    if (!byGroup[t.group || 'A']) byGroup[t.group || 'A'] = [];
+    byGroup[t.group || 'A'].push(t);
+  });
+  // 实际我们需要从 predictions 拿组别
+  // 简化: 用 RANKING 顺序 4 个一组分 12 组
+  const groups = {};
+  for (let i = 0; i < RANKING.length; i += 4) {
+    const g = String.fromCharCode(65 + (i / 4)); // A, B, C...
+    groups[g] = RANKING.slice(i, i + 4);
+  }
+  // 实际分组从 predictions 推
+  const realGroups = {};
+  PREDICTIONS.filter(p => p.stage === 'group').forEach(p => {
+    if (!realGroups[p.group]) realGroups[p.group] = new Set();
+    realGroups[p.group].add(p.home);
+    realGroups[p.group].add(p.away);
+  });
+  
+  let html = '';
+  Object.keys(realGroups).sort().forEach(g => {
+    const teams = Array.from(realGroups[g]);
+    // 找每队的 ranking 信息
+    const teamsWithRank = teams.map(name => {
+      const r = RANKING.find(x => x.team === name);
+      return { name, rank: r ? r.rank_r : 0, fifa: r ? r.fifa_rank : 0 };
+    }).sort((a, b) => b.rank - a.rank);
+    
+    html += `<div class="group-card">
+      <div class="group-header">第 ${g} 组</div>
+      ${teamsWithRank.map(t => `
+        <div class="team-card" onclick="openTeamDetail('${escHtml(t.name)}')">
+          <span class="team-rank">${fmtNum(t.rank)}</span>
+          <span class="team-name">${escHtml(t.name)}</span>
+          <span class="team-rating">FIFA ${t.fifa}</span>
+        </div>
+      `).join('')}
+    </div>`;
+  });
+  $id('teamsContainer').innerHTML = html;
+}
+
+// ============== 球队详情 ==============
+function openTeamDetail(teamName) {
+  const r = RANKING.find(x => x.team === teamName);
+  if (!r) return;
+  const players = PLAYERS[teamName] || [];
+  
+  // 球员按位置分
+  const byPos = { '前锋': [], '中场': [], '后卫': [], '门将': [] };
+  players.forEach(p => {
+    if (byPos[p.p]) byPos[p.p].push(p);
+  });
+  
+  let html = `<div class="modal-header">
+    <h2>${escHtml(teamName)} · ${fmtNum(r.rank_r)} 分</h2>
+    <button class="modal-close" onclick="closeModal()">×</button>
+  </div>
+  <div class="tabs-mini" id="teamModalTabs">
+    <button class="tab-mini active" data-mini="overview">概览</button>
+    <button class="tab-mini" data-mini="players">球员 (${players.length})</button>
+    <button class="tab-mini" data-mini="matches">赛程</button>
+  </div>
+  
+  <div class="mini-content" data-mini="overview">
+    <div class="detail-section">
+      <h4>📊 4 维评分</h4>
+      <div class="lambda-grid">
+        <div class="lambda-card">
+          <h5>前锋 Top 3</h5>
+          <div class="lam-val">${fmtNum(r.fw_score)}</div>
+          <div class="lam-detail">${(r.fw_top_names || []).map(escHtml).join(' / ')}</div>
+        </div>
+        <div class="lambda-card">
+          <h5>中场 Top 3</h5>
+          <div class="lam-val">${fmtNum(r.mid_score)}</div>
+          <div class="lam-detail">${(r.mid_top_names || []).map(escHtml).join(' / ')}</div>
+        </div>
+        <div class="lambda-card">
+          <h5>后卫 Top 4</h5>
+          <div class="lam-val">${fmtNum(r.def_score)}</div>
+          <div class="lam-detail">${(r.def_top_names || []).map(escHtml).join(' / ')}</div>
+        </div>
+        <div class="lambda-card">
+          <h5>门将 Top 1</h5>
+          <div class="lam-val">${fmtNum(r.gk_score)}</div>
+          <div class="lam-detail">${(r.gk_top_names || []).map(escHtml).join(' / ')}</div>
+        </div>
+      </div>
+    </div>
+    <div class="detail-section">
+      <h4>👔 教练详情</h4>
+      ${r.coach_name ? `
+        <div class="coach-block">
+          <div class="coach-name">${escHtml(r.coach_name)}</div>
+          <div class="coach-meta">
+            ${r.coach_age ? `<span class="coach-tag">${escHtml(r.coach_age)}</span>` : ''}
+            ${r.coach_tenure ? `<span class="coach-tag">任期 ${escHtml(r.coach_tenure)}</span>` : ''}
+            <span class="coach-tag">评分 <strong>${fmtNum(r.coach_score)}</strong></span>
+            <span class="coach-tag">系数 ${fmtNum(r.coach_r)}</span>
+          </div>
+          ${r.coach_career ? `<div class="coach-row"><b>履历:</b> ${escHtml(r.coach_career)}</div>` : ''}
+          ${r.coach_honors ? `<div class="coach-row"><b>荣誉:</b> ${escHtml(r.coach_honors)}</div>` : ''}
+        </div>
+      ` : '<p>暂无教练数据</p>'}
+    </div>
+    <div class="detail-section">
+      <h4>🏆 球队总分</h4>
+      <p>球员: <strong>${fmtNum(r.player_score)}</strong> · 总: <strong>${fmtNum(r.total)}</strong> · 排名分: ${fmtNum(r.rank_r)}</p>
+    </div>
+  </div>
+  
+  <div class="mini-content" data-mini="players" style="display:none">
+    <div class="detail-section">
+      <h4>⚽ 球员 (${players.length})</h4>
+      <div class="player-by-pos">
+        ${['门将','后卫','中场','前锋'].map(pos => {
+          const list = byPos[pos] || [];
+          if (!list.length) return '';
+          // 按号码排序
+          const sorted = list.slice().sort((a, b) => (parseInt(a.j)||99) - (parseInt(b.j)||99));
+          return `
+            <div class="pos-block">
+              <div class="pos-header">${pos} <span class="pos-count">${list.length} 人</span></div>
+              <div class="pos-list">
+                ${sorted.map(p => `
+                  <div class="player-item-click" onclick="openPlayerDetail('${escHtml(teamName)}', '${escHtml(p.n)}')">
+                    <span class="p-jersey">#${p.j||'?'}</span>
+                    <span class="p-name">${escHtml(p.n)}</span>
+                    <span class="p-club">${escHtml(p.c)}</span>
+                    <span class="p-val">€${p.v}万</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  </div>
+  
+  <div class="mini-content" data-mini="matches" style="display:none">
+    <div class="detail-section">
+      <h4>📅 赛程</h4>
+      <div class="schedule-list">
+        ${PREDICTIONS.filter(p => p.home === teamName || p.away === teamName).map(p => `
+          <div class="match-row" onclick="openMatchDetail('${p.match_id}')">
+            <div class="match-date">${p.date || ''}</div>
+            <div class="match-teams">${escHtml(p.home)} <span class="match-vs">vs</span> ${escHtml(p.away)}</div>
+            <div class="match-meta">${p.actual_score || ''} ${p.went_to_pen ? '(点球)' : ''}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  </div>
+  `;
+  
+  $id('modalContent').innerHTML = html;
+  $id('detailModal').classList.add('open');
+  
+  // mini tabs
+  document.querySelectorAll('#teamModalTabs .tab-mini').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#teamModalTabs .tab-mini').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('#modalContent .mini-content').forEach(c => c.style.display = 'none');
+      document.querySelector(`#modalContent .mini-content[data-mini="${btn.dataset.mini}"]`).style.display = 'block';
+    });
+  });
+}
+
+function closeModal() { $id('detailModal').classList.remove('open'); }
+
+// ============== 球员详情 (复用 detailModal) ==============
+function openPlayerDetail(teamName, playerName) {
+  const list = PLAYERS[teamName] || [];
+  const p = list.find(x => x.n === playerName);
+  if (!p) return;
+  const r = RANKING.find(x => x.team === teamName);
+
+  // 从 4 维 details 里找 (apps_2025_26/goals_2025_26/assists_2025_26/whoscored)
+  const posKey = p.p === '门将' ? 'gk_details' : p.p === '后卫' ? 'def_details' : p.p === '中场' ? 'mid_details' : 'fw_details';
+  const full = (r && r[posKey]) ? r[posKey].find(x => x.name === playerName) : null;
+
+  // 优先级: PLAYERS(v22) wg/wa/ng/na > RANKING details > X待核实
+  // goals/assists 显示: 优先 wg/wa (v22), fallback goals_2025_26/assists_2025_26 (ranking)
+  const ng = p.ng || (full ? full.nat_goals : '');
+  const na = p.na || (full ? full.nat_assists : '');
+  const wg = p.wg || (full ? full.goals_2025_26 : '');
+  const wa = p.wa || (full ? full.assists_2025_26 : '');
+  const apps = full && full.apps_2025_26 && full.apps_2025_26 !== '—' ? full.apps_2025_26 : '';
+  const goals = wg || (full && full.goals_2025_26 && full.goals_2025_26 !== '—' ? full.goals_2025_26 : '');
+  const assists = wa || (full && full.assists_2025_26 && full.assists_2025_26 !== '—' ? full.assists_2025_26 : '');
+  const who = full && full.whoscored && full.whoscored !== '—' ? full.whoscored : '';
+
+  const statFields = [
+    { v: ng, l: '🏳️ 国家队进球' },
+    { v: na, l: '🏳️ 国家队助攻' },
+    { v: apps, l: '⚽ 25-26 出场' },
+    { v: goals, l: '⚽ 25-26 进球' },
+    { v: assists, l: '🅰️ 25-26 助攻' },
+    { v: who, l: '⭐ whoscored 评分' },
+  ];
+
+  const statsHtml = statFields.filter(f => f.v && f.v !== '—').map(f =>
+    `<div class="pd-stat"><div class="pd-stat-v">${escHtml(String(f.v))}</div><div class="pd-stat-l">${f.l}</div></div>`
+  ).join('');
+
+  let html = `<div class="modal-header">
+    <h2>${escHtml(p.n)} <span style="color:var(--text-3);font-weight:normal;font-size:14px">${escHtml(teamName)}</span></h2>
+    <button class="modal-close" onclick="closeModal()">×</button>
+  </div>
+
+  <div class="player-detail">
+    <div class="pd-header">
+      <div class="pd-jersey">#${p.j || '?'}</div>
+      <div class="pd-info">
+        <div class="pd-pos">${escHtml(p.p)}</div>
+        <div class="pd-club">${escHtml(p.c)} · ${escHtml(p.l)}</div>
+        <div class="pd-val">€${p.v}万</div>
+      </div>
+    </div>
+
+    <div class="pd-section">
+      <h4>📊 25-26 赛季数据</h4>
+      <div class="pd-stats">
+        ${statsHtml || '<p class="muted">暂无赛季数据 (X待核实)</p>'}
+      </div>
+    </div>
+
+    ${p.h ? `
+      <div class="pd-section">
+        <h4>🏆 荣誉 / 履历</h4>
+        <p>${escHtml(p.h)}</p>
+      </div>
+    ` : ''}
+  </div>
+  `;
+
+  $id('modalContent').innerHTML = html;
+  $id('detailModal').classList.add('open');
+}
+
+// ============== 赛程 ==============
+let scheduleFilter = 'all';
+function renderSchedule() {
+  let matches = PREDICTIONS;
+  if (scheduleFilter !== 'all') matches = matches.filter(p => p.stage === scheduleFilter);
+  // 排序: group 按日期; KO 按 stage 顺序
+  matches.sort((a, b) => {
+    if (a.stage === 'group' && b.stage === 'group') return (a.date || '').localeCompare(b.date || '');
+    if (a.stage !== 'group' && b.stage !== 'group') {
+      const order = ['R32','R16','QF','SF','FINAL','3RD'];
+      return order.indexOf(a.stage) - order.indexOf(b.stage);
+    }
+    return a.stage === 'group' ? -1 : 1;
+  });
+  
+  $id('scheduleList').innerHTML = matches.map(p => `
+    <div class="match-row" onclick="openMatchDetail('${p.match_id}')">
+      <div class="match-date">${p.date || '-'} <br>${p.round || p.stage || ''}</div>
+      <div class="match-teams">${escHtml(p.home)} <span class="match-vs">vs</span> ${escHtml(p.away)}</div>
+      <div class="match-meta">${p.actual_score || ''} ${p.went_to_pen ? '(点球)' : ''}<br>λ ${fmtNum(p.lambda_home)} vs ${fmtNum(p.lambda_away)}</div>
+    </div>
+  `).join('');
+}
+document.querySelectorAll('#scheduleStageTabs .schedule-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#scheduleStageTabs .schedule-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    scheduleFilter = btn.dataset.stage;
+    renderSchedule();
+  });
+});
+
+// ============== 比赛详情 ==============
+function openMatchDetail(matchId) {
+  const p = PREDICTIONS.find(x => x.match_id === matchId);
+  if (!p) return;
+  
+  let html = `<div class="modal-header">
+    <h2>${escHtml(p.home)} vs ${escHtml(p.away)}</h2>
+    <button class="modal-close" onclick="closeMatchModal()">×</button>
+  </div>
+  
+  <div class="lambda-grid">
+    <div class="lambda-card">
+      <h5>${escHtml(p.home)}</h5>
+      <div class="lam-val">λ = ${fmtNum(p.lambda_home)}</div>
+      <div class="lam-detail">胜率: ${(p.p_home_win * 100).toFixed(1)}%</div>
+    </div>
+    <div class="lambda-card">
+      <h5>平局</h5>
+      <div class="lam-val">${(p.p_draw * 100).toFixed(1)}%</div>
+      <div class="lam-detail">比分: ${escHtml(p.best_score || '-')}</div>
+    </div>
+    <div class="lambda-card">
+      <h5>${escHtml(p.away)}</h5>
+      <div class="lam-val">λ = ${fmtNum(p.lambda_away)}</div>
+      <div class="lam-detail">胜率: ${(p.p_away_win * 100).toFixed(1)}%</div>
+    </div>
+  </div>
+  
+  <div class="detail-section">
+    <h4>📊 比赛结果</h4>
+    <p>比分: <strong>${escHtml(p.actual_score || '-')}</strong> ${p.went_to_pen ? '(点球大战)' : ''} ${p.home_pts !== undefined ? `· 主队 ${p.home_pts} 分 客队 ${p.away_pts} 分` : ''}</p>
+    <p>预期总进球: ${fmtNum(p.expected_total || 0)} · 预期净胜: ${fmtNum(p.expected_diff || 0)}</p>
+  </div>
+  
+  ${p.stadium ? `<div class="detail-section">
+    <h4>🏟️ 场地</h4>
+    <p>${escHtml(p.stadium)} · ${escHtml(p.city || '')}</p>
+    <p class="muted">${escHtml(p.weather_note || '')}</p>
+  </div>` : ''}
+  `;
+  
+  $id('matchModalContent').innerHTML = html;
+  $id('matchModal').classList.add('open');
+}
+function closeMatchModal() { $id('matchModal').classList.remove('open'); }
+
+// ============== 配置 (滑块) ==============
+function renderSliders() {
+  const cats = [
+    { key: 'position_top_n', label: '位置 Top N', icon: '📊', sub: [
+      { f: 'FW', label: '前锋数' }, { f: 'MID', label: '中场数' },
+      { f: 'DEF', label: '后卫数' }, { f: 'GK', label: '门将数' }
+    ]},
+    { key: 'status_weights', label: '俱乐部状态', icon: '⚽', sub: [
+      { f: 'g_per_goal', label: '进球/粒 (分)' },
+      { f: 'a_per_assist', label: '助攻/次 (分)' },
+      { f: 'who_bonus_base', label: 'WHO 基础分' },
+      { f: 'who_bonus_denom', label: 'WHO 分母' }
+    ]},
+    { key: 'nat_intl', label: '国家队进球', icon: '🌍', sub: [
+      { f: 'g_per_goal', label: '进球/粒' }, { f: 'a_per_assist', label: '助攻/次' }
+    ]},
+    { key: 'def_gk_weights', label: '后卫/门将', icon: '🛡️', sub: [
+      { f: 'base_factor', label: '基础系数' },
+      { f: 'honors_per_champ', label: '荣誉/项' },
+      { f: 'starter_jersey_max', label: '首发球衣号阈值' },
+      { f: 'starter_bonus', label: '首发加成' },
+      { f: 'wc_per_ga', label: '世界杯失球惩罚' }
+    ]},
+    { key: 'player_to_total', label: '球员/教练占比', icon: '⚖️', sub: [
+      { f: 'player_share', label: '球员权重' }, { f: 'coach_share', label: '教练权重' }
+    ]},
+    { key: 'smoothing', label: '平滑系数', icon: '🎚️', sub: [
+      { f: 'player_div', label: '球员分母' },
+      { f: 'coach_div', label: '教练分母' },
+      { f: 'rank_div', label: '排名分母' }
+    ]}
+  ];
+  
+  let html = '';
+  cats.forEach(cat => {
+    html += `<h3 style="margin-top:14px;color:var(--accent);font-size:14px">${cat.icon} ${cat.label}</h3>`;
+    cat.sub.forEach(s => {
+      const v = currentWeights[cat.key][s.f];
+      const min = (s.f === 'player_share' || s.f === 'coach_share') ? 0 : 0;
+      const max = (s.f === 'player_share' || s.f === 'coach_share') ? 1 : (cat.key === 'smoothing' ? 15000 : 500);
+      const step = (s.f === 'player_share' || s.f === 'coach_share') ? 0.05 : 1;
+      html += `<div class="slider-group">
+        <label>${s.label} <span class="value" id="slider-${cat.key}-${s.f}">${typeof v === 'number' && step === 0.05 ? v.toFixed(2) : v}</span></label>
+        <input type="range" min="${min}" max="${max}" step="${step}" value="${v}" 
+          oninput="updateSlider('${cat.key}', '${s.f}', this.value)">
+      </div>`;
+    });
+  });
+  $id('slidersContainer').innerHTML = html;
+}
+
+function updateSlider(cat, field, val) {
+  const v = parseFloat(val);
+  currentWeights[cat][field] = v;
+  $id(`slider-${cat}-${field}`).textContent = (cat === 'player_to_total') ? v.toFixed(2) : v;
+}
+
+function renderPresets() {
+  let html = '';
+  Object.entries(PRESETS).forEach(([key, p]) => {
+    html += `<button class="preset-btn" data-preset="${key}" onclick="loadPreset('${key}')">${p.icon} ${p.name}</button>`;
+  });
+  $id('presetList').innerHTML = html;
+}
+
+function loadPreset(key) {
+  currentWeights = JSON.parse(JSON.stringify(PRESETS[key].weights));
+  renderSliders();
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.preset-btn[data-preset="${key}"]`)?.classList.add('active');
+}
+
+function resetConfig() {
+  currentWeights = JSON.parse(JSON.stringify(WEIGHTS));
+  renderSliders();
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+}
+
+function saveAsPreset() {
+  const name = prompt('预设名称:');
+  if (!name) return;
+  const key = 'user_' + Date.now();
+  PRESETS[key] = { name, icon: '⭐', weights: JSON.parse(JSON.stringify(currentWeights)) };
+  renderPresets();
+  // 刷新对比 tab 的下拉
+  populateCompareSelects();
+}
+
+let savedPresets = {};  // 用户保存的预设
+
+// ============== 预测运行 (调后端) ==============
+async function runPrediction() {
+  // 用 currentWeights 调后端，重算 104 场
+  const weightsStr = encodeURIComponent(JSON.stringify(currentWeights));
+  try {
+    const rRes = await fetch(`${API_BASE}/api/ranking?weights=${weightsStr}`);
+    if (!rRes.ok) {
+      const err = await rRes.json().catch(() => ({}));
+      console.error('ranking 调后端失败:', rRes.status, err);
+      alert(`⚠️ 后端拒绝 weights: ${err.detail || rRes.status}\n请检查滑块范围或后端 schema。`);
+      return;
+    }
+    const rData = await rRes.json();
+    RANKING = rData.ranking || [];
+
+    const pRes = await fetch(`${API_BASE}/api/predictions?weights=${weightsStr}`);
+    if (!pRes.ok) {
+      const err = await pRes.json().catch(() => ({}));
+      console.error('predictions 调后端失败:', pRes.status, err);
+      alert(`⚠️ 后端拒绝 weights: ${err.detail || pRes.status}`);
+      return;
+    }
+    const pData = await pRes.json();
+    PREDICTIONS = pData.predictions || [];
+  } catch (e) {
+    console.error('后端连接失败:', e);
+    alert('❌ 无法连接后端 http://localhost:8765，请先启动 backend/server.py');
+    return;
+  }
+
+  if (!RANKING.length || !PREDICTIONS.length) {
+    alert('⚠️ 后端返回空数据，请检查后端日志');
+    return;
+  }
+
+  // 3. 渲染预览
+  const teamStats = RANKING.map(t => ({
+    team: t.team,
+    attack: (t.fw_score / 50000 * 1.0 + t.mid_score / 40000 * 0.7),
+    defense: (t.def_score / 25000 * 0.6 + t.gk_score / 5000 * 0.4),
+    rank: t.rank_r
+  })).sort((a, b) => b.rank - a.rank);
+  const koMatches = PREDICTIONS.filter(p => ['R32','R16','QF','SF','FINAL','3RD'].includes(p.stage));
+  renderPreview(teamStats, koMatches);
+  currentKoMatches = koMatches;
+  renderBracket();
+
+  // 4. 刷新顶部冠军
+  const final = PREDICTIONS.find(p => p.stage === 'FINAL');
+  const third = PREDICTIONS.find(p => p.stage === '3RD');
+  if (final) {
+    $id('statChampion').textContent = final.winner;
+    $id('statRunnerUp').textContent = final.loser;
+  }
+  if (third) $id('statThird').textContent = third.winner;
+
+  // 5. 刷新球队 tab 排名
+  if (typeof renderTeams === 'function') renderTeams();
+}
+
+function computeGroupStandings() {
+  const groups = {};
+  PREDICTIONS.filter(p => p.stage === 'group').forEach(p => {
+    if (!groups[p.group]) groups[p.group] = {};
+    if (!groups[p.group][p.home]) groups[p.group][p.home] = { pts: 0, gf: 0, ga: 0, gp: 0, w: 0, d: 0, l: 0 };
+    if (!groups[p.group][p.away]) groups[p.group][p.away] = { pts: 0, gf: 0, ga: 0, gp: 0, w: 0, d: 0, l: 0 };
+    const [hs, as] = (p.actual_score || '0-0').split('-').map(Number);
+    const h = groups[p.group][p.home], a = groups[p.group][p.away];
+    h.gp++; a.gp++;
+    h.gf += hs; a.gf += as;
+    h.ga += as; a.ga += hs;
+    if (p.home_pts === 3) { h.pts += 3; h.w++; a.l++; }
+    else if (p.home_pts === 1) { h.pts += 1; a.pts += 1; h.d++; a.d++; }
+    else { a.pts += 3; a.w++; h.l++; }
+  });
+  return groups;
+}
+
+function simulateKnockout(standings, teamStats) {
+  // 排序每组, 取 1st/2nd
+  const sorted = {};
+  Object.keys(standings).forEach(g => {
+    sorted[g] = Object.entries(standings[g])
+      .map(([team, s]) => ({ team, ...s, gd: s.gf - s.ga }))
+      .sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
+  });
+  
+  // 32 强配对 (FIFA 2026 跨组规则简化)
+  const groups = Object.keys(sorted).sort();
+  const r32Pairs = [];
+  // 8 场 1st↔2nd 跨组 (i.e. 1A-2B, 1B-2A, 1C-2D, 1D-2C, 1E-2F, 1F-2E, 1G-2H, 1H-2G)
+  for (let i = 0; i < 8; i += 2) {
+    r32Pairs.push([sorted[groups[i]][0].team, sorted[groups[i+1]][1].team]);
+    r32Pairs.push([sorted[groups[i+1]][0].team, sorted[groups[i]][1].team]);
+  }
+  // 4 场 1st↔3rd 跨组: 1I-3A, 1J-3L, 1K-3C, 1L-3E
+  // 4 场 2nd↔3rd 跨组: 2I-3F, 2J-3I, 2K-3J, 2L-3B
+  // (为了简化, 假设都从有晋级队的组)
+  for (let i = 8; i < 12; i++) {
+    r32Pairs.push([sorted[groups[i]][0].team, sorted[groups[i % 12]][2].team]);
+    r32Pairs.push([sorted[groups[i]][1].team, sorted[groups[(i+1) % 12]][2].team]);
+  }
+  // 取前 16 对
+  const finalR32 = r32Pairs.slice(0, 16);
+  
+  // 模拟 R32
+  const statsMap = {};
+  teamStats.forEach(t => statsMap[t.team] = t);
+  function playMatch(home, away) {
+    const h = statsMap[home] || { attack: 0.5, defense: 0.5 };
+    const a = statsMap[away] || { attack: 0.5, defense: 0.5 };
+    const lam_h = 1.3 + (h.attack - a.defense) * 1.5;
+    const lam_a = 1.3 + (a.attack - h.defense) * 1.5;
+    const p_h = lam_h / (lam_h + lam_a) * 0.85;
+    const p_a = lam_a / (lam_h + lam_a) * 0.85;
+    const p_d = 0.15;
+    const r = Math.random();
+    if (r < p_h) return { winner: home, loser: away, score: '2-1', pen: false };
+    if (r > 1 - p_a) return { winner: away, loser: home, score: '1-2', pen: false };
+    // 平局 → 加时 → 点球
+    const et_lam = 0.3 * (1 + (lam_h - lam_a) * 0.3);
+    if (et_lam > 0.3) return { winner: home, loser: away, score: '2-1', pen: true };
+    return { winner: away, loser: home, score: '1-2', pen: true };
+  }
+  
+  const r32 = finalR32.map(([h, a], i) => ({ ...playMatch(h, a), stage: 'R32', match_id: 'JS_R32_' + i, home: h, away: a }));
+  const r16 = [];
+  for (let i = 0; i < r32.length; i += 2) {
+    const m = playMatch(r32[i].winner, r32[i+1].winner);
+    r16.push({ ...m, stage: 'R16', match_id: 'JS_R16_' + (i/2), home: r32[i].winner, away: r32[i+1].winner });
+  }
+  const qf = [];
+  for (let i = 0; i < r16.length; i += 2) {
+    const m = playMatch(r16[i].winner, r16[i+1].winner);
+    qf.push({ ...m, stage: 'QF', match_id: 'JS_QF_' + (i/2), home: r16[i].winner, away: r16[i+1].winner });
+  }
+  const sf = [];
+  for (let i = 0; i < qf.length; i += 2) {
+    const m = playMatch(qf[i].winner, qf[i+1].winner);
+    sf.push({ ...m, stage: 'SF', match_id: 'JS_SF_' + (i/2), home: qf[i].winner, away: qf[i+1].winner });
+  }
+  const finalM = playMatch(sf[0].winner, sf[1].winner);
+  finalM.stage = 'FINAL';
+  finalM.match_id = 'JS_FINAL';
+  finalM.home = sf[0].winner;
+  finalM.away = sf[1].winner;
+  
+  // 季军赛
+  const third = playMatch(sf[0].loser, sf[1].loser);
+  third.stage = '3RD';
+  third.match_id = 'JS_3RD';
+  third.home = sf[0].loser;
+  third.away = sf[1].loser;
+  
+  return [...r32, ...r16, ...qf, ...sf, finalM, third];
+}
+
+function renderPreview(teamStats, koMatches) {
+  const champ = koMatches.find(m => m.stage === 'FINAL')?.winner || '-';
+  let html = `<p style="margin-bottom:12px">🏆 当前权重下预测冠军: <strong style="color:var(--gold);font-size:18px">${escHtml(champ)}</strong></p>`;
+  html += '<div class="section-title" style="font-size:14px;margin:12px 0 8px">Top 16 排名</div>';
+  html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;font-size:12px">';
+  teamStats.slice(0, 16).forEach((t, i) => {
+    html += `<div style="background:var(--bg-3);padding:6px;border-radius:4px"><strong>${i+1}.</strong> ${escHtml(t.team)} <span class="muted">${fmtNum(t.rank)}</span></div>`;
+  });
+  html += '</div>';
+  $id('previewArea').innerHTML = html;
+}
+
+let currentKoMatches = [];
+// KO 赛程 (FIFA 2026 官方 R32→Final 日期+主办城市)
+// 数据来源: zhhans.wikipedia.org/wiki/2026年世界杯足球赛_淘汰赛阶段
+// 索引按 R32 sortById 顺序 (R32_A_vs_B, R32_B_vs_A, R32_C_vs_D...)
+const KO_SCHEDULE_BY_INDEX = [
+  // R32 16 场 (按 sortById 顺序: A_vs_B, B_vs_A, C_vs_D, D_vs_C, ...)
+  { date: '6月29日', city: '瓜达卢佩' },  // 0  A vs B (墨西哥 vs 加拿大) - 实际是 R32 M1 wiki "6月29日 瓜达卢佩"
+  { date: '6月30日', city: '英格尔伍德' },  // 1  B vs A (瑞士 vs 捷克)
+  { date: '6月28日', city: '英格尔伍德' },  // 2  C vs D (巴西 vs 土耳其)
+  { date: '7月2日',  city: '圣克拉拉' },   // 3  D vs C (美国 vs 摩洛哥)
+  { date: '6月30日', city: '休斯敦' },     // 4  E vs F (德国 vs 瑞典)
+  { date: '7月1日',  city: '多伦多' },     // 5  F vs E (荷兰 vs 科特迪瓦)
+  { date: '7月1日',  city: '阿灵顿' },     // 6  G vs H (比利时 vs 乌拉圭)
+  { date: '6月29日', city: '福克斯伯勒' }, // 7  H vs G (西班牙 vs 埃及)
+  { date: '6月28日', city: '英格尔伍德' },  // 8  I vs J
+  { date: '6月29日', city: '福克斯伯勒' },  // 9  J vs I
+  { date: '6月29日', city: '休斯敦' },     // 10 K vs L
+  { date: '6月30日', city: '东拉瑟福德' }, // 11 L vs K
+  { date: '6月30日', city: '墨西哥城' },   // 12 
+  { date: '7月1日',  city: '亚特兰大' },   // 13 
+  { date: '7月2日',  city: '温哥华' },     // 14 
+  { date: '7月3日',  city: '迈阿密加登斯' }// 15
+];
+const KO_SCHEDULE_R16 = [
+  { date: '7月4日', city: '费城' },     // 0 M1
+  { date: '7月4日', city: '休斯敦' },   // 1 M2
+  { date: '7月5日', city: '东拉瑟福德' }, // 2 M3
+  { date: '7月5日', city: '墨西哥城' }, // 3 M4
+  { date: '7月6日', city: '阿灵顿' },   // 4 M5
+  { date: '7月6日', city: '西雅图' },   // 5 M6
+  { date: '7月7日', city: '亚特兰大' }, // 6 M7
+  { date: '7月7日', city: '温哥华' }    // 7 M8
+];
+const KO_SCHEDULE_QF = [
+  { date: '7月9日',  city: '福克斯伯勒' },  // 0 M1
+  { date: '7月10日', city: '英格尔伍德' },  // 1 M2
+  { date: '7月11日', city: '迈阿密加登斯' }, // 2 M3
+  { date: '7月11日', city: '堪萨斯城' }     // 3 M4
+];
+
+// FIFA 官方 100 场编号 (KO R32 73-88, R16 89-96, QF 97-100, SF 101-102, Final 103...)
+const MATCH_NUM_BY_STAGE = { R32: 73, R16: 89, QF: 97, SF: 101, FINAL: 103, '3RD': 104 };
+
+function renderBracket() {
+  if (!currentKoMatches.length) {
+    currentKoMatches = PREDICTIONS.filter(p => ['R32','R16','QF','SF','FINAL','3RD'].includes(p.stage));
+  }
+  
+  // ============ 小组赛: 上半 A-H, 下半 I-L ============
+  renderUpperGroups();
+  renderLowerGroups();
+  
+  // ============ KO bracket: wiki 5 列顺读 (R32 单列 16 场) ============
+  // 5 列: R32(16场单列) → R16(8场) → QF(4场) → SF(2场) → FINAL(1场) + 3RD(1场, 紧贴决赛下方)
+  // 决赛在第 5 列上方, 季军赛在第 5 列下方 (不是中央)
+  
+  // 响应式: 根据视口宽度动态调整卡片尺寸
+  // R32 卡片: 3 段 (日期+城市 / 队1 / 队2), 高度 66-78px (桌面)
+  // R16/QF/SF/决赛/季军赛卡片: 2 段 (队1/队2), 高度 50-56px (桌面, 紧凑)
+  // R32 之间 8-10px gap, R16/QF/SF 之间 18-24px gap (视觉对齐到 R32 折半中点)
+  const vw = window.innerWidth;
+  let CARD_W, COL_GAP, FINAL_W, FINAL_H;
+  let R32_SLOT_H, R32_GAP, R32_CARD_H;
+  let R16_CARD_H, R16_GAP;
+  if (vw <= 480) {
+    CARD_W = 130; COL_GAP = 10; FINAL_W = 160; FINAL_H = 110;
+    R32_SLOT_H = 58; R32_GAP = 6; R32_CARD_H = 52;
+    R16_CARD_H = 46; R16_GAP = 14;
+  } else if (vw <= 768) {
+    CARD_W = 150; COL_GAP = 16; FINAL_W = 190; FINAL_H = 122;
+    R32_SLOT_H = 68; R32_GAP = 8; R32_CARD_H = 60;
+    R16_CARD_H = 52; R16_GAP = 18;
+  } else {
+    CARD_W = 170; COL_GAP = 20; FINAL_W = 230; FINAL_H = 130;
+    R32_SLOT_H = 78; R32_GAP = 10; R32_CARD_H = 68;
+    R16_CARD_H = 58; R16_GAP = 22;
+  }
+  const HEADER_H = 30;
+  const STAGE_PAD = 20;
+  
+  // === 5 列 x 坐标: R32 → R16 → QF → SF → Final ===
+  const xR32 = 20;
+  const xR16 = xR32 + CARD_W + COL_GAP;
+  const xQF  = xR16 + CARD_W + COL_GAP;
+  const xSF  = xQF  + CARD_W + COL_GAP;
+  const xF   = xSF  + CARD_W + COL_GAP;
+  
+  const totalWidth = xF + FINAL_W + 20;
+  
+  // === y 坐标: R32 单列 16 场, 卡片之间有 gap ===
+  const R32_BASE_TOP = HEADER_H + STAGE_PAD;
+  const R32_END = R32_BASE_TOP + 16 * R32_SLOT_H;  // 16 场 R32 总高 (含 gap)
+  
+  // R32 每场中心 y
+  const r32Y = [];
+  for (let i = 0; i < 16; i++) r32Y.push(R32_BASE_TOP + i * R32_SLOT_H + R32_CARD_H / 2);
+  
+  // R16: 8 场, 每 2 场 R32 中点
+  const r16Y = [];
+  for (let i = 0; i < 8; i++) r16Y.push((r32Y[i*2] + r32Y[i*2+1]) / 2);
+  
+  // QF: 4 场
+  const qfY = [];
+  for (let i = 0; i < 4; i++) qfY.push((r16Y[i*2] + r16Y[i*2+1]) / 2);
+  
+  // SF: 2 场
+  const sfY = [];
+  for (let i = 0; i < 2; i++) sfY.push((qfY[i*2] + qfY[i*2+1]) / 2);
+  
+    // 决赛 y: SF 两场中点
+  const finalY = (sfY[0] + sfY[1]) / 2;
+  // 季军赛 y: 紧贴决赛下方 (决赛卡高 R16_CARD_H, 季军赛 R16_CARD_H, 间距 30)
+  const thirdY = finalY + R16_CARD_H / 2 + R16_CARD_H / 2 + 30;
+  
+  // KO 容器高度: 三者取最大
+  // - R32 末场底: R32_END
+  // - 决赛卡底: finalY + R16_CARD_H/2
+  // - 季军赛卡底: thirdY + R16_CARD_H/2
+  const finalBottom = finalY + R16_CARD_H / 2;
+  const thirdBottom = thirdY + R16_CARD_H / 2;
+  const totalHeight = Math.max(R32_END, finalBottom, thirdBottom) + 10;
+  
+  // === R32 顺序映射 (按字母序) ===
+  const sortById = (a, b) => a.match_id.localeCompare(b.match_id);
+  
+  const allR32 = currentKoMatches.filter(m => m.stage === 'R32').sort(sortById);
+  const allR16 = currentKoMatches.filter(m => m.stage === 'R16').sort(sortById);
+  const allQF  = currentKoMatches.filter(m => m.stage === 'QF').sort(sortById);
+  const allSF  = currentKoMatches.filter(m => m.stage === 'SF').sort(sortById);
+  const final  = currentKoMatches.find(m => m.stage === 'FINAL');
+  const third  = currentKoMatches.find(m => m.stage === '3RD');
+  
+  const svgDefs = `
+    <defs>
+      <linearGradient id="winGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#3fb950" stop-opacity="0.5"/>
+        <stop offset="50%" stop-color="#3fb950" stop-opacity="1"/>
+        <stop offset="100%" stop-color="#3fb950" stop-opacity="0.5"/>
+      </linearGradient>
+    </defs>
+  `;
+  
+  const flowEl = $id('bracketFlow');
+  flowEl.style.minWidth = totalWidth + 'px';
+  
+  let html = `<div style="position:relative; width:${totalWidth}px; min-height:${totalHeight}px; padding:10px;">`;
+  html += `<svg class="bracket-connector" style="left:0;top:0;width:${totalWidth}px;height:${totalHeight}px" viewBox="0 0 ${totalWidth} ${totalHeight}">${svgDefs}`;
+  
+  // === 卡片渲染函数 (wiki 风格: 日期+城市顶 / 两队+组别中, 不显示胜方行) ===
+  function renderMatchCard(m, x, y, isFinal = false, isThird = false, slotH = SLOT_H, schedInfo = null) {
+    if (!m) return '';
+    const h = teamTag(m.home);
+    const a = teamTag(m.away);
+    const hs = m.actual_score ? m.actual_score.split('-')[0] : '?';
+    const as_ = m.actual_score ? m.actual_score.split('-')[1] : '?';
+    const penTag = m.went_to_pen ? '<span class="pen">点</span>' : '';
+    const hasWin = !!m.winner;
+    const w = isFinal ? FINAL_W : CARD_W;
+    const h_ = isFinal ? R16_CARD_H : slotH - 4;
+    
+    // 顶部: 日期 + 主办城市 (仅 R32 卡片显示)
+    const dateCityHtml = schedInfo
+      ? `<div class="match-date-city">${escHtml(schedInfo.date)} <span class="sep">—</span> ${escHtml(schedInfo.city)}</div>`
+      : '';
+    
+    const classes = ['bracket-match'];
+    if (isFinal) classes.push('final');
+    if (isThird) classes.push('third');
+    if (hasWin) classes.push('has-winner');
+    if (schedInfo) classes.push('has-sched');
+    
+    return `<div class="${classes.join(' ')}" 
+      onclick="openMatchDetail('${m.match_id}')" 
+      title="${escHtml(m.home)} vs ${escHtml(m.away)}"
+      style="position:absolute; left:${x}px; top:${y}px; width:${w}px; height:${h_}px;">
+      ${dateCityHtml}
+      <div class="team">
+        <span class="${m.winner === m.home ? 'winner' : 'loser'}">
+          <span class="flag">${h.flag}</span>${escHtml(m.home)}<span class="team-rank">${h.rk}</span>${m.winner === m.home ? penTag : ''}
+        </span>
+        <span class="score">${hs}</span>
+      </div>
+      <div class="team">
+        <span class="${m.winner === m.away ? 'winner' : 'loser'}">
+          <span class="flag">${a.flag}</span>${escHtml(m.away)}<span class="team-rank">${a.rk}</span>${m.winner === m.away ? penTag : ''}
+        </span>
+        <span class="score">${as_}</span>
+      </div>
+    </div>`;
+  }
+  
+  function addPath(x1, y1, x2, y2, isWin) {
+    const xMid = (x1 + x2) / 2;
+    if (isWin) {
+      return `<path d="M${x1},${y1} L${xMid},${y1} L${xMid},${y2} L${x2},${y2}" 
+        stroke="url(#winGradient)" stroke-width="2.5" fill="none" 
+        class="winner-path" stroke-linecap="round" stroke-linejoin="round"/>`;
+    } else {
+      return `<path d="M${x1},${y1} L${xMid},${y1} L${xMid},${y2} L${x2},${y2}" 
+        stroke="#30363d" stroke-width="1" fill="none" opacity="0.5" 
+        stroke-dasharray="3,3" stroke-linecap="round"/>`;
+    }
+  }
+  
+  // === 渲染所有卡片 (用数组索引匹配 sched) ===
+  allR32.forEach((m, idx) => {
+    const sched = KO_SCHEDULE_BY_INDEX[idx] || { date: 'X待核实', city: 'X待核实' };
+    html += renderMatchCard(m, xR32, r32Y[idx] - R32_CARD_H / 2, false, false, R32_CARD_H, sched);
+  });
+  allR16.forEach((m, idx) => {
+    const sched = KO_SCHEDULE_R16[idx] || { date: 'X待核实', city: 'X待核实' };
+    html += renderMatchCard(m, xR16, r16Y[idx] - R16_CARD_H / 2, false, false, R16_CARD_H, null);
+  });
+  allQF.forEach((m, idx) => {
+    const sched = KO_SCHEDULE_QF[idx] || { date: 'X待核实', city: 'X待核实' };
+    html += renderMatchCard(m, xQF, qfY[idx] - R16_CARD_H / 2, false, false, R16_CARD_H, null);
+  });
+  allSF.forEach((m, idx) => {
+    const isSF1 = idx === 0;
+    const sched = isSF1 ? { date: '7月14日', city: '阿灵顿' } : { date: '7月15日', city: '亚特兰大' };
+    html += renderMatchCard(m, xSF, sfY[idx] - R16_CARD_H / 2, false, false, R16_CARD_H, null);
+  });
+  if (final) {
+    html += renderMatchCard(final, xF, finalY - R16_CARD_H / 2, true, false, R16_CARD_H, null);
+    html += `<div style="position:absolute; left:${xF}px; top:${finalY - R16_CARD_H / 2 - 32}px; width:${FINAL_W}px; text-align:center; color:var(--gold); font-size:14px; font-weight:bold; letter-spacing:3px; text-shadow: 0 0 8px rgba(255,215,0,0.5);">🏆 F I N A L</div>`;
+  }
+  if (third) {
+    html += renderMatchCard(third, xF, thirdY, false, true, R16_CARD_H, null);
+    html += `<div style="position:absolute; left:${xF}px; top:${thirdY + R16_CARD_H + 8}px; width:${FINAL_W}px; text-align:center; color:var(--bronze); font-size:12px; font-weight:bold; letter-spacing:3px; text-shadow: 0 0 8px rgba(205,127,50,0.4);">🥉 B R O N Z E</div>`;
+  }
+  
+  // === 折线连接 ===
+  for (let i = 0; i < 16; i += 2) {
+    if (i+1 >= allR32.length) break;
+    html += addPath(xR32 + CARD_W, r32Y[i], xR16, r16Y[i/2], !!allR32[i].winner);
+    html += addPath(xR32 + CARD_W, r32Y[i+1], xR16, r16Y[i/2], !!allR32[i+1].winner);
+  }
+  for (let i = 0; i < 8; i += 2) {
+    if (i+1 >= allR16.length) break;
+    html += addPath(xR16 + CARD_W, r16Y[i], xQF, qfY[i/2], !!allR16[i].winner);
+    html += addPath(xR16 + CARD_W, r16Y[i+1], xQF, qfY[i/2], !!allR16[i+1].winner);
+  }
+  for (let i = 0; i < 4; i += 2) {
+    if (i+1 >= allQF.length) break;
+    html += addPath(xQF + CARD_W, qfY[i], xSF, sfY[i/2], !!allQF[i].winner);
+    html += addPath(xQF + CARD_W, qfY[i+1], xSF, sfY[i/2], !!allQF[i+1].winner);
+  }
+  if (allSF[0]) html += addPath(xSF + CARD_W, sfY[0], xF, finalY, true);
+  if (allSF[1]) html += addPath(xSF + CARD_W, sfY[1], xF, finalY, true);
+  
+  // === 列标题 (5 列 wiki 风格) ===
+  const stageLabels = [
+    { text: '三十二强', x: xR32, w: CARD_W },
+    { text: '十六强',   x: xR16, w: CARD_W },
+    { text: '四分之一决赛', x: xQF, w: CARD_W },
+    { text: '半决赛',   x: xSF, w: CARD_W },
+    { text: '决赛 / 三、四名决赛', x: xF, w: FINAL_W }
+  ];
+  stageLabels.forEach(({ text, x: cx, w: cw }) => {
+    html += `<div class="stage-label" style="position:absolute; left:${cx}px; top:${STAGE_PAD}px; width:${cw}px; text-align:center; color:var(--accent); font-weight:bold; font-size:13px;">${text}</div>`;
+  });
+  
+  html += '</svg>';
+  html += '</div>';
+  $id('bracketFlow').innerHTML = html;
+  $id('koMatchCount').textContent = `· ${currentKoMatches.length} 场`;
+}
+
+// 小组赛: 上半 A-H, 下半 I-L (FIFA 2026 官方分法)
+function buildGroupsHTML(groupsToShow) {
+  const groupMatches = PREDICTIONS.filter(p => p.stage === 'group' && groupsToShow.includes(p.group));
+  const groups = {};
+  groupMatches.forEach(m => {
+    if (!groups[m.group]) groups[m.group] = [];
+    groups[m.group].push(m);
+  });
+  
+  // 算积分榜
+  const standings = {};
+  Object.keys(groups).forEach(g => {
+    standings[g] = {};
+    groups[g].forEach(m => {
+      if (!standings[g][m.home]) standings[g][m.home] = { p:0, w:0, d:0, l:0, gf:0, ga:0 };
+      if (!standings[g][m.away]) standings[g][m.away] = { p:0, w:0, d:0, l:0, gf:0, ga:0 };
+      const [hs, as] = (m.actual_score || '0-0').split('-').map(Number);
+      const h = standings[g][m.home], a = standings[g][m.away];
+      h.gf += hs; h.ga += as; a.gf += as; a.ga += hs;
+      if (m.home_pts === 3) { h.p += 3; h.w++; a.l++; }
+      else if (m.home_pts === 1) { h.p += 1; h.d++; a.d++; }
+      else if (m.home_pts === 0) { a.p += 3; a.w++; h.l++; }
+    });
+  });
+  
+  let html = '';
+  Object.keys(groups).sort().forEach(g => {
+    const sorted = Object.entries(standings[g])
+      .map(([team, s]) => ({ team, ...s, gd: s.gf - s.ga }))
+      .sort((a, b) => b.p - a.p || b.gd - a.gd || b.gf - a.gf);
+    
+    html += `<div class="group-block">
+      <div class="group-block-header">第 ${g} 组</div>
+      <table class="standings-mini">
+        <thead><tr><th>#</th><th>球队</th><th>赛</th><th>胜</th><th>平</th><th>负</th><th>净</th><th>分</th></tr></thead>
+        <tbody>
+          ${sorted.map((t, i) => `<tr class="pos-${i+1}">
+            <td class="rank-cell">${i+1}</td>
+            <td>${FLAGS[t.team] || ''} ${escHtml(t.team)}</td>
+            <td>${t.w + t.d + t.l}</td>
+            <td>${t.w}</td>
+            <td>${t.d}</td>
+            <td>${t.l}</td>
+            <td>${t.gd > 0 ? '+' : ''}${t.gd}</td>
+            <td><strong>${t.p}</strong></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      <div class="matches-mini">
+        ${groups[g].map(m => `
+          <div class="match-mini" onclick="openMatchDetail('${m.match_id}')">
+            <span>
+              <span class="${m.winner === m.home || (m.home_pts === 1 && m.winner === m.home) ? 'winner' : 'loser'}">${FLAGS[m.home] || ''} ${escHtml(m.home)}</span>
+              <span class="muted">vs</span>
+              <span class="${m.winner === m.away ? 'winner' : 'loser'}">${FLAGS[m.away] || ''} ${escHtml(m.away)}</span>
+            </span>
+            <span class="score">${m.actual_score || '-'}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  });
+  
+  return { html, count: groupMatches.length };
+}
+
+function renderUpperGroups() {
+  const { html, count } = buildGroupsHTML(['A','B','C','D','E','F']);
+  $id('upperGroupContainer').innerHTML = html;
+  $id('upperGroupCount').textContent = `· ${count} 场 (6 组 × 6 场)`;
+}
+
+function renderLowerGroups() {
+  const { html, count } = buildGroupsHTML(['G','H','I','J','K','L']);
+  $id('lowerGroupContainer').innerHTML = html;
+  $id('lowerGroupCount').textContent = `· ${count} 场 (6 组 × 6 场)`;
+}
+
+// ============== 对比 ==============
+function populateCompareSelects() {
+  const sel = (id) => `<option value="${id}">${PRESETS[id].icon} ${PRESETS[id].name}</option>`;
+  const opts = Object.keys(PRESETS).map(sel).join('');
+  $id('cmpLeft').innerHTML = opts;
+  $id('cmpRight').innerHTML = opts;
+  $id('cmpLeft').value = 'default';
+  $id('cmpRight').value = 'high_value';
+}
+
+function runCompare() {
+  // 简化: 对比两套预设的 32 强排名
+  const a = simulateForPreset('cmpLeft');
+  const b = simulateForPreset('cmpRight');
+  
+  const champA = a.find(m => m.stage === 'FINAL')?.winner || '-';
+  const champB = b.find(m => m.stage === 'FINAL')?.winner || '-';
+  
+  $id('cmpLeftOut').innerHTML = `<h3>${PRESETS[$id('cmpLeft').value].name}</h3>
+    <p>🏆 冠军: <strong style="color:var(--gold)">${escHtml(champA)}</strong></p>
+    <p>Top 8:</p>
+    <ol style="padding-left:20px;font-size:12px">${RANKING.slice(0,8).map(t => `<li>${escHtml(t.team)} (${fmtNum(t.rank_r)})</li>`).join('')}</ol>`;
+  $id('cmpRightOut').innerHTML = `<h3>${PRESETS[$id('cmpRight').value].name}</h3>
+    <p>🏆 冠军: <strong style="color:var(--gold)">${escHtml(champB)}</strong></p>
+    <p>Top 8:</p>
+    <ol style="padding-left:20px;font-size:12px">${RANKING.slice(0,8).map(t => `<li>${escHtml(t.team)} (${fmtNum(t.rank_r)})</li>`).join('')}</ol>`;
+}
+
+function simulateForPreset(selectId) {
+  // 简化: 复用默认的 currentWeights 重跑
+  const oldWeights = JSON.parse(JSON.stringify(currentWeights));
+  currentWeights = JSON.parse(JSON.stringify(PRESETS[$id(selectId).value].weights));
+  const standings = computeGroupStandings();
+  const teamStats = RANKING.map(t => ({
+    team: t.team,
+    attack: (t.fw_score / 50000 * 1.0 + t.mid_score / 40000 * 0.7),
+    defense: (t.def_score / 25000 * 0.6 + t.gk_score / 5000 * 0.4),
+    rank: t.rank_r
+  })).sort((a, b) => b.rank - a.rank);
+  const result = simulateKnockout(standings, teamStats);
+  currentWeights = oldWeights;
+  return result;
+}
+
+$id('cmpLeft').addEventListener('change', runCompare);
+$id('cmpRight').addEventListener('change', runCompare);
+
+// ============== 搜索 ==============
+function doSearch(q) {
+  q = q.trim();
+  if (!q) { $id('searchResults').innerHTML = '<p class="muted">输入关键词开始搜索...</p>'; return; }
+  const lower = q.toLowerCase();
+  const results = [];
+  
+  // 球队
+  RANKING.forEach(t => {
+    if (t.team.toLowerCase().includes(lower)) {
+      results.push({ type: '球队', name: t.team, meta: `FIFA ${t.fifa_rank} · 排名分 ${fmtNum(t.rank_r)}`, action: `openTeamDetail('${t.team}')` });
+    }
+  });
+  
+  // 球员
+  Object.entries(PLAYERS).forEach(([team, players]) => {
+    players.forEach(p => {
+      if (p.n.toLowerCase().includes(lower) || (p.c && p.c.toLowerCase().includes(lower))) {
+        results.push({ type: '球员', name: p.n, meta: `${team} · ${p.p} · ${p.c}`, action: `openTeamDetail('${team}')` });
+      }
+    });
+  });
+  
+  // 比赛
+  PREDICTIONS.forEach(p => {
+    if ((p.stadium && p.stadium.toLowerCase().includes(lower)) || (p.city && p.city.toLowerCase().includes(lower))) {
+      results.push({ type: '比赛', name: `${p.home} vs ${p.away}`, meta: `${p.stadium} · ${p.city}`, action: `openMatchDetail('${p.match_id}')` });
+    }
+  });
+  
+  $id('searchResults').innerHTML = results.slice(0, 30).map(r => `
+    <div class="search-result" onclick="${r.action}">
+      <span class="sr-type">${r.type}</span>
+      <span class="sr-name">${escHtml(r.name)}</span>
+      <span class="muted">${escHtml(r.meta)}</span>
+    </div>
+  `).join('') || '<p class="muted">无结果</p>';
+}
+
+// ============== 导出 ==============
+function exportConfig() {
+  const data = {
+    weights: currentWeights,
+    timestamp: new Date().toISOString(),
+    note: 'Mavis PDP v2.1 配置快照'
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'mavis_pdp_config.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ============== 初始化 ==============
+function initAll() {
+  renderTeams();
+  renderSchedule();
+  renderSliders();
+  renderPresets();
+  populateCompareSelects();
+  renderBracket();
+  runCompare();
+  // 顶部冠军初值
+  $id('statChampion').textContent = PREDICTIONS.find(p => p.stage === 'FINAL')?.winner || '-';
+  $id('statRunnerUp').textContent = PREDICTIONS.find(p => p.stage === 'FINAL')?.loser || '-';
+  $id('statThird').textContent = PREDICTIONS.find(p => p.stage === '3RD')?.winner || '-';
+}
+
+// 启动：从后端加载数据
+loadFromBackend().catch(err => {
+  console.error('Failed to load from backend:', err);
+  $id('statChampion').textContent = '❌';
+  alert('无法连接后端 http://localhost:8765，请先启动 backend/server.py');
+});
+</script>
+</body>
+</html>
+"""
+
+# v2.1: 不再嵌入 JSON（fetch 后端）
+# HTML = HTML.replace("__WEIGHTS__", weights_json)  # 改为 fetch
+# HTML = HTML.replace("__RANKING__", ranking_json)
+# HTML = HTML.replace("__PREDICTIONS__", predictions_json)
+# HTML = HTML.replace("__PLAYERS__", players_json)
+
+with open(OUT_FILE, "w", encoding="utf-8") as f:
+    f.write(HTML)
+
+print(f"\n✅ 写入: {OUT_FILE}")
+print(f"   文件大小: {os.path.getsize(OUT_FILE)/1024:.1f}KB")
+print(f"   ⚠️ v2.1: HTML 现在通过 fetch 调后端 http://localhost:8765")
+print(f"   ⚠️ 启动前请先: cd backend && python3 server.py")

@@ -1,0 +1,164 @@
+"""
+Mavis PDP weights schema (v2.1)
+- 6 类 16 系数：用户通过前端滑块调整
+- 数值范围 + 默认值集中在这里，方便后端校验
+"""
+from copy import deepcopy
+
+# 默认权重（来自 5_算法/weights_v21.json + 一些实操校正）
+DEFAULT = {
+    "position_top_n": {
+        "FW": 3,        # 前锋取 Top N
+        "MID": 3,       # 中场取 Top N
+        "DEF": 4,       # 后卫取 Top N
+        "GK": 1,        # 门将取 Top N
+    },
+    "status_weights": {
+        "g_per_goal": 40,        # 本赛季进 1 球的贡献 = 1/40
+        "a_per_assist": 60,      # 本赛季 1 助攻 = 1/60
+        "who_bonus_base": 6.5,   # WhoScored 评分基准
+        "who_bonus_denom": 4,    # WhoScored 加权分母
+    },
+    "nat_intl": {
+        "g_per_goal": 200,       # 国家队 1 球 = 1/200
+        "a_per_assist": 300,     # 国家队 1 助 = 1/300
+    },
+    "def_gk_weights": {
+        "base_factor": 0.95,     # 后卫/门身价基础系数
+        "honors_per_champ": 15,  # 荣誉每个冠军加权
+        "starter_jersey_max": 14,# 主力号码上限（≤14 = 主力）
+        "starter_bonus": 50,     # 主力号加权
+        "wc_per_ga": 100,        # 世界杯/欧战 1 场/球 = 1/100
+    },
+    "player_to_total": {
+        "player_share": 0.70,    # 球员占比
+        "coach_share": 0.30,     # 教练占比
+    },
+    "smoothing": {
+        "player_div": 5000,      # 球员分平滑分母
+        "coach_div": 100,        # 教练分平滑分母
+        "rank_div": 1000,        # 总分平滑分母
+    },
+}
+
+# 范围约束（防止用户拖极端值）
+RANGES = {
+    "position_top_n": {
+        "FW": (1, 6), "MID": (1, 6), "DEF": (1, 8), "GK": (1, 3),
+    },
+    "status_weights": {
+        "g_per_goal": (10, 200),
+        "a_per_assist": (10, 200),
+        "who_bonus_base": (3.0, 10.0),
+        "who_bonus_denom": (1, 20),
+    },
+    "nat_intl": {
+        "g_per_goal": (50, 1000),
+        "a_per_assist": (50, 1000),
+    },
+    "def_gk_weights": {
+        "base_factor": (0.5, 1.5),
+        "honors_per_champ": (0, 100),
+        "starter_jersey_max": (1, 30),
+        "starter_bonus": (0, 200),
+        "wc_per_ga": (10, 1000),
+    },
+    "player_to_total": {
+        "player_share": (0.0, 1.0),
+        "coach_share": (0.0, 1.0),
+    },
+    "smoothing": {
+        "player_div": (500, 50000),
+        "coach_div": (10, 1000),
+        "rank_div": (100, 10000),
+    },
+}
+
+# 预设（前端 6 个 preset 按钮）
+PRESETS = {
+    "default": {
+        "label": "默认（均衡）",
+        "weights": deepcopy(DEFAULT),
+    },
+    "high_value": {
+        "label": "身价优先 💰",
+        "weights": {
+            **deepcopy(DEFAULT),
+            "status_weights": {
+                "g_per_goal": 80, "a_per_assist": 100,  # 状态权重下调
+                "who_bonus_base": 6.5, "who_bonus_denom": 8,
+            },
+        },
+    },
+    "high_form": {
+        "label": "状态优先 🔥",
+        "weights": {
+            **deepcopy(DEFAULT),
+            "status_weights": {
+                "g_per_goal": 20, "a_per_assist": 30,  # 进球/助攻权重大
+                "who_bonus_base": 6.0, "who_bonus_denom": 2,
+            },
+            "def_gk_weights": {**DEFAULT["def_gk_weights"], "base_factor": 1.10},  # 防守加权
+        },
+    },
+    "low_value": {
+        "label": "低身价 📉",
+        "weights": {
+            **deepcopy(DEFAULT),
+            "def_gk_weights": {**DEFAULT["def_gk_weights"], "base_factor": 0.50},  # 身价影响减半
+            "status_weights": {**DEFAULT["status_weights"], "g_per_goal": 25},  # 状态/进球权重 ↑
+        },
+    },
+    "coach_heavy": {
+        "label": "教练为王 👔",
+        "weights": {
+            **deepcopy(DEFAULT),
+            "player_to_total": {"player_share": 0.30, "coach_share": 0.70},
+        },
+    },
+    "balance_343": {
+        "label": "3-4-3 阵型 ⚔️",
+        "weights": {
+            **deepcopy(DEFAULT),
+            "position_top_n": {"FW": 3, "MID": 4, "DEF": 3, "GK": 1},
+        },
+    },
+}
+
+
+def validate(weights: dict) -> tuple[bool, str]:
+    """校验 weights 在合理范围内。返回 (ok, msg)"""
+    if not isinstance(weights, dict):
+        return False, "weights must be a dict"
+    for group_key, group in RANGES.items():
+        if group_key not in weights:
+            return False, f"missing group: {group_key}"
+        if not isinstance(weights[group_key], dict):
+            return False, f"{group_key} must be a dict"
+        for k, (lo, hi) in group.items():
+            if k not in weights[group_key]:
+                return False, f"missing {group_key}.{k}"
+            v = weights[group_key][k]
+            if not isinstance(v, (int, float)):
+                return False, f"{group_key}.{k} must be number, got {type(v).__name__}"
+            if not (lo <= v <= hi):
+                return False, f"{group_key}.{k}={v} out of range [{lo}, {hi}]"
+    # 球员 + 教练占比应 = 1
+    ps = weights["player_to_total"]["player_share"]
+    cs = weights["player_to_total"]["coach_share"]
+    if abs(ps + cs - 1.0) > 0.001:
+        return False, f"player_share + coach_share must = 1, got {ps + cs}"
+    return True, "ok"
+
+
+def merge_with_default(weights: dict) -> dict:
+    """补全缺失字段为默认值"""
+    result = deepcopy(DEFAULT)
+    if not isinstance(weights, dict):
+        return result
+    for gk, group in result.items():
+        if gk in weights and isinstance(weights[gk], dict):
+            for k in group:
+                if k in weights[gk]:
+                    result[gk][k] = weights[gk][k]
+    return result

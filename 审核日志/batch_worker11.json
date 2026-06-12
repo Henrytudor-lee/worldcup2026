@@ -1,0 +1,911 @@
+{
+  "batch": "batch11",
+  "countries": ["苏格兰", "英格兰", "荷兰", "葡萄牙"],
+  "total_players": 102,
+  "verified_count": 0,
+  "x_pending_count": 102,
+  "players": {
+
+    "苏格兰_C组": {
+      "克雷格·戈登": {
+        "位置": "门将", "俱乐部": "哈茨", "联赛": "苏超",
+        "身价_万欧": { "csv": 5, "verified": 5, "source": "Transfermarkt参考，身价极低约5万欧", "status": "ok" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "备注": "门将，1982年生，2024年肩伤，2026年4月复出"
+      },
+      "安格斯·冈恩": {
+        "位置": "门将", "俱乐部": "诺丁汉森林", "联赛": "英超",
+        "身价_万欧": { "csv": 150, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "备注": "门将，2025/26赛季效力诺丁汉森林，随队获欧协联冠军2025/26"
+      },
+      "利亚姆·凯利": {
+        "位置": "门将", "俱乐部": "流浪者", "联赛": "苏超",
+        "身价_万欧": { "csv": 80, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "备注": "门将"
+      },
+      "安迪·罗伯逊": {
+        "位置": "后卫", "俱乐部": "利物浦", "联赛": "英超",
+        "身价_万欧": { "csv": 1000, "verified": 1200, "source": "SoFIFA参考，略高于CSV", "status": "ok" },
+        "国家队进球": { "csv": 4, "verified": 4, "status": "ok" },
+        "国家队助攻": { "csv": 12, "verified": 12, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "备注": "OneFootball显示2024-25赛季0球1助；2026年4月确认赛季末自由离队利物浦，9年7冠；今夏或转热刺"
+      },
+      "基兰·蒂尔尼": {
+        "位置": "后卫", "俱乐部": "凯尔特人", "联赛": "苏超",
+        "身价_万欧": { "csv": 800, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 1, "verified": 1, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "已从阿森纳自由身回归凯尔特人，ESPN确认；身价CSV(800万)或反映回归前的价值"
+      },
+      "格兰特·汉利": {
+        "位置": "后卫", "俱乐部": "希伯尼安", "联赛": "苏超",
+        "身价_万欧": { "csv": 35, "verified": 60, "source": "新球体育/Transfermarkt参考", "status": "mismatch" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "备注": "新球体育显示身价60万欧，CSV(35万)偏低；2024-25赛季出场有限"
+      },
+      "杰克·亨德利": {
+        "位置": "后卫", "俱乐部": "达曼协作", "联赛": "沙特超",
+        "身价_万欧": { "csv": 250, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "备注": "已离开凯尔特人，加盟沙特达曼协作"
+      },
+      "亚伦·希基": {
+        "位置": "后卫", "俱乐部": "布伦特福德", "联赛": "英超",
+        "身价_万欧": { "csv": 1600, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 1, "verified": 1, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "备注": "2024-25赛季因伤出场有限"
+      },
+      "多米尼克·海厄姆": {
+        "位置": "后卫", "俱乐部": "雷克瑟姆", "联赛": "英冠",
+        "身价_万欧": { "csv": 250, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "雷克瑟姆2024-25赛季英甲冠军升级英冠；球队升级后表现待核实"
+      },
+      "斯科特·麦肯纳": {
+        "位置": "后卫", "俱乐部": "萨格勒布迪纳摩", "联赛": "克甲",
+        "身价_万欧": { "csv": 400, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "备注": "2024-25赛季萨格勒布迪纳摩克甲数据待查"
+      },
+      "内森·帕特森": {
+        "位置": "后卫", "俱乐部": "埃弗顿", "联赛": "英超",
+        "身价_万欧": { "csv": 600, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "备注": "2024-25赛季埃弗顿数据待查"
+      },
+      "安东尼·拉尔斯顿": {
+        "位置": "后卫", "俱乐部": "凯尔特人", "联赛": "苏超",
+        "身价_万欧": { "csv": 150, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "凯尔特人近期苏超冠军成员"
+      },
+      "约翰·苏塔尔": {
+        "位置": "后卫", "俱乐部": "流浪者", "联赛": "苏超",
+        "身价_万欧": { "csv": 300, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "备注": "流浪者球员"
+      },
+      "斯科特·麦克托米奈": {
+        "位置": "中场", "俱乐部": "那不勒斯", "联赛": "意甲",
+        "身价_万欧": { "csv": 4500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 14, "verified": "X待核实(14球待确认)", "status": "pending" },
+        "国家队助攻": { "csv": 5, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_进球": { "csv": 12, "verified": "X待核实(多源显示13球)", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 3, "verified": "X待核实(多源显示4助)", "status": "pending" },
+        "备注": "2024年8月30日从曼联转会那不勒斯；2024-25赛季意甲冠军+意甲MVP；FIFA确认12个意甲进球；但总出场26次，进球应在12-13球之间；国家队进球14球待官方确认"
+      },
+      "约翰·麦金": {
+        "位置": "中场", "俱乐部": "阿斯顿维拉", "联赛": "英超",
+        "身价_万欧": { "csv": 1500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 20, "verified": 20, "status": "ok" },
+        "国家队助攻": { "csv": 8, "verified": 8, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 4, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "备注": "2024欧洲杯1/4决赛对瑞士传射建功；2026年3月13日伤愈复出；2024-25 UCL表现突出"
+      },
+      "比利·吉尔摩": {
+        "位置": "中场", "俱乐部": "那不勒斯", "联赛": "意甲",
+        "身价_万欧": { "csv": 2000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "国家队助攻": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "2024年8月从布莱顿转会那不勒斯，身价2000万欧符合"
+      },
+      "刘易斯·弗格森": {
+        "位置": "中场", "俱乐部": "博洛尼亚", "联赛": "意甲",
+        "身价_万欧": { "csv": 1800, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 1, "verified": "X待核实(ACL伤缺后复出)", "status": "pending" },
+        "国家队助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_进球": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "2024年4月ACL撕裂，伤缺欧洲杯；博洛尼亚2024-25意甲数据待核实；2026年世界杯已入选"
+      },
+      "瑞安·克里斯蒂": {
+        "位置": "中场", "俱乐部": "伯恩茅斯", "联赛": "英超",
+        "身价_万欧": { "csv": 900, "verified": 1000, "source": "百度百科参考(900-1000万欧)", "status": "ok" },
+        "国家队进球": { "csv": 6, "verified": "X待核实(百度百科显示9球截至2025年12月)", "status": "pending" },
+        "国家队助攻": { "csv": 6, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_进球": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "备注": "2025年4月腹股沟手术赛季报销；2025-26赛季出场12次1球(百度百科)；国家队截至2025年12月9球(百度百科)"
+      },
+      "肯尼·麦克莱恩": {
+        "位置": "中场", "俱乐部": "诺维奇", "联赛": "英冠",
+        "身价_万欧": { "csv": 50, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "备注": "诺维奇英冠数据待查"
+      },
+      "本·甘农-多克": {
+        "位置": "中场", "俱乐部": "伯恩茅斯", "联赛": "英超",
+        "身价_万欧": { "csv": 1600, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "2024-25赛季伯恩茅斯数据待查"
+      },
+      "芬德利·柯蒂斯": {
+        "位置": "中场", "俱乐部": "基尔马诺克", "联赛": "苏超",
+        "身价_万欧": { "csv": 90, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "备注": "基尔马诺克数据待查"
+      },
+      "切·亚当斯": {
+        "位置": "前锋", "俱乐部": "都灵", "联赛": "意甲",
+        "身价_万欧": { "csv": 850, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 6, "verified": 6, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 8, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "ESPN显示2025年1月24日都灵2-0卡利亚里，亚当斯梅开二度(6', 61')；2024-25意甲赛季数据待汇总"
+      },
+      "林登·戴克斯": {
+        "位置": "前锋", "俱乐部": "查尔顿", "联赛": "英冠",
+        "身价_万欧": { "csv": 100, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 11, "verified": 11, "status": "ok" },
+        "国家队助攻": { "csv": 2, "verified": 2, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 12, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "备注": "2024年8月从QPR(43场7球)加盟伯明翰(120万镑)；2025年10月世预赛希腊进球；2024-25伯明翰(英甲冠军)数据待核实"
+      },
+      "罗斯·斯图尔特": {
+        "位置": "前锋", "俱乐部": "南安普顿", "联赛": "英超",
+        "身价_万欧": { "csv": 280, "verified": 250, "source": "球迷屋参考250万欧", "status": "ok" },
+        "国家队进球": { "csv": 2, "verified": 2, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 7, "verified": "mismatch_CSV需更正", "source": "懂球帝: 2024-25英超12场4首发1球0助", "status": "mismatch" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "跟腱撕裂2024年10月复出后伤缺大半赛季；2024-25英超12场4次首发仅1球，CSV的7球严重失实；懂球帝确认身价400万欧(略高于CSV)"
+      },
+      "劳伦斯·尚克兰": {
+        "位置": "前锋", "俱乐部": "哈茨", "联赛": "苏超",
+        "身价_万欧": { "csv": 280, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 4, "verified": 4, "status": "ok" },
+        "国家队助攻": { "csv": 1, "verified": 1, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "2024欧洲杯成员；2023-24苏超PFA最佳球员(44%联赛进球)；2024-25赛季有所下滑，待核实具体数据；2025年10月10日世预赛希腊进球"
+      },
+      "乔治·赫斯特": {
+        "位置": "前锋", "俱乐部": "伊普斯维奇", "联赛": "英冠",
+        "身价_万欧": { "csv": 800, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 4, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "2024-25伊普斯维奇升入英超，球员数据待查"
+      }
+    },
+
+    "英格兰_L组": {
+      "乔丹·皮克福德": {
+        "位置": "门将", "俱乐部": "埃弗顿", "联赛": "英超",
+        "身价_万欧": { "csv": 2000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": 0, "status": "ok" }
+      },
+      "迪恩·亨德森": {
+        "位置": "门将", "俱乐部": "水晶宫", "联赛": "英超",
+        "身价_万欧": { "csv": 1500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": 0, "status": "ok" }
+      },
+      "特拉福德": {
+        "位置": "门将", "俱乐部": "曼城", "联赛": "英超",
+        "身价_万欧": { "csv": 500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "备注": "年轻门将，身价500万欧偏低？待核实Transfermarkt"
+      },
+      "斯通斯": {
+        "位置": "后卫", "俱乐部": "曼城", "联赛": "英超",
+        "身价_万欧": { "csv": 3500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 3, "verified": 3, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" }
+      },
+      "格伊": {
+        "位置": "后卫", "俱乐部": "水晶宫", "联赛": "英超",
+        "身价_万欧": { "csv": 5000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 1, "verified": 1, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" }
+      },
+      "宽萨": {
+        "位置": "后卫", "俱乐部": "勒沃库森", "联赛": "德甲",
+        "身价_万欧": { "csv": 4000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "备注": "2024欧洲杯德国冠军成员？此为英格兰球员，宽萨(Names: Kurt? 应为Cucurella转籍?) 需确认——CSV写的是宽萨但荣誉写德甲冠军/欧冠，可能为科尔·帕尔默队中后卫待确认"
+      },
+      "孔萨": {
+        "位置": "后卫", "俱乐部": "阿斯顿维拉", "联赛": "英超",
+        "身价_万欧": { "csv": 5000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 1, "verified": 1, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" }
+      },
+      "丹·伯恩": {
+        "位置": "后卫", "俱乐部": "纽卡斯尔联", "联赛": "英超",
+        "身价_万欧": { "csv": 1500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" }
+      },
+      "里斯·詹姆斯": {
+        "位置": "后卫", "俱乐部": "切尔西", "联赛": "英超",
+        "身价_万欧": { "csv": 4500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 3, "verified": 3, "status": "ok" },
+        "国家队助攻": { "csv": 8, "verified": 8, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "备注": "2024欧洲杯落选(伤)；2024-25赛季无数据(受伤)；2025年世俱杯冠军"
+      },
+      "利夫拉门托": {
+        "位置": "后卫", "俱乐部": "纽卡斯尔联", "联赛": "英超",
+        "身价_万欧": { "csv": 4500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 1, "verified": 1, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "备注": "曾为意大利U21成员，现为英格兰成年队"
+      },
+      "奥赖利": {
+        "位置": "后卫", "俱乐部": "曼城", "联赛": "英超",
+        "身价_万欧": { "csv": 3500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "曼城新援，2025年1月加盟，身价3500万欧待核实"
+      },
+      "斯彭斯": {
+        "位置": "后卫", "俱乐部": "热刺", "联赛": "英超",
+        "身价_万欧": { "csv": 2500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "备注": "合同2025年到期，是否仍效力热刺待查"
+      },
+      "贝林厄姆": {
+        "位置": "中场", "俱乐部": "皇家马德里", "联赛": "西甲",
+        "身价_万欧": { "csv": 14000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 8, "verified": 8, "status": "ok" },
+        "国家队助攻": { "csv": 5, "verified": 5, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 7, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 8, "verified": "X待核实", "status": "pending" },
+        "备注": "2024-25赛季(8/2024-7/2025)：皇马15球14助(Opta)，CSV的7/8基本正确；OneFootball显示当前赛季2球1助"
+      },
+      "德克兰·赖斯": {
+        "位置": "中场", "俱乐部": "阿森纳", "联赛": "英超",
+        "身价_万欧": { "csv": 12000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 3, "verified": 3, "status": "ok" },
+        "国家队助攻": { "csv": 5, "verified": 5, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 7, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 9, "verified": "X待核实", "status": "pending" },
+        "备注": "2025-26赛季阿森纳英超冠军成员"
+      },
+      "梅努": {
+        "位置": "中场", "俱乐部": "曼联", "联赛": "英超",
+        "身价_万欧": { "csv": 5000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 1, "verified": 1, "status": "ok" },
+        "国家队助攻": { "csv": 1, "verified": 1, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" }
+      },
+      "埃泽": {
+        "位置": "中场", "俱乐部": "阿森纳", "联赛": "英超",
+        "身价_万欧": { "csv": 4500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 3, "verified": 3, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 11, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 6, "verified": "X待核实", "status": "pending" }
+      },
+      "摩根·罗杰斯": {
+        "位置": "中场", "俱乐部": "阿斯顿维拉", "联赛": "英超",
+        "身价_万欧": { "csv": 5500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 2, "verified": 2, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 10, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 9, "verified": "X待核实", "status": "pending" },
+        "备注": "2025年欧联杯冠军成员；虎扑11月06日：2025年各赛事12次助攻，同期英超第一"
+      },
+      "乔丹·亨德森": {
+        "位置": "中场", "俱乐部": "布伦特福德", "联赛": "英超",
+        "身价_万欧": { "csv": 500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": "X待核实(CSV写0/70场，但2024年已转沙特)", "status": "pending" },
+        "国家队助攻": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "2024年1月从利物浦转布伦特福德；2024欧洲杯后退出英格兰队？CSV写70场待核实"
+      },
+      "埃利奥特·安德森": {
+        "位置": "中场", "俱乐部": "诺丁汉森林", "联赛": "英超",
+        "身价_万欧": { "csv": 3000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 2, "verified": 2, "status": "ok" },
+        "国家队助攻": { "csv": 1, "verified": 1, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 4, "verified": "X待核实", "status": "pending" }
+      },
+      "哈里·凯恩": {
+        "位置": "前锋", "俱乐部": "拜仁慕尼黑", "联赛": "德甲",
+        "身价_万欧": { "csv": 9000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 78, "verified": 78, "status": "ok" },
+        "国家队助攻": { "csv": 20, "verified": 20, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 61, "verified": "X待核实(今日头条: 2025-26赛季31场36球德甲，各赛事50场58球)", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 7, "verified": "X待核实", "status": "pending" },
+        "备注": "2025-26赛季德甲36球欧洲金靴；2025-26赛季各赛事58球(50场)；CSV的61球含所有赛事？基本吻合；生涯500球今日头条确认"
+      },
+      "布卡约·萨卡": {
+        "位置": "前锋", "俱乐部": "阿森纳", "联赛": "英超",
+        "身价_万欧": { "csv": 12000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 14, "verified": 14, "status": "ok" },
+        "国家队助攻": { "csv": 10, "verified": 10, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 9, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 13, "verified": "X待核实", "status": "pending" },
+        "备注": "Flashscore显示本赛季6球3助(2025-26)；CSV的9/13或是2024-25赛季数据？需确认"
+      },
+      "安东尼·戈登": {
+        "位置": "前锋", "俱乐部": "纽卡斯尔联", "联赛": "英超",
+        "身价_万欧": { "csv": 5000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 2, "verified": 2, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 6, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 5, "verified": "X待核实", "status": "pending" }
+      },
+      "奥利·沃特金斯": {
+        "位置": "前锋", "俱乐部": "阿斯顿维拉", "联赛": "英超",
+        "身价_万欧": { "csv": 3500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 4, "verified": 4, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 16, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 8, "verified": "X待核实", "status": "pending" }
+      },
+      "马杜埃凯": {
+        "位置": "前锋", "俱乐部": "阿森纳", "联赛": "英超",
+        "身价_万欧": { "csv": 4500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 2, "verified": 2, "status": "ok" },
+        "国家队助攻": { "csv": 1, "verified": 1, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 4, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 3, "verified": "X待核实", "status": "pending" }
+      },
+      "伊万·托尼": {
+        "位置": "前锋", "俱乐部": "吉达国民", "联赛": "沙特联",
+        "身价_万欧": { "csv": 3000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 1, "verified": 1, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 18, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 5, "verified": "X待核实", "status": "pending" }
+      },
+      "拉什福德": {
+        "位置": "前锋", "俱乐部": "巴塞罗那", "联赛": "西甲",
+        "身价_万欧": { "csv": 4000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 20, "verified": 20, "status": "ok" },
+        "国家队助攻": { "csv": 5, "verified": 5, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 5, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "备注": "2024-25赛季(曼联+巴萨)数据需核实；加盟巴萨后2025-26赛季表现待查"
+      }
+    },
+
+    "荷兰_F组": {
+      "弗莱肯": {
+        "位置": "门将", "俱乐部": "勒沃库森", "联赛": "德甲",
+        "身价_万欧": { "csv": 600, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": 0, "status": "ok" }
+      },
+      "罗夫斯": {
+        "位置": "门将", "俱乐部": "桑德兰", "联赛": "英冠",
+        "身价_万欧": { "csv": 2500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "备注": "2025-26赛季桑德兰数据待查"
+      },
+      "维尔布鲁根": {
+        "位置": "门将", "俱乐部": "布莱顿", "联赛": "英超",
+        "身价_万欧": { "csv": 4000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": 0, "status": "ok" }
+      },
+      "阿克": {
+        "位置": "后卫", "俱乐部": "曼城", "联赛": "英超",
+        "身价_万欧": { "csv": 1500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 2, "verified": 2, "status": "ok" },
+        "国家队助攻": { "csv": 5, "verified": 5, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 2, "verified": "X待核实", "status": "pending" }
+      },
+      "邓弗里斯": {
+        "位置": "后卫", "俱乐部": "国际米兰", "联赛": "意甲",
+        "身价_万欧": { "csv": 2500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 11, "verified": 11, "status": "ok" },
+        "国家队助攻": { "csv": 7, "verified": 7, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 4, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 5, "verified": "X待核实", "status": "pending" }
+      },
+      "哈托": {
+        "位置": "后卫", "俱乐部": "切尔西", "联赛": "英超",
+        "身价_万欧": { "csv": 3500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 1, "verified": 1, "status": "ok" },
+        "国家队助攻": { "csv": 2, "verified": 2, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" }
+      },
+      "朱利安·廷伯": {
+        "位置": "后卫", "俱乐部": "阿森纳", "联赛": "英超",
+        "身价_万欧": { "csv": 7000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 2, "verified": 2, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" }
+      },
+      "范德芬": {
+        "位置": "后卫", "俱乐部": "热刺", "联赛": "英超",
+        "身价_万欧": { "csv": 6500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" }
+      },
+      "范戴克": {
+        "位置": "后卫", "俱乐部": "利物浦", "联赛": "英超",
+        "身价_万欧": { "csv": 1800, "verified": 2000, "source": "腾讯体育/SofIFA参考约2000万欧", "status": "ok" },
+        "国家队进球": { "csv": 10, "verified": 10, "status": "ok" },
+        "国家队助攻": { "csv": 5, "verified": 5, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "腾讯体育显示2025-26赛季32场3球(英超)，CSV的3/1基本吻合；合同2025年到期，今夏离队？"
+      },
+      "范赫克": {
+        "位置": "后卫", "俱乐部": "布莱顿", "联赛": "英超",
+        "身价_万欧": { "csv": 3500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 3, "verified": 3, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" }
+      },
+      "韦费尔": {
+        "位置": "后卫", "俱乐部": "布莱顿", "联赛": "英超",
+        "身价_万欧": { "csv": 2500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 2, "verified": 2, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" }
+      },
+      "赫拉芬贝赫": {
+        "位置": "中场", "俱乐部": "利物浦", "联赛": "英超",
+        "身价_万欧": { "csv": 9000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 2, "verified": 2, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "备注": "2024-25赛季利物浦英超冠军成员，表现突出"
+      },
+      "德容": {
+        "位置": "中场", "俱乐部": "巴塞罗那", "联赛": "西甲",
+        "身价_万欧": { "csv": 5000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 18, "verified": 18, "status": "ok" },
+        "国家队助攻": { "csv": 14, "verified": 14, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "备注": "2024欧洲杯后伤缺，巴萨2024-25赛季数据待查"
+      },
+      "库普梅纳斯": {
+        "位置": "中场", "俱乐部": "尤文图斯", "联赛": "意甲",
+        "身价_万欧": { "csv": 2000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 3, "verified": 3, "status": "ok" },
+        "国家队助攻": { "csv": 1, "verified": 1, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" }
+      },
+      "赖因德斯": {
+        "位置": "中场", "俱乐部": "曼城", "联赛": "英超",
+        "身价_万欧": { "csv": 6000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 5, "verified": 5, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 4, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "备注": "2025-26赛季曼城夺冠成员"
+      },
+      "德容恩": {
+        "位置": "中场", "俱乐部": "亚特兰大", "联赛": "意甲",
+        "身价_万欧": { "csv": 350, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 3, "verified": 3, "status": "ok" },
+        "国家队助攻": { "csv": 5, "verified": 5, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" }
+      },
+      "蒂尔": {
+        "位置": "中场", "俱乐部": "埃因霍温", "联赛": "荷甲",
+        "身价_万欧": { "csv": 1500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 2, "verified": 2, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" }
+      },
+      "昆滕·廷伯": {
+        "位置": "中场", "俱乐部": "马赛", "联赛": "法甲",
+        "身价_万欧": { "csv": 2500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 1, "verified": 1, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" }
+      },
+      "小克鲁伊维特": {
+        "位置": "中场", "俱乐部": "伯恩茅斯", "联赛": "英超",
+        "身价_万欧": { "csv": 3000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 5, "verified": 5, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 2, "verified": "X待核实", "status": "pending" }
+      },
+      "布罗比": {
+        "位置": "前锋", "俱乐部": "桑德兰", "联赛": "英冠",
+        "身价_万欧": { "csv": 2500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 3, "verified": 3, "status": "ok" },
+        "国家队助攻": { "csv": 2, "verified": 2, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "2024-25赛季桑德兰升级英冠，英超数据待查"
+      },
+      "德佩": {
+        "位置": "前锋", "俱乐部": "科林蒂安斯", "联赛": "巴甲",
+        "身价_万欧": { "csv": 700, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 46, "verified": 46, "status": "ok" },
+        "国家队助攻": { "csv": 31, "verified": 31, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "2024年离开马竞，加盟科林蒂安斯，巴甲数据待查"
+      },
+      "加克波": {
+        "位置": "前锋", "俱乐部": "利物浦", "联赛": "英超",
+        "身价_万欧": { "csv": 6500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 19, "verified": 19, "status": "ok" },
+        "国家队助攻": { "csv": 10, "verified": 10, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 10, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 5, "verified": "X待核实", "status": "pending" },
+        "备注": "OneFootball显示2025-26赛季2球2助；2024-25赛季各赛事9球6助(Yardbarker)；CSV的10/5或是2024-25"
+      },
+      "诺阿·朗": {
+        "位置": "前锋", "俱乐部": "加拉塔萨雷", "联赛": "土超",
+        "身价_万欧": { "csv": 2200, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 3, "verified": 3, "status": "ok" },
+        "国家队助攻": { "csv": 5, "verified": 5, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" }
+      },
+      "马伦": {
+        "位置": "前锋", "俱乐部": "罗马", "联赛": "意甲",
+        "身价_万欧": { "csv": 3500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 6, "verified": 6, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 5, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 2, "verified": "X待核实", "status": "pending" }
+      },
+      "萨默维尔": {
+        "位置": "前锋", "俱乐部": "西汉姆联", "联赛": "英超",
+        "身价_万欧": { "csv": 3500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 2, "verified": 2, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 4, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 3, "verified": "X待核实", "status": "pending" }
+      },
+      "韦霍斯特": {
+        "位置": "前锋", "俱乐部": "阿贾克斯", "联赛": "荷甲",
+        "身价_万欧": { "csv": 250, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 21, "verified": 21, "status": "ok" },
+        "国家队助攻": { "csv": 7, "verified": 7, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" }
+      }
+    },
+
+    "葡萄牙_K组": {
+      "迪奥戈·科斯塔": {
+        "位置": "门将", "俱乐部": "曼城", "联赛": "英超",
+        "身价_万欧": { "csv": 3500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "备注": "曼城替补门将"
+      },
+      "若泽·萨": {
+        "位置": "门将", "俱乐部": "狼队", "联赛": "英冠",
+        "身价_万欧": { "csv": 1500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": 0, "status": "ok" }
+      },
+      "鲁伊·席尔瓦": {
+        "位置": "门将", "俱乐部": "本菲卡", "联赛": "葡超",
+        "身价_万欧": { "csv": 200, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": 0, "status": "ok" }
+      },
+      "迪奥戈·达洛特": {
+        "位置": "后卫", "俱乐部": "曼联", "联赛": "英超",
+        "身价_万欧": { "csv": 3500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 2, "verified": "X待核实", "status": "pending" }
+      },
+      "马特乌斯·努内斯": {
+        "位置": "后卫", "俱乐部": "曼城", "联赛": "英超",
+        "身价_万欧": { "csv": 3500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "备注": "曼城后卫，2025-26赛季夺冠成员"
+      },
+      "尼尔逊·塞梅多": {
+        "位置": "后卫", "俱乐部": "费内巴切", "联赛": "土超",
+        "身价_万欧": { "csv": 800, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" }
+      },
+      "坎塞洛": {
+        "位置": "后卫", "俱乐部": "巴塞罗那", "联赛": "西甲",
+        "身价_万欧": { "csv": 4000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 11, "verified": 11, "status": "ok" },
+        "国家队助攻": { "csv": 15, "verified": 15, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 5, "verified": "X待核实", "status": "pending" }
+      },
+      "努诺·门德斯": {
+        "位置": "后卫", "俱乐部": "巴黎圣日耳曼", "联赛": "法甲",
+        "身价_万欧": { "csv": 8000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 5, "verified": 5, "status": "ok" },
+        "国家队助攻": { "csv": 5, "verified": 5, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 4, "verified": "X待核实", "status": "pending" }
+      },
+      "贡萨洛·伊纳西奥": {
+        "位置": "后卫", "俱乐部": "里斯本竞技", "联赛": "葡超",
+        "身价_万欧": { "csv": 3500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" }
+      },
+      "雷纳托·维加": {
+        "位置": "后卫", "俱乐部": "比利亚雷亚尔", "联赛": "西甲",
+        "身价_万欧": { "csv": 2500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 2, "verified": "X待核实", "status": "pending" }
+      },
+      "鲁本·迪亚斯": {
+        "位置": "后卫", "俱乐部": "曼城", "联赛": "英超",
+        "身价_万欧": { "csv": 7000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" }
+      },
+      "鲁本·内维斯": {
+        "位置": "中场", "俱乐部": "利雅得新月", "联赛": "沙特联",
+        "身价_万欧": { "csv": 5000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 0, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 0, "verified": "X待核实", "status": "pending" }
+      },
+      "萨穆·科斯塔": {
+        "位置": "中场", "俱乐部": "马略卡", "联赛": "西甲",
+        "身价_万欧": { "csv": 2000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 1, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" }
+      },
+      "若昂·内维斯": {
+        "位置": "中场", "俱乐部": "巴黎圣日耳曼", "联赛": "法甲",
+        "身价_万欧": { "csv": 14000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 3, "verified": 3, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 4, "verified": "X待核实", "status": "pending" },
+        "备注": "2024欧洲杯冠军成员；2024-25赛季欧冠冠军"
+      },
+      "维蒂尼亚": {
+        "位置": "中场", "俱乐部": "巴黎圣日耳曼", "联赛": "法甲",
+        "身价_万欧": { "csv": 14000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 2, "verified": 2, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 4, "verified": "X待核实", "status": "pending" }
+      },
+      "布鲁诺·费尔南德斯": {
+        "位置": "中场", "俱乐部": "曼联", "联赛": "英超",
+        "身价_万欧": { "csv": 7000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 28, "verified": 28, "status": "ok" },
+        "国家队助攻": { "csv": 20, "verified": 20, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 7, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 9, "verified": "X待核实", "status": "pending" }
+      },
+      "贝尔纳多·席尔瓦": {
+        "位置": "中场", "club": "曼城", "联赛": "英超",
+        "身价_万欧": { "csv": 7000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 14, "verified": 14, "status": "ok" },
+        "国家队助攻": { "csv": 15, "verified": 15, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 4, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 8, "verified": "X待核实", "status": "pending" }
+      },
+      "若昂·菲利克斯": {
+        "位置": "前锋", "俱乐部": "巴塞罗那", "联赛": "西甲",
+        "身价_万欧": { "csv": 2500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 8, "verified": 8, "status": "ok" },
+        "国家队助攻": { "csv": 3, "verified": 3, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 4, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 3, "verified": "X待核实", "status": "pending" }
+      },
+      "弗朗西斯科·特林康": {
+        "位置": "前锋", "俱乐部": "葡萄牙体育", "联赛": "葡超",
+        "身价_万欧": { "csv": 1800, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 8, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 4, "verified": "X待核实", "status": "pending" }
+      },
+      "弗朗西斯科·孔塞桑": {
+        "位置": "前锋", "俱乐部": "尤文图斯", "联赛": "意甲",
+        "身价_万欧": { "csv": 1500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 2, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 1, "verified": "X待核实", "status": "pending" }
+      },
+      "佩德罗·内托": {
+        "位置": "前锋", "俱乐部": "切尔西", "联赛": "英超",
+        "身价_万欧": { "csv": 3000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 3, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 4, "verified": "X待核实", "status": "pending" }
+      },
+      "拉斐尔·莱奥": {
+        "位置": "前锋", "俱乐部": "AC米兰", "联赛": "意甲",
+        "身价_万欧": { "csv": 9000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 15, "verified": 15, "status": "ok" },
+        "国家队助攻": { "csv": 10, "verified": 10, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 12, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 7, "verified": "X待核实", "status": "pending" }
+      },
+      "贡萨洛·格德斯": {
+        "位置": "前锋", "俱乐部": "皇家社会", "联赛": "西甲",
+        "身价_万欧": { "csv": 1500, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 0, "verified": 0, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 6, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 4, "verified": "X待核实", "status": "pending" }
+      },
+      "贡萨洛·拉莫斯": {
+        "位置": "前锋", "俱乐部": "巴黎圣日耳曼", "联赛": "法甲",
+        "身价_万欧": { "csv": 5000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 3, "verified": 3, "status": "ok" },
+        "国家队助攻": { "csv": 0, "verified": 0, "status": "ok" },
+        "本赛季俱乐部_进球": { "csv": 7, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 2, "verified": "X待核实", "status": "pending" }
+      },
+      "C罗": {
+        "位置": "前锋", "俱乐部": "利雅得胜利", "联赛": "沙特联",
+        "身价_万欧": { "csv": 1000, "verified": "X待核实", "status": "pending" },
+        "国家队进球": { "csv": 143, "verified": 143, "source": "今日头条等中文媒体一致确认143球", "status": "ok" },
+        "国家队助攻": { "csv": 50, "verified": "X待核实(中文源数据源显示50次)", "status": "pending" },
+        "本赛季俱乐部_进球": { "csv": 18, "verified": "X待核实", "status": "pending" },
+        "本赛季俱乐部_助攻": { "csv": 5, "verified": "X待核实", "status": "pending" },
+        "备注": "国家队226场143球，队史射手王；今日头条：2026年4月生涯967球，距千球差33；2024-25沙特联金靴"
+      }
+    }
+  },
+  "summary": {
+    "note": "苏格兰25人+英格兰26人+荷兰26人+葡萄牙25人=102人。X待核实=未找到可靠来源；ok=核实一致；mismatch=CSV与来源不符",
+    "key_mismatches_found": [
+      "格兰特·汉利 身价: CSV=35万 vs Transfermarkt≈60万",
+      "罗斯·斯图尔特 俱乐部进球: CSV=7球 vs 懂球帝2024-25实际1球",
+      "安迪·罗伯逊 身价: CSV=1000万 vs SoFIFA≈1200万"
+    ],
+    "next_steps": [
+      "苏格兰: 尚需核实多名球员2024-25俱乐部进球助攻",
+      "英格兰: 需优先核实萨卡(6G vs CSV 9G)、凯恩(58G总)、赖斯等高价值球员",
+      "荷兰: 需核实加克波2024-25赛季数据(9G6A vs CSV 10G5A)",
+      "葡萄牙: 需核实C罗、拉莫斯等球员当前赛季数据",
+      "全部: 身价字段大部分待Transfermarkt核实"
+    ]
+  }
+}
