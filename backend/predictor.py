@@ -117,13 +117,6 @@ def calc_player_score_with_weights(player, status_rec, weights):
         # 后卫/门：用经验 + 荣誉
         honors = ranking_v2.parse_honors(player.get('主要荣誉', ''))
         score = base * def_cfg['base_factor'] + honors * def_cfg['honors_per_champ']
-        # 主力号码加权
-        try:
-            jersey = int(player.get('号码', '99'))
-            if jersey <= def_cfg['starter_jersey_max']:
-                score += def_cfg['starter_bonus']
-        except (ValueError, TypeError):
-            pass
         return score, base, 0
 
 

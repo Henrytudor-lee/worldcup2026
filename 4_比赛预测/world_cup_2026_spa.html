@@ -722,7 +722,7 @@ function buildPresets() {
     position_top_n: {FW:5, MID:5, DEF:6, GK:1},
     status_weights: {g_per_goal: 60, a_per_assist: 90, who_bonus_base: 8, who_bonus_denom: 4},
     nat_intl: {g_per_goal: 300, a_per_assist: 400},
-    def_gk_weights: {base_factor: 0.85, honors_per_champ: 10, starter_jersey_max: 12, starter_bonus: 30, wc_per_ga: 80},
+    def_gk_weights: {base_factor: 0.85, honors_per_champ: 10, wc_per_ga: 80},
     player_to_total: {player_share: 0.85, coach_share: 0.15},
     smoothing: {player_div: 3000, coach_div: 100, rank_div: 800}
   }};
@@ -730,7 +730,7 @@ function buildPresets() {
     position_top_n: {FW:3, MID:3, DEF:4, GK:1},
     status_weights: {g_per_goal: 25, a_per_assist: 40, who_bonus_base: 10, who_bonus_denom: 3},
     nat_intl: {g_per_goal: 100, a_per_assist: 200},
-    def_gk_weights: {base_factor: 1.0, honors_per_champ: 20, starter_jersey_max: 16, starter_bonus: 80, wc_per_ga: 120},
+    def_gk_weights: {base_factor: 1.0, honors_per_champ: 20, wc_per_ga: 120},
     player_to_total: {player_share: 0.75, coach_share: 0.25},
     smoothing: {player_div: 6000, coach_div: 100, rank_div: 1200}
   }};
@@ -738,7 +738,7 @@ function buildPresets() {
     position_top_n: {FW:4, MID:4, DEF:5, GK:1},
     status_weights: {g_per_goal: 50, a_per_assist: 70, who_bonus_base: 7, who_bonus_denom: 4},
     nat_intl: {g_per_goal: 250, a_per_assist: 350},
-    def_gk_weights: {base_factor: 0.95, honors_per_champ: 15, starter_jersey_max: 14, starter_bonus: 50, wc_per_ga: 100},
+    def_gk_weights: {base_factor: 0.95, honors_per_champ: 15, wc_per_ga: 100},
     player_to_total: {player_share: 0.70, coach_share: 0.30},
     smoothing: {player_div: 5000, coach_div: 100, rank_div: 1000}
   }};
@@ -746,7 +746,7 @@ function buildPresets() {
     position_top_n: {FW:3, MID:3, DEF:4, GK:1},
     status_weights: {g_per_goal: 40, a_per_assist: 60, who_bonus_base: 6.5, who_bonus_denom: 4},
     nat_intl: {g_per_goal: 200, a_per_assist: 300},
-    def_gk_weights: {base_factor: 0.95, honors_per_champ: 25, starter_jersey_max: 14, starter_bonus: 80, wc_per_ga: 120},
+    def_gk_weights: {base_factor: 0.95, honors_per_champ: 25, wc_per_ga: 120},
     player_to_total: {player_share: 0.30, coach_share: 0.70},
     smoothing: {player_div: 5000, coach_div: 50, rank_div: 800}
   }};
@@ -754,7 +754,7 @@ function buildPresets() {
     position_top_n: {FW:5, MID:3, DEF:3, GK:1},
     status_weights: {g_per_goal: 35, a_per_assist: 55, who_bonus_base: 7, who_bonus_denom: 4},
     nat_intl: {g_per_goal: 180, a_per_assist: 280},
-    def_gk_weights: {base_factor: 1.0, honors_per_champ: 12, starter_jersey_max: 13, starter_bonus: 40, wc_per_ga: 90},
+    def_gk_weights: {base_factor: 1.0, honors_per_champ: 12, wc_per_ga: 90},
     player_to_total: {player_share: 0.78, coach_share: 0.22},
     smoothing: {player_div: 4500, coach_div: 100, rank_div: 900}
   }};
@@ -762,6 +762,17 @@ function buildPresets() {
 
 // 当前权重 (可变) - 由 loadFromBackend 异步填充
 let currentWeights = {};
+
+// 滑块 min/max/默认 step 字典 (与后端 weights_schema.py RANGES 严格同步)
+// ⚠️ 改后端 RANGES 时这里必须同步
+const SLIDER_RANGES = {
+  position_top_n: { FW: [1, 6, 1], MID: [1, 6, 1], DEF: [1, 8, 1], GK: [1, 3, 1] },
+  status_weights: { g_per_goal: [10, 200, 5], a_per_assist: [10, 200, 5], who_bonus_base: [3.0, 10.0, 0.1], who_bonus_denom: [1, 20, 1] },
+  nat_intl: { g_per_goal: [50, 1000, 50], a_per_assist: [50, 1000, 50] },
+  def_gk_weights: { base_factor: [0.5, 1.5, 0.05], honors_per_champ: [0, 100, 5], wc_per_ga: [10, 1000, 50] },
+  player_to_total: { player_share: [0.0, 1.0, 0.05], coach_share: [0.0, 1.0, 0.05] },
+  smoothing: { player_div: [500, 50000, 500], coach_div: [10, 1000, 10], rank_div: [100, 10000, 100] },
+};
 
 // 6 个预设 - 由 buildPresets() 在后端数据加载后填充
 const PRESETS = {};
@@ -1254,6 +1265,8 @@ function closeMatchModal() { $id('matchModal').classList.remove('open'); }
 
 // ============== 配置 (滑块) ==============
 function renderSliders() {
+  // 滑块 min/max 来自前端嵌入的 SLIDER_RANGES（与后端 weights_schema.py RANGES 同步）
+  // 注: 改后端 RANGES 时这里必须同步更新
   const cats = [
     { key: 'position_top_n', label: '位置 Top N', icon: '📊', sub: [
       { f: 'FW', label: '前锋数' }, { f: 'MID', label: '中场数' },
@@ -1271,8 +1284,6 @@ function renderSliders() {
     { key: 'def_gk_weights', label: '后卫/门将', icon: '🛡️', sub: [
       { f: 'base_factor', label: '基础系数' },
       { f: 'honors_per_champ', label: '荣誉/项' },
-      { f: 'starter_jersey_max', label: '首发球衣号阈值' },
-      { f: 'starter_bonus', label: '首发加成' },
       { f: 'wc_per_ga', label: '世界杯失球惩罚' }
     ]},
     { key: 'player_to_total', label: '球员/教练占比', icon: '⚖️', sub: [
@@ -1290,12 +1301,21 @@ function renderSliders() {
     html += `<h3 style="margin-top:14px;color:var(--accent);font-size:14px">${cat.icon} ${cat.label}</h3>`;
     cat.sub.forEach(s => {
       const v = currentWeights[cat.key][s.f];
-      const min = (s.f === 'player_share' || s.f === 'coach_share') ? 0 : 0;
-      const max = (s.f === 'player_share' || s.f === 'coach_share') ? 1 : (cat.key === 'smoothing' ? 15000 : 500);
-      const step = (s.f === 'player_share' || s.f === 'coach_share') ? 0.05 : 1;
+      // 查 SLIDER_RANGES 表
+      const range = SLIDER_RANGES[cat.key]?.[s.f] || [0, 100, 1];
+      const [min, max, defaultStep] = range;
+      // step: 比例类用 0.05, who_bonus_base 用 0.1, 其他用 1
+      let step = defaultStep;
+      if (s.f === 'player_share' || s.f === 'coach_share') step = 0.05;
+      else if (s.f === 'who_bonus_base') step = 0.1;
+      else if (cat.key === 'smoothing') step = 100;
+      else if (cat.key === 'position_top_n') step = 1;
+      // 当前值如果超界就 clamp 到范围内
+      const clampedV = Math.max(min, Math.min(max, v));
+      if (clampedV !== v) currentWeights[cat.key][s.f] = clampedV;
       html += `<div class="slider-group">
-        <label>${s.label} <span class="value" id="slider-${cat.key}-${s.f}">${typeof v === 'number' && step === 0.05 ? v.toFixed(2) : v}</span></label>
-        <input type="range" min="${min}" max="${max}" step="${step}" value="${v}" 
+        <label>${s.label} <span class="value" id="slider-${cat.key}-${s.f}">${typeof clampedV === 'number' && step < 1 ? clampedV.toFixed(2) : clampedV}</span> <span style="color:var(--text-3);font-size:10px">[${min}–${max}]</span></label>
+        <input type="range" min="${min}" max="${max}" step="${step}" value="${clampedV}" 
           oninput="updateSlider('${cat.key}', '${s.f}', this.value)">
       </div>`;
     });

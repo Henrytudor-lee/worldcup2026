@@ -26,8 +26,6 @@ DEFAULT = {
     "def_gk_weights": {
         "base_factor": 0.95,     # 后卫/门身价基础系数
         "honors_per_champ": 15,  # 荣誉每个冠军加权
-        "starter_jersey_max": 14,# 主力号码上限（≤14 = 主力）
-        "starter_bonus": 50,     # 主力号加权
         "wc_per_ga": 100,        # 世界杯/欧战 1 场/球 = 1/100
     },
     "player_to_total": {
@@ -59,8 +57,6 @@ RANGES = {
     "def_gk_weights": {
         "base_factor": (0.5, 1.5),
         "honors_per_champ": (0, 100),
-        "starter_jersey_max": (1, 30),
-        "starter_bonus": (0, 200),
         "wc_per_ga": (10, 1000),
     },
     "player_to_total": {
