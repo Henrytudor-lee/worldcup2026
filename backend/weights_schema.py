@@ -20,8 +20,8 @@ DEFAULT = {
         "who_bonus_denom": 4,    # WhoScored 加权分母
     },
     "nat_intl": {
-        "g_per_goal": 200,       # 国家队 1 球 = 1/200
-        "a_per_assist": 300,     # 国家队 1 助 = 1/300
+        "g_per_goal": 400,       # 国家队 1 球 = 1/400 (v2.1 调小, 状态数据权重更高)
+        "a_per_assist": 600,     # 国家队 1 助 = 1/600
     },
     "def_gk_weights": {
         "base_factor": 0.95,     # 后卫/门身价基础系数
