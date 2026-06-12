@@ -43,6 +43,7 @@ DEFAULT = {
         "temp_threshold": 32,        # 温度阈值 (°C) - 超过则双方都受罚
         "temp_penalty": 0.97,        # 高温惩罚 (0.97 = -3%)
     },
+    "venue_adaptation_weight": 0.5,  # 球员适应度调节强度 (0=关闭, 1=完全生效)
 }
 
 # 范围约束（防止用户拖极端值）
@@ -80,6 +81,7 @@ RANGES = {
         "temp_threshold": (15, 50),
         "temp_penalty": (0.5, 1.0),
     },
+    "venue_adaptation_weight": (0.0, 1.0),
 }
 
 # 预设（前端 6 个 preset 按钮）
@@ -135,12 +137,27 @@ PRESETS = {
 
 
 def validate(weights: dict) -> tuple[bool, str]:
-    """校验 weights 在合理范围内。返回 (ok, msg)"""
+    """校验 weights 在合理范围内。返回 (ok, msg)
+
+    支持两种 RANGES 条目:
+    - 嵌套 dict: 校验 {group: {field: number, ...}}
+    - tuple: 校验顶层 number (e.g. 'venue_adaptation_weight': (0.0, 1.0))
+    """
     if not isinstance(weights, dict):
         return False, "weights must be a dict"
     for group_key, group in RANGES.items():
         if group_key not in weights:
             return False, f"missing group: {group_key}"
+        # 顶层 scalar 字段: 校验 number in range
+        if isinstance(group, tuple) and len(group) == 2:
+            lo, hi = group
+            v = weights[group_key]
+            if not isinstance(v, (int, float)):
+                return False, f"{group_key} must be number, got {type(v).__name__}"
+            if not (lo <= v <= hi):
+                return False, f"{group_key}={v} out of range [{lo}, {hi}]"
+            continue
+        # 嵌套 dict 字段
         if not isinstance(weights[group_key], dict):
             return False, f"{group_key} must be a dict"
         for k, (lo, hi) in group.items():
@@ -160,12 +177,19 @@ def validate(weights: dict) -> tuple[bool, str]:
 
 
 def merge_with_default(weights: dict) -> dict:
-    """补全缺失字段为默认值"""
+    """补全缺失字段为默认值. 支持嵌套 dict + 顶层 scalar 字段"""
     result = deepcopy(DEFAULT)
     if not isinstance(weights, dict):
         return result
     for gk, group in result.items():
-        if gk in weights and isinstance(weights[gk], dict):
+        if gk not in weights:
+            continue
+        # 顶层 scalar 字段: 直接覆盖
+        if isinstance(group, (int, float)):
+            result[gk] = weights[gk]
+            continue
+        # 嵌套 dict 字段: 字段级合并
+        if isinstance(weights[gk], dict):
             for k in group:
                 if k in weights[gk]:
                     result[gk][k] = weights[gk][k]

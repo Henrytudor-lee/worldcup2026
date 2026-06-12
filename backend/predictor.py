@@ -25,6 +25,109 @@ CSV_STATUS = DATA_DIR / "world_cup_2026_player_status_all.csv"
 
 
 # ============================================================
+# 联赛 -> 典型主场位置 (海拔米 + 6月历史均温°C)
+# 用作"球员适应度"参考 (球员当前所在联赛 = 习惯环境)
+# ============================================================
+LEAGUE_LOCATION = {
+    # 顶级联赛
+    '英超':  {'alt': 50,   'temp': 20},
+    '西甲':  {'alt': 660,  'temp': 28},
+    '意甲':  {'alt': 50,   'temp': 28},
+    '德甲':  {'alt': 500,  'temp': 22},
+    '法甲':  {'alt': 35,   'temp': 22},
+    '葡超':  {'alt': 100,  'temp': 25},
+    '荷甲':  {'alt': -2,   'temp': 18},
+    '土超':  {'alt': 100,  'temp': 28},
+    '比甲':  {'alt': 50,   'temp': 20},
+    '苏超':  {'alt': 50,   'temp': 15},
+    '丹超':  {'alt': 30,   'temp': 18},
+    '瑞超':  {'alt': 30,   'temp': 18},
+    '挪超':  {'alt': 50,   'temp': 16},
+    '奥超':  {'alt': 500,  'temp': 20},
+    # 美国/墨西哥
+    '美职联':{'alt': 50,   'temp': 32},
+    'MLS':   {'alt': 50,   'temp': 32},
+    '美乙':  {'alt': 50,   'temp': 32},
+    '墨超':  {'alt': 2200, 'temp': 25},
+    '墨超联':{'alt': 2200, 'temp': 25},
+    # 南美
+    '巴甲':  {'alt': 760,  'temp': 25},
+    '阿超':  {'alt': 25,   'temp': 18},
+    # 中东/亚洲
+    '沙特联':{'alt': 600,  'temp': 42},
+    '沙特超':{'alt': 600,  'temp': 42},
+    '日联':  {'alt': 50,   'temp': 26},
+    'K联':   {'alt': 50,   'temp': 26},
+    '伊超':  {'alt': 1300, 'temp': 32},
+    '卡超':  {'alt': 20,   'temp': 40},
+    '阿联酋超':{'alt': 30,'temp': 40},
+    '泰超':  {'alt': 5,    'temp': 33},
+    # 非洲
+    '埃超':  {'alt': 75,   'temp': 32},
+    '南非超':{'alt': 1750, 'temp': 18},
+    '北非超':{'alt': 100,  'temp': 30},
+    '摩超':  {'alt': 500,  'temp': 26},
+    '突超':  {'alt': 50,   'temp': 30},
+    '尼日超':{'alt': 50,  'temp': 28},
+    '民主刚果联赛':{'alt': 300, 'temp': 26},
+    # 其他
+    '俄超':  {'alt': 150,  'temp': 22},
+    '乌超':  {'alt': 200,  'temp': 23},
+    '克甲':  {'alt': 100,  'temp': 25},
+    '捷甲':  {'alt': 250,  'temp': 22},
+    '波超':  {'alt': 100,  'temp': 22},
+    '希超':  {'alt': 100,  'temp': 28},
+    '塞超':  {'alt': 100,  'temp': 24},
+    '罗超':  {'alt': 100,  'temp': 25},
+    '保甲':  {'alt': 550,  'temp': 24},
+    '乌克超':{'alt': 200,  'temp': 23},
+    '苏冠':  {'alt': 50,   'temp': 16},
+    '英冠':  {'alt': 50,   'temp': 18},
+    '意乙':  {'alt': 50,   'temp': 28},
+    '西乙':  {'alt': 660,  'temp': 28},
+    '法乙':  {'alt': 35,   'temp': 22},
+    '德乙':  {'alt': 500,  'temp': 22},
+    '英甲':  {'alt': 50,   'temp': 18},
+    '葡甲':  {'alt': 100,  'temp': 25},
+    '法甲乙级':{'alt': 35, 'temp': 22},
+    'NBA':  {'alt': 0,     'temp': 25},  # 噪音
+    '非洲联赛':{'alt': 200,'temp': 28},
+    '南美低':{'alt': 300,  'temp': 25},
+    '玻超':  {'alt': 2800, 'temp': 18},
+    '南美其他':{'alt': 500,'temp': 23},
+    '中北美其他':{'alt': 1000, 'temp': 24},
+}
+
+
+def get_league_location(league):
+    """查 LEAGUE_LOCATION, 没找到返回中性 (500m, 22°C)"""
+    if not league:
+        return {'alt': 500, 'temp': 22}
+    league = str(league).strip()
+    if league in LEAGUE_LOCATION:
+        return LEAGUE_LOCATION[league]
+    # 模糊匹配
+    for k, v in LEAGUE_LOCATION.items():
+        if k in league or league in k:
+            return v
+    return {'alt': 500, 'temp': 22}
+
+
+def calc_adaptation(league, venue_alt, venue_temp):
+    """算球员对比赛场地的适应度 (0~1)
+    1.0 = 完全适应, 0.0 = 严重不适应
+    """
+    loc = get_league_location(league)
+    diff_alt = abs(venue_alt - loc['alt'])
+    diff_temp = abs(venue_temp - loc['temp'])
+    # tanh 平滑: 海拔每 1500m 衰减 ~50%, 温度每 10°C 衰减 ~50%
+    alt_penalty = 0.5 * math.tanh(diff_alt / 1500)
+    temp_penalty = 0.4 * math.tanh(diff_temp / 10)
+    score = 1.0 - alt_penalty - temp_penalty
+    return max(0.0, min(1.0, score))
+
+
+# ============================================================
 # 加载函数
 # ============================================================
 def load_players():
@@ -229,6 +332,11 @@ def compute_ranking(weights):
             'mid_top_full': [(p['球员'], p['身价_万欧'], p.get('联赛','')) for _, p in mid_top],
             'def_top_full': [(p['球员'], p['身价_万欧'], p.get('联赛','')) for _, p in def_top],
             'gk_top_full': (gk_top[0][1]['球员'], gk_top[0][1]['身价_万欧'], gk_top[0][1].get('联赛','')) if gk_top else None,
+            # 球员联赛列表 (predict_match 算适应度用)
+            'fw_leagues': [p.get('联赛', '') for _, p in fw_top],
+            'mid_leagues': [p.get('联赛', '') for _, p in mid_top],
+            'def_leagues': [p.get('联赛', '') for _, p in def_top],
+            'gk_league': gk_top[0][1].get('联赛', '') if gk_top else '',
             'fw_details': fw_details,
             'mid_details': mid_details,
             'def_details': def_details,
@@ -267,11 +375,14 @@ def fifa_coef(rank):
 
 
 def team_metrics(country, ranking_dict, fifa_data, is_home=True, venue_alt=0, venue_temp=25,
-                 venue_cfg=None):
+                 venue_cfg=None, team_leagues=None, adaptation_weight=0.5):
     """算单队 λ 计算所需系数
 
     venue_cfg: {altitude_threshold, altitude_penalty, temp_threshold, temp_penalty}
               None = 用默认值 (2000m / 0.90 / 32°C / 0.97)
+    team_leagues: dict {'fw': [league, ...], 'mid': [...], 'def': [...], 'gk': 'league'}
+                  来自 ranking_dict 里的 fw_leagues 等字段
+    adaptation_weight: 0~1, 控制适应度调节强度 (0=关闭, 1=全生效)
     """
     if venue_cfg is None:
         venue_cfg = {'altitude_threshold': 2000, 'altitude_penalty': 0.90,
@@ -298,25 +409,62 @@ def team_metrics(country, ranking_dict, fifa_data, is_home=True, venue_alt=0, ve
     coach_coef = 1.0 + min(coach_score / 200, 0.20)
     fifa_c = fifa_coef(fifa_data.get(country, {}).get('FIFA排名', '50'))
 
+    # === 适应度计算 ===
+    adaptation = None
+    if team_leagues:
+        # 算该队所有位置球员对当前场地的适应度均值
+        leagues_list = []
+        leagues_list.extend(team_leagues.get('fw', []))
+        leagues_list.extend(team_leagues.get('mid', []))
+        leagues_list.extend(team_leagues.get('def', []))
+        gk_lg = team_leagues.get('gk', '')
+        if gk_lg:
+            leagues_list.append(gk_lg)
+        if leagues_list:
+            scores = [calc_adaptation(lg, venue_alt, venue_temp) for lg in leagues_list]
+            adaptation = sum(scores) / len(scores)
+
+    # === venue 系数: 原阈值 + 适应度调节 ===
     venue_coef = 1.00
     if venue_alt >= venue_cfg['altitude_threshold'] and not is_home:
-        venue_coef *= venue_cfg['altitude_penalty']
+        # 高原客队: 用适应度调节惩罚幅度
+        # adaptation=1.0 (很适应) → penalty 1.0 (无惩罚)
+        # adaptation=0.0 (完全不适应) → 原 penalty 全额
+        if adaptation is not None and adaptation_weight > 0:
+            # 在 [1.0, penalty] 之间按 (1 - adapt_weight * (1 - adaptation)) 调节
+            # adapt_weight=0 → 不用适应度 → penalty 不变
+            # adapt_weight=1, adapt=1 → penalty=1.0
+            # adapt_weight=1, adapt=0 → penalty=原值
+            use_factor = 1.0 - adaptation_weight * (1.0 - adaptation)
+            adjusted = venue_cfg['altitude_penalty'] ** use_factor
+        else:
+            adjusted = venue_cfg['altitude_penalty']
+        venue_coef *= adjusted
     if venue_temp > venue_cfg['temp_threshold']:
-        venue_coef *= venue_cfg['temp_penalty']
+        if adaptation is not None and adaptation_weight > 0:
+            use_factor = 1.0 - adaptation_weight * (1.0 - adaptation)
+            adjusted = venue_cfg['temp_penalty'] ** use_factor
+        else:
+            adjusted = venue_cfg['temp_penalty']
+        venue_coef *= adjusted
 
     return {'attack': attack, 'defense': defense, 'possession': poss,
             'coach_coef': coach_coef, 'fifa_coef': fifa_c, 'venue_coef': venue_coef,
             'rank_r': rank_r,
             'venue_alt': venue_alt, 'venue_temp': venue_temp,
-            'venue_cfg': venue_cfg}
+            'venue_cfg': venue_cfg,
+            'adaptation': round(adaptation, 3) if adaptation is not None else None}
 
 
-def calc_lambda(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25, venue_cfg=None):
+def calc_lambda(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25, venue_cfg=None,
+                 home_leagues=None, away_leagues=None, adaptation_weight=0.5):
     """算主/客队 λ（4 维对位）"""
     H = team_metrics(home, ranking_dict, fifa_data, is_home=True,
-                     venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg)
+                     venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg,
+                     team_leagues=home_leagues, adaptation_weight=adaptation_weight)
     A = team_metrics(away, ranking_dict, fifa_data, is_home=False,
-                     venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg)
+                     venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg,
+                     team_leagues=away_leagues, adaptation_weight=adaptation_weight)
 
     home_attack = H['attack']
     home_lambda = 1.3 * H['possession'] * math.sqrt(home_attack * 0.001) * H['coach_coef'] * H['venue_coef'] * H['fifa_coef']
@@ -335,13 +483,18 @@ def poisson_pmf(lam, k):
 
 
 def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25,
-                  venue_humidity=60, weather_note='', venue_cfg=None):
+                  venue_humidity=60, weather_note='', venue_cfg=None,
+                  home_leagues=None, away_leagues=None, adaptation_weight=0.5):
     """预测单场比赛"""
     H = team_metrics(home, ranking_dict, fifa_data, is_home=True,
-                     venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg)
+                     venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg,
+                     team_leagues=home_leagues, adaptation_weight=adaptation_weight)
     A = team_metrics(away, ranking_dict, fifa_data, is_home=False,
-                     venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg)
-    lh, la = calc_lambda(home, away, ranking_dict, fifa_data, venue_alt, venue_temp, venue_cfg)
+                     venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg,
+                     team_leagues=away_leagues, adaptation_weight=adaptation_weight)
+    lh, la = calc_lambda(home, away, ranking_dict, fifa_data, venue_alt, venue_temp, venue_cfg,
+                          home_leagues=home_leagues, away_leagues=away_leagues,
+                          adaptation_weight=adaptation_weight)
 
     score_probs = {}
     for k in range(7):
@@ -371,6 +524,7 @@ def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=2
             'coach_coef': round(H.get('coach_coef', 1), 3),
             'fifa_coef': round(H.get('fifa_coef', 1), 3),
             'venue_coef': round(H.get('venue_coef', 1), 3),
+            'adaptation': H.get('adaptation'),
         },
         'away': {
             'team': away,
@@ -381,6 +535,7 @@ def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=2
             'coach_coef': round(A.get('coach_coef', 1), 3),
             'fifa_coef': round(A.get('fifa_coef', 1), 3),
             'venue_coef': round(A.get('venue_coef', 1), 3),
+            'adaptation': A.get('adaptation'),
         },
         'formula': 'λ = 1.3 × 持球率 × √(attack × 0.001) × 教练 × 场地 × FIFA',
         'poisson': f'P(X=k) = (λ^k × e^-λ) / k!  |  P(主{k}, 客{m}) = P_home(k) × P_away(m)',
@@ -432,6 +587,7 @@ def compute_predictions(weights):
         'altitude_threshold': 2000, 'altitude_penalty': 0.90,
         'temp_threshold': 32, 'temp_penalty': 0.97,
     })
+    adaptation_weight = weights.get('venue_adaptation_weight', 0.5)
 
     # === 1. 跑 72 场小组赛 ===
     group_matches = defaultdict(list)
@@ -456,7 +612,16 @@ def compute_predictions(weights):
 
         pred = predict_match(m['主队'], m['客队'], ranking_dict, fifa_data,
                              venue_alt=alt, venue_temp=temp, venue_humidity=hum,
-                             weather_note=weather, venue_cfg=venue_cfg)
+                             weather_note=weather, venue_cfg=venue_cfg,
+                             home_leagues={'fw': ranking_dict.get(m['主队'], {}).get('fw_leagues', []),
+                                           'mid': ranking_dict.get(m['主队'], {}).get('mid_leagues', []),
+                                           'def': ranking_dict.get(m['主队'], {}).get('def_leagues', []),
+                                           'gk': ranking_dict.get(m['主队'], {}).get('gk_league', '')},
+                             away_leagues={'fw': ranking_dict.get(m['客队'], {}).get('fw_leagues', []),
+                                           'mid': ranking_dict.get(m['客队'], {}).get('mid_leagues', []),
+                                           'def': ranking_dict.get(m['客队'], {}).get('def_leagues', []),
+                                           'gk': ranking_dict.get(m['客队'], {}).get('gk_league', '')},
+                             adaptation_weight=adaptation_weight)
         pred['match_id'] = f"GS_{g}_{m['轮次']}_{m['主队']}_vs_{m['客队']}"
         pred['round'] = f"小组{m['组别']}第{m['轮次']}轮"
         pred['stage'] = 'group'
@@ -525,7 +690,16 @@ def compute_predictions(weights):
 
     # === 5. 跑淘汰赛 ===
     def make_ko_pred(home, away, stage, round_name, prefix):
-        pred = predict_match(home, away, ranking_dict, fifa_data, venue_cfg=venue_cfg)
+        pred = predict_match(home, away, ranking_dict, fifa_data, venue_cfg=venue_cfg,
+                             home_leagues={'fw': ranking_dict.get(home, {}).get('fw_leagues', []),
+                                           'mid': ranking_dict.get(home, {}).get('mid_leagues', []),
+                                           'def': ranking_dict.get(home, {}).get('def_leagues', []),
+                                           'gk': ranking_dict.get(home, {}).get('gk_league', '')},
+                             away_leagues={'fw': ranking_dict.get(away, {}).get('fw_leagues', []),
+                                           'mid': ranking_dict.get(away, {}).get('mid_leagues', []),
+                                           'def': ranking_dict.get(away, {}).get('def_leagues', []),
+                                           'gk': ranking_dict.get(away, {}).get('gk_league', '')},
+                             adaptation_weight=adaptation_weight)
         pred['match_id'] = f"{prefix}_{home}_vs_{away}"
         pred['round'] = round_name
         pred['stage'] = stage

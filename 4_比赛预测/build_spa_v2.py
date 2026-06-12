@@ -797,6 +797,7 @@ const SLIDER_RANGES = {
   player_to_total: { player_share: [0.0, 1.0, 0.05], coach_share: [0.0, 1.0, 0.05] },
   smoothing: { player_div: [500, 50000, 500], coach_div: [10, 1000, 10], rank_div: [100, 10000, 100] },
   venue_weights: { altitude_threshold: [500, 4000, 100], altitude_penalty: [0.5, 1.0, 0.05], temp_threshold: [15, 50, 1], temp_penalty: [0.5, 1.0, 0.05] },
+  venue_adaptation_weight: [0.0, 1.0, 0.05],
 };
 
 // 6 个预设 - 由 buildPresets() 在后端数据加载后填充
@@ -1318,6 +1319,31 @@ function openMatchDetail(matchId) {
       </tr>
     </table>
   </div>` : ''}
+  
+  ${(p.algorithm_breakdown?.home?.adaptation !== undefined || p.algorithm_breakdown?.away?.adaptation !== undefined) ? `<div class="detail-section">
+    <h4>🧗 球员场地适应度</h4>
+    <p class="muted" style="font-size:11px;margin:4px 0 8px;">
+      基于球员当前联赛的"典型主场位置"与本场对比. 1.0=完全适应, 0.0=完全不适. 适应度调节场地惩罚幅度.
+    </p>
+    <table class="lambda-table">
+      <tr>
+        <td>🧗 ${p.algorithm_breakdown.home.team} (主) 适应度</td>
+        <td><b>${(p.algorithm_breakdown.home.adaptation ?? 1.0).toFixed(2)}</b>
+          ${(p.algorithm_breakdown.home.adaptation ?? 1.0) >= 0.7 ? '<span style="color:var(--green)"> 适应良好</span>' : (p.algorithm_breakdown.home.adaptation ?? 1.0) >= 0.4 ? '<span style="color:var(--gold)"> 一般</span>' : '<span style="color:var(--red)"> 不适应</span>'}
+        </td>
+      </tr>
+      <tr>
+        <td>🧗 ${p.algorithm_breakdown.away.team} (客) 适应度</td>
+        <td><b>${(p.algorithm_breakdown.away.adaptation ?? 1.0).toFixed(2)}</b>
+          ${(p.algorithm_breakdown.away.adaptation ?? 1.0) >= 0.7 ? '<span style="color:var(--green)"> 适应良好</span>' : (p.algorithm_breakdown.away.adaptation ?? 1.0) >= 0.4 ? '<span style="color:var(--gold)"> 一般</span>' : '<span style="color:var(--red)"> 不适应</span>'}
+        </td>
+      </tr>
+      <tr style="background:var(--bg-3)">
+        <td>⚙️ 适应度调节权重</td>
+        <td>${(p.algorithm_breakdown.away.adaptation ?? 1.0) >= 0.99 ? '<span class="muted">1.0 (主队全适应, 调节无意义)</span>' : '×按当前 weights 调节惩罚幅度'}</td>
+      </tr>
+    </table>
+  </div>` : ''}
   `;
   
   $id('matchModalContent').innerHTML = html;
@@ -1361,6 +1387,9 @@ function renderSliders() {
       { f: 'altitude_penalty', label: '客队高原惩罚' },
       { f: 'temp_threshold', label: '高温阈值 (°C)' },
       { f: 'temp_penalty', label: '高温双方惩罚' }
+    ]},
+    { key: 'venue_adaptation_weight', label: '球员场地适应度', icon: '🧗', sub: [
+      { f: '', label: '适应度调节强度 (0=关闭, 1=完全生效)' }
     ]}
   ];
   
@@ -1368,23 +1397,33 @@ function renderSliders() {
   cats.forEach(cat => {
     html += `<h3 style="margin-top:14px;color:var(--accent);font-size:14px">${cat.icon} ${cat.label}</h3>`;
     cat.sub.forEach(s => {
-      const v = currentWeights[cat.key][s.f];
+      // 顶层字段 (cat.key 就是字段名, s.f 是空) vs 嵌套字段
+      const isTopLevel = !s.f;
+      const v = isTopLevel ? currentWeights[cat.key] : currentWeights[cat.key][s.f];
       // 查 SLIDER_RANGES 表
-      const range = SLIDER_RANGES[cat.key]?.[s.f] || [0, 100, 1];
+      const range = isTopLevel
+        ? (SLIDER_RANGES[cat.key] || [0, 100, 1])
+        : (SLIDER_RANGES[cat.key]?.[s.f] || [0, 100, 1]);
       const [min, max, defaultStep] = range;
       // step: 比例类用 0.05, who_bonus_base 用 0.1, 其他用 1
       let step = defaultStep;
-      if (s.f === 'player_share' || s.f === 'coach_share') step = 0.05;
+      if (s.f === 'player_share' || s.f === 'coach_share' || isTopLevel) step = 0.05;
       else if (s.f === 'who_bonus_base') step = 0.1;
       else if (cat.key === 'smoothing') step = 100;
       else if (cat.key === 'position_top_n') step = 1;
       // 当前值如果超界就 clamp 到范围内
-      const clampedV = Math.max(min, Math.min(max, v));
-      if (clampedV !== v) currentWeights[cat.key][s.f] = clampedV;
+      const clampedV = Math.max(min, Math.min(max, v ?? min));
+      if (isTopLevel) {
+        if (currentWeights[cat.key] !== clampedV) currentWeights[cat.key] = clampedV;
+      } else {
+        if (currentWeights[cat.key][s.f] !== clampedV) currentWeights[cat.key][s.f] = clampedV;
+      }
+      const sliderId = isTopLevel ? `${cat.key}` : `${cat.key}-${s.f}`;
+      const updateFn = isTopLevel ? `updateSliderTop('${cat.key}', this.value)` : `updateSlider('${cat.key}', '${s.f}', this.value)`;
       html += `<div class="slider-group">
-        <label>${s.label} <span class="value" id="slider-${cat.key}-${s.f}">${typeof clampedV === 'number' && step < 1 ? clampedV.toFixed(2) : clampedV}</span> <span style="color:var(--text-3);font-size:10px">[${min}–${max}]</span></label>
+        <label>${s.label} <span class="value" id="slider-${sliderId}">${typeof clampedV === 'number' && step < 1 ? clampedV.toFixed(2) : clampedV}</span> <span style="color:var(--text-3);font-size:10px">[${min}–${max}]</span></label>
         <input type="range" min="${min}" max="${max}" step="${step}" value="${clampedV}" 
-          oninput="updateSlider('${cat.key}', '${s.f}', this.value)">
+          oninput="${updateFn}">
       </div>`;
     });
   });
@@ -1395,6 +1434,12 @@ function updateSlider(cat, field, val) {
   const v = parseFloat(val);
   currentWeights[cat][field] = v;
   $id(`slider-${cat}-${field}`).textContent = (cat === 'player_to_total') ? v.toFixed(2) : v;
+}
+
+function updateSliderTop(key, val) {
+  const v = parseFloat(val);
+  currentWeights[key] = v;
+  $id(`slider-${key}`).textContent = v.toFixed(2);
 }
 
 function renderPresets() {
