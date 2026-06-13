@@ -1441,8 +1441,25 @@ function teamTag(team) {
 
 // ============== 工具函数 ==============
 function $id(id) { return document.getElementById(id); }
-function escHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+function escHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})); }
 function fmtNum(n) { return Number(n).toLocaleString('zh-CN', {maximumFractionDigits: 1}); }
+
+// 比赛日期格式化: "2026-06-12 03:00" → "6月12日 03:00"
+// 或 "6月29日" 保持不变
+function fmtMatchDate(s) {
+  if (!s) return '';
+  // 已经是 "X月X日" 格式 (KO 阶段) → 原样
+  if (/^\d+月\d+日/.test(s)) return s;
+  // ISO 格式 "2026-06-12 03:00" → 转
+  const m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:\s+(\d{1,2}:\d{2}))?/);
+  if (m) {
+    const month = parseInt(m[2], 10);
+    const day = parseInt(m[3], 10);
+    const time = m[4] || '';
+    return `${month}月${day}日${time ? ' ' + time : ''}`;
+  }
+  return s;  // fallback 原样
+}
 
 // ============== 主题切换 ==============
 function toggleTheme() {
@@ -1661,7 +1678,7 @@ function buildTeamDetailHTML(teamName) {
       <div class="schedule-list">
         ${PREDICTIONS.filter(p => p.home === teamName || p.away === teamName).map(p => `
           <div class="match-row" onclick="openMatchDetail('${p.match_id}')">
-            <div class="match-date">${p.date || ''}</div>
+            <div class="match-date">${fmtMatchDate(p.date) || ''}</div>
             <div class="match-teams">${escHtml(p.home)} <span class="match-vs">vs</span> ${escHtml(p.away)}</div>
             <div class="match-meta">${p.actual_score || ''} ${p.went_to_pen ? '(点球)' : ''}</div>
           </div>
@@ -1815,7 +1832,7 @@ function renderSchedule() {
     return `
     <div class="match-row" onclick="openMatchDetail('${p.match_id}')">
       <span class="stage-pill" data-st="${p.stage}">${stageLabel(p.stage)}</span>
-      <div class="match-date">${p.date || '-'}<span class="round">${escHtml(p.round || '')}</span></div>
+      <div class="match-date">${fmtMatchDate(p.date) || '-'}<span class="round">${escHtml(p.round || '')}</span></div>
       <div class="match-teams">
         <div class="match-side home ${hCls}">
           <span class="name">${escHtml(p.home)}</span>
@@ -1856,7 +1873,7 @@ function openMatchDetail(matchId) {
     <div>
       <h2><a class="team-link" onclick="openMatchDrawer('${escHtml(p.home)}', 'left'); event.stopPropagation();">${escHtml(p.home)}</a> vs <a class="team-link" onclick="openMatchDrawer('${escHtml(p.away)}', 'right'); event.stopPropagation();">${escHtml(p.away)}</a></h2>
       <p class="muted" style="font-size:12px;margin-top:4px;">
-        ${escHtml(p.round || p.stage || '')}${p.date ? ' · ' + escHtml(p.date) : ''}${p.stadium ? ' · ' + escHtml(p.stadium) : ''}
+        ${escHtml(p.round || p.stage || '')}${p.date ? ' · ' + escHtml(fmtMatchDate(p.date)) : ''}${p.stadium ? ' · ' + escHtml(p.stadium) : ''}
       </p>
     </div>
     <button class="modal-close" onclick="closeMatchModal()">×</button>
