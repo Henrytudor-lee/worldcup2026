@@ -136,7 +136,7 @@ def evaluate(weights, verbose=True):
     }
 
 
-def calibrate(n_iter=20, use_bayes=True, verbose=True):
+def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
     """贝叶斯优化 weights
 
     调 23 固定系数 (略过 _dynamic_weights, 因为 30 动态因子 = 80+ 参数, 4 场样本不够)
@@ -144,18 +144,30 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True):
 
     use_bayes=True 用 scikit-optimize gp_minimize
     use_bayes=False 网格搜索兜底
+
+    log_callback: 可选函数, 接收 (level, message) 字符串
+                  level: 'info' / 'iter' / 'best' / 'done' / 'error'
+                  用于实时推日志到前端 (SSE)
     """
     from weights_schema import DEFAULT, RANGES, validate, merge_with_default
+
+    def log(level, msg):
+        if verbose:
+            print(f"  [{level}] {msg}")
+        if log_callback:
+            try:
+                log_callback(level, msg)
+            except Exception:
+                pass  # 回调出错不影响主流程
 
     history = load_history()
     base_eval = evaluate(DEFAULT, verbose=False)
     if 'error' in base_eval:
+        log('error', f"评估失败: {base_eval['error']}")
         return {'error': base_eval['error']}
 
-    if verbose:
-        print(f"\n=== 贝叶斯校准 (n_iter={n_iter}) ===")
-        print(f"  起始 loss: {base_eval['loss']:.2f}")
-        print(f"  起始 accuracy: {base_eval['win_accuracy']:.1%}")
+    log('info', f"🎯 启动贝叶斯校准 (n_iter={n_iter}, method={'bayes' if use_bayes else 'grid'})")
+    log('info', f"  起始 loss: {base_eval['loss']:.2f}, accuracy: {base_eval['win_accuracy']:.1%}")
 
     # 1. 准备搜索空间: 23 个固定系数
     space = []
@@ -243,6 +255,8 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True):
                     best_loss = loss
                     best_weights = w
                     best_iter = i
+                # 实时日志
+                log('iter', f"iter {i+1}/{len(result.func_vals)}: loss={loss:.2f} acc={ev.get('win_accuracy',0):.0%} mae={ev.get('score_mae',0):.2f} {'🏆 NEW BEST' if loss == best_loss else ''}")
         except ImportError:
             if verbose:
                 print("  [warn] scikit-optimize 未装, 改用网格搜索")
@@ -272,6 +286,8 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True):
                 best_loss = loss
                 best_weights = w
                 best_iter = i
+            # 实时日志
+            log('iter', f"iter {i+1}/{n_random}: loss={loss:.2f} acc={ev.get('win_accuracy',0):.0%} mae={ev.get('score_mae',0):.2f} {'🏆 NEW BEST' if loss == best_loss else ''}")
 
     # 4. 保存历史
     record = {
@@ -296,6 +312,9 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True):
         print(f"  改善: {base_eval['loss'] - best_loss:.2f} ({base_eval['loss'] - best_loss:.2f} 减少)")
         print(f"  最佳 iter: #{best_iter}")
         print(f"  历史已存: {CALIB_HISTORY}")
+
+    log('done', f"✅ 校准完成: loss {base_eval['loss']:.2f} → {best_loss:.2f} (改善 {base_eval['loss'] - best_loss:.2f}), 最佳 iter #{best_iter}")
+    log('done', f"  history_count: {len(history)}, best_weights 已存盘")
 
     return {
         'base_loss': base_eval['loss'],

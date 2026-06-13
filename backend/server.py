@@ -8,15 +8,22 @@ Mavis PDP Backend Server
 或:   uvicorn server:app --host 0.0.0.0 --port 8765
 """
 import json
+import threading
+import queue
+import time
+import uuid
 from fastapi import FastAPI, Query, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 import predictor
 import calibrator
 import dynamic_factors
 from weights_schema import DEFAULT, PRESETS, validate, merge_with_default
 
-app = FastAPI(title="Mavis PDP Backend", version="2.2")
+app = FastAPI(title="Mavis PDP Backend", version="2.2.1")
+
+# 校准日志: {run_id: Queue} 全局 dict
+CALIB_QUEUES: dict = {}
 
 # CORS: 允许前端 8765 / 8000 / 8080 跨域调
 app.add_middleware(
@@ -148,18 +155,75 @@ def run_calibration(
     n_iter: int = Query(default=20, ge=1, le=200),
     use_bayes: bool = Query(default=True),
 ):
-    """触发贝叶斯校准 (后台异步跑, 1-2 分钟)"""
-    def _run():
-        calibrator.calibrate(n_iter=n_iter, use_bayes=use_bayes, verbose=False)
+    """触发贝叶斯校准 (后台异步跑, 1-2 分钟)
+    返回 run_id, 前端用 EventSource 监听 /api/calibration/stream?run_id=xxx
+    """
+    run_id = str(uuid.uuid4())[:8]
+    q = queue.Queue(maxsize=1000)
+    CALIB_QUEUES[run_id] = q
 
-    bg = BackgroundTasks()
-    bg.add_task(_run)
+    def _run():
+        def log_callback(level, msg):
+            try:
+                q.put_nowait({'level': level, 'msg': msg, 'ts': time.time()})
+            except queue.Full:
+                pass  # 队列满就丢, 避免阻塞主流程
+        try:
+            calibrator.calibrate(n_iter=n_iter, use_bayes=use_bayes,
+                                 verbose=False, log_callback=log_callback)
+        except Exception as e:
+            log_callback('error', f"calibrate 异常: {e}")
+        finally:
+            log_callback('close', 'DONE')  # 关闭信号
+
+    t = threading.Thread(target=_run, daemon=True)
+    t.start()
+
     return {
         "status": "started",
+        "run_id": run_id,
         "n_iter": n_iter,
         "method": "bayes" if use_bayes else "grid",
-        "message": f"校准已启动 ({n_iter} 轮), 完成后历史会更新到 /api/calibration",
+        "stream_url": f"/api/calibration/stream?run_id={run_id}",
+        "message": f"校准已启动 ({n_iter} 轮), 通过 EventSource 监听 stream_url 实时看日志",
     }
+
+
+@app.get("/api/calibration/stream")
+def calibration_stream(run_id: str = Query(...)):
+    """SSE 流式输出校准日志
+
+    前端: new EventSource(`/api/calibration/stream?run_id=${run_id}`)
+    """
+    if run_id not in CALIB_QUEUES:
+        raise HTTPException(status_code=404, detail=f"run_id '{run_id}' 不存在或已完成")
+
+    q = CALIB_QUEUES[run_id]
+
+    def event_stream():
+        # 启动消息
+        yield f"data: {json.dumps({'level': 'info', 'msg': f'📡 SSE 已连接 (run_id={run_id})'})}\n\n"
+        while True:
+            try:
+                item = q.get(timeout=30)  # 30s 无消息自动断
+            except queue.Empty:
+                # 心跳包
+                yield ": heartbeat\n\n"
+                continue
+            yield f"data: {json.dumps(item, ensure_ascii=False)}\n\n"
+            if item.get('level') == 'close':
+                break
+        # 清理
+        CALIB_QUEUES.pop(run_id, None)
+
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",  # 禁用 nginx 缓冲
+        },
+    )
 
 
 if __name__ == '__main__':

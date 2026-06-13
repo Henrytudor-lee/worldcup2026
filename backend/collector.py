@@ -68,7 +68,11 @@ def to_zh(team_en):
 def fetch_espn_scoreboard(date_str):
     """抓 ESPN 某日 scoreboard, 返回 FIFA 已完赛比赛
 
-    date_str: '2026-06-12'
+    ⚠️ ESPN 按**美东 (ET) 日期**归类, 不是用户本地时区!
+    美东 6/11 晚 8:00 = 北京 6/12 上午 8:00, 归在 6/11.
+    用户说"昨天 2 场", 可能漏了"前天美东 0:00-23:59"那批.
+
+    date_str: '2026-06-12' (美东日期)
     返回 [(home_zh, away_zh, home_score, away_score, key_events), ...]
     """
     yyyy, mm, dd = date_str.split('-')
