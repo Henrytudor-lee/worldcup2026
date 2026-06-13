@@ -1279,6 +1279,8 @@ async function loadFromBackend() {
   const pRes = await fetch(`${API_BASE}/api/predictions`);
   const pData = await pRes.json();
   PREDICTIONS = pData.predictions;
+  // 3.1) 重算小组赛排名 (PREDICTIONS 此时才有数据)
+  GROUP_RANK = computeGroupRankings();
   // 4) 球员（一次拉全部，按国家分组）
   const plRes = await fetch(`${API_BASE}/api/players`);
   const plData = await plRes.json();
@@ -1410,7 +1412,8 @@ function computeGroupRankings() {
   });
   return rank;
 }
-const GROUP_RANK = computeGroupRankings();
+// 注意: GROUP_RANK 必须等 PREDICTIONS 加载后再算 (loadFromBackend 末尾)
+let GROUP_RANK = {};
 
 function teamTag(team) {
   const flag = FLAGS[team] || '🏳️';
@@ -2167,6 +2170,8 @@ async function runPrediction() {
     }
     const pData = await pRes.json();
     PREDICTIONS = pData.predictions || [];
+    // 重算小组赛排名 (因为 PREDICTIONS 变化了)
+    GROUP_RANK = computeGroupRankings();
   } catch (e) {
     console.error('后端连接失败:', e);
     alert('❌ 无法连接后端 http://localhost:8765，请先启动 backend/server.py');
