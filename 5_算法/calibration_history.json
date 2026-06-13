@@ -1,0 +1,207 @@
+[
+  {
+    "timestamp": "2026-06-13 17:44:06",
+    "n_iter": 5,
+    "method": "grid",
+    "base_loss": -45.0,
+    "best_loss": -45.0,
+    "best_iter": -1,
+    "improvement": 0.0,
+    "best_weights": {
+      "position_top_n": {
+        "FW": 3,
+        "MID": 3,
+        "DEF": 4,
+        "GK": 1
+      },
+      "status_weights": {
+        "g_per_goal": 40,
+        "a_per_assist": 60,
+        "who_bonus_base": 6.5,
+        "who_bonus_denom": 4
+      },
+      "nat_intl": {
+        "g_per_goal": 400,
+        "a_per_assist": 600
+      },
+      "def_gk_weights": {
+        "base_factor": 0.95,
+        "honors_per_champ": 15,
+        "wc_per_ga": 100
+      },
+      "player_to_total": {
+        "player_share": 0.7,
+        "coach_share": 0.3
+      },
+      "smoothing": {
+        "player_div": 5000,
+        "coach_div": 100,
+        "rank_div": 1000
+      },
+      "venue_weights": {
+        "altitude_threshold": 2000,
+        "altitude_penalty": 0.9,
+        "temp_threshold": 32,
+        "temp_penalty": 0.97
+      },
+      "venue_adaptation_weight": 0.5
+    },
+    "iterations": [
+      {
+        "iter": 0,
+        "loss": 100,
+        "accuracy": 1.0,
+        "mae": 1.0,
+        "params": {
+          "position_top_n.FW": 4.1971,
+          "position_top_n.MID": 1.1251,
+          "position_top_n.DEF": 2.9252,
+          "position_top_n.GK": 1.4464,
+          "status_weights.g_per_goal": 149.9295,
+          "status_weights.a_per_assist": 138.5729,
+          "status_weights.who_bonus_base": 9.2453,
+          "status_weights.who_bonus_denom": 2.6518,
+          "nat_intl.g_per_goal": 450.8257,
+          "nat_intl.a_per_assist": 78.3074,
+          "def_gk_weights.base_factor": 0.7186,
+          "def_gk_weights.honors_per_champ": 50.5355,
+          "def_gk_weights.wc_per_ga": 36.2706,
+          "player_to_total.player_share": 0.1988,
+          "player_to_total.coach_share": 0.6499,
+          "smoothing.player_div": 27474.6033,
+          "smoothing.coach_div": 228.2362,
+          "smoothing.rank_div": 5933.7303,
+          "venue_weights.altitude_threshold": 3333.0066,
+          "venue_weights.altitude_penalty": 0.5032,
+          "venue_weights.temp_threshold": 43.2037,
+          "venue_weights.temp_penalty": 0.8491,
+          "venue_adaptation_weight": 0.3403
+        }
+      },
+      {
+        "iter": 1,
+        "loss": 100,
+        "accuracy": 1.0,
+        "mae": 0.5,
+        "params": {
+          "position_top_n.FW": 1.7774,
+          "position_top_n.MID": 5.7861,
+          "position_top_n.DEF": 3.3562,
+          "position_top_n.GK": 1.1855,
+          "status_weights.g_per_goal": 28.3761,
+          "status_weights.a_per_assist": 171.0239,
+          "status_weights.who_bonus_base": 7.2261,
+          "status_weights.who_bonus_denom": 16.3354,
+          "nat_intl.g_per_goal": 743.2452,
+          "nat_intl.a_per_assist": 559.4167,
+          "def_gk_weights.base_factor": 1.4731,
+          "def_gk_weights.honors_per_champ": 37.8534,
+          "def_gk_weights.wc_per_ga": 556.5202,
+          "player_to_total.player_share": 0.8294,
+          "player_to_total.coach_share": 0.6185,
+          "smoothing.player_div": 43154.4916,
+          "smoothing.coach_div": 581.5786,
+          "smoothing.rank_div": 7075.2612,
+          "venue_weights.altitude_threshold": 660.3853,
+          "venue_weights.altitude_penalty": 0.6139,
+          "venue_weights.temp_threshold": 25.1286,
+          "venue_weights.temp_penalty": 0.5399,
+          "venue_adaptation_weight": 0.2328
+        }
+      },
+      {
+        "iter": 2,
+        "loss": 100,
+        "accuracy": 1.0,
+        "mae": 3.0,
+        "params": {
+          "position_top_n.FW": 1.505,
+          "position_top_n.MID": 2.3899,
+          "position_top_n.DEF": 5.4498,
+          "position_top_n.GK": 1.7297,
+          "status_weights.g_per_goal": 80.3344,
+          "status_weights.a_per_assist": 49.8063,
+          "status_weights.who_bonus_base": 4.8688,
+          "status_weights.who_bonus_denom": 18.7964,
+          "nat_intl.g_per_goal": 665.6336,
+          "nat_intl.a_per_assist": 628.6745,
+          "def_gk_weights.base_factor": 0.6711,
+          "def_gk_weights.honors_per_champ": 72.9127,
+          "def_gk_weights.wc_per_ga": 171.7685,
+          "player_to_total.player_share": 0.3795,
+          "player_to_total.coach_share": 0.9895,
+          "smoothing.player_div": 32179.9881,
+          "smoothing.coach_div": 561.3802,
+          "smoothing.rank_div": 6877.6811,
+          "venue_weights.altitude_threshold": 3449.9817,
+          "venue_weights.altitude_penalty": 0.888,
+          "venue_weights.temp_threshold": 23.0167,
+          "venue_weights.temp_penalty": 0.5161,
+          "venue_adaptation_weight": 0.3155
+        }
+      },
+      {
+        "iter": 3,
+        "loss": 100,
+        "accuracy": 0.5,
+        "mae": 2.5,
+        "params": {
+          "position_top_n.FW": 2.3387,
+          "position_top_n.MID": 2.0549,
+          "position_top_n.DEF": 7.6004,
+          "position_top_n.GK": 2.7527,
+          "status_weights.g_per_goal": 69.7888,
+          "status_weights.a_per_assist": 134.5333,
+          "status_weights.who_bonus_base": 5.7694,
+          "status_weights.who_bonus_denom": 18.3764,
+          "nat_intl.g_per_goal": 485.9093,
+          "nat_intl.a_per_assist": 301.6362,
+          "def_gk_weights.base_factor": 0.7466,
+          "def_gk_weights.honors_per_champ": 56.1368,
+          "def_gk_weights.wc_per_ga": 270.1142,
+          "player_to_total.player_share": 0.5846,
+          "player_to_total.coach_share": 0.8978,
+          "smoothing.player_div": 20270.325,
+          "smoothing.coach_div": 227.1276,
+          "smoothing.rank_div": 9975.6223,
+          "venue_weights.altitude_threshold": 2283.342,
+          "venue_weights.altitude_penalty": 0.5455,
+          "venue_weights.temp_threshold": 16.6491,
+          "venue_weights.temp_penalty": 0.5548,
+          "venue_adaptation_weight": 0.6274
+        }
+      },
+      {
+        "iter": 4,
+        "loss": 100,
+        "accuracy": 1.0,
+        "mae": 0.5,
+        "params": {
+          "position_top_n.FW": 4.9604,
+          "position_top_n.MID": 3.1108,
+          "position_top_n.DEF": 1.4447,
+          "position_top_n.GK": 1.7632,
+          "status_weights.g_per_goal": 199.2631,
+          "status_weights.a_per_assist": 110.5317,
+          "status_weights.who_bonus_base": 9.7975,
+          "status_weights.who_bonus_denom": 17.3548,
+          "nat_intl.g_per_goal": 60.907,
+          "nat_intl.a_per_assist": 734.6857,
+          "def_gk_weights.base_factor": 1.1817,
+          "def_gk_weights.honors_per_champ": 53.697,
+          "def_gk_weights.wc_per_ga": 274.1569,
+          "player_to_total.player_share": 0.641,
+          "player_to_total.coach_share": 0.1116,
+          "smoothing.player_div": 22020.8799,
+          "smoothing.coach_div": 459.1865,
+          "smoothing.rank_div": 9542.7777,
+          "venue_weights.altitude_threshold": 3565.4853,
+          "venue_weights.altitude_penalty": 0.6317,
+          "venue_weights.temp_threshold": 32.5205,
+          "venue_weights.temp_penalty": 0.5893,
+          "venue_adaptation_weight": 0.9126
+        }
+      }
+    ]
+  }
+]

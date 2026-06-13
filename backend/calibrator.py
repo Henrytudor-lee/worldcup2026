@@ -172,6 +172,10 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True):
                 param_names.append(f'{group_key}.{k}')
 
     # 2. 参数 ↔ weights 转换
+    # position_top_n 字段是 int, 其他都是 float
+    INT_FIELDS = {('position_top_n', 'FW'), ('position_top_n', 'MID'),
+                  ('position_top_n', 'DEF'), ('position_top_n', 'GK')}
+
     def params_to_weights(params):
         """params 列表 → weights dict"""
         w = deepcopy(DEFAULT)
@@ -179,7 +183,11 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True):
             v = params[i]
             if '.' in name:
                 g, k = name.split('.', 1)
-                w[g][k] = v
+                # int 字段 (position_top_n.*) 要 round
+                if (g, k) in INT_FIELDS:
+                    w[g][k] = max(1, int(round(v)))
+                else:
+                    w[g][k] = v
             else:
                 w[name] = v
         return w
@@ -189,6 +197,10 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True):
         ok, _ = validate(w)
         if not ok:
             return 100  # 极端值返回大 loss
+        # 防 0 除: smoothing 分母不能 = 0
+        for k in ('player_div', 'coach_div', 'rank_div'):
+            if w['smoothing'].get(k, 0) < 1:
+                return 100
         try:
             ev = evaluate(w, verbose=False)
             if 'error' in ev:
@@ -237,28 +249,17 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True):
             use_bayes = False
 
     if not use_bayes:
-        # 网格搜索兜底: 每个参数取 3 档 (lo, mid, hi)
+        # 网格搜索兜底: 每个参数取 2 档 (lo, hi) = 2^23 太大, 改用随机采样
         from itertools import product
-        grid = []
-        for lo, hi in space:
-            grid.append([lo, (lo + hi) / 2, hi])
-        n_total = 1
-        for g in grid:
-            n_total *= len(g)
-        if n_total > 200:
-            # 截断, 只跑前 50 个组合
-            if verbose:
-                print(f"  [info] 网格 {n_total} 太大, 截断到 50 个")
-            grid = [g[:2] for g in grid]
-            n_total = 1
-            for g in grid:
-                n_total *= len(g)
-        i = 0
-        for combo in product(*grid):
-            if i >= 50:
-                break
-            loss = eval_loss(list(combo))
-            w = params_to_weights(list(combo))
+        import random
+        random.seed(42)
+        n_random = min(n_iter, 30)  # 随机采 30 组
+        if verbose:
+            print(f"  [info] 网格搜索: 随机采样 {n_random} 组 (替代 2^N 全网格)")
+        for i in range(n_random):
+            combo = [random.uniform(lo, hi) for lo, hi in space]
+            loss = eval_loss(combo)
+            w = params_to_weights(combo)
             ev = evaluate(w, verbose=False)
             all_iterations.append({
                 'iter': i,
@@ -271,7 +272,6 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True):
                 best_loss = loss
                 best_weights = w
                 best_iter = i
-            i += 1
 
     # 4. 保存历史
     record = {

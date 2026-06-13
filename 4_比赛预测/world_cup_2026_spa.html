@@ -10,64 +10,312 @@
   --bg-2: #161b22;
   --bg-3: #21262d;
   --border: #30363d;
+  --border-2: #3d444d;
   --text: #e6edf3;
   --text-2: #adbac7;
   --text-3: #7d8590;
   --accent: #f0883e;
+  --accent-soft: rgba(240, 136, 62, 0.14);
   --accent-2: #58a6ff;
   --green: #3fb950;
   --red: #f85149;
   --gold: #ffd700;
   --silver: #c0c0c0;
   --bronze: #cd7f32;
+  /* 球赛编辑风新 token */
+  --hero-bg: linear-gradient(120deg, #0f1e3a 0%, #1a1438 55%, #2a1248 100%);
+  --hero-ring: 1px solid rgba(255,255,255,0.08);
+  --stage-group: #58a6ff;
+  --stage-r32:   #a371f7;
+  --stage-r16:   #d2a8ff;
+  --stage-qf:    #f0883e;
+  --stage-sf:    #f85149;
+  --stage-final: #ffd700;
+  --stage-3rd:   #cd7f32;
+  --rank-elite: #ffd700;     /* top 8 */
+  --rank-strong:#3fb950;     /* top 16 */
+  --rank-mid:   #adbac7;     /* top 32 */
+  --rank-low:   #7d8590;     /* rest */
+  --num-font: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
 }
 [data-theme="light"] {
   --bg: #ffffff;
   --bg-2: #f6f8fa;
   --bg-3: #eaeef2;
   --border: #d0d7de;
+  --border-2: #afb8c1;
   --text: #1f2328;
   --text-2: #59636e;
   --text-3: #818b98;
   --accent: #cf222e;
+  --accent-soft: rgba(207,34,46,0.10);
   --accent-2: #0969da;
   --green: #1a7f37;
   --red: #cf222e;
+  --hero-bg: linear-gradient(120deg, #0f1e3a 0%, #1a1438 55%, #2a1248 100%); /* hero 维持深色 */
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; background: var(--bg); color: var(--text); padding: 0; transition: background 0.3s, color 0.3s; }
 .app { max-width: 1700px; margin: 0 auto; padding: 20px; }
-.top-bar { background: linear-gradient(90deg, #1f6feb 0%, #8957e5 100%); padding: 24px 32px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-.top-bar h1 { color: #fff; font-size: 24px; }
-.top-bar .stats { display: flex; gap: 12px; flex-wrap: wrap; }
-.stat { background: rgba(0,0,0,0.3); padding: 8px 14px; border-radius: 6px; }
-.stat .label { font-size: 11px; color: #adbac7; }
-.stat .value { font-size: 16px; font-weight: bold; color: #fff; margin-top: 2px; }
-.stat.gold .value { color: var(--gold); }
+
+/* ===== 顶栏 (Hero) — 球赛编辑风 ===== */
+.top-bar {
+  background: var(--hero-bg);
+  border: var(--hero-ring);
+  padding: 22px 28px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.top-bar::before {
+  /* 微纹理: 球场草坪斜纹光 */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(115deg, transparent 0 24px, rgba(255,255,255,0.018) 24px 48px);
+  pointer-events: none;
+}
+.top-bar::after {
+  /* 右上角金色奖杯光晕 */
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(255,215,0,0.18) 0%, transparent 65%);
+  pointer-events: none;
+}
+.top-bar .brand { position: relative; z-index: 1; }
+.top-bar .eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.55);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+.top-bar h1 {
+  color: #fff;
+  font-size: 24px;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.top-bar h1 .ver {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.08);
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+.top-bar .stats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  position: relative;
+  z-index: 1;
+}
+.stat {
+  background: rgba(0,0,0,0.32);
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.06);
+  min-width: 76px;
+}
+.stat .label { font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 0.06em; text-transform: uppercase; }
+.stat .value {
+  font-family: var(--num-font);
+  font-variant-numeric: tabular-nums;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 2px;
+  letter-spacing: -0.01em;
+}
+.stat.gold   .value { color: var(--gold);   text-shadow: 0 0 12px rgba(255,215,0,0.25); }
 .stat.silver .value { color: var(--silver); }
 .stat.bronze .value { color: var(--bronze); }
-.top-bar-actions { display: flex; gap: 8px; }
-.top-bar-actions button { background: rgba(0,0,0,0.3); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
-.top-bar-actions button:hover { background: rgba(0,0,0,0.5); }
-.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 20px; overflow-x: auto; }
-.tab { background: none; border: none; color: var(--text-2); padding: 12px 20px; cursor: pointer; font-size: 14px; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+.top-bar-actions { display: flex; gap: 8px; position: relative; z-index: 1; align-self: flex-start; }
+.top-bar-actions button {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.18s;
+  backdrop-filter: blur(4px);
+}
+.top-bar-actions button:hover { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.24); }
+
+/* ===== Tab 栏 ===== */
+.tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+  overflow-x: auto;
+  padding: 0 4px;
+}
+.tab {
+  background: none;
+  border: none;
+  color: var(--text-2);
+  padding: 12px 18px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.18s;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  border-radius: 6px 6px 0 0;
+  position: relative;
+  top: 1px;
+}
 .tab:hover { color: var(--text); background: var(--bg-2); }
-.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: var(--bg-2);
+}
+.tab.active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 18%; right: 18%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  border-radius: 0 0 2px 2px;
+  opacity: 0.6;
+}
 .tab-content { display: none; }
 .tab-content.active { display: block; }
-.section-title { font-size: 18px; font-weight: bold; margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); color: var(--accent); }
+
+/* ===== Section title 装饰条 ===== */
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 24px 0 12px;
+  padding: 0 0 8px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  position: relative;
+  letter-spacing: -0.01em;
+}
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 4px; bottom: 12px;
+  width: 4px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  border-radius: 2px;
+}
 .muted { color: var(--text-3); font-size: 12px; }
 
 /* ⚽ 球队 */
-.teams-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-.group-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
-.group-header { background: linear-gradient(90deg, #1f6feb, #8957e5); color: #fff; padding: 6px 12px; border-radius: 4px; font-weight: bold; text-align: center; margin-bottom: 10px; font-size: 14px; }
-.team-card { display: flex; align-items: center; padding: 8px; border-radius: 4px; cursor: pointer; transition: background 0.2s; gap: 10px; }
-.team-card:hover { background: var(--bg-3); }
-.team-rank { color: var(--accent); font-weight: bold; min-width: 24px; }
-.team-flag { font-size: 18px; }
-.team-name { flex: 1; font-size: 14px; }
-.team-rating { font-size: 12px; color: var(--text-3); }
+.teams-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.group-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0;
+  overflow: hidden;
+  transition: border-color 0.18s, transform 0.18s;
+}
+.group-card:hover { border-color: var(--border-2); }
+
+/* 干净 header: 圆角字母 + 标签 (取代紫渐变) */
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+}
+.group-header .glyph {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), #e35a1c);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0;
+  box-shadow: 0 2px 6px rgba(240,136,62,0.25);
+}
+.group-header .glyph.up { background: linear-gradient(135deg, #58a6ff, #1f6feb); box-shadow: 0 2px 6px rgba(88,166,255,0.25); }
+.group-header .glyph.down { background: linear-gradient(135deg, #a371f7, #6e40c9); box-shadow: 0 2px 6px rgba(163,113,247,0.25); }
+.group-header .title { display: flex; flex-direction: column; }
+.group-header .title .main { font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.1; }
+.group-header .title .sub { font-size: 10px; color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; }
+
+.group-body { padding: 6px 8px; }
+
+.team-card {
+  display: grid;
+  grid-template-columns: 32px 22px 1fr auto;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  gap: 10px;
+  position: relative;
+}
+.team-card:hover { background: var(--bg-3); transform: translateX(2px); }
+.team-card::before {
+  content: '';
+  position: absolute;
+  left: 2px; top: 8px; bottom: 8px;
+  width: 3px;
+  background: transparent;
+  border-radius: 2px;
+  transition: background 0.15s;
+}
+.team-card:hover::before { background: var(--accent); }
+.team-rank {
+  font-family: var(--num-font);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 13px;
+  text-align: center;
+  min-width: 32px;
+}
+.team-rank.tier-elite  { color: var(--rank-elite);  }
+.team-rank.tier-strong { color: var(--rank-strong); }
+.team-rank.tier-mid    { color: var(--rank-mid);    }
+.team-rank.tier-low    { color: var(--rank-low);    }
+.team-flag { font-size: 19px; line-height: 1; }
+.team-name { font-size: 13.5px; color: var(--text); font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.team-rating {
+  font-size: 10.5px;
+  color: var(--text-3);
+  font-family: var(--num-font);
+  font-variant-numeric: tabular-nums;
+  background: var(--bg-3);
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  letter-spacing: 0.02em;
+}
 
 /* 球队详情 Modal */
 .modal-overlay { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); overflow: auto; }
@@ -95,23 +343,194 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 
 /* 📅 赛程 */
 .schedule-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
-.schedule-tab { background: var(--bg-2); border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
-.schedule-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-.schedule-list { display: grid; gap: 8px; }
-.match-row { background: var(--bg-2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; display: grid; grid-template-columns: 100px 1fr 200px; gap: 12px; align-items: center; cursor: pointer; }
-.match-row:hover { border-color: var(--accent-2); }
-.match-date { font-size: 12px; color: var(--text-3); }
-.match-teams { font-size: 14px; display: flex; align-items: center; gap: 6px; }
+.schedule-tab {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 500;
+  transition: all 0.15s;
+  letter-spacing: 0.02em;
+}
+.schedule-tab:hover { border-color: var(--accent); color: var(--accent); }
+.schedule-tab.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(240,136,62,0.3);
+}
+.schedule-list { display: grid; gap: 6px; }
+
+/* 球赛编辑风赛程行: [stage 色片] [日期/轮次] [主队+国旗 — 比分 — 国旗+客队] [λ 数值] */
+.match-row {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border-2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: grid;
+  grid-template-columns: 64px 110px 1fr 110px;
+  gap: 14px;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.match-row:hover {
+  border-color: var(--accent-2);
+  border-left-color: var(--accent);
+  transform: translateX(2px);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* stage 色片 */
+.stage-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+  font-family: var(--num-font);
+}
+.stage-pill[data-st="group"] { background: var(--stage-group); }
+.stage-pill[data-st="R32"]   { background: var(--stage-r32); }
+.stage-pill[data-st="R16"]   { background: var(--stage-r16); color: #21262d; }
+.stage-pill[data-st="QF"]    { background: var(--stage-qf); }
+.stage-pill[data-st="SF"]    { background: var(--stage-sf); }
+.stage-pill[data-st="FINAL"] { background: var(--stage-final); color: #21262d; box-shadow: 0 0 10px rgba(255,215,0,0.4); }
+.stage-pill[data-st="3RD"]   { background: var(--stage-3rd); }
+
+.match-date {
+  font-family: var(--num-font);
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  color: var(--text-3);
+  line-height: 1.4;
+}
+.match-date .round { display: block; color: var(--text-2); font-size: 10.5px; margin-top: 1px; }
+
+/* 队伍 + 比分行 */
+.match-teams {
+  display: grid;
+  grid-template-columns: 1fr 90px 1fr;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+}
+.match-side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.match-side .flag { font-size: 18px; flex-shrink: 0; }
+.match-side .name { font-weight: 500; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.match-side.home { justify-content: flex-end; text-align: right; }
+.match-side.home .name { order: 0; }
+.match-side.home .flag { order: 1; }
+.match-side.away { justify-content: flex-start; }
+
+.match-score {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-family: var(--num-font);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+  min-width: 64px;
+  text-align: center;
+}
+.match-score .sep { color: var(--text-3); font-weight: 400; padding: 0 1px; }
+.match-score .home-win .h { color: var(--green); }
+.match-score .away-win .a { color: var(--green); }
+.match-score .pen-mark {
+  font-size: 9px;
+  color: var(--gold);
+  font-weight: 700;
+  margin-left: 4px;
+  background: rgba(255,215,0,0.15);
+  padding: 1px 4px;
+  border-radius: 3px;
+  letter-spacing: 0.06em;
+}
+/* winner side highlight */
+.match-side.winner .name { color: var(--green); font-weight: 600; }
+.match-side.loser .name { color: var(--text-3); }
+
+.match-meta {
+  font-size: 10.5px;
+  color: var(--text-3);
+  text-align: right;
+  line-height: 1.4;
+  font-family: var(--num-font);
+  font-variant-numeric: tabular-nums;
+}
+.match-meta .lam-label { font-size: 9px; letter-spacing: 0.08em; opacity: 0.7; }
+
+@media (max-width: 720px) {
+  .match-row { grid-template-columns: 56px 1fr; grid-template-areas: "stage teams" "stage meta"; gap: 8px; }
+  .match-row .match-date { display: none; }
+  .match-row .stage-pill { grid-area: stage; align-self: start; }
+  .match-row .match-teams { grid-area: teams; }
+  .match-row .match-meta { grid-area: meta; text-align: left; }
+  .match-teams { grid-template-columns: 1fr auto 1fr; font-size: 12.5px; }
+  .match-score { min-width: 56px; font-size: 14px; padding: 4px 8px; }
+}
+
+/* 兼容历史 .match-vs (其它地方仍可能用) */
 .match-vs { color: var(--text-3); font-size: 11px; }
-.match-meta { font-size: 12px; color: var(--text-2); text-align: right; }
 
 /* 🎛️ 配置 */
 .config-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; }
 .config-panel { background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
 .preset-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
-.preset-btn { background: var(--bg-3); border: 1px solid var(--border); color: var(--text); padding: 10px; border-radius: 6px; cursor: pointer; text-align: left; font-size: 13px; }
-.preset-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-.preset-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.preset-btn {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+.preset-btn::after {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: transparent;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.preset-btn:hover { background: var(--bg-2); border-color: var(--accent); color: var(--accent); transform: translateX(2px); }
+.preset-btn.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+.preset-btn.active::after { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
 .slider-group { margin-bottom: 12px; }
 .slider-group label { display: block; font-size: 12px; color: var(--text-2); margin-bottom: 4px; }
 .slider-group .value { color: var(--accent); font-weight: bold; }
@@ -335,21 +754,56 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 
 /* 小组赛 */
 .group-stage { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-bottom: 24px; }
-.group-block { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
-.group-block-header { background: linear-gradient(90deg, #1f6feb, #8957e5); color: #fff; padding: 6px 12px; border-radius: 4px; font-weight: bold; text-align: center; margin-bottom: 10px; font-size: 13px; }
-.standings-mini { font-size: 11px; margin-bottom: 8px; border-collapse: collapse; width: 100%; }
+.group-block {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0;
+  overflow: hidden;
+  transition: border-color 0.18s;
+}
+.group-block:hover { border-color: var(--border-2); }
+.group-block-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+.group-block-header::before {
+  content: attr(data-letter);
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--accent), #e35a1c);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 11px;
+  box-shadow: 0 1px 4px rgba(240,136,62,0.25);
+  flex-shrink: 0;
+}
+.group-block-header.up::before { background: linear-gradient(135deg, #58a6ff, #1f6feb); box-shadow: 0 1px 4px rgba(88,166,255,0.25); }
+.group-block-header.down::before { background: linear-gradient(135deg, #a371f7, #6e40c9); box-shadow: 0 1px 4px rgba(163,113,247,0.25); }
+.standings-mini { font-size: 11px; margin: 8px 8px 6px; border-collapse: collapse; width: calc(100% - 16px); font-family: var(--num-font); font-variant-numeric: tabular-nums; }
 .standings-mini th, .standings-mini td { padding: 3px 6px; text-align: left; }
-.standings-mini th { color: var(--text-3); font-weight: normal; font-size: 10px; border-bottom: 1px solid var(--border); }
+.standings-mini th { color: var(--text-3); font-weight: normal; font-size: 10px; border-bottom: 1px solid var(--border); letter-spacing: 0.04em; text-transform: uppercase; }
 .standings-mini .pos-1 { background: rgba(63, 185, 80, 0.15); }
 .standings-mini .pos-2 { background: rgba(63, 185, 80, 0.05); }
 .standings-mini .pos-3 { background: rgba(248, 81, 73, 0.1); }
 .standings-mini .rank-cell { color: var(--accent); font-weight: bold; width: 20px; }
-.matches-mini { display: flex; flex-direction: column; gap: 4px; }
-.match-mini { background: var(--bg-3); padding: 5px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; display: flex; justify-content: space-between; }
+.matches-mini { display: flex; flex-direction: column; gap: 4px; padding: 0 8px 8px; }
+.match-mini { background: var(--bg-3); padding: 5px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; display: flex; justify-content: space-between; transition: background 0.15s; }
 .match-mini:hover { background: var(--accent-2); color: #fff; }
 .match-mini .winner { color: var(--green); font-weight: bold; }
 .match-mini .loser { color: var(--text-3); }
-.match-mini .score { color: var(--text-2); margin-left: 8px; }
+.match-mini .score { color: var(--text-2); margin-left: 8px; font-family: var(--num-font); font-variant-numeric: tabular-nums; }
 
 .predict-section { margin-top: 24px; }
 .predict-section-title { font-size: 16px; font-weight: bold; color: var(--accent); margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
@@ -548,14 +1002,37 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 @media (hover: none) {
   .team-card:hover, .search-result:hover, .bracket-match:hover { transform: none; box-shadow: none; }
 }
+
+/* 📊 校准 Tab (v2.2) */
+.calib-meta { padding: 10px 12px; background: var(--bg-2); border-radius: 6px; margin-bottom: 16px; font-size: 13px; color: var(--text-2); }
+.calib-meta span { color: var(--text); font-weight: 600; }
+.calib-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 900px) { .calib-grid { grid-template-columns: 1fr; } }
+.calib-section { background: var(--bg-2); border-radius: 8px; padding: 14px; }
+.section-subtitle { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+.calib-mini-tabs { display: flex; gap: 4px; margin-bottom: 12px; border-bottom: 1px solid var(--border); }
+.calib-mini-tab { background: none; border: none; color: var(--text-2); padding: 6px 12px; cursor: pointer; font-size: 12px; border-bottom: 2px solid transparent; }
+.calib-mini-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.calib-factor-list { max-height: 480px; overflow-y: auto; }
+.calib-factor { display: grid; grid-template-columns: 1fr 60px 110px; gap: 8px; align-items: center; padding: 4px 0; font-size: 12px; border-bottom: 1px dashed var(--border); }
+.calib-factor label { color: var(--text-2); }
+.calib-factor .val { color: var(--accent); font-weight: 600; text-align: right; font-family: monospace; }
+.calib-factor input[type=range] { width: 100%; }
+.calib-details { margin-top: 12px; }
+.calib-table { font-size: 12px; }
+.calib-row { display: grid; grid-template-columns: 90px 1fr 1fr 60px 50px; gap: 6px; padding: 4px 0; border-bottom: 1px solid var(--border); align-items: center; }
+.calib-row.header { color: var(--text-2); font-weight: 600; border-bottom: 2px solid var(--border); }
+.calib-correct { color: #4ade80; font-weight: 600; }
+.calib-wrong { color: #f87171; font-weight: 600; }
 </style>
 </head>
 <body>
 <div class="app">
   <!-- 顶栏 -->
   <div class="top-bar">
-    <div>
-      <h1>🏆 2026 世界杯预测 · Mavis PDP v2.1</h1>
+    <div class="brand">
+      <div class="eyebrow">FIFA World Cup 26 · USA · Canada · Mexico</div>
+      <h1>🏆 2026 世界杯预测 <span class="ver">Mavis PDP v2.1</span></h1>
       <div class="stats" id="topStats">
         <div class="stat"><div class="label">球队</div><div class="value" id="statTeams">48</div></div>
         <div class="stat"><div class="label">比赛</div><div class="value" id="statMatches">104</div></div>
@@ -579,6 +1056,7 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
     <button class="tab" data-tab="predict">🏆 预测</button>
     <button class="tab" data-tab="compare">🆚 对比</button>
     <button class="tab" data-tab="search">🔍 搜索</button>
+    <button class="tab" data-tab="calibration">📊 校准</button>
   </div>
 
   <!-- ⚽ 球队 -->
@@ -678,8 +1156,43 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
     <div class="search-results" id="searchResults"></div>
   </div>
 
+  <!-- 📊 校准 (v2.2 新增) -->
+  <div class="tab-content" id="tab-calibration">
+    <div class="section-title">📊 模型校准 (v2.2)</div>
+    <div class="calib-meta">
+      训练样本: <span id="calibSampleCount">加载中...</span> ·
+      W/D/L 命中率: <span id="calibAccuracy">-</span> ·
+      比分 MAE: <span id="calibMAE">-</span> ·
+      损失: <span id="calibLoss">-</span>
+      <button class="btn-primary" onclick="runCalibration()" style="margin-left:12px;padding:4px 10px;font-size:12px;">🎯 触发贝叶斯校准</button>
+    </div>
+
+    <div class="calib-grid">
+      <!-- 左侧: 30+ 动态因子滑块 -->
+      <div class="calib-section">
+        <div class="section-subtitle">🧬 30+ 动态因子 (可拖动校准)</div>
+        <div class="calib-mini-tabs">
+          <button class="calib-mini-tab active" data-fgroup="coach_bio">教练 bio (30)</button>
+          <button class="calib-mini-tab" data-fgroup="player_bio">球员 bio (15)</button>
+          <button class="calib-mini-tab" data-fgroup="formation">阵型倾向 (12)</button>
+        </div>
+        <div id="calibDynamicFactors" class="calib-factor-list"></div>
+      </div>
+
+      <!-- 右侧: 校准历史 + 折线图 -->
+      <div class="calib-section">
+        <div class="section-subtitle">📈 校准历史 (loss 收敛)</div>
+        <canvas id="calibChart" width="380" height="200" style="background:#0d1117;border-radius:6px;display:block;margin-bottom:12px;"></canvas>
+        <div class="calib-details">
+          <div class="section-subtitle">⚖️ 命中对比表</div>
+          <div id="calibDetails" class="calib-table"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="footer">
-    © Mavis PDP v2.1 · 数据 2026-06 · 单文件离线可跑 · <a href="https://github.com/Henrytudor-lee/worldcup2026" style="color:var(--accent)">Henrytudor-lee/worldcup2026</a>
+    © Mavis PDP v2.2 · 数据 2026-06 · 单文件离线可跑 · <a href="https://github.com/Henrytudor-lee/worldcup2026" style="color:var(--accent)">Henrytudor-lee/worldcup2026</a>
   </div>
 </div>
 
@@ -922,25 +1435,52 @@ function renderTeams() {
     realGroups[p.group].add(p.home);
     realGroups[p.group].add(p.away);
   });
-  
+
+  // 算 rank 分层 (tier): top 8 elite / top 16 strong / top 32 mid / rest low
+  // 用 rank_r 排序得到 1-48 名
+  const ranked = [...RANKING].sort((a, b) => (b.rank_r || 0) - (a.rank_r || 0));
+  const tierOf = (name) => {
+    const idx = ranked.findIndex(x => x.team === name);
+    if (idx < 0) return 'tier-low';
+    if (idx < 8) return 'tier-elite';
+    if (idx < 16) return 'tier-strong';
+    if (idx < 32) return 'tier-mid';
+    return 'tier-low';
+  };
+
   let html = '';
-  Object.keys(realGroups).sort().forEach(g => {
+  Object.keys(realGroups).sort().forEach((g, gi) => {
     const teams = Array.from(realGroups[g]);
     // 找每队的 ranking 信息
     const teamsWithRank = teams.map(name => {
       const r = RANKING.find(x => x.team === name);
       return { name, rank: r ? r.rank_r : 0, fifa: r ? r.fifa_rank : 0 };
     }).sort((a, b) => b.rank - a.rank);
-    
+
+    // 组字母图标颜色: 上半区 A-F 蓝, 下半区 G-L 紫
+    const glyphCls = gi < 6 ? 'up' : 'down';
+
     html += `<div class="group-card">
-      <div class="group-header">第 ${g} 组</div>
-      ${teamsWithRank.map(t => `
+      <div class="group-header">
+        <span class="glyph ${glyphCls}">${g}</span>
+        <span class="title">
+          <span class="main">第 ${g} 组</span>
+          <span class="sub">${teamsWithRank.length} TEAMS</span>
+        </span>
+      </div>
+      <div class="group-body">
+      ${teamsWithRank.map((t, i) => {
+        const flag = FLAGS[t.name] || '🏳️';
+        const tier = tierOf(t.name);
+        return `
         <div class="team-card" onclick="openTeamDetail('${escHtml(t.name)}')">
-          <span class="team-rank">${fmtNum(t.rank)}</span>
+          <span class="team-rank ${tier}">${fmtNum(t.rank)}</span>
+          <span class="team-flag">${flag}</span>
           <span class="team-name">${escHtml(t.name)}</span>
           <span class="team-rating">FIFA ${t.fifa}</span>
         </div>
-      `).join('')}
+      `;}).join('')}
+      </div>
     </div>`;
   });
   $id('teamsContainer').innerHTML = html;
@@ -1199,14 +1739,47 @@ function renderSchedule() {
     }
     return a.stage === 'group' ? -1 : 1;
   });
-  
-  $id('scheduleList').innerHTML = matches.map(p => `
+
+  // stage 名称中文化
+  const stageLabel = (st) => ({group:'GRP', R32:'R32', R16:'R16', QF:'QF', SF:'SF', FINAL:'FIN', '3RD':'3RD'}[st] || st);
+
+  $id('scheduleList').innerHTML = matches.map(p => {
+    const hFlag = FLAGS[p.home] || '🏳️';
+    const aFlag = FLAGS[p.away] || '🏳️';
+    // 解析比分判断胜方
+    let hScore = '', aScore = '', hCls = '', aCls = '';
+    if (p.actual_score && /\d+-\d+/.test(p.actual_score)) {
+      const [hs, as] = p.actual_score.split('-').map(s => parseInt(s, 10));
+      hScore = hs; aScore = as;
+      if (hs > as) { hCls = 'winner'; aCls = 'loser'; }
+      else if (as > hs) { hCls = 'loser'; aCls = 'winner'; }
+    }
+    const penMark = p.went_to_pen ? ` <span class="pen-mark">PEN</span>` : '';
+    return `
     <div class="match-row" onclick="openMatchDetail('${p.match_id}')">
-      <div class="match-date">${p.date || '-'} <br>${p.round || p.stage || ''}</div>
-      <div class="match-teams">${escHtml(p.home)} <span class="match-vs">vs</span> ${escHtml(p.away)}</div>
-      <div class="match-meta">${p.actual_score || ''} ${p.went_to_pen ? '(点球)' : ''}<br>λ ${fmtNum(p.lambda_home)} vs ${fmtNum(p.lambda_away)}</div>
+      <span class="stage-pill" data-st="${p.stage}">${stageLabel(p.stage)}</span>
+      <div class="match-date">${p.date || '-'}<span class="round">${escHtml(p.round || '')}</span></div>
+      <div class="match-teams">
+        <div class="match-side home ${hCls}">
+          <span class="name">${escHtml(p.home)}</span>
+          <span class="flag">${hFlag}</span>
+        </div>
+        <div class="match-score">
+          ${hScore !== '' ? `<span class="h ${hCls}">${hScore}</span><span class="sep">-</span><span class="a ${aCls}">${aScore}</span>` : '<span class="sep">vs</span>'}
+          ${penMark}
+        </div>
+        <div class="match-side away ${aCls}">
+          <span class="flag">${aFlag}</span>
+          <span class="name">${escHtml(p.away)}</span>
+        </div>
+      </div>
+      <div class="match-meta">
+        <span class="lam-label">λ EXP</span><br>
+        ${fmtNum(p.lambda_home)} <span class="sep" style="opacity:.4">·</span> ${fmtNum(p.lambda_away)}
+      </div>
     </div>
-  `).join('');
+    `;
+  }).join('');
 }
 document.querySelectorAll('#scheduleStageTabs .schedule-tab').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -2001,9 +2574,12 @@ function buildGroupsHTML(groupsToShow) {
     const sorted = Object.entries(standings[g])
       .map(([team, s]) => ({ team, ...s, gd: s.gf - s.ga }))
       .sort((a, b) => b.p - a.p || b.gd - a.gd || b.gf - a.gf);
-    
+
+    // 上半 A-F 蓝色 / 下半 G-L 紫色
+    const headerCls = g.charCodeAt(0) < 71 ? 'up' : 'down';
+
     html += `<div class="group-block">
-      <div class="group-block-header">第 ${g} 组</div>
+      <div class="group-block-header ${headerCls}" data-letter="${g}">第 ${g} 组</div>
       <table class="standings-mini">
         <thead><tr><th>#</th><th>球队</th><th>赛</th><th>胜</th><th>平</th><th>负</th><th>净</th><th>分</th></tr></thead>
         <tbody>
@@ -2152,7 +2728,7 @@ function exportConfig() {
 }
 
 // ============== 初始化 ==============
-function initAll() {
+ function initAll() {
   renderTeams();
   renderSchedule();
   renderSliders();
@@ -2164,6 +2740,8 @@ function initAll() {
   $id('statChampion').textContent = PREDICTIONS.find(p => p.stage === 'FINAL')?.winner || '-';
   $id('statRunnerUp').textContent = PREDICTIONS.find(p => p.stage === 'FINAL')?.loser || '-';
   $id('statThird').textContent = PREDICTIONS.find(p => p.stage === '3RD')?.winner || '-';
+  // v2.2 校准
+  loadCalibration();
 }
 
 // 启动：从后端加载数据
@@ -2171,6 +2749,171 @@ loadFromBackend().catch(err => {
   console.error('Failed to load from backend:', err);
   $id('statChampion').textContent = '❌';
   alert('无法连接后端 http://localhost:8765，请先启动 backend/server.py');
+});
+
+// ============================================================
+// v2.2 校准 Tab
+// ============================================================
+let DYNAMIC_FACTORS = {factors: {}, defaults: {}, ranges: {}};
+let CALIB_DATA = {evaluation: {}, history: [], best: null};
+let CURRENT_FGROUP = 'coach_bio';
+
+async function loadCalibration() {
+  try {
+    // 1. 拉动态因子 schema
+    const dfResp = await fetch(`${API_BASE}/api/dynamic-factors`);
+    DYNAMIC_FACTORS = await dfResp.json();
+    // 2. 拉校准评估
+    const w = currentWeights || DEFAULT_WEIGHTS;
+    const wStr = encodeURIComponent(JSON.stringify(w));
+    const cResp = await fetch(`${API_BASE}/api/calibration?weights=${wStr}`);
+    CALIB_DATA = await cResp.json();
+    // 3. 渲染
+    renderCalibration();
+  } catch (e) {
+    console.error('loadCalibration failed:', e);
+  }
+}
+
+function renderCalibration() {
+  // meta
+  const ev = CALIB_DATA.evaluation || {};
+  if (ev.error) {
+    $id('calibSampleCount').textContent = '暂无数据';
+    $id('calibAccuracy').textContent = '-';
+    $id('calibMAE').textContent = '-';
+    $id('calibLoss').textContent = '-';
+  } else {
+    $id('calibSampleCount').textContent = `${ev.match_count} 场`;
+    $id('calibAccuracy').textContent = `${(ev.win_accuracy * 100).toFixed(1)}% (${ev.win_correct}/${ev.match_count})`;
+    $id('calibMAE').textContent = ev.score_mae;
+    $id('calibLoss').textContent = ev.loss;
+  }
+
+  // 动态因子滑块
+  renderDynamicFactors(CURRENT_FGROUP);
+
+  // 折线图
+  drawCalibChart();
+
+  // 命中对比表
+  renderCalibDetails();
+}
+
+function renderDynamicFactors(group) {
+  CURRENT_FGROUP = group;
+  // 激活 tab
+  document.querySelectorAll('.calib-mini-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.fgroup === group);
+  });
+  const list = $id('calibDynamicFactors');
+  list.innerHTML = '';
+  const factors = DYNAMIC_FACTORS.factors || {};
+  for (const [key, meta] of Object.entries(factors)) {
+    if (meta.group !== group) continue;
+    const w = DYNAMIC_FACTORS.defaults[key] || meta.base || 0;
+    const [lo, hi] = DYNAMIC_FACTORS.ranges[key] || [0, 100];
+    const row = document.createElement('div');
+    row.className = 'calib-factor';
+    row.innerHTML = `
+      <label title="${meta.pitfall || ''}">${meta.label}</label>
+      <span class="val" id="df-val-${key}">${w.toFixed(1)}</span>
+      <input type="range" min="${lo}" max="${hi}" step="${(hi-lo)/100}" value="${w}"
+        oninput="$id('df-val-${key}').textContent = parseFloat(this.value).toFixed(1); DYNAMIC_FACTORS.defaults['${key}'] = parseFloat(this.value);"
+      >`;
+    list.appendChild(row);
+  }
+}
+
+function drawCalibChart() {
+  const canvas = $id('calibChart');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const history = CALIB_DATA.history || [];
+  if (history.length === 0) {
+    ctx.fillStyle = '#6b7280';
+    ctx.font = '13px sans-serif';
+    ctx.fillText('暂无校准历史 - 点击"触发贝叶斯校准"开始', 50, 100);
+    return;
+  }
+  // 取最近一次校准的 losses
+  const last = history[history.length - 1];
+  const losses = last.iterations_summary.losses || [];
+  if (losses.length === 0) return;
+  const w = canvas.width - 40;
+  const h = canvas.height - 40;
+  const minL = Math.min(...losses);
+  const maxL = Math.max(...losses);
+  const range = maxL - minL || 1;
+  // 网格
+  ctx.strokeStyle = '#21262d';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 5; i++) {
+    const y = 20 + (h / 4) * i;
+    ctx.beginPath(); ctx.moveTo(20, y); ctx.lineTo(w + 20, y); ctx.stroke();
+  }
+  // 折线
+  ctx.strokeStyle = '#58a6ff';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  losses.forEach((lv, i) => {
+    const x = 20 + (w / (losses.length - 1 || 1)) * i;
+    const y = 20 + h - ((lv - minL) / range) * h;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  // 点
+  ctx.fillStyle = '#58a6ff';
+  losses.forEach((lv, i) => {
+    const x = 20 + (w / (losses.length - 1 || 1)) * i;
+    const y = 20 + h - ((lv - minL) / range) * h;
+    ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI*2); ctx.fill();
+  });
+  // 标签
+  ctx.fillStyle = '#6b7280';
+  ctx.font = '11px sans-serif';
+  ctx.fillText(`最近校准: ${last.timestamp} (${last.method}, ${last.n_iter}轮)`, 22, 16);
+  ctx.fillText(`min loss: ${minL.toFixed(2)} | max: ${maxL.toFixed(2)}`, 22, h + 34);
+}
+
+function renderCalibDetails() {
+  const div = $id('calibDetails');
+  const details = (CALIB_DATA.evaluation || {}).details || [];
+  if (details.length === 0) {
+    div.innerHTML = '<div style="color:var(--text-2);padding:8px;">暂无对比数据 (match_results.csv 至少 1 场)</div>';
+    return;
+  }
+  let html = '<div class="calib-row header"><span>日期</span><span>主队 vs 客队</span><span>预测/真实</span><span>WDL</span><span>diff</span></div>';
+  for (const d of details) {
+    const ok = d.wdl_correct;
+    html += `<div class="calib-row">
+      <span>${d.date}</span>
+      <span>${d.home} vs ${d.away}</span>
+      <span>${d.predicted} / ${d.actual}</span>
+      <span class="${ok ? 'calib-correct' : 'calib-wrong'}">${d.pred_wdl}=${d.actual_wdl}${ok ? '✓' : '✗'}</span>
+      <span>${d.score_diff}</span>
+    </div>`;
+  }
+  div.innerHTML = html;
+}
+
+async function runCalibration() {
+  if (!confirm('启动贝叶斯校准 (20 轮, 1-2 分钟)? 完成后历史会更新。')) return;
+  try {
+    const resp = await fetch(`${API_BASE}/api/calibration/run?n_iter=20&use_bayes=true`, {method: 'POST'});
+    const data = await resp.json();
+    alert(data.message || '校准已启动');
+  } catch (e) {
+    alert('启动失败: ' + e.message);
+  }
+}
+
+// 校准 mini tab click
+document.addEventListener('click', (e) => {
+  if (e.target.classList && e.target.classList.contains('calib-mini-tab')) {
+    const group = e.target.dataset.fgroup;
+    if (group) renderDynamicFactors(group);
+  }
 });
 </script>
 </body>
