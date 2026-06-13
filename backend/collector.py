@@ -123,7 +123,7 @@ def fetch_espn_scoreboard(date_str):
     return games
 
 
-def collect_results(start_date='2026-06-12', end_date='2026-07-19', overwrite=True):
+def collect_results(start_date='2026-06-11', end_date='2026-07-19', overwrite=True):
     """收集世界杯期间全部比赛结果, 写入 match_results.csv
 
     overwrite=True 时, 用 collector 数据完全覆盖手写种子数据
@@ -200,5 +200,5 @@ if __name__ == '__main__':
         for g in games:
             print(f"    {g[0]} {g[2]}-{g[3]} {g[1]}")
 
-    print("\n=== 全量收集 6/12-7/19 (覆盖模式) ===")
-    collect_results('2026-06-12', '2026-07-19', overwrite=True)
+    print("\n=== 全量收集 6/11-7/19 (覆盖模式) ===")
+    collect_results('2026-06-11', '2026-07-19', overwrite=True)
