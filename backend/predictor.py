@@ -365,10 +365,45 @@ def compute_ranking(weights):
         def_details = [player_detail(p, 'DEF') for _, p in def_top]
         gk_details = [player_detail(gk_top[0][1], 'GK')] if gk_top else []
 
-        fw_score = sum(s for s, _ in fw_top)
-        mid_score = sum(s for s, _ in mid_top)
-        def_score = sum(s for s, _ in def_top)
-        gk_score = sum(s for s, _ in gk_top)
+        fw_score_raw = sum(s for s, _ in fw_top)
+        mid_score_raw = sum(s for s, _ in mid_top)
+        def_score_raw = sum(s for s, _ in def_top)
+        gk_score_raw = sum(s for s, _ in gk_top)
+
+        # === A. 阵容深度惩罚 ===
+        # Top N 内价值分布越均匀 (std/mean 小) → 阵容越深 → 不减分
+        # Top N 内价值分布越悬殊 (std/mean 大) → 头重脚轻 → 减分
+        depth_cfg = weights.get('depth', {'squad_std_penalty': 0.20, 'squad_std_threshold': 0.50})
+        def calc_depth_penalty(scores):
+            """返回 0~1 减分比例, 0=不减, 1=全减"""
+            if len(scores) < 2: return 0
+            mean = sum(scores) / len(scores)
+            if mean <= 0: return 0
+            variance = sum((s - mean) ** 2 for s in scores) / len(scores)
+            std = variance ** 0.5
+            std_ratio = std / mean  # 变异系数
+            threshold = depth_cfg['squad_std_threshold']
+            if std_ratio <= threshold: return 0
+            # 超过阈值, 按 (std_ratio - threshold) × penalty_coef 减分
+            excess = (std_ratio - threshold) * depth_cfg['squad_std_penalty'] * 2
+            return min(excess, 0.5)  # 最多减 50%
+
+        fw_dp = calc_depth_penalty([s for s, _ in fw_top])
+        mid_dp = calc_depth_penalty([s for s, _ in mid_top])
+        def_dp = calc_depth_penalty([s for s, _ in def_top])
+
+        fw_score = fw_score_raw * (1 - fw_dp)
+        mid_score = mid_score_raw * (1 - mid_dp)
+        def_score = def_score_raw * (1 - def_dp)
+        gk_score = gk_score_raw  # 门将只 1 个, 无 std 概念
+
+        # 记录深度惩罚系数 (前端 tooltip 用)
+        depth_penalty = {
+            'fw': round(fw_dp, 3), 'mid': round(mid_dp, 3),
+            'def': round(def_dp, 3), 'gk': 0,
+            'fw_raw': round(fw_score_raw, 2), 'mid_raw': round(mid_score_raw, 2),
+            'def_raw': round(def_score_raw, 2), 'gk_raw': round(gk_score_raw, 2),
+        }
 
         # === 阵型倾向调整 4 维分 (动态因子层 v2.2) ===
         _dyn_w = weights.get('_dynamic_weights') or dynamic_factors.default_weights()
@@ -427,6 +462,7 @@ def compute_ranking(weights):
             'mid_details': mid_details,
             'def_details': def_details,
             'gk_details': gk_details,
+            'depth_penalty': depth_penalty,
             'coach_name': coaches.get(country, {}).get('主教练', '?'),
             'coach_age': coaches.get(country, {}).get('国籍/年龄', ''),
             'coach_tenure': coaches.get(country, {}).get('任期', ''),
@@ -461,9 +497,10 @@ def fifa_coef(rank):
 
 
 def team_metrics(country, ranking_dict, fifa_data, is_home=True, venue_alt=0, venue_temp=25,
-                 venue_cfg=None, team_leagues=None, adaptation_weight=0.5):
+                 venue_cfg=None, team_leagues=None, adaptation_weight=0.5, weights=None):
     """算单队 λ 计算所需系数
 
+    weights: 完整 weights dict, 用于动态配置 lambda_cap / possession
     venue_cfg: {altitude_threshold, altitude_penalty, temp_threshold, temp_penalty}
               None = 用默认值 (2000m / 0.90 / 32°C / 0.97)
     team_leagues: dict {'fw': [league, ...], 'mid': [...], 'def': [...], 'gk': 'league'}
@@ -485,12 +522,19 @@ def team_metrics(country, ranking_dict, fifa_data, is_home=True, venue_alt=0, ve
     attack = fw + mid
     defense = def_ + gk_ * 0.5
 
-    # 持球率（基于 rank_r）
-    if rank_r >= 95: poss = 0.62
-    elif rank_r >= 90: poss = 0.58
-    elif rank_r >= 80: poss = 0.54
-    elif rank_r >= 70: poss = 0.50
-    else: poss = 0.46
+    # 持球率（基于排名档位, 而非 rank_r 压缩值）
+    # v2.2 修复: rank_r 公式会把 1-48 强全压到 95-100, 失去区分度
+    # 改用 ranking 字典里的 'rank' 字段 (1-48)
+    poss_cfg = weights.get('possession', {
+        'rank_tier1': 0.65, 'rank_tier2': 0.60, 'rank_tier3': 0.55,
+        'rank_tier4': 0.50, 'rank_tier5': 0.45,
+    })
+    team_rank = ranking_dict.get(country, {}).get('rank', 25)
+    if team_rank <= 4: poss = poss_cfg['rank_tier1']
+    elif team_rank <= 8: poss = poss_cfg['rank_tier2']
+    elif team_rank <= 16: poss = poss_cfg['rank_tier3']
+    elif team_rank <= 32: poss = poss_cfg['rank_tier4']
+    else: poss = poss_cfg['rank_tier5']
 
     coach_coef = 1.0 + min(coach_score / 200, 0.20)
     fifa_c = fifa_coef(fifa_data.get(country, {}).get('FIFA排名', '50'))
@@ -543,22 +587,27 @@ def team_metrics(country, ranking_dict, fifa_data, is_home=True, venue_alt=0, ve
 
 
 def calc_lambda(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25, venue_cfg=None,
-                 home_leagues=None, away_leagues=None, adaptation_weight=0.5):
+                 home_leagues=None, away_leagues=None, adaptation_weight=0.5, weights=None):
     """算主/客队 λ（4 维对位）"""
+    if weights is None:
+        weights = {}
     H = team_metrics(home, ranking_dict, fifa_data, is_home=True,
                      venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg,
-                     team_leagues=home_leagues, adaptation_weight=adaptation_weight)
+                     team_leagues=home_leagues, adaptation_weight=adaptation_weight,
+                     weights=weights)
     A = team_metrics(away, ranking_dict, fifa_data, is_home=False,
                      venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg,
-                     team_leagues=away_leagues, adaptation_weight=adaptation_weight)
+                     team_leagues=away_leagues, adaptation_weight=adaptation_weight,
+                     weights=weights)
 
     home_attack = H['attack']
     home_lambda = 1.3 * H['possession'] * math.sqrt(home_attack * 0.001) * H['coach_coef'] * H['venue_coef'] * H['fifa_coef']
-    home_lambda = min(max(home_lambda, 0.3), 4.0)
+    lambda_cap = weights.get('lambda_cap', 3.5) if weights else 3.5
+    home_lambda = min(max(home_lambda, 0.3), lambda_cap)
 
     away_poss = 1 - H['possession']
     away_lambda = 1.3 * away_poss * math.sqrt(A['attack'] * 0.001) * A['coach_coef'] * A['venue_coef'] * A['fifa_coef']
-    away_lambda = min(max(away_lambda, 0.3), 4.0)
+    away_lambda = min(max(away_lambda, 0.3), lambda_cap)
 
     return home_lambda, away_lambda
 
@@ -570,17 +619,22 @@ def poisson_pmf(lam, k):
 
 def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25,
                   venue_humidity=60, weather_note='', venue_cfg=None,
-                  home_leagues=None, away_leagues=None, adaptation_weight=0.5):
+                  home_leagues=None, away_leagues=None, adaptation_weight=0.5,
+                  weights=None):
     """预测单场比赛"""
+    if weights is None:
+        weights = {}  # 让 team_metrics 用 default
     H = team_metrics(home, ranking_dict, fifa_data, is_home=True,
                      venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg,
-                     team_leagues=home_leagues, adaptation_weight=adaptation_weight)
+                     team_leagues=home_leagues, adaptation_weight=adaptation_weight,
+                     weights=weights)
     A = team_metrics(away, ranking_dict, fifa_data, is_home=False,
                      venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg,
-                     team_leagues=away_leagues, adaptation_weight=adaptation_weight)
+                     team_leagues=away_leagues, adaptation_weight=adaptation_weight,
+                     weights=weights)
     lh, la = calc_lambda(home, away, ranking_dict, fifa_data, venue_alt, venue_temp, venue_cfg,
                           home_leagues=home_leagues, away_leagues=away_leagues,
-                          adaptation_weight=adaptation_weight)
+                          adaptation_weight=adaptation_weight, weights=weights)
 
     score_probs = {}
     for k in range(7):
@@ -713,7 +767,8 @@ def compute_predictions(weights):
                                            'mid': ranking_dict.get(m['客队'], {}).get('mid_leagues', []),
                                            'def': ranking_dict.get(m['客队'], {}).get('def_leagues', []),
                                            'gk': ranking_dict.get(m['客队'], {}).get('gk_league', '')},
-                             adaptation_weight=adaptation_weight)
+                             adaptation_weight=adaptation_weight,
+                             weights=weights)
         pred['match_id'] = f"GS_{g}_{m['轮次']}_{m['主队']}_vs_{m['客队']}"
         pred['round'] = f"小组{m['组别']}{m['轮次']}"  # m['轮次'] 已是 "第1轮", 不要再加
         pred['stage'] = 'group'
@@ -874,7 +929,8 @@ def compute_predictions(weights):
                                            'mid': ranking_dict.get(away, {}).get('mid_leagues', []),
                                            'def': ranking_dict.get(away, {}).get('def_leagues', []),
                                            'gk': ranking_dict.get(away, {}).get('gk_league', '')},
-                             adaptation_weight=adaptation_weight)
+                             adaptation_weight=adaptation_weight,
+                             weights=weights)
         pred['match_id'] = f"{prefix}_{home}_vs_{away}"
         pred['round'] = round_name
         pred['stage'] = stage

@@ -1365,6 +1365,13 @@ const SLIDER_RANGES = {
   smoothing: { player_div: [500, 50000, 500], coach_div: [10, 1000, 10], rank_div: [100, 10000, 100] },
   venue_weights: { altitude_threshold: [500, 4000, 100], altitude_penalty: [0.5, 1.0, 0.05], temp_threshold: [15, 50, 1], temp_penalty: [0.5, 1.0, 0.05] },
   venue_adaptation_weight: [0.0, 1.0, 0.05],
+  depth: { squad_std_penalty: [0.0, 0.5, 0.05], squad_std_threshold: [0.2, 1.0, 0.05] },
+  possession: {
+    rank_tier1: [0.55, 0.75, 0.01], rank_tier2: [0.50, 0.70, 0.01],
+    rank_tier3: [0.45, 0.65, 0.01], rank_tier4: [0.40, 0.60, 0.01],
+    rank_tier5: [0.35, 0.55, 0.01],
+  },
+  lambda_cap: [2.5, 5.0, 0.1],
 };
 
 // 6 个预设 - 由 buildPresets() 在后端数据加载后填充
@@ -2115,6 +2122,20 @@ function renderSliders() {
     ]},
     { key: 'venue_adaptation_weight', label: '球员场地适应度', icon: '🧗', sub: [
       { f: '', label: '适应度调节强度 (0=关闭, 1=完全生效)' }
+    ]},
+    { key: 'depth', label: '阵容深度 (头重脚轻惩罚)', icon: '⚖️', sub: [
+      { f: 'squad_std_penalty', label: 'std 惩罚系数 (0=关闭)' },
+      { f: 'squad_std_threshold', label: 'std/mean 阈值 (超过开始罚)' }
+    ]},
+    { key: 'possession', label: '持球率 (按排名档位)', icon: '📊', sub: [
+      { f: 'rank_tier1', label: '1-4 名 持球率' },
+      { f: 'rank_tier2', label: '5-8 名 持球率' },
+      { f: 'rank_tier3', label: '9-16 名 持球率' },
+      { f: 'rank_tier4', label: '17-32 名 持球率' },
+      { f: 'rank_tier5', label: '33-48 名 持球率' }
+    ]},
+    { key: 'lambda_cap', label: 'λ 上限 (避免双方撞顶)', icon: '🎯', sub: [
+      { f: '', label: 'λ 最大值 (2.5=保守, 5.0=激进)' }
     ]}
   ];
   

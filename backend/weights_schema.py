@@ -44,6 +44,18 @@ DEFAULT = {
         "temp_penalty": 0.97,        # 高温惩罚 (0.97 = -3%)
     },
     "venue_adaptation_weight": 0.5,  # 球员适应度调节强度 (0=关闭, 1=完全生效)
+    "depth": {
+        "squad_std_penalty": 0.20,    # 阵容标准差惩罚系数 (0=关闭, 0.3=强)
+        "squad_std_threshold": 0.50,  # 超过此 std/mean 比例开始惩罚
+    },
+    "possession": {
+        "rank_tier1": 0.65,  # 1-4 名 持球率
+        "rank_tier2": 0.60,  # 5-8 名
+        "rank_tier3": 0.55,  # 9-16 名
+        "rank_tier4": 0.50,  # 17-32 名
+        "rank_tier5": 0.45,  # 33-48 名
+    },
+    "lambda_cap": 3.5,  # λ 上限 (避免双方都撞顶, 比分失真)
 }
 
 # 范围约束（防止用户拖极端值）
@@ -82,6 +94,18 @@ RANGES = {
         "temp_penalty": (0.5, 1.0),
     },
     "venue_adaptation_weight": (0.0, 1.0),
+    "depth": {
+        "squad_std_penalty": (0.0, 0.5),     # 0=关闭, 0.5=强惩罚
+        "squad_std_threshold": (0.2, 1.0),   # std/mean 比例阈值
+    },
+    "possession": {
+        "rank_tier1": (0.55, 0.75),
+        "rank_tier2": (0.50, 0.70),
+        "rank_tier3": (0.45, 0.65),
+        "rank_tier4": (0.40, 0.60),
+        "rank_tier5": (0.35, 0.55),
+    },
+    "lambda_cap": (2.5, 5.0),
 }
 
 # 预设（前端 6 个 preset 按钮）
