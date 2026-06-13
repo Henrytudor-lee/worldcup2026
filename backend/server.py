@@ -8,13 +8,15 @@ Mavis PDP Backend Server
 或:   uvicorn server:app --host 0.0.0.0 --port 8765
 """
 import json
-from fastapi import FastAPI, Query, HTTPException
+from fastapi import FastAPI, Query, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import predictor
+import calibrator
+import dynamic_factors
 from weights_schema import DEFAULT, PRESETS, validate, merge_with_default
 
-app = FastAPI(title="Mavis PDP Backend", version="2.1")
+app = FastAPI(title="Mavis PDP Backend", version="2.2")
 
 # CORS: 允许前端 8765 / 8000 / 8080 跨域调
 app.add_middleware(
@@ -49,13 +51,16 @@ def _parse_weights(weights_str: str = Query(default="default", description="JSON
 def root():
     return {
         "service": "Mavis PDP Backend",
-        "version": "2.1",
+        "version": "2.2",
         "endpoints": [
             "GET /api/ranking",
             "GET /api/predictions?weights=default",
             "GET /api/players?team=法国",
             "GET /api/weights/default",
             "GET /api/weights/presets",
+            "GET /api/dynamic-factors  (v2.2 30+ 动态因子 schema)",
+            "GET /api/calibration       (v2.2 校准评估 + 历史)",
+            "POST /api/calibration/run  (v2.2 触发贝叶斯校准)",
         ],
     }
 
@@ -103,6 +108,58 @@ def get_players(team: str = Query(default=None, description="可选：按国家�
     if team and not players:
         raise HTTPException(status_code=404, detail=f"team '{team}' not found")
     return {"players": players, "count": len(players)}
+
+
+# ============================================================
+# v2.2 校准系统接口
+# ============================================================
+@app.get("/api/dynamic-factors")
+def get_dynamic_factors():
+    """返 30+ 动态因子 schema (UI 滑块生成用)"""
+    meta = dynamic_factors.all_factors_meta()
+    defaults = dynamic_factors.default_weights()
+    ranges = dynamic_factors.ranges()
+    return {
+        "factors": meta,
+        "defaults": defaults,
+        "ranges": ranges,
+        "count": len(meta),
+    }
+
+
+@app.get("/api/calibration")
+def get_calibration(weights: str = Query(default="default")):
+    """校准评估 + 历史
+    1. 用当前 weights 评估 match_results.csv
+    2. 返校准历史 (calibration_history.json)
+    """
+    w = _parse_weights(weights)
+    ev = calibrator.evaluate(w, verbose=False)
+    summary = calibrator.get_calibration_summary()
+    return {
+        "evaluation": ev,
+        "history": summary.get('history', []),
+        "best": summary.get('best'),
+    }
+
+
+@app.post("/api/calibration/run")
+def run_calibration(
+    n_iter: int = Query(default=20, ge=1, le=200),
+    use_bayes: bool = Query(default=True),
+):
+    """触发贝叶斯校准 (后台异步跑, 1-2 分钟)"""
+    def _run():
+        calibrator.calibrate(n_iter=n_iter, use_bayes=use_bayes, verbose=False)
+
+    bg = BackgroundTasks()
+    bg.add_task(_run)
+    return {
+        "status": "started",
+        "n_iter": n_iter,
+        "method": "bayes" if use_bayes else "grid",
+        "message": f"校准已启动 ({n_iter} 轮), 完成后历史会更新到 /api/calibration",
+    }
 
 
 if __name__ == '__main__':

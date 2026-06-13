@@ -14,6 +14,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT / ".mavis/cache/scripts"))
 
 import ranking_v2  # 复用 parse_num / parse_value / get_league_factor / calc_status_weight / parse_honors / calc_coach_score
+import dynamic_factors  # 30+ 动态因子 (教练 bio + 球员 bio + 阵型倾向)
 
 # 数据路径
 DATA_DIR = PROJECT_ROOT / "1_数据基础"
@@ -189,6 +190,74 @@ def load_schedule():
 # ============================================================
 # weights 注入的 player_score
 # ============================================================
+def calc_coach_score_with_dynamic(coach, weights, dynamic_weights):
+    """教练评分 = ranking_v2 baseline + dynamic_factors 增量
+
+    weights: 23 固定系数 (v2.1 schema)
+    dynamic_weights: 30+ 动态因子 (动态因子 schema)
+
+    设计: baseline 永远在, dynamic 是修正项
+          (避免 dynamic 系数 = 0 时, ranking 完全崩)
+    """
+    base_score, base_details = ranking_v2.calc_coach_score(coach)
+
+    # 1. 教练 bio 动态因子 (覆盖 ranking_v2 的硬编码 substring)
+    bio_score, bio_details = dynamic_factors.score_coach_bio(coach, dynamic_weights)
+
+    # 2. 阵型倾向: 影响教练分的阵型识别奖励
+    # 识别到的阵型 × 对应权重 = 增量
+    formation = dynamic_factors.detect_coach_formation(coach)
+    formation_bonus = 0
+    if formation in ('433', '4231', '343'):
+        # 阵型倾向只对 FW/MID/DEF/GK 4 维分生效, 不直接加到 coach_score
+        # 这里不加, 而是后面 apply_formation_weights 调整 4 维分
+        pass
+
+    # 合并: base + bio 增量
+    total_score = base_score + bio_score
+    details = list(base_details) + [f'[dynamic] {d}' for d in bio_details]
+
+    return total_score, details
+
+
+def apply_formation_to_team(team_result, dynamic_weights):
+    """对单队 4 维分应用阵型倾向权重
+
+    team_result: compute_ranking 返回的 dict, 含 fw_score/mid_score/def_score/gk_score
+    dynamic_weights: 30+ 动态因子 dict
+
+    返回 新的 4 维分
+    """
+    # 识别该队教练惯用阵型
+    coach_career = team_result.get('coach_career', '') or ''
+    coach_honors = team_result.get('coach_honors', '') or ''
+    coach_formation = (coach_career + ' ' + coach_honors).strip()
+    # 简化为: 直接看是否含 4-3-3 / 4-2-3-1 / 3-4-3 关键词
+    formation = '433'  # 默认 4-3-3
+    for cand in ['4-3-3', '433']:
+        if cand in coach_formation:
+            formation = '433'
+            break
+    for cand in ['4-2-3-1', '4231']:
+        if cand in coach_formation:
+            formation = '4231'
+            break
+    for cand in ['3-4-3', '343']:
+        if cand in coach_formation:
+            formation = '343'
+            break
+
+    fw = team_result.get('fw_score', 0)
+    mid = team_result.get('mid_score', 0)
+    def_ = team_result.get('def_score', 0)
+    gk = team_result.get('gk_score', 0)
+
+    new_fw, new_mid, new_def, new_gk = dynamic_factors.apply_formation_weights(
+        fw, mid, def_, gk, dynamic_weights, formation=formation
+    )
+    return new_fw, new_mid, new_def, new_gk, formation
+
+
 def calc_player_score_with_weights(player, status_rec, weights):
     """
     球员评分（接受 weights）
@@ -300,9 +369,26 @@ def compute_ranking(weights):
         mid_score = sum(s for s, _ in mid_top)
         def_score = sum(s for s, _ in def_top)
         gk_score = sum(s for s, _ in gk_top)
+
+        # === 阵型倾向调整 4 维分 (动态因子层 v2.2) ===
+        _dyn_w = weights.get('_dynamic_weights') or dynamic_factors.default_weights()
+        fw_score, mid_score, def_score, gk_score, _formation = apply_formation_to_team(
+            {
+                'fw_score': fw_score, 'mid_score': mid_score,
+                'def_score': def_score, 'gk_score': gk_score,
+                'coach_career': coaches.get(country, {}).get('代表执教生涯', ''),
+                'coach_honors': coaches.get(country, {}).get('重大荣誉', ''),
+            },
+            _dyn_w
+        )
+
         player_score = fw_score + mid_score + def_score + gk_score
 
-        coach_score, coach_details = ranking_v2.calc_coach_score(coaches.get(country, {}))
+        coach_score, coach_details = calc_coach_score_with_dynamic(
+            coaches.get(country, {}),
+            weights,
+            weights.get('_dynamic_weights') or dynamic_factors.default_weights()
+        )
 
         # 用 weights 控制的 player_share / coach_share
         total = player_score * pt['player_share'] + coach_score * pt['coach_share']
