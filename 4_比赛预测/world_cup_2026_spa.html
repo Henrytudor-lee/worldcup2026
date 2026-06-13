@@ -871,6 +871,17 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 .lambda-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
 .lambda-table th, .lambda-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: left; }
 .lambda-table th { background: var(--bg-3); color: var(--text-2); font-weight: normal; }
+.lambda-table tr[title]:hover { background: var(--bg-3); cursor: help; }
+.lambda-table tr[title] td:first-child { position: relative; }
+.lambda-table tr[title]:hover td:first-child::after {
+  content: '💡';
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  opacity: 0.6;
+}
 .poisson-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .poisson-cell { background: var(--bg-3); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; text-align: center; position: relative; overflow: hidden; }
 .poisson-cell.best { border-color: var(--gold); background: linear-gradient(135deg, rgba(255,215,0,0.15) 0%, var(--bg-3) 100%); }
@@ -1871,6 +1882,7 @@ function openMatchDetail(matchId) {
   ${p.algorithm_breakdown ? `<div class="detail-section">
     <h4>🧮 λ 算法分解</h4>
     <p class="muted" style="font-family:monospace;font-size:12px;margin:4px 0 8px;">λ = 1.3 × 持球率 × √(attack × 0.001) × 教练 × 场地 × FIFA</p>
+    <p class="muted" style="font-size:11px;margin:0 0 8px;color:var(--text-3);">💡 鼠标悬停每行看详细计算过程</p>
     <table class="lambda-table">
       <thead>
         <tr>
@@ -1880,17 +1892,59 @@ function openMatchDetail(matchId) {
         </tr>
       </thead>
       <tbody>
-        <tr><td>⚔️ 进攻 (锋+中)</td><td>${fmtNum(p.algorithm_breakdown.home.attack)}</td><td>${fmtNum(p.algorithm_breakdown.away.attack)}</td></tr>
-        <tr><td>　├ 锋线分</td><td>${fmtNum(p.algorithm_breakdown.home.fw_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.fw_score)}</td></tr>
-        <tr><td>　└ 中场分</td><td>${fmtNum(p.algorithm_breakdown.home.mid_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.mid_score)}</td></tr>
-        <tr><td>🛡️ 防守 (后+门)</td><td>${fmtNum(p.algorithm_breakdown.home.defense)}</td><td>${fmtNum(p.algorithm_breakdown.away.defense)}</td></tr>
-        <tr><td>　├ 后卫分</td><td>${fmtNum(p.algorithm_breakdown.home.def_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.def_score)}</td></tr>
-        <tr><td>　└ 门将分</td><td>${fmtNum(p.algorithm_breakdown.home.gk_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.gk_score)}</td></tr>
-        <tr><td>📊 持球率</td><td>${(p.algorithm_breakdown.home.possession * 100).toFixed(0)}%</td><td>${(p.algorithm_breakdown.away.possession * 100).toFixed(0)}%</td></tr>
-        <tr><td>👔 教练系数</td><td>×${p.algorithm_breakdown.home.coach_coef}</td><td>×${p.algorithm_breakdown.away.coach_coef}</td></tr>
-        <tr><td>🏟️ 场地系数</td><td>×${p.algorithm_breakdown.home.venue_coef}</td><td>×${p.algorithm_breakdown.away.venue_coef}</td></tr>
-        <tr><td>🌍 FIFA 系数</td><td>×${p.algorithm_breakdown.home.fifa_coef}</td><td>×${p.algorithm_breakdown.away.fifa_coef}</td></tr>
-        <tr style="background:var(--bg-3)"><td><b>🎯 λ 最终</b></td><td><b>${fmtNum(p.lambda_home)}</b></td><td><b>${fmtNum(p.lambda_away)}</b></td></tr>
+        <tr title="⚔️ 进攻 (锋+中) = 锋线分 + 中场分
+用于 λ 公式的 √(attack × 0.001) 项
+例: 挪威 40987 = 锋 24182 + 中 16805
+   阿根廷 47955 = 锋 28294 + 中 19662">
+          <td>⚔️ 进攻 (锋+中)</td><td>${fmtNum(p.algorithm_breakdown.home.attack)}</td><td>${fmtNum(p.algorithm_breakdown.away.attack)}</td></tr>
+        <tr title="锋线分 = Σ 锋 Top 3 球员分数
+单球员分 = 身价 × 联赛系数 × (1 + 状态权重 + 国家队进球/400 + 助攻/600)
+状态权重 = 进球/40 + 助攻/60 + (WhoScored - 6.5)/4
+例: 挪威锋 = 哈兰德身价 × 联赛系数 × (1 + 状态) + ...">
+          <td>　├ 锋线分</td><td>${fmtNum(p.algorithm_breakdown.home.fw_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.fw_score)}</td></tr>
+        <tr title="中场分 = Σ 中 Top 3 球员分数 (算法同锋线)
+挪威中场: 厄德高 (阿森纳 9000) + ...">
+          <td>　└ 中场分</td><td>${fmtNum(p.algorithm_breakdown.home.mid_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.mid_score)}</td></tr>
+        <tr title="🛡️ 防守 (后+门) = 后卫分 + 门将分 × 0.5
+用于'对方 λ' (对方进攻 vs 我方防守)
+例: 挪威 7155 = 后 6603 + 门 552
+   阿根廷 13893 = 后 13068 + 门 825">
+          <td>🛡️ 防守 (后+门)</td><td>${fmtNum(p.algorithm_breakdown.home.defense)}</td><td>${fmtNum(p.algorithm_breakdown.away.defense)}</td></tr>
+        <tr title="后卫分 = Σ 后 Top 4 球员分数
+单后卫分 = 身价 × 联赛系数 × 0.95 + 荣誉 × 15
+例: 挪威后 = 阿耶尔 3000万 + 佩德森 1500 + 赫格姆 1400 + 莱尔森 1200
+   阿根廷后 = 罗梅罗 5000 + 马丁内斯 4000 + 莫利纳 3000 + 巴列尔迪 1800">
+          <td>　├ 后卫分</td><td>${fmtNum(p.algorithm_breakdown.home.def_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.def_score)}</td></tr>
+        <tr title="门将分 = Top 1 门将身价 × 联赛系数 × 0.95 + 荣誉 × 15
+例: 挪威 = 尼兰德 1200万 (西甲水晶宫)
+   阿根廷 = 大马丁 1500万 (英超阿斯顿维拉, 世界杯冠军门将)">
+          <td>　└ 门将分</td><td>${fmtNum(p.algorithm_breakdown.home.gk_score)}</td><td>${fmtNum(p.algorithm_breakdown.away.gk_score)}</td></tr>
+        <tr title="📊 持球率 = 基于 rank_r 档位 (rank_r 越高 → 持球率越高)
+≥95: 62% | ≥90: 58% | ≥80: 54% | ≥70: 50% | <70: 46%
+主队持球率 = 自己档位, 客队持球率 = 1 - 主队持球率
+此例双方 62% 意味着 5 档中最高 (rank_r≥95)">
+          <td>📊 持球率</td><td>${(p.algorithm_breakdown.home.possession * 100).toFixed(0)}%</td><td>${(p.algorithm_breakdown.away.possession * 100).toFixed(0)}%</td></tr>
+        <tr title="👔 教练系数 = 1.0 + min(教练分 / 200, 0.20)
+教练分 = 履历关键词累计 (世界杯冠军 +50, 欧冠冠军 +30, 欧洲杯冠军 +40, 5 届+ +50 ...)
+例: 阿根廷斯卡洛尼 (世界杯冠军 +50 + 美洲杯冠军 +35 = 160) → 1.0 + 0.20 = 1.20
+   挪威索尔巴肯 (无大赛冠军) → 1.0">
+          <td>👔 教练系数</td><td>×${p.algorithm_breakdown.home.coach_coef}</td><td>×${p.algorithm_breakdown.away.coach_coef}</td></tr>
+        <tr title="🏟️ 场地系数 = 海拔惩罚 × 温度惩罚
+海拔≥${p.algorithm_breakdown.venue.alt_threshold}m → 客队 ×${p.algorithm_breakdown.venue.alt_penalty} (惩罚后还要按球员适应度调节)
+温度>${p.algorithm_breakdown.venue.temp_threshold}°C → 双方 ×${p.algorithm_breakdown.venue.temp_penalty}
+此例 R32 在美国 (海拔低 + 温度适中) → 双方都是 ×1.0">
+          <td>🏟️ 场地系数</td><td>×${p.algorithm_breakdown.home.venue_coef}</td><td>×${p.algorithm_breakdown.away.venue_coef}</td></tr>
+        <tr title="🌍 FIFA 系数 = FIFA 排名 → 档位
+Top 10: ×1.05 | 11-20: ×1.03 | 21-30: ×1.00 | 31-50: ×0.97 | 51-70: ×0.94 | >70: ×0.90
+例: 挪威 FIFA 43 → ×0.97
+   阿根廷 FIFA 2 → ×1.05">
+          <td>🌍 FIFA 系数</td><td>×${p.algorithm_breakdown.home.fifa_coef}</td><td>×${p.algorithm_breakdown.away.fifa_coef}</td></tr>
+        <tr style="background:var(--bg-3)" title="🎯 λ 最终 = 1.3 × 持球率 × √(attack × 0.001) × 教练 × 场地 × FIFA
+限制在 [0.3, 4.0] 之间
+例: 挪威 λ = 1.3 × 0.62 × √(40987×0.001) × 1.0 × 1.0 × 0.97 = 1.3 × 0.62 × 6.40 × 0.97 ≈ 4.0 (已达上限)
+   阿根廷 λ = 1.3 × 0.38 × √(47955×0.001) × 1.20 × 1.0 × 1.05 ≈ 4.0 (已达上限)
+两边都顶到 4.0 → 3-3 大比分 + 8 球预期">
+          <td><b>🎯 λ 最终</b></td><td><b>${fmtNum(p.lambda_home)}</b></td><td><b>${fmtNum(p.lambda_away)}</b></td></tr>
       </tbody>
     </table>
   </div>` : ''}
