@@ -2434,13 +2434,16 @@ function renderBracket() {
   const thirdBottom = thirdY + R16_CARD_H / 2;
   const totalHeight = Math.max(R32_END, finalBottom, thirdBottom) + 10;
   
-  // === R32 顺序映射 (按字母序) ===
-  const sortById = (a, b) => a.match_id.localeCompare(b.match_id);
-  
-  const allR32 = currentKoMatches.filter(m => m.stage === 'R32').sort(sortById);
-  const allR16 = currentKoMatches.filter(m => m.stage === 'R16').sort(sortById);
-  const allQF  = currentKoMatches.filter(m => m.stage === 'QF').sort(sortById);
-  const allSF  = currentKoMatches.filter(m => m.stage === 'SF').sort(sortById);
+  // === R32/R16/QF/SF 顺序: 严格按后端生成顺序 (PREDICTIONS 数组 index)
+  // 不能按 match_id 字母序排, 否则胜者顺序乱, R16 配对错位
+  const predIndexMap = new Map();
+  PREDICTIONS.forEach((p, i) => predIndexMap.set(p.match_id, i));
+  const orderByGen = (a, b) => (predIndexMap.get(a.match_id) ?? 0) - (predIndexMap.get(b.match_id) ?? 0);
+
+  const allR32 = currentKoMatches.filter(m => m.stage === 'R32').sort(orderByGen);
+  const allR16 = currentKoMatches.filter(m => m.stage === 'R16').sort(orderByGen);
+  const allQF  = currentKoMatches.filter(m => m.stage === 'QF').sort(orderByGen);
+  const allSF  = currentKoMatches.filter(m => m.stage === 'SF').sort(orderByGen);
   const final  = currentKoMatches.find(m => m.stage === 'FINAL');
   const third  = currentKoMatches.find(m => m.stage === '3RD');
   
