@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>📋 字段审计报告 2026-06-13 21:27:34</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #0d1117; color: #d1d5db; padding: 20px; }
+h1 { color: #f87171; }
+h2 { color: #facc15; margin-top: 24px; }
+.stats { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.stat { background: #161b22; padding: 12px 18px; border-radius: 8px; border-left: 4px solid #58a6ff; }
+.stat.error { border-color: #f87171; }
+.stat.warn { border-color: #facc15; }
+.stat.info { border-color: #58a6ff; }
+.stat-value { font-size: 22px; font-weight: bold; }
+table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+th { background: #21262d; padding: 8px; text-align: left; font-size: 13px; }
+td { padding: 6px 8px; border-bottom: 1px solid #21262d; font-size: 12px; }
+tr.row-error td { background: rgba(248, 113, 113, 0.08); }
+tr.row-warn td { background: rgba(250, 204, 21, 0.06); }
+tr.row-info td { background: rgba(88, 166, 255, 0.05); }
+.level-error { color: #f87171; font-weight: 600; }
+.level-warn { color: #facc15; font-weight: 600; }
+.level-info { color: #58a6ff; }
+.issue-detail { color: #6b7280; font-size: 11px; }
+ul { columns: 2; column-gap: 24px; }
+</style>
+</head>
+<body>
+
+<h1>📋 Mavis PDP 字段审计报告</h1>
+<p>📅 2026-06-13 21:27:34 · 审计 1248 球员</p>
+
+<div class="stats">
+  <div class="stat"><div class="stat-value">1248</div><div>总球员数</div></div>
+  <div class="stat error"><div class="stat-value">0</div><div>🔴 必须修</div></div>
+  <div class="stat warn"><div class="stat-value">3</div><div>🟡 建议查</div></div>
+  <div class="stat info"><div class="stat-value">0</div><div>🔵 提示</div></div>
+  <div class="stat"><div class="stat-value">3</div><div>总问题</div></div>
+</div>
+
+<h2>📊 按国家分组 (Top 15)</h2>
+<ul><li><b>海地</b>: 2 处</li><li><b>伊朗</b>: 1 处</li></ul>
+
+<h2>📊 按字段分组 (Top 10)</h2>
+<ul><li><b>身价_万欧</b>: 3 处</li></ul>
+
+<h2>📋 详细问题列表</h2>
+<table>
+<thead><tr>
+  <th>国家</th><th>球员</th><th>位置</th><th>俱乐部</th><th>级别</th><th>条数</th><th>问题详情</th>
+</tr></thead>
+<tbody>
+
+        <tr class="row-warn">
+          <td><b>海地</b></td>
+          <td>约书亚·迪韦尔热</td>
+          <td>门将</td>
+          <td>科布伦茨宇宙</td>
+          <td><span class="level-warn">🟡 建议查</span></td>
+          <td>1</td>
+          <td class="issue-detail">[warn] <b>身价_万欧</b>: 身价 = 0 (异常)</td>
+        </tr>
+        
+        <tr class="row-warn">
+          <td><b>海地</b></td>
+          <td>伍登斯基·皮埃尔</td>
+          <td>中场</td>
+          <td>雷亚尔希望</td>
+          <td><span class="level-warn">🟡 建议查</span></td>
+          <td>1</td>
+          <td class="issue-detail">[warn] <b>身价_万欧</b>: 身价 = 0 (异常)</td>
+        </tr>
+        
+        <tr class="row-warn">
+          <td><b>伊朗</b></td>
+          <td>萨达尔·阿兹蒙</td>
+          <td>前锋</td>
+          <td>罗马</td>
+          <td><span class="level-warn">🟡 建议查</span></td>
+          <td>1</td>
+          <td class="issue-detail">[warn] <b>身价_万欧</b>: 身价 = 0 (异常)</td>
+        </tr>
+        
+</tbody>
+</table>
+
+<hr>
+<p style="color:#6b7280;font-size:11px;">
+自动化审计, 详细字段含义见 <code>1_数据基础/known_mismatches.json</code>。
+发现错误请编辑 CSV 后再跑一次: <code>python3 backend/field_auditor.py</code>
+</p>
+
+</body>
+</html>
