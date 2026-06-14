@@ -425,12 +425,15 @@ def compute_ranking(weights):
             weights.get('_dynamic_weights') or dynamic_factors.default_weights()
         )
 
+        # v2.2.3 防御: coach_score 最小 0 (避免 tenure_short 负分触发 0 除)
+        coach_score = max(0.0, coach_score)
+
         # 用 weights 控制的 player_share / coach_share
         total = player_score * pt['player_share'] + coach_score * pt['coach_share']
 
-        player_r = player_score / (player_score + sm['player_div']) * 100
-        coach_r = coach_score / (coach_score + sm['coach_div']) * 100
-        rank_r = total / (total + sm['rank_div']) * 100
+        player_r = player_score / max(1, player_score + sm['player_div']) * 100
+        coach_r = coach_score / max(1, coach_score + sm['coach_div']) * 100
+        rank_r = total / max(1, total + sm['rank_div']) * 100
 
         results.append({
             'team': country,

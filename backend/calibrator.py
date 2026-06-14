@@ -228,15 +228,22 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
         ok, _ = validate(w)
         if not ok:
             return 100  # 极端值返回大 loss
-        # 防 0 除: smoothing 分母不能 = 0
+        # 防 0 除: smoothing 分母必须 >= 100 (留缓冲, 避免接近 0 时 numpy 静默 Inf/NaN)
         for k in ('player_div', 'coach_div', 'rank_div'):
-            if w['smoothing'].get(k, 0) < 1:
+            if w['smoothing'].get(k, 0) < 100:
                 return 100
+        # lambda_cap 边界: 不能 < 2.5 (过小没意义) 也不能 > 5 (太大)
+        if w.get('lambda_cap', 3.5) < 2.5 or w.get('lambda_cap', 3.5) > 5.0:
+            return 100
         try:
             ev = evaluate(w, verbose=False)
             if 'error' in ev:
                 return 100
-            return ev['loss']
+            # 防 NaN/Inf (numpy 静默 0/0 不抛异常, 但会污染 loss)
+            loss = ev.get('loss')
+            if loss is None or not (-1000 < loss < 1000):
+                return 100
+            return loss
         except Exception as e:
             if verbose:
                 print(f"  [err] {e}")
