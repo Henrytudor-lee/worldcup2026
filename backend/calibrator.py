@@ -258,6 +258,16 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
     if use_bayes:
         try:
             from skopt import gp_minimize
+
+            # 进度回调: 每次 eval_loss 完成后推一条消息给前端
+            _iter_count = [0]  # 闭包变量
+            def _skopt_callback(res):
+                _iter_count[0] += 1
+                i = _iter_count[0]
+                cur_loss = float(res.func_vals[-1]) if res.func_vals else 100
+                best_so_far = float(min(res.func_vals)) if res.func_vals else 100
+                log('iter', f"iter {i}/{n_iter}: loss={cur_loss:.2f} best={best_so_far:.2f}")
+
             result = gp_minimize(
                 eval_loss,
                 space,
@@ -265,6 +275,7 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
                 n_initial_points=min(10, n_iter // 2),
                 random_state=42,
                 verbose=False,
+                callback=_skopt_callback,  # 实时推日志
             )
             # 收集每次迭代
             for i, (loss, params) in enumerate(zip(result.func_vals, result.x_iters)):
