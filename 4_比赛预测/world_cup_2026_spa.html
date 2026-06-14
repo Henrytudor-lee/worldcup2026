@@ -1054,6 +1054,8 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 .calib-log-line.close { color: #6b7280; font-style: italic; }
 .calib-log-line .ts { color: #4b5563; margin-right: 8px; }
 .calib-log-footer { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-2); }
+.calib-log-progress-bar { flex: 1; height: 6px; background: var(--bg-3); border-radius: 3px; margin: 0 12px; overflow: hidden; }
+.calib-log-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #4ade80); transition: width 0.3s; }
 </style>
 </head>
 <body>
@@ -1233,6 +1235,7 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
       <div class="calib-log-body" id="calibLogBody"></div>
       <div class="calib-log-footer">
         <span id="calibLogProgress">等待启动...</span>
+        <div class="calib-log-progress-bar"><div class="calib-log-progress-fill" id="calibLogProgressBar" style="width:0%"></div></div>
         <button class="btn-primary" onclick="closeCalibLog()" style="padding:4px 12px;font-size:12px;">关闭</button>
       </div>
     </div>
@@ -3034,13 +3037,29 @@ function renderCalibDetails() {
 }
 
 async function runCalibration() {
-  if (!confirm('启动贝叶斯校准 (20 轮, 1-2 分钟)? 日志会实时显示在弹窗中。')) return;
+  // 弹窗让用户输入轮数 (1-20000, 提示不同档位耗时)
+  const input = prompt(
+    '启动贝叶斯校准, 选迭代轮数:\\n\\n' +
+    '  • 20 轮  ≈ 30秒  (快速试)\n' +
+    '  • 50 轮  ≈ 1分钟 (推荐)\n' +
+    '  • 200 轮 ≈ 5分钟 (深度)\n' +
+    '  • 2000 轮 ≈ 30分钟 (极限)\\n\\n' +
+    '最大 20000, 最小 1',
+    '20'
+  );
+  if (input === null) return;  // 取消
+  const n_iter = parseInt(input, 10);
+  if (isNaN(n_iter) || n_iter < 1 || n_iter > 20000) {
+    alert('轮数必须是 1-20000 之间的整数');
+    return;
+  }
+  if (!confirm(`启动贝叶斯校准 (${n_iter} 轮)? 日志会实时显示在弹窗中。`)) return;
   // 1. 开日志弹窗
   openCalibLog();
-  appendCalibLog('info', '🎯 点击"确定"启动校准...');
+  appendCalibLog('info', `🎯 启动 ${n_iter} 轮贝叶斯校准...`);
   let resp, data;
   try {
-    resp = await fetch(`${API_BASE}/api/calibration/run?n_iter=20&use_bayes=true`, {method: 'POST'});
+    resp = await fetch(`${API_BASE}/api/calibration/run?n_iter=${n_iter}&use_bayes=true`, {method: 'POST'});
     data = await resp.json();
   } catch (e) {
     appendCalibLog('error', '❌ 启动失败: ' + e.message);
@@ -3066,11 +3085,18 @@ async function runCalibration() {
       const m = (item.msg || '').match(/iter (\d+)\/(\d+)/);
       if (m) {
         iterCount = parseInt(m[1]);
-        $id('calibLogProgress').textContent = `${iterCount}/${m[2]} 轮`;
+        const total = parseInt(m[2], 10);
+        $id('calibLogProgress').textContent = `${iterCount}/${total} 轮`;
+        // 进度条
+        const pct = Math.min(100, Math.round(iterCount / total * 100));
+        const bar = $id('calibLogProgressBar');
+        if (bar) bar.style.width = pct + '%';
       }
       if (item.level === 'close') {
         $id('calibLogStatus').textContent = '✅ 已完成';
         $id('calibLogProgress').textContent = `完成 (${iterCount} 轮)`;
+        const bar = $id('calibLogProgressBar');
+        if (bar) bar.style.width = '100%';
         es.close();
         // 刷新校准数据
         setTimeout(() => loadCalibration(), 500);

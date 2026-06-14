@@ -152,7 +152,7 @@ def get_calibration(weights: str = Query(default="default")):
 
 @app.post("/api/calibration/run")
 def run_calibration(
-    n_iter: int = Query(default=20, ge=1, le=200),
+    n_iter: int = Query(default=20, ge=1, le=20000),
     use_bayes: bool = Query(default=True),
 ):
     """触发贝叶斯校准 (后台异步跑, 1-2 分钟)

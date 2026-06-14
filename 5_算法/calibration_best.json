@@ -1,55 +1,55 @@
 {
-  "timestamp": "2026-06-14 12:02:42",
-  "loss": -79.286,
+  "timestamp": "2026-06-14 16:51:28",
+  "loss": -80.714,
   "weights": {
     "position_top_n": {
-      "FW": 5,
-      "MID": 5,
-      "DEF": 3,
-      "GK": 1
+      "FW": 6,
+      "MID": 6,
+      "DEF": 1,
+      "GK": 3
     },
     "status_weights": {
-      "g_per_goal": 69.93607913122557,
-      "a_per_assist": 60.870766435383516,
-      "who_bonus_base": 4.476879905104285,
-      "who_bonus_denom": 18.915284572366033
+      "g_per_goal": 10.0,
+      "a_per_assist": 10.0,
+      "who_bonus_base": 3.0,
+      "who_bonus_denom": 20.0
     },
     "nat_intl": {
-      "g_per_goal": 882.5492451490354,
-      "a_per_assist": 348.94398675855405
+      "g_per_goal": 1000.0,
+      "a_per_assist": 1000.0
     },
     "def_gk_weights": {
-      "base_factor": 1.15543866529488,
-      "honors_per_champ": 39.56319010606643,
-      "wc_per_ga": 915.4021138431381
+      "base_factor": 0.5,
+      "honors_per_champ": 0.0,
+      "wc_per_ga": 10.0
     },
     "player_to_total": {
-      "player_share": 0.38161928650653676,
-      "coach_share": 0.6183807134934632
+      "player_share": 0.0,
+      "coach_share": 1.0
     },
     "smoothing": {
-      "player_div": 12708.06163085218,
-      "coach_div": 565.7544528215193,
-      "rank_div": 2701.1419243770592
+      "player_div": 500.0,
+      "coach_div": 1000.0,
+      "rank_div": 6357.0
     },
     "venue_weights": {
-      "altitude_threshold": 2546.050965782392,
-      "altitude_penalty": 0.9489114418012385,
-      "temp_threshold": 28.979017679913902,
-      "temp_penalty": 0.6096603795786417
+      "altitude_threshold": 500.0,
+      "altitude_penalty": 0.5,
+      "temp_threshold": 50.0,
+      "temp_penalty": 1.0
     },
-    "venue_adaptation_weight": 0.9975376064951103,
+    "venue_adaptation_weight": 0.05815535294958777,
     "depth": {
-      "squad_std_penalty": 0.25476314683823226,
-      "squad_std_threshold": 0.27272752973903513
+      "squad_std_penalty": 0.5,
+      "squad_std_threshold": 0.2
     },
     "possession": {
-      "rank_tier1": 0.5594232750849469,
-      "rank_tier2": 0.5219298260701318,
-      "rank_tier3": 0.575489208340618,
-      "rank_tier4": 0.5584158728725928,
-      "rank_tier5": 0.4344319933599368
+      "rank_tier1": 0.55,
+      "rank_tier2": 0.7,
+      "rank_tier3": 0.65,
+      "rank_tier4": 0.6,
+      "rank_tier5": 0.35
     },
-    "lambda_cap": 2.658819265379893
+    "lambda_cap": 2.5
   }
 }
