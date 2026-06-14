@@ -59,6 +59,9 @@ def evaluate(weights, verbose=True):
         'score_mae': 比分平均绝对误差 (主+客 / 2),
         'score_correct': 完全命中比分 (best_score == actual) 数,
         'details': [{date, home, away, predicted, actual, wdl_correct, score_diff}, ...]
+        'champion': 当前 weights 预测的冠军名字 (从 compute_predictions.final.winner)
+        'runner_up': 亚军
+        'third_place': 季军
         'loss': 损失值 (越低越好) = -accuracy * 100 + mae * 5
     }
     """
@@ -125,6 +128,16 @@ def evaluate(weights, verbose=True):
         print(f"  比分完全命中: {score_correct} 场")
         print(f"  综合 loss: {loss:.2f}")
 
+    # v2.2.3 顺便算当前 weights 预测的冠军/亚军/季军 (校准实时展示用)
+    champion = runner_up = third_place = '?'
+    try:
+        full_pred = predictor.compute_predictions(weights)
+        champion = full_pred.get('final', {}).get('winner', '?')
+        runner_up = full_pred.get('final', {}).get('loser', '?')
+        third_place = full_pred.get('third_place', {}).get('winner', '?')
+    except Exception:
+        pass
+
     return {
         'match_count': matched,
         'win_correct': win_correct,
@@ -133,6 +146,9 @@ def evaluate(weights, verbose=True):
         'score_correct': score_correct,
         'loss': round(loss, 3),
         'details': details,
+        'champion': champion,
+        'runner_up': runner_up,
+        'third_place': third_place,
     }
 
 
@@ -268,6 +284,22 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
                 fv = list(res.func_vals) if len(res.func_vals) > 0 else []
                 cur_loss = float(fv[-1]) if fv else 100
                 best_so_far = float(min(fv)) if fv else 100
+                # 算当前 best params 预测的冠军 (取 best_x_iters, 跑一次)
+                try:
+                    if i == 1 or i % 5 == 0 or cur_loss == best_so_far:
+                        # 第一轮 + 每 5 轮 + 新 best 时算冠军 (避免每轮都算)
+                        best_idx = int(fv.index(best_so_far)) if fv else 0
+                        if 0 <= best_idx < len(res.x_iters):
+                            bw = params_to_weights(list(res.x_iters[best_idx]))
+                            be = evaluate(bw, verbose=False)
+                            # evaluate 内部已经算好 champion/runner_up/third_place
+                            champ = be.get('champion', '?')
+                            runner = be.get('runner_up', '?')
+                            third = be.get('third_place', '?')
+                            log('iter', f"iter {i}/{n_iter}: loss={cur_loss:.2f} best={best_so_far:.2f} 🏆最佳预测: 冠军={champ} 亚军={runner} 季军={third}")
+                            return
+                except Exception:
+                    pass
                 log('iter', f"iter {i}/{n_iter}: loss={cur_loss:.2f} best={best_so_far:.2f}")
 
             result = gp_minimize(
@@ -344,12 +376,17 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
                 'mae': ev.get('score_mae', 0),
                 'params': {name: round(p, 4) for name, p in zip(param_names, combo)},
             })
-            if loss < best_loss:
+            is_new_best = loss < best_loss
+            if is_new_best:
                 best_loss = loss
                 best_weights = w
                 best_iter = i
-            # 实时日志
-            log('iter', f"iter {i+1}/{n_random}: loss={loss:.2f} acc={ev.get('win_accuracy',0):.0%} mae={ev.get('score_mae',0):.2f} {'🏆 NEW BEST' if loss == best_loss else ''}")
+            # 实时日志: 每轮显示当前配置预测的冠军 + 季军
+            champ = ev.get('champion', '?')
+            runner = ev.get('runner_up', '?')
+            third = ev.get('third_place', '?')
+            mark = ' 🏆 NEW BEST' if is_new_best else ''
+            log('iter', f"iter {i+1}/{n_random}: loss={loss:.2f} acc={ev.get('win_accuracy',0):.0%} mae={ev.get('score_mae',0):.2f} 冠军={champ} 亚军={runner} 季军={third}{mark}")
 
     # 4. 保存历史
     def to_native(obj):

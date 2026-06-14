@@ -986,9 +986,11 @@ def compute_predictions(weights):
         'top_8_third': [[g, t, p, gd, gf, ga] for g, t, p, gd, gf, ga in top_8_third],
         'round_of_32': [[h, a] for h, a in round_of_32],
         'final': {'home': final_pred['home'], 'away': final_pred['away'],
-                  'winner': final_pred['winner'], 'best_score': final_pred['best_score']},
+                  'winner': final_pred['winner'], 'loser': final_pred['loser'],
+                  'best_score': final_pred['best_score']},
         'third_place': {'home': third_pred['home'], 'away': third_pred['away'],
-                        'winner': third_pred['winner'], 'best_score': third_pred['best_score']},
+                        'winner': third_pred['winner'], 'loser': third_pred['loser'],
+                        'best_score': third_pred['best_score']},
     }
 
 
