@@ -372,7 +372,7 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
   border-radius: 8px;
   padding: 10px 14px;
   display: grid;
-  grid-template-columns: 64px 110px 1fr 110px;
+  grid-template-columns: 64px 110px 1fr 110px 32px;
   gap: 14px;
   align-items: center;
   cursor: pointer;
@@ -439,25 +439,28 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 .match-side.away { justify-content: flex-start; }
 
 .match-score {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 2px;
   background: var(--bg-3);
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 5px 10px;
+  padding: 4px 8px;
   font-family: var(--num-font);
   font-variant-numeric: tabular-nums;
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--text);
-  min-width: 64px;
+  min-width: 72px;
   text-align: center;
+  line-height: 1.2;
 }
-.match-score .sep { color: var(--text-3); font-weight: 400; padding: 0 1px; }
-.match-score .home-win .h { color: var(--green); }
-.match-score .away-win .a { color: var(--green); }
+.match-score .actual-score { display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; font-size: 15px; color: var(--text); }
+.match-score .actual-score .sep { color: var(--text-3); font-weight: 400; }
+.match-score .pred-row { font-size: 9px; color: var(--text-3); font-weight: 400; letter-spacing: 0.04em; font-family: var(--num-font); }
+.match-score .pred-row .pred-label { opacity: 0.6; margin-right: 3px; }
+.match-score .actual-score.winner-h .h { color: var(--green); }
+.match-score .actual-score.winner-a .a { color: var(--green); }
+.match-score .actual-score.draw .h, .match-score .actual-score.draw .a { color: var(--text-2); }
 .match-score .pen-mark {
   font-size: 9px;
   color: var(--gold);
@@ -488,6 +491,7 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
   .match-row .stage-pill { grid-area: stage; align-self: start; }
   .match-row .match-teams { grid-area: teams; }
   .match-row .match-meta { grid-area: meta; text-align: left; }
+  .match-row .hit-cell { display: none; }  /* 小屏隐藏命中列 */
   .match-teams { grid-template-columns: 1fr auto 1fr; font-size: 12.5px; }
   .match-score { min-width: 56px; font-size: 14px; padding: 4px 8px; }
 }
@@ -1038,11 +1042,12 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 
 /* 赛程命中标记 (实际结果 vs 预测) */
 .match-row.has-actual { border-left: 2px solid var(--accent); }
-.hit-mark { display: inline-block; font-size: 11px; margin-left: 4px; }
-.hit-mark.exact { color: #facc15; font-weight: 600; }     /* 🎯 完全命中 */
-.hit-mark.wdl { color: #4ade80; }                          /* ✓ WDL 命中 */
-.hit-mark.miss { color: #f87171; }                         /* ✗ 未命中 */
-.pred-row { font-size: 9px; color: var(--text-3); margin-top: 2px; font-family: var(--num-font); }
+.hit-cell { display: flex; align-items: center; justify-content: center; min-width: 28px; }
+.hit-mark { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-size: 11px; font-weight: 600; }
+.hit-mark.exact { color: #facc15; background: rgba(250,204,21,0.15); border: 1px solid rgba(250,204,21,0.3); }  /* 🎯 完全命中 */
+.hit-mark.wdl { color: #4ade80; background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.25); }  /* ✓ WDL 命中 */
+.hit-mark.miss { color: #f87171; background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.25); } /* ✗ 未命中 */
+.hit-mark.pending { color: var(--text-3); background: transparent; border: 1px dashed var(--border); }
 
 /* 校准日志弹窗 (v2.2.1) */
 .calib-log-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; }
@@ -1839,40 +1844,41 @@ function renderSchedule() {
     const actual = ACTUAL_RESULTS[`${p.home}_vs_${p.away}`];
     const hasActual = !!actual;
     // 命中判断
-    let hitMark = '';
-    let hCls = '', aCls = '';
+    let hitHtml = '';
+    let sideCls = '';
+    let actualScoreCls = '';
     if (hasActual) {
       const ph = parseInt(predScore.split('-')[0] || 0, 10);
       const pa = parseInt(predScore.split('-')[1] || 0, 10);
       const rh = actual.home_score;
       const ra = actual.away_score;
-      // WDL 命中?
       const predWdl = ph > pa ? 'W' : ph === pa ? 'D' : 'L';
       const realWdl = rh > ra ? 'W' : rh === ra ? 'D' : 'L';
       const exactHit = (ph === rh && pa === ra);
+      if (rh > ra) { sideCls = 'home'; }
+      else if (ra > rh) { sideCls = 'away'; }
+      else { sideCls = 'draw'; actualScoreCls = 'draw'; }
       if (predWdl === realWdl) {
-        hCls = (rh > ra) ? 'winner' : (ra > rh) ? 'loser' : '';
-        aCls = (ra > rh) ? 'winner' : (rh > ra) ? 'loser' : '';
-        if (exactHit) hitMark = '<span class="hit-mark exact" title="完全命中">🎯</span>';
-        else hitMark = '<span class="hit-mark wdl" title="WDL 命中">✓</span>';
+        if (exactHit) hitHtml = '<span class="hit-mark exact" title="完全命中比分">🎯</span>';
+        else hitHtml = '<span class="hit-mark wdl" title="胜负命中">✓</span>';
       } else {
-        hCls = (rh > ra) ? 'winner' : (ra > rh) ? 'loser' : '';
-        aCls = (ra > rh) ? 'winner' : (rh > ra) ? 'loser' : '';
-        hitMark = '<span class="hit-mark miss" title="未命中">✗</span>';
+        hitHtml = '<span class="hit-mark miss" title="胜负未命中">✗</span>';
       }
     } else {
-      // 还没踢, 不显示结果
-      if (predScore) {
-        const ph = parseInt(predScore.split('-')[0] || 0, 10);
-        const pa = parseInt(predScore.split('-')[1] || 0, 10);
-        if (ph > pa) { hCls = 'winner'; aCls = 'loser'; }
-        else if (pa > ph) { hCls = 'loser'; aCls = 'winner'; }
-      }
+      hitHtml = '<span class="hit-mark pending" title="未开赛">·</span>';
     }
-    const penMark = p.went_to_pen ? ` <span class="pen-mark">PEN</span>` : '';
-    // 主比分: 有真实结果用真实; 没有用预测
-    const mainScore = hasActual ? `${actual.home_score}-${actual.away_score}` : predScore;
-    const mainSep = mainScore ? '-' : 'vs';
+    // 主比分显示: 已完赛用真实 + 预测下标; 未踢用预测
+    let mainScoreHtml;
+    if (hasActual) {
+      mainScoreHtml = `<div class="actual-score ${actualScoreCls}"><span class="h">${actual.home_score}</span><span class="sep">-</span><span class="a">${actual.away_score}</span></div><div class="pred-row"><span class="pred-label">预测</span>${predScore}</div>`;
+    } else if (predScore) {
+      mainScoreHtml = `<div class="actual-score">${predScore}</div><div class="pred-row" style="opacity:0.5">未开赛</div>`;
+    } else {
+      mainScoreHtml = `<div class="actual-score"><span class="sep" style="color:var(--text-3)">vs</span></div><div class="pred-row" style="opacity:0.5">—</div>`;
+    }
+    const hCls = sideCls === 'home' ? 'winner' : (sideCls === 'away' ? 'loser' : (hasActual ? '' : (predScore ? ((parseInt(predScore.split('-')[0]) > parseInt(predScore.split('-')[1])) ? 'winner' : 'loser') : '')));
+    const aCls = sideCls === 'away' ? 'winner' : (sideCls === 'home' ? 'loser' : (hasActual ? '' : (predScore ? ((parseInt(predScore.split('-')[0]) < parseInt(predScore.split('-')[1])) ? 'winner' : 'loser') : '')));
+    const penMark = p.went_to_pen ? ' <span class="pen-mark">PEN</span>' : '';
     return `
     <div class="match-row${hasActual ? ' has-actual' : ''}" onclick="openMatchDetail('${p.match_id}')">
       <span class="stage-pill" data-st="${p.stage}">${stageLabel(p.stage)}</span>
@@ -1883,10 +1889,8 @@ function renderSchedule() {
           <span class="flag">${hFlag}</span>
         </div>
         <div class="match-score">
-          ${mainScore ? `<span class="h ${hCls}">${mainScore.split('-')[0]}</span><span class="sep">-</span><span class="a ${aCls}">${mainScore.split('-')[1]}</span>` : '<span class="sep">vs</span>'}
+          ${mainScoreHtml}
           ${penMark}
-          ${hitMark}
-          ${hasActual ? `<div class="pred-row">预测 ${predScore}</div>` : ''}
         </div>
         <div class="match-side away ${aCls}">
           <span class="flag">${aFlag}</span>
@@ -1897,6 +1901,7 @@ function renderSchedule() {
         <span class="lam-label">λ EXP</span><br>
         ${fmtNum(p.lambda_home)} <span class="sep" style="opacity:.4">·</span> ${fmtNum(p.lambda_away)}
       </div>
+      <div class="hit-cell">${hitHtml}</div>
     </div>
     `;
   }).join('');
