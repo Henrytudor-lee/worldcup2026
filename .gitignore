@@ -19,6 +19,9 @@ _archive/
 __pycache__/
 .mavis/cache/
 
+# ============ Python venv (含 skopt) ============
+backend/.venv/
+
 # ============ macOS ============
 .DS_Store
 
@@ -44,3 +47,4 @@ __pycache__/
 *.log
 *.tmp
 nohup.out
+backend/.venv/

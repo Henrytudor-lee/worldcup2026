@@ -192,6 +192,8 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
         """params 列表 → weights dict
         约束: player_share + coach_share = 1 (validate 强制)
         解法: 用 player_share 当主参数, coach_share = 1 - player_share
+
+        全部转 native Python 类型, 避免 numpy 标量在 JSON 序列化 / 数值比较时炸
         """
         # 找 player_share / coach_share 在 params 里的索引
         ps_idx = cs_idx = None
@@ -209,11 +211,11 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
                 g, k = name.split('.', 1)
                 # int 字段 (position_top_n.*) 要 round
                 if (g, k) in INT_FIELDS:
-                    w[g][k] = max(1, int(round(v)))
+                    w[g][k] = max(1, int(round(float(v))))
                 else:
-                    w[g][k] = v
+                    w[g][k] = float(v)
             else:
-                w[name] = v
+                w[name] = float(v)
 
         # 强制 player_share + coach_share = 1
         if ps_idx is not None:
@@ -330,16 +332,26 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
             log('iter', f"iter {i+1}/{n_random}: loss={loss:.2f} acc={ev.get('win_accuracy',0):.0%} mae={ev.get('score_mae',0):.2f} {'🏆 NEW BEST' if loss == best_loss else ''}")
 
     # 4. 保存历史
+    def to_native(obj):
+        """numpy int64/float64 → Python int/float (避免 JSON 序列化失败)"""
+        if hasattr(obj, 'item'):
+            return obj.item()
+        if isinstance(obj, dict):
+            return {k: to_native(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [to_native(v) for v in obj]
+        return obj
+
     record = {
         'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'n_iter': n_iter,
         'method': 'bayes' if use_bayes else 'grid',
-        'base_loss': base_eval['loss'],
-        'best_loss': best_loss,
-        'best_iter': best_iter,
-        'improvement': round(base_eval['loss'] - best_loss, 3),
-        'best_weights': best_weights,
-        'iterations': all_iterations,
+        'base_loss': to_native(base_eval['loss']),
+        'best_loss': to_native(best_loss),
+        'best_iter': to_native(best_iter),
+        'improvement': to_native(round(base_eval['loss'] - best_loss, 3)),
+        'best_weights': to_native(best_weights),
+        'iterations': to_native(all_iterations),
     }
     history.append(record)
     save_history(history)

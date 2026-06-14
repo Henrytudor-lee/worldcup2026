@@ -51,18 +51,24 @@ check_port() {
 
 # ====== 装依赖 ======
 install_deps() {
-  if python3 -c "import fastapi, uvicorn" 2>/dev/null; then
-    return 0
+  # v2.2.2 改: 用 venv 装依赖 (避免 PEP 668 + 装 skopt)
+  if [ ! -d "$BACKEND_DIR/.venv" ]; then
+    echo -e "${YELLOW}📦 创建 venv...${NC}"
+    cd "$BACKEND_DIR"
+    python3 -m venv .venv
+    cd "$SCRIPT_DIR"
   fi
-  echo -e "${YELLOW}📦 缺少 fastapi/uvicorn, 正在装...${NC}"
-  pip3 install fastapi uvicorn --break-system-packages
+  source "$BACKEND_DIR/.venv/bin/activate"
+  pip install fastapi uvicorn scikit-optimize 2>&1 | tail -3
+  deactivate
 }
 
 # ====== 启动后端 ======
 start_backend() {
   echo -e "${BLUE}🔧 启动后端 (FastAPI 端口 $BACKEND_PORT)...${NC}"
   cd "$BACKEND_DIR"
-  nohup python3 server.py > "$LOG_DIR/backend.log" 2>&1 &
+  # v2.2.2 改: 用 venv python (含 skopt)
+  nohup .venv/bin/python3 server.py > "$LOG_DIR/backend.log" 2>&1 &
   echo $! > "$RUN_DIR/backend.pid"
   cd "$SCRIPT_DIR"
   sleep 2
