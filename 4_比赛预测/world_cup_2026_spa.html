@@ -1040,6 +1040,14 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 .calib-correct { color: #4ade80; font-weight: 600; }
 .calib-wrong { color: #f87171; font-weight: 600; }
 
+/* 冠军分布柱状图 */
+.champ-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.champ-name { width: 70px; color: var(--text); font-weight: 500; }
+.champ-bar-bg { flex: 1; height: 14px; background: var(--bg-3); border-radius: 3px; position: relative; overflow: hidden; }
+.champ-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #facc15); border-radius: 3px; transition: width 0.4s; }
+.champ-count { width: 40px; text-align: right; color: var(--text-2); font-family: var(--num-font); font-variant-numeric: tabular-nums; }
+.champ-pct { width: 50px; text-align: right; color: var(--text-3); font-family: var(--num-font); }
+
 /* 赛程命中标记 (实际结果 vs 预测) */
 .match-row.has-actual { border-left: 2px solid var(--accent); }
 .hit-cell { display: flex; align-items: center; justify-content: center; min-width: 28px; }
@@ -1228,6 +1236,13 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
       <div class="calib-section">
         <div class="section-subtitle">📈 校准历史 (loss 收敛)</div>
         <canvas id="calibChart" width="380" height="200" style="background:#0d1117;border-radius:6px;display:block;margin-bottom:12px;"></canvas>
+
+        <div class="section-subtitle">🏆 冠军预测分布 (每轮最可能赢的球队)</div>
+        <div id="championBar" style="background:#0d1117;border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:12px;"></div>
+
+        <div class="section-subtitle">🥇 冠军 / 亚军 / 季军 变迁 (最近 20 轮)</div>
+        <canvas id="championTimeline" width="380" height="160" style="background:#0d1117;border-radius:6px;display:block;margin-bottom:12px;"></canvas>
+
         <div class="calib-details">
           <div class="section-subtitle">⚖️ 命中对比表</div>
           <div id="calibDetails" class="calib-table"></div>
@@ -2984,6 +2999,8 @@ function renderCalibration() {
 
   // 折线图
   drawCalibChart();
+  renderChampionBar();
+  drawChampionTimeline();
 
   // 命中对比表
   renderCalibDetails();
@@ -3063,6 +3080,101 @@ function drawCalibChart() {
   ctx.font = '11px sans-serif';
   ctx.fillText(`最近校准: ${last.timestamp} (${last.method}, ${last.n_iter}轮)`, 22, 16);
   ctx.fillText(`min loss: ${minL.toFixed(2)} | max: ${maxL.toFixed(2)}`, 22, h + 34);
+}
+
+// === 冠军分布柱状图 ===
+function renderChampionBar() {
+  const div = $id('championBar');
+  if (!div) return;
+  const history = CALIB_DATA.history || [];
+  if (history.length === 0) {
+    div.innerHTML = '<div style="color:var(--text-3);text-align:center;padding:20px;">暂无校准历史</div>';
+    return;
+  }
+  const last = history[history.length - 1];
+  const champions = last.iterations_summary.champions || [];
+  if (champions.length === 0) {
+    div.innerHTML = '<div style="color:var(--text-3);text-align:center;padding:20px;">数据未包含 champion 字段, 请重新跑一次校准</div>';
+    return;
+  }
+  // 统计冠军出现频次
+  const counts = {};
+  champions.forEach(c => { counts[c] = (counts[c] || 0) + 1; });
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  const total = champions.length;
+  const maxCount = sorted[0]?.[1] || 1;
+  let html = '';
+  for (const [name, count] of sorted.slice(0, 8)) {
+    const pct = (count / total * 100).toFixed(0);
+    const barW = (count / maxCount * 100).toFixed(0);
+    html += `<div class="champ-row">
+      <span class="champ-name">${escHtml(name)}</span>
+      <div class="champ-bar-bg"><div class="champ-bar-fill" style="width:${barW}%"></div></div>
+      <span class="champ-count">${count}</span>
+      <span class="champ-pct">${pct}%</span>
+    </div>`;
+  }
+  if (sorted.length > 8) {
+    html += `<div style="color:var(--text-3);font-size:11px;margin-top:6px;text-align:center;">共 ${sorted.length} 个不同冠军, 仅显示前 8</div>`;
+  }
+  div.innerHTML = html;
+}
+
+// === 冠军/亚军/季军 变迁 timeline ===
+function drawChampionTimeline() {
+  const canvas = $id('championTimeline');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const history = CALIB_DATA.history || [];
+  if (history.length === 0) return;
+  const last = history[history.length - 1];
+  const champions = last.iterations_summary.champions || [];
+  const runners = last.iterations_summary.runner_ups || [];
+  const thirds = last.iterations_summary.third_places || [];
+  if (champions.length === 0) return;
+  // 取最近 20 轮
+  const N = Math.min(20, champions.length);
+  const start = Math.max(0, champions.length - N);
+  const champSeg = champions.slice(start);
+  const runSeg = runners.slice(start);
+  const thirdSeg = thirds.slice(start);
+  const w = canvas.width - 50;
+  const h = canvas.height - 30;
+  // 3 条线: 冠军(顶) / 亚军(中) / 季军(底)
+  const yCh = 25, yR = h/2 + 15, yT = h - 5;
+  // 用字符代替具体国家名 -> y 坐标
+  function drawLine(values, y, color) {
+    // 统计不重复, 给每个国家一个 y offset
+    const unique = [...new Set(values)];
+    const yMap = {};
+    unique.forEach((u, i) => { yMap[u] = i; });
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    values.forEach((v, i) => {
+      const x = 40 + (w / Math.max(1, values.length - 1)) * i;
+      const yPos = y - yMap[v] * 12;
+      if (i === 0) ctx.moveTo(x, yPos);
+      else ctx.lineTo(x, yPos);
+    });
+    ctx.stroke();
+    // 标签
+    ctx.fillStyle = color;
+    ctx.font = '10px monospace';
+    values.slice(-3).forEach((v, i) => {
+      const x = 40 + (w / Math.max(1, values.length - 1)) * (values.length - 3 + i);
+      const yPos = y - yMap[v] * 12;
+      ctx.fillText(v, x - 10, yPos - 5);
+    });
+  }
+  drawLine(thirdSeg, yT, '#cd7f32');
+  drawLine(runSeg, yR, '#c0c0c0');
+  drawLine(champSeg, yCh, '#facc15');
+  // 图例
+  ctx.fillStyle = '#cd7f32'; ctx.fillRect(8, yT - 8, 6, 6); ctx.fillStyle = '#cd7f32'; ctx.fillText('季军', 18, yT - 2);
+  ctx.fillStyle = '#c0c0c0'; ctx.fillRect(8, yR - 8, 6, 6); ctx.fillStyle = '#c0c0c0'; ctx.fillText('亚军', 18, yR - 2);
+  ctx.fillStyle = '#facc15'; ctx.fillRect(8, yCh - 8, 6, 6); ctx.fillStyle = '#facc15'; ctx.fillText('冠军', 18, yCh - 2);
 }
 
 function renderCalibDetails() {

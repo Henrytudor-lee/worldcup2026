@@ -321,6 +321,9 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
                     'accuracy': ev.get('win_accuracy', 0),
                     'mae': ev.get('score_mae', 0),
                     'params': {name: round(p, 4) for name, p in zip(param_names, params)},
+                    'champion': ev.get('champion', '?'),
+                    'runner_up': ev.get('runner_up', '?'),
+                    'third_place': ev.get('third_place', '?'),
                 })
                 if loss < best_loss:
                     best_loss = loss
@@ -375,6 +378,9 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
                 'accuracy': ev.get('win_accuracy', 0),
                 'mae': ev.get('score_mae', 0),
                 'params': {name: round(p, 4) for name, p in zip(param_names, combo)},
+                'champion': ev.get('champion', '?'),
+                'runner_up': ev.get('runner_up', '?'),
+                'third_place': ev.get('third_place', '?'),
             })
             is_new_best = loss < best_loss
             if is_new_best:
@@ -509,6 +515,9 @@ def get_calibration_summary():
                 'last_loss': iters[-1]['loss'],
                 'min_loss': min(i['loss'] for i in iters),
                 'losses': [i['loss'] for i in iters],  # 折线图用
+                'champions': [i.get('champion', '?') for i in iters],  # 冠军分布
+                'runner_ups': [i.get('runner_up', '?') for i in iters],
+                'third_places': [i.get('third_place', '?') for i in iters],
             },
         })
     return {'history': simplified, 'best': best}
