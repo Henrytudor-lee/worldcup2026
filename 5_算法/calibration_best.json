@@ -1,43 +1,55 @@
 {
-  "timestamp": "2026-06-13 18:21:44",
-  "loss": -71.25,
+  "timestamp": "2026-06-14 12:02:42",
+  "loss": -79.286,
   "weights": {
     "position_top_n": {
-      "FW": 3,
-      "MID": 3,
-      "DEF": 4,
+      "FW": 5,
+      "MID": 5,
+      "DEF": 3,
       "GK": 1
     },
     "status_weights": {
-      "g_per_goal": 40,
-      "a_per_assist": 60,
-      "who_bonus_base": 6.5,
-      "who_bonus_denom": 4
+      "g_per_goal": 69.93607913122557,
+      "a_per_assist": 60.870766435383516,
+      "who_bonus_base": 4.476879905104285,
+      "who_bonus_denom": 18.915284572366033
     },
     "nat_intl": {
-      "g_per_goal": 400,
-      "a_per_assist": 600
+      "g_per_goal": 882.5492451490354,
+      "a_per_assist": 348.94398675855405
     },
     "def_gk_weights": {
-      "base_factor": 0.95,
-      "honors_per_champ": 15,
-      "wc_per_ga": 100
+      "base_factor": 1.15543866529488,
+      "honors_per_champ": 39.56319010606643,
+      "wc_per_ga": 915.4021138431381
     },
     "player_to_total": {
-      "player_share": 0.7,
-      "coach_share": 0.3
+      "player_share": 0.38161928650653676,
+      "coach_share": 0.6183807134934632
     },
     "smoothing": {
-      "player_div": 5000,
-      "coach_div": 100,
-      "rank_div": 1000
+      "player_div": 12708.06163085218,
+      "coach_div": 565.7544528215193,
+      "rank_div": 2701.1419243770592
     },
     "venue_weights": {
-      "altitude_threshold": 2000,
-      "altitude_penalty": 0.9,
-      "temp_threshold": 32,
-      "temp_penalty": 0.97
+      "altitude_threshold": 2546.050965782392,
+      "altitude_penalty": 0.9489114418012385,
+      "temp_threshold": 28.979017679913902,
+      "temp_penalty": 0.6096603795786417
     },
-    "venue_adaptation_weight": 0.5
+    "venue_adaptation_weight": 0.9975376064951103,
+    "depth": {
+      "squad_std_penalty": 0.25476314683823226,
+      "squad_std_threshold": 0.27272752973903513
+    },
+    "possession": {
+      "rank_tier1": 0.5594232750849469,
+      "rank_tier2": 0.5219298260701318,
+      "rank_tier3": 0.575489208340618,
+      "rank_tier4": 0.5584158728725928,
+      "rank_tier5": 0.4344319933599368
+    },
+    "lambda_cap": 2.658819265379893
   }
 }

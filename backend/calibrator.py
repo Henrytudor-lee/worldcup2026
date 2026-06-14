@@ -189,10 +189,22 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
                   ('position_top_n', 'DEF'), ('position_top_n', 'GK')}
 
     def params_to_weights(params):
-        """params 列表 → weights dict"""
+        """params 列表 → weights dict
+        约束: player_share + coach_share = 1 (validate 强制)
+        解法: 用 player_share 当主参数, coach_share = 1 - player_share
+        """
+        # 找 player_share / coach_share 在 params 里的索引
+        ps_idx = cs_idx = None
+        for i, name in enumerate(param_names):
+            if name == 'player_to_total.player_share': ps_idx = i
+            if name == 'player_to_total.coach_share': cs_idx = i
+
         w = deepcopy(DEFAULT)
         for i, name in enumerate(param_names):
             v = params[i]
+            # coach_share 由 player_share 决定, 跳过直接赋值
+            if i == cs_idx:
+                continue
             if '.' in name:
                 g, k = name.split('.', 1)
                 # int 字段 (position_top_n.*) 要 round
@@ -202,6 +214,11 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
                     w[g][k] = v
             else:
                 w[name] = v
+
+        # 强制 player_share + coach_share = 1
+        if ps_idx is not None:
+            w['player_to_total']['player_share'] = float(params[ps_idx])
+            w['player_to_total']['coach_share'] = 1.0 - float(params[ps_idx])
         return w
 
     def eval_loss(params):
@@ -270,8 +287,31 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
         n_random = min(n_iter, 30)  # 随机采 30 组
         if verbose:
             print(f"  [info] 网格搜索: 随机采样 {n_random} 组 (替代 2^N 全网格)")
+
+        # 找 player_share / coach_share 在 space 里的索引 (互斥约束: 合计=1)
+        ps_idx = None
+        cs_idx = None
+        for i, name in enumerate(param_names):
+            if name == 'player_to_total.player_share': ps_idx = i
+            if name == 'player_to_total.coach_share': cs_idx = i
+
         for i in range(n_random):
+            # 独立采样
             combo = [random.uniform(lo, hi) for lo, hi in space]
+            # 约束修复: coach_share = 1 - player_share (强制 validate 通过)
+            if ps_idx is not None and cs_idx is not None:
+                # 把 player_share 夹到合法范围, 然后让 coach_share = 1 - player_share
+                ps_lo, ps_hi = space[ps_idx]
+                cs_lo, cs_hi = space[cs_idx]
+                combo[ps_idx] = random.uniform(ps_lo, ps_hi)
+                combo[cs_idx] = 1.0 - combo[ps_idx]
+                # 也要夹到 cs 的合法范围 (如果超出, 微微向内)
+                combo[cs_idx] = max(cs_lo, min(cs_hi, combo[cs_idx]))
+                # 此时 ps 可能因为夹 cs 而越界 → 微调
+                combo[ps_idx] = 1.0 - combo[cs_idx]
+                combo[ps_idx] = max(ps_lo, min(ps_hi, combo[ps_idx]))
+                combo[cs_idx] = 1.0 - combo[ps_idx]
+
             loss = eval_loss(combo)
             w = params_to_weights(combo)
             ev = evaluate(w, verbose=False)
