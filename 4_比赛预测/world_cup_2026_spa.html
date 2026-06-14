@@ -1036,6 +1036,14 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 .calib-correct { color: #4ade80; font-weight: 600; }
 .calib-wrong { color: #f87171; font-weight: 600; }
 
+/* 赛程命中标记 (实际结果 vs 预测) */
+.match-row.has-actual { border-left: 2px solid var(--accent); }
+.hit-mark { display: inline-block; font-size: 11px; margin-left: 4px; }
+.hit-mark.exact { color: #facc15; font-weight: 600; }     /* 🎯 完全命中 */
+.hit-mark.wdl { color: #4ade80; }                          /* ✓ WDL 命中 */
+.hit-mark.miss { color: #f87171; }                         /* ✗ 未命中 */
+.pred-row { font-size: 9px; color: var(--text-3); margin-top: 2px; font-family: var(--num-font); }
+
 /* 校准日志弹窗 (v2.2.1) */
 .calib-log-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; }
 .calib-log-backdrop { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); }
@@ -1279,6 +1287,7 @@ const API_BASE = "http://localhost:8765";
 let WEIGHTS = null;       // 默认 weights
 let RANKING = [];         // 48 队排名（数组）
 let PREDICTIONS = [];     // 104 场预测
+let ACTUAL_RESULTS = {};   // 真实结果 {(home, away): {date, home_score, away_score}}
 let PLAYERS = {};         // {team: [player, ...]}
 
 async function loadFromBackend() {
@@ -1293,6 +1302,7 @@ async function loadFromBackend() {
   const pRes = await fetch(`${API_BASE}/api/predictions`);
   const pData = await pRes.json();
   PREDICTIONS = pData.predictions;
+  ACTUAL_RESULTS = pData.actual_results || {};
   // 3.1) 重算小组赛排名 (PREDICTIONS 此时才有数据)
   GROUP_RANK = computeGroupRankings();
   // 4) 球员（一次拉全部，按国家分组）
@@ -1823,17 +1833,48 @@ function renderSchedule() {
   $id('scheduleList').innerHTML = matches.map(p => {
     const hFlag = FLAGS[p.home] || '🏳️';
     const aFlag = FLAGS[p.away] || '🏳️';
-    // 解析比分判断胜方
-    let hScore = '', aScore = '', hCls = '', aCls = '';
-    if (p.actual_score && /\d+-\d+/.test(p.actual_score)) {
-      const [hs, as] = p.actual_score.split('-').map(s => parseInt(s, 10));
-      hScore = hs; aScore = as;
-      if (hs > as) { hCls = 'winner'; aCls = 'loser'; }
-      else if (as > hs) { hCls = 'loser'; aCls = 'winner'; }
+    // 预测比分 (best_score 是模型预测的最佳比分)
+    const predScore = (p.actual_score && /\d+-\d+/.test(p.actual_score)) ? p.actual_score : '';
+    // 真实结果 (从 match_results.csv)
+    const actual = ACTUAL_RESULTS[`${p.home}_vs_${p.away}`];
+    const hasActual = !!actual;
+    // 命中判断
+    let hitMark = '';
+    let hCls = '', aCls = '';
+    if (hasActual) {
+      const ph = parseInt(predScore.split('-')[0] || 0, 10);
+      const pa = parseInt(predScore.split('-')[1] || 0, 10);
+      const rh = actual.home_score;
+      const ra = actual.away_score;
+      // WDL 命中?
+      const predWdl = ph > pa ? 'W' : ph === pa ? 'D' : 'L';
+      const realWdl = rh > ra ? 'W' : rh === ra ? 'D' : 'L';
+      const exactHit = (ph === rh && pa === ra);
+      if (predWdl === realWdl) {
+        hCls = (rh > ra) ? 'winner' : (ra > rh) ? 'loser' : '';
+        aCls = (ra > rh) ? 'winner' : (rh > ra) ? 'loser' : '';
+        if (exactHit) hitMark = '<span class="hit-mark exact" title="完全命中">🎯</span>';
+        else hitMark = '<span class="hit-mark wdl" title="WDL 命中">✓</span>';
+      } else {
+        hCls = (rh > ra) ? 'winner' : (ra > rh) ? 'loser' : '';
+        aCls = (ra > rh) ? 'winner' : (rh > ra) ? 'loser' : '';
+        hitMark = '<span class="hit-mark miss" title="未命中">✗</span>';
+      }
+    } else {
+      // 还没踢, 不显示结果
+      if (predScore) {
+        const ph = parseInt(predScore.split('-')[0] || 0, 10);
+        const pa = parseInt(predScore.split('-')[1] || 0, 10);
+        if (ph > pa) { hCls = 'winner'; aCls = 'loser'; }
+        else if (pa > ph) { hCls = 'loser'; aCls = 'winner'; }
+      }
     }
     const penMark = p.went_to_pen ? ` <span class="pen-mark">PEN</span>` : '';
+    // 主比分: 有真实结果用真实; 没有用预测
+    const mainScore = hasActual ? `${actual.home_score}-${actual.away_score}` : predScore;
+    const mainSep = mainScore ? '-' : 'vs';
     return `
-    <div class="match-row" onclick="openMatchDetail('${p.match_id}')">
+    <div class="match-row${hasActual ? ' has-actual' : ''}" onclick="openMatchDetail('${p.match_id}')">
       <span class="stage-pill" data-st="${p.stage}">${stageLabel(p.stage)}</span>
       <div class="match-date">${fmtMatchDate(p.date) || '-'}<span class="round">${escHtml(p.round || '')}</span></div>
       <div class="match-teams">
@@ -1842,8 +1883,10 @@ function renderSchedule() {
           <span class="flag">${hFlag}</span>
         </div>
         <div class="match-score">
-          ${hScore !== '' ? `<span class="h ${hCls}">${hScore}</span><span class="sep">-</span><span class="a ${aCls}">${aScore}</span>` : '<span class="sep">vs</span>'}
+          ${mainScore ? `<span class="h ${hCls}">${mainScore.split('-')[0]}</span><span class="sep">-</span><span class="a ${aCls}">${mainScore.split('-')[1]}</span>` : '<span class="sep">vs</span>'}
           ${penMark}
+          ${hitMark}
+          ${hasActual ? `<div class="pred-row">预测 ${predScore}</div>` : ''}
         </div>
         <div class="match-side away ${aCls}">
           <span class="flag">${aFlag}</span>
@@ -2265,6 +2308,7 @@ async function runPrediction() {
     }
     const pData = await pRes.json();
     PREDICTIONS = pData.predictions || [];
+    ACTUAL_RESULTS = pData.actual_results || {};
     // 重算小组赛排名 (因为 PREDICTIONS 变化了)
     GROUP_RANK = computeGroupRankings();
   } catch (e) {

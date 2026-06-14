@@ -8,10 +8,12 @@ Mavis PDP Backend Server
 或:   uvicorn server:app --host 0.0.0.0 --port 8765
 """
 import json
+import csv
 import threading
 import queue
 import time
 import uuid
+from pathlib import Path
 from fastapi import FastAPI, Query, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -19,6 +21,8 @@ import predictor
 import calibrator
 import dynamic_factors
 from weights_schema import DEFAULT, PRESETS, validate, merge_with_default
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 app = FastAPI(title="Mavis PDP Backend", version="2.2.1")
 
@@ -93,9 +97,25 @@ def get_ranking(weights: str = Query(default="default")):
 
 @app.get("/api/predictions")
 def get_predictions(weights: str = Query(default="default")):
-    """104 场全预测（实时按 weights 重算）"""
+    """104 场全预测（实时按 weights 重算）
+    返回 additional 字段 actual_results: {(home, away): 'H-A'}
+    """
     w = _parse_weights(weights)
     result = predictor.compute_predictions(w)
+    # 加载真实结果 (从 match_results.csv)
+    actual_results = {}
+    csv_path = PROJECT_ROOT / "1_数据基础" / "match_results.csv"
+    if csv_path.exists():
+        with open(csv_path, encoding='utf-8') as f:
+            for row in csv.DictReader(f):
+                key = f"{row['home']}_vs_{row['away']}"  # 字符串 key (JSON 友好)
+                actual_results[key] = {
+                    'date': row['date'],
+                    'home_score': int(row['home_score']),
+                    'away_score': int(row['away_score']),
+                    'home': row['home'],
+                    'away': row['away'],
+                }
     return {
         "predictions": result['predictions'],
         "group_standings": result['group_standings'],
@@ -104,6 +124,7 @@ def get_predictions(weights: str = Query(default="default")):
         "final": result['final'],
         "third_place": result['third_place'],
         "count": len(result['predictions']),
+        "actual_results": actual_results,
         "weights_used": w,
     }
 
