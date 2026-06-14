@@ -264,8 +264,10 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
             def _skopt_callback(res):
                 _iter_count[0] += 1
                 i = _iter_count[0]
-                cur_loss = float(res.func_vals[-1]) if res.func_vals else 100
-                best_so_far = float(min(res.func_vals)) if res.func_vals else 100
+                # res.func_vals 是 numpy 数组, 不能用 if 判 truth value
+                fv = list(res.func_vals) if len(res.func_vals) > 0 else []
+                cur_loss = float(fv[-1]) if fv else 100
+                best_so_far = float(min(fv)) if fv else 100
                 log('iter', f"iter {i}/{n_iter}: loss={cur_loss:.2f} best={best_so_far:.2f}")
 
             result = gp_minimize(
