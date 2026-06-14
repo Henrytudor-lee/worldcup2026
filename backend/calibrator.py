@@ -386,7 +386,17 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
         print(f"  历史已存: {CALIB_HISTORY}")
 
     log('done', f"✅ 校准完成: loss {base_eval['loss']:.2f} → {best_loss:.2f} (改善 {base_eval['loss'] - best_loss:.2f}), 最佳 iter #{best_iter}")
-    log('done', f"  history_count: {len(history)}, best_weights 已存盘")
+    log('done', f"  history_count: {len(history)}, best_weights 已存盘 → 5_算法/calibration_best.json")
+    # 概要 best_weights 关键参数 (前端弹窗展示)
+    bw = best_weights
+    try:
+        log('done', f"  🏆 最佳配置概要: FW={bw['position_top_n']['FW']} MID={bw['position_top_n']['MID']} DEF={bw['position_top_n']['DEF']} GK={bw['position_top_n']['GK']}")
+        log('done', f"  · 持球率档位: 1-4名={bw['possession']['rank_tier1']:.0%} 5-8名={bw['possession']['rank_tier2']:.0%} 9-16名={bw['possession']['rank_tier3']:.0%}")
+        log('done', f"  · 球员/教练占比: {bw['player_to_total']['player_share']:.0%} / {bw['player_to_total']['coach_share']:.0%}")
+        log('done', f"  · λ 上限: {bw.get('lambda_cap', 3.5):.2f} (默认 3.5)")
+        log('done', f"  · 阵容深度惩罚: std/mean 阈值={bw['depth']['squad_std_threshold']:.2f} 系数={bw['depth']['squad_std_penalty']:.2f}")
+    except Exception as e:
+        log('warn', f'best_weights 概要展示失败: {e}')
 
     return {
         'base_loss': base_eval['loss'],

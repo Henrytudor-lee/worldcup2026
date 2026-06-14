@@ -1249,6 +1249,7 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
       <div class="calib-log-footer">
         <span id="calibLogProgress">等待启动...</span>
         <div class="calib-log-progress-bar"><div class="calib-log-progress-fill" id="calibLogProgressBar" style="width:0%"></div></div>
+        <button class="btn-primary" id="calibLogApplyBest" onclick="applyBestWeights()" style="padding:4px 12px;font-size:12px;display:none;background:#4ade80;color:#0d1117;">🏆 应用最佳</button>
         <button class="btn-primary" onclick="closeCalibLog()" style="padding:4px 12px;font-size:12px;">关闭</button>
       </div>
     </div>
@@ -3146,6 +3147,9 @@ async function runCalibration() {
         $id('calibLogProgress').textContent = `完成 (${iterCount} 轮)`;
         const bar = $id('calibLogProgressBar');
         if (bar) bar.style.width = '100%';
+        // 显示"应用最佳"按钮
+        const btn = $id('calibLogApplyBest');
+        if (btn) btn.style.display = 'inline-block';
         es.close();
         // 刷新校准数据
         setTimeout(() => loadCalibration(), 500);
@@ -3173,6 +3177,32 @@ function openCalibLog() {
 
 function closeCalibLog() {
   $id('calibLogModal').style.display = 'none';
+}
+
+// 应用最佳校准结果: 把 best_weights 加载到 currentWeights + 重算所有预测
+async function applyBestWeights() {
+  try {
+    const resp = await fetch(`${API_BASE}/api/calibration`);
+    const data = await resp.json();
+    if (!data.best || !data.best.weights) {
+      appendCalibLog('error', '❌ 没有最佳校准记录');
+      return;
+    }
+    // 加载 best_weights 到 currentWeights
+    currentWeights = JSON.parse(JSON.stringify(data.best.weights));
+    // 重渲染滑块 (UI 同步显示)
+    renderSliders();
+    appendCalibLog('done', `🏆 已应用最佳校准 (loss=${data.best.loss.toFixed(2)}), 预测即将刷新`);
+    $id('calibLogStatus').textContent = '🏆 已应用最佳';
+    // 关闭弹窗 + 触发预测重算
+    setTimeout(() => {
+      closeCalibLog();
+      // 触发 runPrediction() 等价于: 重拉 /api/predictions
+      runPrediction();
+    }, 800);
+  } catch (e) {
+    appendCalibLog('error', '❌ 应用失败: ' + e.message);
+  }
 }
 
 function appendCalibLog(level, msg) {
