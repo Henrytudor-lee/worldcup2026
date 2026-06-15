@@ -1,19 +1,15 @@
 @echo off
-REM Mavis PDP Windows 一键启动脚本
-REM 用法: 双击运行, 或 cmd 里输 start.bat
-REM 停止: stop.bat
-
+REM Mavis PDP Windows 一键启动 (v2 - 简化版, 避免 cmd 引号嵌套坑)
 chcp 65001 >nul
-setlocal enabledelayedexpansion
 
-REM ====== 路径配置 ======
+setlocal
+
 set "SCRIPT_DIR=%~dp0"
 cd /d "%SCRIPT_DIR%"
 
 set "BACKEND_DIR=%SCRIPT_DIR%backend"
 set "FRONTEND_DIR=%SCRIPT_DIR%4_比赛预测"
 set "RUN_DIR=%SCRIPT_DIR%.run"
-
 set "BACKEND_PORT=8765"
 set "FRONTEND_PORT=8080"
 set "LOG_DIR=%RUN_DIR%\logs"
@@ -27,98 +23,82 @@ echo   Mavis PDP Windows 一键启动
 echo ================================================
 echo.
 
-REM ====== 装依赖 ======
-if not exist "%BACKEND_DIR%\.venv\Scripts\python.exe" (
-    echo [装依赖] 创建 venv...
-    cd /d "%BACKEND_DIR%"
-    python -m venv .venv
+REM ====== 1. 装依赖 (venv) ======
+echo [1/4] 检查 venv 和依赖...
+set "VENV_PY=%BACKEND_DIR%\.venv\Scripts\python.exe"
+if not exist "%VENV_PY%" (
+    echo   venv 不存在, 创建中...
+    python -m venv "%BACKEND_DIR%\.venv"
     if errorlevel 1 (
-        echo [错误] 创建 venv 失败, 请确认 Python 已装
+        echo.
+        echo   X 创建 venv 失败!
+        echo   请确认 Python 已装, 且 python -m venv 能跑
+        echo.
         pause
         exit /b 1
     )
-    cd /d "%SCRIPT_DIR%"
+    echo   venv 创建完成
 )
 
-call "%BACKEND_DIR%\.venv\Scripts\activate.bat"
-echo [装依赖] pip install fastapi uvicorn scikit-optimize...
-pip install fastapi uvicorn scikit-optimize >nul 2>&1
+REM 用 venv 装依赖 (静默, 失败也不阻塞 - 可能已经装过了)
+echo   pip install fastapi uvicorn scikit-optimize...
+"%VENV_PY%" -m pip install fastapi uvicorn scikit-optimize --quiet --disable-pip-version-check 2>nul
 if errorlevel 1 (
-    echo [警告] pip install 失败, 试着继续启动 (依赖可能已存在)
-)
-call deactivate
-
-REM ====== 检查端口 + 自动强杀 ======
-call :check_port %BACKEND_PORT%
-call :check_port %FRONTEND_PORT%
-
-REM ====== 启动后端 ======
-echo.
-echo [后端] 启动 FastAPI 端口 %BACKEND_PORT%...
-cd /d "%BACKEND_DIR%"
-start /b "Mavis-Backend" cmd /c ".venv\Scripts\python.exe server.py > "%LOG_DIR%\backend.log" 2>&1"
-set "BACKEND_PID=!errorlevel!"
-echo %BACKEND_PID% > "%RUN_DIR%\backend.pid"
-cd /d "%SCRIPT_DIR%"
-
-REM 等 3 秒验证
-timeout /t 3 /nobreak >nul
-curl -s -o nul -w "%%{http_code}" "http://localhost:%BACKEND_PORT%/" > "%RUN_DIR%\backend_check.txt" 2>&1
-set /p BACKEND_CODE=<"%RUN_DIR%\backend_check.txt"
-del "%RUN_DIR%\backend_check.txt" 2>nul
-if "%BACKEND_CODE%"=="200" (
-    echo   √ 后端就绪 http://localhost:%BACKEND_PORT%
+    echo   ! pip install 出错, 但继续 (可能依赖已存在)
 ) else (
-    echo   × 后端启动失败, 看日志 %LOG_DIR%\backend.log
-    type "%LOG_DIR%\backend.log" 2>nul | findstr /n "^" | findstr "^1: ^2: ^3: ^4: ^5: ^6: ^7: ^8: ^9: ^10:" >nul
-    if exist "%LOG_DIR%\backend.log" (
-        echo   --- 日志尾部 ---
-        powershell -command "Get-Content '%LOG_DIR%\backend.log' -Tail 20"
+    echo   √ 依赖就绪
+)
+
+REM ====== 2. 检查端口 + 强杀旧进程 ======
+echo.
+echo [2/4] 检查端口 (8765 / 8080)...
+for %%P in (%BACKEND_PORT% %FRONTEND_PORT%) do (
+    for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":%%P " ^| findstr /I "LISTENING"') do (
+        if not "%%a"=="0" (
+            echo   端口 %%P 被 PID %%a 占用, 杀掉
+            taskkill /F /PID %%a >nul 2>&1
+        )
     )
 )
+timeout /t 1 /nobreak >nul
+echo   √ 端口已就绪
 
-REM ====== 启动前端 ======
+REM ====== 3. 启动后端 ======
 echo.
-echo [前端] 启动 HTTP 端口 %FRONTEND_PORT%...
-cd /d "%FRONTEND_DIR%"
-start /b "Mavis-Frontend" cmd /c "python -m http.server %FRONTEND_PORT% > "%LOG_DIR%\frontend.log" 2>&1"
-set "FRONTEND_PID=!errorlevel!"
-echo %FRONTEND_PID% > "%RUN_DIR%\frontend.pid"
-cd /d "%SCRIPT_DIR%"
+echo [3/4] 启动后端 (FastAPI :%BACKEND_PORT%)...
+set "BACKEND_LOG=%LOG_DIR%\backend.log"
+REM 用 start /B + 转义, 避免引号嵌套
+start "Mavis-Backend" /D "%BACKEND_DIR%" /B cmd /c ""%VENV_PY%" server.py > "%BACKEND_LOG%" 2>&1"
+timeout /t 3 /nobreak >nul
 
+REM 验证后端
+curl -s -o nul -w "  状态码: %%{http_code}\n" "http://localhost:%BACKEND_PORT%/" 2>nul
+echo   √ 后端日志: %BACKEND_LOG%
+
+REM ====== 4. 启动前端 ======
+echo.
+echo [4/4] 启动前端 (HTTP :%FRONTEND_PORT%)...
+set "FRONTEND_LOG=%LOG_DIR%\frontend.log"
+start "Mavis-Frontend" /D "%FRONTEND_DIR%" /B cmd /c "python -m http.server %FRONTEND_PORT% > "%FRONTEND_LOG%" 2>&1"
 timeout /t 2 /nobreak >nul
-curl -s -o nul -w "%%{http_code}" "http://localhost:%FRONTEND_PORT%/world_cup_2026_spa.html" > "%RUN_DIR%\frontend_check.txt" 2>&1
-set /p FRONTEND_CODE=<"%RUN_DIR%\frontend_check.txt"
-del "%RUN_DIR%\frontend_check.txt" 2>nul
-if "%FRONTEND_CODE%"=="200" (
-    echo   √ 前端就绪 http://localhost:%FRONTEND_PORT%/world_cup_2026_spa.html
-)
+
+curl -s -o nul -w "  状态码: %%{http_code}\n" "http://localhost:%FRONTEND_PORT%/world_cup_2026_spa.html" 2>nul
+echo   √ 前端日志: %FRONTEND_LOG%
 
 echo.
 echo ================================================
 echo   √ 启动完成!
 echo.
-echo   浏览器打开: http://localhost:%FRONTEND_PORT%/world_cup_2026_spa.html
+echo   浏览器打开这个 URL (注意是 http, 不是 file):
 echo.
-echo   ! 重要: 必须用 http:// 打开, 不能直接双击 HTML !
-echo   ! 双击 HTML 走 file://, 浏览器禁止 fetch 8765 后端 = 没数据
-echo ================================================
+echo       http://localhost:%FRONTEND_PORT%/world_cup_2026_spa.html
 echo.
-echo   停止: stop.bat
-echo   日志: %LOG_DIR%\backend.log
+echo   ! 双击 HTML 文件走 file://, 浏览器禁止 fetch 8765 后端
+echo   ! 必须把上面 URL 粘到浏览器地址栏
+echo.
+echo   停止服务: 双击 stop.bat
+echo   排查环境: 双击 check_env.bat
 echo ================================================
 echo.
 pause
-exit /b 0
-
-REM ====== 检查端口 + 强杀 ======
-:check_port
-set "PORT=%~1"
-for /f "tokens=5" %%a in ('netstat -aon ^| findstr ":%PORT% " ^| findstr "LISTENING"') do (
-    if not "%%a"=="0" (
-        echo [端口] %PORT% 被 PID %%a 占用, 自动杀掉...
-        taskkill /F /PID %%a >nul 2>&1
-        timeout /t 1 /nobreak >nul
-    )
-)
 exit /b 0
