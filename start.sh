@@ -33,19 +33,15 @@ check_port() {
     lsof -ti:"$port" | head -3 | while read pid; do
       echo "    PID $pid: $(ps -p "$pid" -o command= 2>/dev/null | head -c 80)"
     done
-    echo ""
-    read -p "  杀掉这些进程? [y/N] " yn
-    case "$yn" in
-      [Yy]*)
-        lsof -ti:"$port" | xargs kill -9 2>/dev/null || true
-        sleep 1
-        echo -e "${GREEN}  ✅ 端口 $port 已释放${NC}"
-        ;;
-      *)
-        echo -e "${RED}  ❌ 启动中止，请手动清理端口 $port${NC}"
-        exit 1
-        ;;
-    esac
+    # v2.2.3 改: 不再 read 阻塞, 直接强杀 (用户反馈 read 卡死整个 start.sh)
+    echo -e "${YELLOW}  🚀 自动杀掉旧进程...${NC}"
+    lsof -ti:"$port" | xargs kill -9 2>/dev/null || true
+    sleep 1
+    if lsof -ti:"$port" >/dev/null 2>&1; then
+      echo -e "${RED}  ❌ 端口 $port 仍被占用, 启动中止${NC}"
+      exit 1
+    fi
+    echo -e "${GREEN}  ✅ 端口 $port 已释放${NC}"
   fi
 }
 
