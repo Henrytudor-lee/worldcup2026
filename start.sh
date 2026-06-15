@@ -98,6 +98,15 @@ echo ""
 echo "🚀 Mavis PDP 一键启动"
 echo "================================"
 
+# v2.2.4 改: 检测 Windows, 引导用户用 start.bat
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" || "$OSTYPE" == "win32" ]]; then
+  echo ""
+  echo -e "${RED}⚠️  检测到 Windows 系统！请用 start.bat，不要用 start.sh${NC}"
+  echo "  Windows 路径: 双击 start.bat 即可"
+  echo "  README:        cat README_WINDOWS.md"
+  echo ""
+fi
+
 # 装依赖
 install_deps
 
