@@ -116,9 +116,50 @@ def get_predictions(weights: str = Query(default="default")):
                     'home': row['home'],
                     'away': row['away'],
                 }
+    # v2.2.3 修: 覆盖 predictions 列表里的 actual_score/home_pts/away_pts
+    # predictor.compute_predictions() 把 best_score 当 actual_score (BUILT-IN 错误)
+    # 必须用 actual_results (从 match_results.csv) 覆盖, 否则 SPA 显示的是预测比分不是真实比分
+    for pred in result['predictions']:
+        key = f"{pred['home']}_vs_{pred['away']}"
+        if key in actual_results:
+            ar = actual_results[key]
+            pred['actual_score'] = f"{ar['home_score']}-{ar['away_score']}"
+            pred['home_pts'] = 3 if ar['home_score'] > ar['away_score'] else (1 if ar['home_score'] == ar['away_score'] else 0)
+            pred['away_pts'] = 3 if ar['away_score'] > ar['home_score'] else (1 if ar['home_score'] == ar['away_score'] else 0)
+        else:
+            # v2.2.3 修: 没真实结果 = 没踢, actual_score 应该是 null (让前端显示"未踢")
+            # 之前 predictor 用 best_score 默认, 导致前端把预测当真实
+            pred['actual_score'] = None
+            pred['home_pts'] = None
+            pred['away_pts'] = None
+
+    # v2.2.3 修: 用真实结果重算 group_standings + R32 + KO
+    # predictor 内部用 best_score 算的, 真实世界用真实比分
+    # 之前 R32 一直用 best_score, 所以会出现"韩国第三但 R32 是 A1"这种诡异
+    from collections import defaultdict
+    group_standings_real = {}  # {group: [(team, pts, gd, gf, ga)]}
+    for g in ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']:
+        pts = defaultdict(lambda: [0, 0, 0, 0])  # pts, GF, GA, played
+        for pred in result['predictions']:
+            if pred.get('group') != g or pred.get('stage') != 'group':
+                continue
+            key = f"{pred['home']}_vs_{pred['away']}"
+            ar = actual_results.get(key)
+            if not ar:
+                continue  # 没真实结果 = 没踢, 跳过
+            h, a = pred['home'], pred['away']
+            hs, as_ = ar['home_score'], ar['away_score']
+            pts[h][0] += 3 if hs > as_ else (1 if hs == as_ else 0)
+            pts[h][1] += hs; pts[h][2] += as_; pts[h][3] += 1
+            pts[a][0] += 3 if as_ > hs else (1 if hs == as_ else 0)
+            pts[a][1] += as_; pts[a][2] += hs; pts[a][3] += 1
+        # 排序: 积分 → 净胜球 → 进球 → 字母
+        sorted_teams = sorted(pts.items(), key=lambda x: (-x[1][0], -(x[1][1]-x[1][2]), -x[1][1], x[0]))
+        group_standings_real[g] = [(t, s[0], s[1]-s[2], s[1], s[2]) for t, s in sorted_teams]
+
     return {
         "predictions": result['predictions'],
-        "group_standings": result['group_standings'],
+        "group_standings": group_standings_real,
         "top_8_third": result['top_8_third'],
         "round_of_32": result['round_of_32'],
         "final": result['final'],
