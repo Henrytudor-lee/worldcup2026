@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>📋 字段审计报告 2026-06-15 00:04:24</title>
+<title>📋 字段审计报告 2026-06-14 00:00:17</title>
 <style>
 body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #0d1117; color: #d1d5db; padding: 20px; }
 h1 { color: #f87171; }
@@ -29,21 +29,21 @@ ul { columns: 2; column-gap: 24px; }
 <body>
 
 <h1>📋 Mavis PDP 字段审计报告</h1>
-<p>📅 2026-06-15 00:04:24 · 审计 1248 球员</p>
+<p>📅 2026-06-14 00:00:17 · 审计 1248 球员</p>
 
 <div class="stats">
   <div class="stat"><div class="stat-value">1248</div><div>总球员数</div></div>
   <div class="stat error"><div class="stat-value">0</div><div>🔴 必须修</div></div>
-  <div class="stat warn"><div class="stat-value">0</div><div>🟡 建议查</div></div>
+  <div class="stat warn"><div class="stat-value">3</div><div>🟡 建议查</div></div>
   <div class="stat info"><div class="stat-value">0</div><div>🔵 提示</div></div>
-  <div class="stat"><div class="stat-value">0</div><div>总问题</div></div>
+  <div class="stat"><div class="stat-value">3</div><div>总问题</div></div>
 </div>
 
 <h2>📊 按国家分组 (Top 15)</h2>
-<ul></ul>
+<ul><li><b>海地</b>: 2 处</li><li><b>伊朗</b>: 1 处</li></ul>
 
 <h2>📊 按字段分组 (Top 10)</h2>
-<ul></ul>
+<ul><li><b>身价_万欧</b>: 3 处</li></ul>
 
 <h2>📋 详细问题列表</h2>
 <table>
@@ -52,6 +52,36 @@ ul { columns: 2; column-gap: 24px; }
 </tr></thead>
 <tbody>
 
+        <tr class="row-warn">
+          <td><b>海地</b></td>
+          <td>约书亚·迪韦尔热</td>
+          <td>门将</td>
+          <td>科布伦茨宇宙</td>
+          <td><span class="level-warn">🟡 建议查</span></td>
+          <td>1</td>
+          <td class="issue-detail">[warn] <b>身价_万欧</b>: 身价 = 0 (异常)</td>
+        </tr>
+        
+        <tr class="row-warn">
+          <td><b>海地</b></td>
+          <td>伍登斯基·皮埃尔</td>
+          <td>中场</td>
+          <td>雷亚尔希望</td>
+          <td><span class="level-warn">🟡 建议查</span></td>
+          <td>1</td>
+          <td class="issue-detail">[warn] <b>身价_万欧</b>: 身价 = 0 (异常)</td>
+        </tr>
+        
+        <tr class="row-warn">
+          <td><b>伊朗</b></td>
+          <td>萨达尔·阿兹蒙</td>
+          <td>前锋</td>
+          <td>罗马</td>
+          <td><span class="level-warn">🟡 建议查</span></td>
+          <td>1</td>
+          <td class="issue-detail">[warn] <b>身价_万欧</b>: 身价 = 0 (异常)</td>
+        </tr>
+        
 </tbody>
 </table>
 

@@ -48,3 +48,13 @@ backend/.venv/
 *.tmp
 nohup.out
 backend/.venv/
+
+# ============ 临时调试文件 ============
+.playwright-mcp/
+spa-*.png
+fbref_*.json
+fbref_all_teams.json
+fbref_data.json
+fbref_scraped.json
+scrape_fbref*.py
+arsenal_stats_snapshot.txt
