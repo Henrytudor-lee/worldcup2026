@@ -151,7 +151,9 @@ def collect_results(start_date='2026-06-11', end_date='2026-07-19', overwrite=Tr
 
     start = datetime.strptime(start_date, '%Y-%m-%d')
     end = datetime.strptime(end_date, '%Y-%m-%d')
-    today = datetime(2026, 6, 13)
+    # v2.2.3 修: 硬编码 today=6/13 永远抓不到 6/14+ 的数据
+    # today 改成动态 = 当前美东时间 (但不用时区, 简化起见用 UTC+0 略偏, 反正 cron 12:00 跑会自然覆盖)
+    today = datetime.now() + timedelta(days=1)  # +1 防边界 (美东比 UTC-5, 偏早一点没坏处)
 
     new_count = 0
     skip_count = 0
