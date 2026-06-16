@@ -117,10 +117,15 @@ def get_league_location(league):
 def calc_adaptation(league, venue_alt, venue_temp):
     """算球员对比赛场地的适应度 (0~1)
     1.0 = 完全适应, 0.0 = 严重不适应
+    v2.2.4-4 修: 去掉 abs(), 单向惩罚 (球员怕"更严酷"的环境, 不怕"更温和"的)
+    - 联赛 42°C, 比赛 30°C (更凉) → 适应 (不扣)
+    - 联赛 15°C, 比赛 30°C (更热) → 不适应 (扣)
     """
     loc = get_league_location(league)
-    diff_alt = abs(venue_alt - loc['alt'])
-    diff_temp = abs(venue_temp - loc['temp'])
+    # 海拔: 单向 (高于联赛位置 = 不适应)
+    diff_alt = max(0, venue_alt - loc['alt'])
+    # 温度: 单向 (高于联赛位置 = 不适应; 低于 = 适应)
+    diff_temp = max(0, venue_temp - loc['temp'])
     # tanh 平滑: 海拔每 1500m 衰减 ~50%, 温度每 10°C 衰减 ~50%
     alt_penalty = 0.5 * math.tanh(diff_alt / 1500)
     temp_penalty = 0.4 * math.tanh(diff_temp / 10)
@@ -500,7 +505,8 @@ def fifa_coef(rank):
 
 
 def team_metrics(country, ranking_dict, fifa_data, is_home=True, venue_alt=0, venue_temp=25,
-                 venue_cfg=None, team_leagues=None, adaptation_weight=0.5, weights=None):
+                 venue_cfg=None, team_leagues=None, adaptation_weight=0.5, weights=None,
+                 venue_humidity=60):
     """算单队 λ 计算所需系数
 
     weights: 完整 weights dict, 用于动态配置 lambda_cap / possession
@@ -509,6 +515,7 @@ def team_metrics(country, ranking_dict, fifa_data, is_home=True, venue_alt=0, ve
     team_leagues: dict {'fw': [league, ...], 'mid': [...], 'def': [...], 'gk': 'league'}
                   来自 ranking_dict 里的 fw_leagues 等字段
     adaptation_weight: 0~1, 控制适应度调节强度 (0=关闭, 1=全生效)
+    venue_humidity: v2.2.4-4 加, 比赛地湿度 (%), >70% 双方都受罚
     """
     if venue_cfg is None:
         venue_cfg = {'altitude_threshold': 2000, 'altitude_penalty': 0.90,
@@ -581,34 +588,53 @@ def team_metrics(country, ranking_dict, fifa_data, is_home=True, venue_alt=0, ve
             adjusted = venue_cfg['temp_penalty']
         venue_coef *= adjusted
 
+    # v2.2.4-4 加: 湿度惩罚 (>70% 双方都受罚, 沙漠队更适应, 寒带队不适应)
+    humidity_threshold = 70
+    if venue_humidity > humidity_threshold:
+        # 湿度差: 球员联赛湿度的 60% 算舒适
+        # 湿热 (>70%) → 双方都 -5% (但沙漠球队适应度高, 影响小)
+        humidity_penalty = 0.95
+        if adaptation is not None and adaptation_weight > 0:
+            # adaptation 高 = 适应湿度 → 惩罚少
+            use_factor = 1.0 - adaptation_weight * (1.0 - adaptation)
+            adjusted = humidity_penalty ** use_factor
+        else:
+            adjusted = humidity_penalty
+        venue_coef *= adjusted
+
     return {'attack': attack, 'defense': defense, 'possession': poss,
             'coach_coef': coach_coef, 'fifa_coef': fifa_c, 'venue_coef': venue_coef,
             'rank_r': rank_r,
             'venue_alt': venue_alt, 'venue_temp': venue_temp,
+            'venue_humidity': venue_humidity,
             'venue_cfg': venue_cfg,
             'adaptation': round(adaptation, 3) if adaptation is not None else None}
 
 
 def calc_lambda(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25, venue_cfg=None,
-                 home_leagues=None, away_leagues=None, adaptation_weight=0.5, weights=None):
+                 home_leagues=None, away_leagues=None, adaptation_weight=0.5, weights=None,
+                 venue_humidity=60):
     """算主/客队 λ（4 维对位）"""
     if weights is None:
         weights = {}
     H = team_metrics(home, ranking_dict, fifa_data, is_home=True,
                      venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg,
                      team_leagues=home_leagues, adaptation_weight=adaptation_weight,
-                     weights=weights)
+                     weights=weights, venue_humidity=venue_humidity)
     A = team_metrics(away, ranking_dict, fifa_data, is_home=False,
                      venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg,
                      team_leagues=away_leagues, adaptation_weight=adaptation_weight,
-                     weights=weights)
+                     weights=weights, venue_humidity=venue_humidity)
 
     home_attack = H['attack']
     home_lambda = 1.3 * H['possession'] * math.sqrt(home_attack * 0.001) * H['coach_coef'] * H['venue_coef'] * H['fifa_coef']
     lambda_cap = weights.get('lambda_cap', 3.5) if weights else 3.5
     home_lambda = min(max(home_lambda, 0.3), lambda_cap)
 
-    away_poss = 1 - H['possession']
+    # v2.2.4-3 修: 客队持球率 = A['possession']（客队自己的）, 不用 1 - H['possession']
+    # 旧逻辑: away_poss = 1 - H['possession'] 强制两队互补, 会让客队进攻被主队持球率拉低
+    # 新逻辑: A 队持球率独立算, 客队控球多 = 客队进攻多
+    away_poss = A['possession']
     away_lambda = 1.3 * away_poss * math.sqrt(A['attack'] * 0.001) * A['coach_coef'] * A['venue_coef'] * A['fifa_coef']
     away_lambda = min(max(away_lambda, 0.3), lambda_cap)
 
@@ -630,11 +656,11 @@ def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=2
     H = team_metrics(home, ranking_dict, fifa_data, is_home=True,
                      venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg,
                      team_leagues=home_leagues, adaptation_weight=adaptation_weight,
-                     weights=weights)
+                     weights=weights, venue_humidity=venue_humidity)
     A = team_metrics(away, ranking_dict, fifa_data, is_home=False,
                      venue_alt=venue_alt, venue_temp=venue_temp, venue_cfg=venue_cfg,
                      team_leagues=away_leagues, adaptation_weight=adaptation_weight,
-                     weights=weights)
+                     weights=weights, venue_humidity=venue_humidity)
     lh, la = calc_lambda(home, away, ranking_dict, fifa_data, venue_alt, venue_temp, venue_cfg,
                           home_leagues=home_leagues, away_leagues=away_leagues,
                           adaptation_weight=adaptation_weight, weights=weights)

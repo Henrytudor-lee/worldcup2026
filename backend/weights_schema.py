@@ -40,8 +40,8 @@ DEFAULT = {
     "venue_weights": {
         "altitude_threshold": 2000,  # 海拔阈值 (米) - 超过则客队受罚
         "altitude_penalty": 0.90,    # 客队高原惩罚 (0.90 = -10%)
-        "temp_threshold": 32,        # 温度阈值 (°C) - 超过则双方都受罚
-        "temp_penalty": 0.97,        # 高温惩罚 (0.97 = -3%)
+        "temp_threshold": 28,        # 温度阈值 (°C) (v2.2.4-3 32→28, 修'湿热气候无影响' bug)
+        "temp_penalty": 0.92,        # 高温惩罚 (v2.2.4-3 0.97→0.92, -8% 双方都受罚)
     },
     "venue_adaptation_weight": 0.8,  # 球员适应度调节强度 (v2.2.4 0.5→0.8, 让湿热气候真正起作用)
     "depth": {
