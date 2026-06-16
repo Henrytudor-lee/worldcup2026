@@ -496,6 +496,7 @@ def fifa_coef(rank):
         rank = int(rank)
     except (ValueError, TypeError):
         return 1.00
+    if rank <= 3: return 1.15      # v2.2.4-6 修: FIFA 1-3 给 1.15 (顶级, 决赛优势)
     if rank <= 10: return 1.05
     if rank <= 20: return 1.03
     if rank <= 30: return 1.00
@@ -954,6 +955,9 @@ def compute_predictions(weights):
     }
 
     def make_ko_pred(home, away, stage, round_name, prefix, date):
+        # v2.2.4-5 修: KO 阶段用临时 lambda_cap=5.5 (强队决赛能突破 4.0 撞顶, 反映真实差距)
+        # 保留 weights 的 lambda_cap 给小组赛用
+        ko_weights = {**weights, 'lambda_cap': 5.5} if weights else {'lambda_cap': 5.5}
         pred = predict_match(home, away, ranking_dict, fifa_data, venue_cfg=venue_cfg,
                              home_leagues={'fw': ranking_dict.get(home, {}).get('fw_leagues', []),
                                            'mid': ranking_dict.get(home, {}).get('mid_leagues', []),
@@ -964,17 +968,36 @@ def compute_predictions(weights):
                                            'def': ranking_dict.get(away, {}).get('def_leagues', []),
                                            'gk': ranking_dict.get(away, {}).get('gk_league', '')},
                              adaptation_weight=adaptation_weight,
-                             weights=weights)
+                             weights=ko_weights)
         pred['match_id'] = f"{prefix}_{home}_vs_{away}"
         pred['round'] = round_name
         pred['stage'] = stage
         pred['date'] = date
         k, m_ = [int(x) for x in pred['best_score'].split('-')]
-        pred['actual_score'] = f'{k}-{m_}'
-        pred['home_pts'] = 3 if k > m_ else (1 if k == m_ else 0)
-        pred['away_pts'] = 3 if m_ > k else (1 if k == m_ else 0)
-        pred['winner'] = home if k > m_ else (away if m_ > k else home)
-        pred['loser'] = away if k > m_ else (home if m_ > k else away)
+        pred['actual_score'] = f'{k}-{m_}' if k != m_ or pred['p_home_win'] == pred['p_away_win'] else f'{k}-{m_}'
+        # v2.2.4-5 修: 平局时按 p_home_win/p_away_win 谁高选谁, 不再总是 home
+        # 旧逻辑: pred['winner'] = home if k > m_ else (away if m_ > k else home)  ← 平局总是 home
+        # 新逻辑: 平局看 p_home_win vs p_away_win
+        if k > m_:
+            pred['winner'] = home
+            pred['loser'] = away
+            pred['home_pts'] = 3
+            pred['away_pts'] = 0
+        elif m_ > k:
+            pred['winner'] = away
+            pred['loser'] = home
+            pred['home_pts'] = 0
+            pred['away_pts'] = 3
+        else:
+            # 平局: 按概率选
+            if pred['p_home_win'] >= pred['p_away_win']:
+                pred['winner'] = home
+                pred['loser'] = away
+            else:
+                pred['winner'] = away
+                pred['loser'] = home
+            pred['home_pts'] = 1
+            pred['away_pts'] = 1
         pred['went_to_pen'] = k == m_
         all_predictions.append(pred)
         return pred
@@ -1018,10 +1041,22 @@ def compute_predictions(weights):
         'round_of_32': [[h, a] for h, a in round_of_32],
         'final': {'home': final_pred['home'], 'away': final_pred['away'],
                   'winner': final_pred['winner'], 'loser': final_pred['loser'],
-                  'best_score': final_pred['best_score']},
+                  'best_score': final_pred['best_score'],
+                  'lambda_home': final_pred.get('lambda_home', 0),
+                  'lambda_away': final_pred.get('lambda_away', 0),
+                  'p_home_win': final_pred.get('p_home_win', 0),
+                  'p_draw': final_pred.get('p_draw', 0),
+                  'p_away_win': final_pred.get('p_away_win', 0),
+                  'actual_score': final_pred.get('actual_score', '')},
         'third_place': {'home': third_pred['home'], 'away': third_pred['away'],
                         'winner': third_pred['winner'], 'loser': third_pred['loser'],
-                        'best_score': third_pred['best_score']},
+                        'best_score': third_pred['best_score'],
+                        'lambda_home': third_pred.get('lambda_home', 0),
+                        'lambda_away': third_pred.get('lambda_away', 0),
+                        'p_home_win': third_pred.get('p_home_win', 0),
+                        'p_draw': third_pred.get('p_draw', 0),
+                        'p_away_win': third_pred.get('p_away_win', 0),
+                        'actual_score': third_pred.get('actual_score', '')},
     }
 
 
