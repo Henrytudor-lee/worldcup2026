@@ -648,6 +648,16 @@ def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=2
     p_win = sum(p for (k, m), p in score_probs.items() if k > m)
     p_draw = sum(p for (k, m), p in score_probs.items() if k == m)
     p_lose = sum(p for (k, m), p in score_probs.items() if k < m)
+    # v2.2.4 修: 平局加权 (系数从 weights_schema 读, 默认 1.0 = 不加权)
+    # 6/15 4 场热门身价全平局, 算法对平局系统性低估
+    # 拉高 p_draw 后, 把赢/输的部分按比例压回去
+    draw_boost = 1.0
+    try:
+        from weights_schema import DEFAULT
+        draw_boost = DEFAULT.get('draw_boost', 1.0)
+    except Exception:
+        pass
+    p_draw *= draw_boost
     total_p = p_win + p_draw + p_lose
     if total_p > 0:
         p_win /= total_p; p_draw /= total_p; p_lose /= total_p
