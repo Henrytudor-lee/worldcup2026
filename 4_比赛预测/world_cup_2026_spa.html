@@ -318,7 +318,7 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 }
 
 /* 球队详情 Modal */
-.modal-overlay { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); overflow: auto; }
+.modal-overlay { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); overflow: auto; align-items: center; justify-content: center; padding: 20px 0; }
 .modal-overlay.open { display: flex; align-items: center; justify-content: center; }
 
 /* 比赛 modal 侧边抽屉 (点国家名滑出) */
@@ -333,7 +333,7 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 .team-link { color: var(--accent-2); cursor: pointer; text-decoration: underline dotted; }
 .team-link:hover { color: var(--accent); text-decoration: underline; }
 @media (max-width: 768px) { .match-drawer { width: 100vw; } }
-.modal { background: var(--bg-2); border-radius: 12px; max-width: 1100px; width: 95%; max-height: 90vh; overflow: auto; padding: 24px; border: 1px solid var(--border); }
+.modal { background: var(--bg-2); border-radius: 12px; max-width: 1100px; width: 95%; max-height: 90vh; overflow: auto; padding: 24px; border: 1px solid var(--border); position: relative; margin: 0; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
 .modal-close { background: none; border: none; color: var(--text-3); font-size: 24px; cursor: pointer; }
 .modal-close:hover { color: var(--red); }
@@ -618,7 +618,7 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1px 0;
+  padding: 1px 38px 1px 0;  /* v2.2.4-7: 右 38px 给比分栏留位 */
   min-width: 0;
   position: relative;
   line-height: 1.15;
@@ -668,6 +668,53 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 .bracket-match .loser .score {
   background: transparent;
   color: var(--text-3);
+}
+
+/* v2.2.4-7 KO 比分右栏 (不与队名重叠) */
+.bracket-match .ko-score-right {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--num-font);
+  font-variant-numeric: tabular-nums;
+  background: var(--bg-3);
+  padding: 1px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 2;
+}
+.bracket-match .ko-score-right .sep {
+  color: var(--text-3);
+  margin: 0 1px;
+  font-weight: 400;
+}
+.bracket-match .ko-score-right .winner {
+  color: var(--green);
+}
+.bracket-match .ko-score-right .loser {
+  color: var(--text-3);
+  opacity: 0.55;
+}
+.bracket-match .ko-score-right.home-w,
+.bracket-match .ko-score-right.away-w {
+  background: rgba(63,185,80,0.15);
+  border: 1px solid rgba(63,185,80,0.3);
+}
+.bracket-match .ko-score-right .pen {
+  background: var(--gold);
+  color: #1a1a1a;
+  font-size: 9px;
+  padding: 0 3px;
+  border-radius: 3px;
+  margin-left: 3px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 .bracket-match .team-rank {
   display: inline-block;
@@ -808,6 +855,9 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 .match-mini .winner { color: var(--green); font-weight: bold; }
 .match-mini .loser { color: var(--text-3); }
 .match-mini .score { color: var(--text-2); margin-left: 8px; font-family: var(--num-font); font-variant-numeric: tabular-nums; }
+.match-mini .score.actual { color: var(--text); font-weight: 700; }
+.match-mini .score.predicted { color: var(--accent); opacity: 0.85; font-style: italic; }
+.match-mini .score .pen { background: var(--gold); color: #1a1a1a; font-size: 9px; padding: 0 3px; border-radius: 3px; margin-left: 3px; font-weight: 800; letter-spacing: 0.5px; font-style: normal; }
 
 .predict-section { margin-top: 24px; }
 .predict-section-title { font-size: 16px; font-weight: bold; color: var(--accent); margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
@@ -1051,6 +1101,50 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 /* 赛程命中标记 (实际结果 vs 预测) */
 .match-row.has-actual { border-left: 2px solid var(--accent); }
 .hit-cell { display: flex; align-items: center; justify-content: center; min-width: 28px; }
+
+/* v2.3.2 详细赛事数据按钮 */
+.stats-btn-cell { display: flex; align-items: center; justify-content: center; min-width: 64px; }
+.stats-btn {
+  background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+  color: #fff; border: 0; padding: 4px 10px; border-radius: 12px;
+  font-size: 11px; font-weight: 600; cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: transform 0.1s;
+}
+.stats-btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
+
+/* v2.3.2 赛事数据 modal */
+.match-stats-modal { max-width: 900px; width: 95vw; max-height: 90vh; overflow-y: auto; padding: 0; }
+.match-stats-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 20px 24px 12px; border-bottom: 1px solid var(--border); }
+.match-stats-header h2 { margin: 0; font-size: 20px; }
+.match-stats-tabs { display: flex; gap: 4px; padding: 0 24px; border-bottom: 1px solid var(--border); }
+.match-stats-tabs .stab { background: transparent; border: 0; padding: 10px 14px; cursor: pointer; color: var(--text-2); font-size: 13px; font-weight: 500; border-bottom: 2px solid transparent; }
+.match-stats-tabs .stab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.stats-section { padding: 16px 24px; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; align-items: center; }
+.stats-grid .stat-label { color: var(--text-2); font-size: 12px; text-align: center; }
+.stats-grid .stat-home, .stats-grid .stat-away { font-size: 14px; font-weight: 600; text-align: center; }
+.stats-grid .stat-home { color: #60a5fa; }
+.stats-grid .stat-away { color: #f87171; }
+.stats-grid .bar-track { grid-column: 1 / -1; height: 6px; background: var(--bg-2); border-radius: 3px; margin: 2px 0 6px; overflow: hidden; display: flex; }
+.stats-grid .bar-home { background: #60a5fa; height: 100%; }
+.stats-grid .bar-away { background: #f87171; height: 100%; }
+.player-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.player-table th { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); color: var(--text-2); font-weight: 500; font-size: 11px; }
+.player-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); }
+.player-table .player-name { font-weight: 500; }
+.player-table .starter-no { color: var(--text-3); }
+.player-table tr.substitute { opacity: 0.75; }
+.player-table tr.dnp { opacity: 0.4; }
+.event-row { display: flex; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--border); align-items: center; }
+.event-row .clock { font-family: monospace; color: var(--text-2); min-width: 50px; font-size: 12px; }
+.event-row .etype { font-size: 11px; padding: 2px 6px; border-radius: 3px; }
+.event-row .etype.Goal { background: rgba(74,222,128,0.15); color: #4ade80; }
+.event-row .etype.Substitution { background: rgba(96,165,250,0.12); color: #60a5fa; }
+.event-row .etype.Yellow { background: rgba(250,204,21,0.15); color: #facc15; }
+.event-row .etype.Red { background: rgba(248,113,113,0.15); color: #f87171; }
+.event-row .team-name { font-weight: 500; min-width: 100px; }
+.event-row .desc { color: var(--text-2); font-size: 12px; }
 .hit-mark { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-size: 11px; font-weight: 600; }
 .hit-mark.exact { color: #facc15; background: rgba(250,204,21,0.15); border: 1px solid rgba(250,204,21,0.3); }  /* 🎯 完全命中 */
 .hit-mark.wdl { color: #4ade80; background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.25); }  /* ✓ WDL 命中 */
@@ -1109,7 +1203,6 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
     <button class="tab" data-tab="predict">🏆 预测</button>
     <button class="tab" data-tab="compare">🆚 对比</button>
     <button class="tab" data-tab="search">🔍 搜索</button>
-    <button class="tab" data-tab="calibration">📊 校准</button>
   </div>
 
   <!-- ⚽ 球队 -->
@@ -1209,69 +1302,8 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
     <div class="search-results" id="searchResults"></div>
   </div>
 
-  <!-- 📊 校准 (v2.2 新增) -->
-  <div class="tab-content" id="tab-calibration">
-    <div class="section-title">📊 模型校准 (v2.2)</div>
-    <div class="calib-meta">
-      训练样本: <span id="calibSampleCount">加载中...</span> ·
-      W/D/L 命中率: <span id="calibAccuracy">-</span> ·
-      比分 MAE: <span id="calibMAE">-</span> ·
-      损失: <span id="calibLoss">-</span>
-      <button class="btn-primary" onclick="runCalibration()" style="margin-left:12px;padding:4px 10px;font-size:12px;">🎯 触发贝叶斯校准</button>
-    </div>
-
-    <div class="calib-grid">
-      <!-- 左侧: 30+ 动态因子滑块 -->
-      <div class="calib-section">
-        <div class="section-subtitle">🧬 30+ 动态因子 (可拖动校准)</div>
-        <div class="calib-mini-tabs">
-          <button class="calib-mini-tab active" data-fgroup="coach_bio">教练 bio (30)</button>
-          <button class="calib-mini-tab" data-fgroup="player_bio">球员 bio (15)</button>
-          <button class="calib-mini-tab" data-fgroup="formation">阵型倾向 (12)</button>
-        </div>
-        <div id="calibDynamicFactors" class="calib-factor-list"></div>
-      </div>
-
-      <!-- 右侧: 校准历史 + 折线图 -->
-      <div class="calib-section">
-        <div class="section-subtitle">📈 校准历史 (loss 收敛)</div>
-        <canvas id="calibChart" width="380" height="200" style="background:#0d1117;border-radius:6px;display:block;margin-bottom:12px;"></canvas>
-
-        <div class="section-subtitle">🏆 冠军预测分布 (每轮最可能赢的球队)</div>
-        <div id="championBar" style="background:#0d1117;border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:12px;"></div>
-
-        <div class="section-subtitle">🥇 冠军 / 亚军 / 季军 变迁 (最近 20 轮)</div>
-        <canvas id="championTimeline" width="380" height="160" style="background:#0d1117;border-radius:6px;display:block;margin-bottom:12px;"></canvas>
-
-        <div class="calib-details">
-          <div class="section-subtitle">⚖️ 命中对比表</div>
-          <div id="calibDetails" class="calib-table"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 🎯 校准日志弹窗 (v2.2.1) -->
-  <div class="calib-log-modal" id="calibLogModal" style="display:none;">
-    <div class="calib-log-backdrop" onclick="closeCalibLog()"></div>
-    <div class="calib-log-panel">
-      <div class="calib-log-header">
-        <span>🎯 贝叶斯校准运行中</span>
-        <span class="calib-log-status" id="calibLogStatus">连接中...</span>
-        <button class="calib-log-close" onclick="closeCalibLog()">×</button>
-      </div>
-      <div class="calib-log-body" id="calibLogBody"></div>
-      <div class="calib-log-footer">
-        <span id="calibLogProgress">等待启动...</span>
-        <div class="calib-log-progress-bar"><div class="calib-log-progress-fill" id="calibLogProgressBar" style="width:0%"></div></div>
-        <button class="btn-primary" id="calibLogApplyBest" onclick="applyBestWeights()" style="padding:4px 12px;font-size:12px;display:none;background:#4ade80;color:#0d1117;">🏆 应用最佳</button>
-        <button class="btn-primary" onclick="closeCalibLog()" style="padding:4px 12px;font-size:12px;">关闭</button>
-      </div>
-    </div>
-  </div>
-
   <div class="footer">
-    © Mavis PDP v2.2 · 数据 2026-06 · 单文件离线可跑 · <a href="https://github.com/Henrytudor-lee/worldcup2026" style="color:var(--accent)">Henrytudor-lee/worldcup2026</a>
+    © Mavis PDP v2.3 · 数据 2026-06 · 单文件离线可跑 · <a href="https://github.com/Henrytudor-lee/worldcup2026" style="color:var(--accent)">Henrytudor-lee/worldcup2026</a>
   </div>
 </div>
 
@@ -1283,6 +1315,11 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 <!-- 比赛详情 Modal -->
 <div class="modal-overlay" id="matchModal" onclick="if(event.target===this)closeMatchModal()">
   <div class="modal" id="matchModalContent"></div>
+</div>
+
+<!-- v2.3.2 赛事详细数据 modal (ESPN 抓取) -->
+<div class="modal-overlay" id="matchStatsModal" onclick="if(event.target===this)closeMatchStatsModal()" style="display:none;">
+  <div class="modal match-stats-modal" id="matchStatsContent"></div>
 </div>
 
 <!-- 比赛 modal 侧边抽屉: 点国家名滑出球队详情 (左主/右客) -->
@@ -1324,6 +1361,11 @@ async function loadFromBackend() {
   const pData = await pRes.json();
   PREDICTIONS = pData.predictions;
   ACTUAL_RESULTS = pData.actual_results || {};
+  // v2.2.4-10 修: 预测页只显示预测数据, 清掉 PREDICTIONS 里的 actual_score
+  // (后端 v2.2.3 修过把 actual_score 填进 predictions, 但用户视角: 预测页就是预测, 真实数据走赛程 Tab)
+  // 保留 winner/home_pts/went_to_pen 等用于排名计算, 只清 actual_score 字段
+  // ⚠️ 注意: 赛程 Tab 不用 PREDICTIONS.actual_score, 用 ACTUAL_RESULTS (单独从后端拿)
+  PREDICTIONS.forEach(p => { p.actual_score = null; });
   // 3.1) 重算小组赛排名 (PREDICTIONS 此时才有数据)
   GROUP_RANK = computeGroupRankings();
   // 4) 球员（一次拉全部，按国家分组）
@@ -1331,8 +1373,14 @@ async function loadFromBackend() {
   const plData = await plRes.json();
   PLAYERS = {};
   for (const p of plData.players) {
-    if (!PLAYERS[p['国家']]) PLAYERS[p['国家']] = [];
-    PLAYERS[p['国家']].push(p);
+    // v2.2.4 修: 后端 API 返回原始 CSV 字段 (球员/俱乐部/位置), 前端搜索/详情用 n/c/p 简写
+    // 没映射导致搜索时 p.n.toLowerCase() 报 undefined
+    const mapped = { ...p, n: p['球员'], c: p['俱乐部'], p: p['位置'],
+                     v: p['身价_万欧'], ng: p['国家队进球'], na: p['国家队助攻'],
+                     j: p['号码'] };
+    const team = p['国家'];
+    if (!PLAYERS[team]) PLAYERS[team] = [];
+    PLAYERS[team].push(mapped);
   }
   // 5) 渲染（先建 PRESETS / currentWeights，再 initAll）
   currentWeights = JSON.parse(JSON.stringify(WEIGHTS));
@@ -1434,7 +1482,10 @@ const FLAGS = {
   '新西兰': '🇳🇿',
   // 欧亚混合
   '波黑': '🇧🇦', '乌克兰': '🇺🇦', '威尔士': '🏴󠁧󠁢󠁷󠁬󠁳󠁿', '以色列': '🇮🇱',
-  '挪威': '🇳🇴', '俄罗斯': '🇷🇺', '北马其顿': '🇲🇰', '格鲁吉亚': '🇬🇪'
+  '挪威': '🇳🇴', '俄罗斯': '🇷🇺',   '北马其顿': '🇲🇰', '格鲁吉亚': '🇬🇪',
+  // v2.2.4 补: 6 个新出现但 FLAGS 没注册的国家
+  '乌兹别克斯坦': '🇺🇿', '巴拿马': '🇵🇦', '库拉索': '🇨🇼',
+  '沙特': '🇸🇦', '海地': '🇭🇹', '约旦': '🇯🇴',
 };
 
 // 从 group matches 算出每组的最终排名 (1/2/3/4)
@@ -1444,16 +1495,21 @@ function computeGroupRankings() {
     if (!gs[p.group]) gs[p.group] = {};
     if (!gs[p.group][p.home]) gs[p.group][p.home] = {p:0, gf:0, ga:0, gp:0};
     if (!gs[p.group][p.away]) gs[p.group][p.away] = {p:0, gf:0, ga:0, gp:0};
-    const [hs, as] = p.actual_score.split('-').map(Number);
+    // v2.2.4-10 改: 预测页用 best_score 模拟积分
+    // (之前 v2.2.3 用 actual_score, 但现在预测页只显示预测, actual_score 全 null)
+    // 用 winner + best_score 模拟主客队得分
+    if (!p.best_score) return;
+    const [hs, as] = p.best_score.split('-').map(Number);
+    if (isNaN(hs) || isNaN(as)) return;
     gs[p.group][p.home].gp++;
     gs[p.group][p.away].gp++;
     gs[p.group][p.home].gf += hs;
     gs[p.group][p.away].gf += as;
     gs[p.group][p.home].ga += as;
     gs[p.group][p.away].ga += hs;
-    if (p.home_pts === 3) gs[p.group][p.home].p += 3;
-    else if (p.home_pts === 1) { gs[p.group][p.home].p += 1; gs[p.group][p.away].p += 1; }
-    else gs[p.group][p.away].p += 3;
+    if (hs > as) { gs[p.group][p.home].p += 3; }
+    else if (hs === as) { gs[p.group][p.home].p += 1; gs[p.group][p.away].p += 1; }
+    else { gs[p.group][p.away].p += 3; }
   });
   const rank = {};  // { team: 'A1'/'A2'/... }
   Object.keys(gs).forEach(g => {
@@ -1710,13 +1766,17 @@ function buildTeamDetailHTML(teamName) {
     <div class="detail-section">
       <h4>📅 赛程</h4>
       <div class="schedule-list">
-        ${PREDICTIONS.filter(p => p.home === teamName || p.away === teamName).map(p => `
+        ${PREDICTIONS.filter(p => p.home === teamName || p.away === teamName).map(p => {
+          // v2.2.4-10 改: 预测页球队详情用 best_score
+          const _s = p.best_score || '-';
+          return `
           <div class="match-row" onclick="openMatchDetail('${p.match_id}')">
             <div class="match-date">${fmtMatchDate(p.date) || ''}</div>
             <div class="match-teams">${escHtml(p.home)} <span class="match-vs">vs</span> ${escHtml(p.away)}</div>
-            <div class="match-meta">${p.actual_score || ''} ${p.went_to_pen ? '(点球)' : ''}</div>
+            <div class="match-meta">${_s} ${p.went_to_pen ? '(点球)' : ''}</div>
           </div>
-        `).join('')}
+          `;
+        }).join('')}
       </div>
     </div>
   </div>
@@ -1854,8 +1914,8 @@ function renderSchedule() {
   $id('scheduleList').innerHTML = matches.map(p => {
     const hFlag = FLAGS[p.home] || '🏳️';
     const aFlag = FLAGS[p.away] || '🏳️';
-    // 预测比分 (best_score 是模型预测的最佳比分)
-    const predScore = (p.actual_score && /\d+-\d+/.test(p.actual_score)) ? p.actual_score : '';
+    // 预测比分 = best_score (模型预测的最佳比分), 优先 actual_score 覆盖
+    const predScore = p.best_score || '';
     // 真实结果 (从 match_results.csv)
     const actual = ACTUAL_RESULTS[`${p.home}_vs_${p.away}`];
     const hasActual = !!actual;
@@ -1918,6 +1978,7 @@ function renderSchedule() {
         ${fmtNum(p.lambda_home)} <span class="sep" style="opacity:.4">·</span> ${fmtNum(p.lambda_away)}
       </div>
       <div class="hit-cell">${hitHtml}</div>
+      ${hasActual ? `<div class="stats-btn-cell"><button class="stats-btn" onclick="event.stopPropagation(); openMatchStatsDetail('${escHtml(teamKey(p.home, p.away))}')" title="查看详细赛事数据 (ESPN)">📊 数据</button></div>` : ''}
     </div>
     `;
   }).join('');
@@ -1965,8 +2026,8 @@ function openMatchDetail(matchId) {
   </div>
   
   <div class="detail-section">
-    <h4>📊 比赛结果</h4>
-    <p>比分: <strong>${escHtml(p.actual_score || '-')}</strong> ${p.went_to_pen ? '(点球大战)' : ''} ${p.home_pts !== undefined ? `· 主队 ${p.home_pts} 分 客队 ${p.away_pts} 分` : ''}</p>
+    <h4>📊 预测结果</h4>
+    <p>比分: <strong>${escHtml(p.best_score || '-')}</strong> ${p.went_to_pen ? '(点球大战)' : ''} ${p.home_pts !== undefined ? `· 主队 ${p.home_pts} 分 客队 ${p.away_pts} 分` : ''}</p>
     <p>预期总进球: ${fmtNum(p.expected_total || 0)} · 预期净胜: ${fmtNum(p.expected_diff || 0)}</p>
   </div>
   
@@ -2160,6 +2221,183 @@ Top 10: ×1.05 | 11-20: ×1.03 | 21-30: ×1.00 | 31-50: ×0.97 | 51-70: ×0.94 |
   openMatchDrawer(p.home, 'left');
   openMatchDrawer(p.away, 'right');
 }
+
+// ============== v2.3.2 赛事详细数据 (ESPN) ==============
+function teamKey(home, away) {
+  return `${home}_vs_${away}`;
+}
+
+let currentStatsData = null;
+let currentStatsTab = 'team';
+
+async function openMatchStatsDetail(matchId) {
+  // matchId 实际是 teamKey (例如 "阿根廷_vs_阿尔及利亚"), 后端会按匹配
+  const modal = $id('matchStatsModal');
+  modal.style.display = 'flex';
+  $id('matchStatsContent').innerHTML = '<div style="padding:40px;text-align:center;color:var(--text-2);">⏳ 加载赛事数据中...</div>';
+  try {
+    const resp = await fetch(`${API_BASE}/api/match-stats/${encodeURIComponent(matchId)}`);
+    if (!resp.ok) {
+      const err = await resp.json();
+      $id('matchStatsContent').innerHTML = `<div style="padding:40px;text-align:center;color:#f87171;">❌ ${err.detail || '加载失败'}</div>`;
+      return;
+    }
+    currentStatsData = await resp.json();
+    currentStatsTab = 'team';
+    renderStatsTab();
+  } catch (e) {
+    $id('matchStatsContent').innerHTML = `<div style="padding:40px;text-align:center;color:#f87171;">❌ 网络错误: ${e.message}</div>`;
+  }
+}
+
+function closeMatchStatsModal() {
+  $id('matchStatsModal').style.display = 'none';
+  currentStatsData = null;
+}
+
+function renderStatsTab() {
+  if (!currentStatsData) return;
+  const d = currentStatsData;
+  const m = d.match;
+  const hFlag = FLAGS[m.home_team_cn] || '🏳️';
+  const aFlag = FLAGS[m.away_team_cn] || '🏳️';
+
+  const tabHtml = (key, label) => `<button class="stab ${currentStatsTab===key?'active':''}" onclick="currentStatsTab='${key}'; renderStatsTab();">${label}</button>`;
+
+  const headerHtml = `
+    <div class="match-stats-header">
+      <div>
+        <h2>${hFlag} ${m.home_team_cn} <span style="color:#facc15;">${m.home_score} - ${m.away_score}</span> ${m.away_team_cn} ${aFlag}</h2>
+        <p class="muted" style="font-size:12px;margin-top:6px;">
+          ${m.date} · ${m.venue || '-'} · 数据来源: <a href="https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/summary?event=${m.espn_event_id}" target="_blank" style="color:var(--accent)">ESPN (event_id=${m.espn_event_id})</a>
+        </p>
+      </div>
+      <button class="modal-close" onclick="closeMatchStatsModal()">×</button>
+    </div>
+    <div class="match-stats-tabs">
+      ${tabHtml('team', '📊 队伍统计')}
+      ${tabHtml('players', `👥 球员数据 (${d.home_players.length + d.away_players.length})`)}
+      ${tabHtml('events', `⚡ 事件 (${d.events.length})`)}
+    </div>
+  `;
+
+  let bodyHtml = '';
+  if (currentStatsTab === 'team') {
+    bodyHtml = renderTeamStatsTab(d);
+  } else if (currentStatsTab === 'players') {
+    bodyHtml = renderPlayersTab(d);
+  } else if (currentStatsTab === 'events') {
+    bodyHtml = renderEventsTab(d);
+  }
+
+  $id('matchStatsContent').innerHTML = headerHtml + bodyHtml;
+}
+
+function renderTeamStatsTab(d) {
+  const t = d.team_stats;
+  // 14 项核心指标
+  const rows = [
+    {label: '控球率 (%)', home: t.home_possession_pct, away: t.away_possession_pct, suffix: '%', max: 100},
+    {label: '总射门', home: t.home_total_shots, away: t.away_total_shots, max: 30},
+    {label: '射正', home: t.home_shots_on_target, away: t.away_shots_on_target, max: 15},
+    {label: '射正率 (%)', home: t.home_shot_pct, away: t.away_shot_pct, suffix: '%', mult: 100, max: 100},
+    {label: '角球', home: t.home_corners, away: t.away_corners, max: 15},
+    {label: '犯规', home: t.home_fouls, away: t.away_fouls, max: 30},
+    {label: '黄牌', home: t.home_yellow_cards, away: t.away_yellow_cards, max: 8},
+    {label: '红牌', home: t.home_red_cards, away: t.away_red_cards, max: 3},
+    {label: '越位', home: t.home_offsides, away: t.away_offsides, max: 8},
+    {label: '扑救 (门将)', home: t.home_saves, away: t.away_saves, max: 10},
+    {label: '传球总数', home: t.home_passes_total, away: t.away_passes_total, max: 800},
+    {label: '传球成功率 (%)', home: t.home_pass_pct, away: t.away_pass_pct, suffix: '%', mult: 100, max: 100},
+    {label: '抢断', home: t.home_tackles_total, away: t.away_tackles_total, max: 30},
+    {label: '解围', home: t.home_clearances, away: t.away_clearances, max: 30},
+  ];
+  let html = '<div class="stats-section">';
+  rows.forEach(r => {
+    const hv = parseFloat(r.home || 0) * (r.mult || 1);
+    const av = parseFloat(r.away || 0) * (r.mult || 1);
+    const suffix = r.suffix || '';
+    // 显示值: 如果有 mult, 显示 hv (转整数或一位小数); 否则显示原值
+    const formatDisp = (val) => {
+      if (val === '' || val === undefined || val === null) return '-';
+      if (r.mult) {
+        const n = parseFloat(val) * r.mult;
+        return Number.isInteger(n) ? n.toString() : n.toFixed(1);
+      }
+      return val;
+    };
+    const homeDisp = formatDisp(r.home);
+    const awayDisp = formatDisp(r.away);
+    const total = hv + av || 1;
+    const hp = (hv / total * 100).toFixed(0);
+    const ap = (av / total * 100).toFixed(0);
+    html += `
+      <div class="stats-grid">
+        <div class="stat-home">${homeDisp}${suffix}</div>
+        <div class="stat-label">${r.label}</div>
+        <div class="stat-away">${awayDisp}${suffix}</div>
+        <div class="bar-track"><div class="bar-home" style="width:${hp}%"></div><div class="bar-away" style="width:${ap}%"></div></div>
+      </div>
+    `;
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderPlayersTab(d) {
+  function renderTable(teamPlayers, teamName, flag) {
+    let html = `<h4 style="margin:12px 0 8px;font-size:14px;">${flag} ${teamName} (${teamPlayers.length} 人)</h4>`;
+    html += `<table class="player-table">
+      <thead><tr>
+        <th>#</th><th>位置</th><th>球员</th><th>状态</th>
+        <th style="text-align:center">进球</th><th style="text-align:center">助攻</th>
+        <th style="text-align:center">射正</th><th style="text-align:center">黄</th><th style="text-align:center">红</th>
+      </tr></thead><tbody>`;
+    teamPlayers.forEach(p => {
+      const status = p.starter === 'True' ? '🟢首发'
+        : p.subbed_in === 'True' ? '↗️替补'
+        : p.did_not_play === 'True' ? '—未上场'
+        : '—';
+      const rowCls = p.did_not_play === 'True' ? 'dnp' : (p.starter === 'True' ? '' : 'substitute');
+      html += `<tr class="${rowCls}">
+        <td>${p.jersey || '-'}</td>
+        <td>${p.position || '-'}</td>
+        <td class="player-name">${escHtml(p.player_cn || p.player_en || '?')}</td>
+        <td>${status}</td>
+        <td style="text-align:center;font-weight:${p.goals>0?'700':'normal'};color:${p.goals>0?'#4ade80':'inherit'}">${p.goals || 0}</td>
+        <td style="text-align:center;font-weight:${p.assists>0?'700':'normal'};color:${p.assists>0?'#4ade80':'inherit'}">${p.assists || 0}</td>
+        <td style="text-align:center">${p.shots_on_target || 0}</td>
+        <td style="text-align:center;color:${p.yellow_cards>0?'#facc15':'inherit'}">${p.yellow_cards || 0}</td>
+        <td style="text-align:center;color:${p.red_cards>0?'#f87171':'inherit'}">${p.red_cards || 0}</td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+    return html;
+  }
+  return '<div class="stats-section" style="overflow-x:auto;">' +
+    renderTable(d.home_players, d.match.home_team_cn, FLAGS[d.match.home_team_cn] || '🏳️') +
+    renderTable(d.away_players, d.match.away_team_cn, FLAGS[d.match.away_team_cn] || '🏳️') +
+    '</div>';
+}
+
+function renderEventsTab(d) {
+  if (!d.events.length) return '<div class="stats-section" style="text-align:center;color:var(--text-3);padding:40px;">无事件记录</div>';
+  let html = '<div class="stats-section">';
+  d.events.forEach(e => {
+    const flag = FLAGS[e.team_cn] || '🏳️';
+    const etype = e.event_type;
+    const etypeCls = etype.includes('Yellow') ? 'Yellow' : etype.includes('Red') ? 'Red' : etype;
+    html += `<div class="event-row">
+      <span class="clock">${e.clock || '-'}</span>
+      <span class="etype ${etypeCls}">${etype}</span>
+      <span class="team-name">${flag} ${e.team_cn || '-'}</span>
+      <span class="desc">${escHtml(e.player_en || '')}</span>
+    </div>`;
+  });
+  html += '</div>';
+  return html;
+}
+
 function closeMatchModal() {
   $id('matchModal').classList.remove('open');
   // 关闭比赛 modal 时同时隐藏球队详情抽屉
@@ -2374,7 +2612,10 @@ function computeGroupStandings() {
     if (!groups[p.group]) groups[p.group] = {};
     if (!groups[p.group][p.home]) groups[p.group][p.home] = { pts: 0, gf: 0, ga: 0, gp: 0, w: 0, d: 0, l: 0 };
     if (!groups[p.group][p.away]) groups[p.group][p.away] = { pts: 0, gf: 0, ga: 0, gp: 0, w: 0, d: 0, l: 0 };
-    const [hs, as] = (p.actual_score || '0-0').split('-').map(Number);
+    // v2.2.4-10 改: 预测页用 best_score 模拟 (不再用 actual_score)
+    const scoreStr = p.best_score || '0-0';
+    const [hs, as] = scoreStr.split('-').map(Number);
+    if (isNaN(hs) || isNaN(as)) return;  // 兜底
     const h = groups[p.group][p.home], a = groups[p.group][p.away];
     h.gp++; a.gp++;
     h.gf += hs; a.gf += as;
@@ -2633,8 +2874,10 @@ function renderBracket() {
     if (!m) return '';
     const h = teamTag(m.home);
     const a = teamTag(m.away);
-    const hs = m.actual_score ? m.actual_score.split('-')[0] : '?';
-    const as_ = m.actual_score ? m.actual_score.split('-')[1] : '?';
+    // v2.2.4-10 改: 预测页 KO 卡片只显示 best_score (后端 v2.2.3 会把 best_score 填 actual_score, 现在 PREDICTIONS.actual_score 已被前端清空)
+    const _koScore = m.best_score || m.score || '?-?';
+    const hs = _koScore.split('-')[0] || '?';
+    const as_ = _koScore.split('-')[1] || '?';
     const penTag = m.went_to_pen ? '<span class="pen">点</span>' : '';
     const hasWin = !!m.winner;
     const w = isFinal ? FINAL_W : CARD_W;
@@ -2651,6 +2894,9 @@ function renderBracket() {
     if (hasWin) classes.push('has-winner');
     if (schedInfo) classes.push('has-sched');
     
+    const homeWin = m.winner === m.home;
+    const awayWin = m.winner === m.away;
+    
     return `<div class="${classes.join(' ')}" 
       onclick="openMatchDetail('${m.match_id}')" 
       title="${escHtml(m.home)} vs ${escHtml(m.away)}"
@@ -2658,15 +2904,19 @@ function renderBracket() {
       ${dateCityHtml}
       <div class="team">
         <span class="${m.winner === m.home ? 'winner' : 'loser'}">
-          <span class="flag">${h.flag}</span>${escHtml(m.home)}<span class="team-rank">${h.rk}</span>${m.winner === m.home ? penTag : ''}
+          <span class="flag">${h.flag}</span>${escHtml(m.home)}<span class="team-rank">${h.rk}</span>
         </span>
-        <span class="score">${hs}</span>
       </div>
       <div class="team">
         <span class="${m.winner === m.away ? 'winner' : 'loser'}">
-          <span class="flag">${a.flag}</span>${escHtml(m.away)}<span class="team-rank">${a.rk}</span>${m.winner === m.away ? penTag : ''}
+          <span class="flag">${a.flag}</span>${escHtml(m.away)}<span class="team-rank">${a.rk}</span>
         </span>
-        <span class="score">${as_}</span>
+      </div>
+      <div class="ko-score-right ${homeWin ? 'home-w' : (awayWin ? 'away-w' : '')}">
+        <span class="h ${homeWin ? 'winner' : ''}">${hs}</span>
+        <span class="sep">-</span>
+        <span class="a ${awayWin ? 'winner' : ''}">${as_}</span>
+        ${penTag}
       </div>
     </div>`;
   }
@@ -2757,27 +3007,37 @@ function buildGroupsHTML(groupsToShow) {
     groups[m.group].push(m);
   });
   
-  // 算积分榜
-  const standings = {};
-  Object.keys(groups).forEach(g => {
-    standings[g] = {};
-    groups[g].forEach(m => {
-      if (!standings[g][m.home]) standings[g][m.home] = { p:0, w:0, d:0, l:0, gf:0, ga:0 };
-      if (!standings[g][m.away]) standings[g][m.away] = { p:0, w:0, d:0, l:0, gf:0, ga:0 };
-      const [hs, as] = (m.actual_score || '0-0').split('-').map(Number);
-      const h = standings[g][m.home], a = standings[g][m.away];
-      h.gf += hs; h.ga += as; a.gf += as; a.ga += hs;
-      if (m.home_pts === 3) { h.p += 3; h.w++; a.l++; }
-      else if (m.home_pts === 1) { h.p += 1; h.d++; a.d++; }
-      else if (m.home_pts === 0) { a.p += 3; a.w++; h.l++; }
-    });
-  });
-  
+  // 算积分榜 - v2.2.4 改: 排名按 RANKING 静态 (rank_r), 赛/胜/平/负 用真实累计
+  // 原因: 小组赛才踢第 1 轮, 按 best_score 模拟排名会让"实际 #1 变成 #3", 反直觉
+  // KO 配对仍然走 simulateKnockout 的逻辑 (那是另一回事)
+  const rankMap = {};
+  RANKING.forEach(t => { rankMap[t.team] = t.rank_r || 0; });
+
   let html = '';
   Object.keys(groups).sort().forEach(g => {
-    const sorted = Object.entries(standings[g])
-      .map(([team, s]) => ({ team, ...s, gd: s.gf - s.ga }))
-      .sort((a, b) => b.p - a.p || b.gd - a.gd || b.gf - a.gf);
+    const teams = Array.from(new Set([...groups[g].map(m => m.home), ...groups[g].map(m => m.away)]));
+    // 预测战绩 (累加 best_score 模拟, 预测页只用预测)
+    const realStats = {};
+    teams.forEach(t => realStats[t] = { p:0, w:0, d:0, l:0, gf:0, ga:0 });
+    groups[g].forEach(m => {
+      if (!m.best_score) return;
+      const [hs, as] = m.best_score.split('-').map(Number);
+      if (isNaN(hs) || isNaN(as)) return;
+      const h = realStats[m.home], a = realStats[m.away];
+      h.gf += hs; h.ga += as; a.gf += as; a.ga += hs;
+      if (hs > as) { h.p += 3; h.w += 1; a.l += 1; }
+      else if (hs === as) { h.p += 1; a.p += 1; h.d += 1; a.d += 1; }
+      else { a.p += 3; a.w += 1; h.l += 1; }
+    });
+    // 按 rank_r 排序 (静态)
+    const sorted = teams
+      .map(team => ({
+        team,
+        rank_r: rankMap[team] || 0,
+        ...realStats[team],
+        gd: realStats[team].gf - realStats[team].ga,
+      }))
+      .sort((a, b) => b.rank_r - a.rank_r);
 
     // 上半 A-F 蓝色 / 下半 G-L 紫色
     const headerCls = g.charCodeAt(0) < 71 ? 'up' : 'down';
@@ -2785,12 +3045,11 @@ function buildGroupsHTML(groupsToShow) {
     html += `<div class="group-block">
       <div class="group-block-header ${headerCls}" data-letter="${g}">第 ${g} 组</div>
       <table class="standings-mini">
-        <thead><tr><th>#</th><th>球队</th><th>赛</th><th>胜</th><th>平</th><th>负</th><th>净</th><th>分</th></tr></thead>
+        <thead><tr><th>#</th><th>球队</th><th>胜</th><th>平</th><th>负</th><th>净</th><th>分</th></tr></thead>
         <tbody>
           ${sorted.map((t, i) => `<tr class="pos-${i+1}">
             <td class="rank-cell">${i+1}</td>
             <td>${FLAGS[t.team] || ''} ${escHtml(t.team)}</td>
-            <td>${t.w + t.d + t.l}</td>
             <td>${t.w}</td>
             <td>${t.d}</td>
             <td>${t.l}</td>
@@ -2800,16 +3059,23 @@ function buildGroupsHTML(groupsToShow) {
         </tbody>
       </table>
       <div class="matches-mini">
-        ${groups[g].map(m => `
+        ${groups[g].map(m => {
+          // v2.2.4-9 修: 有实际结果用 actual_score (带胜方高亮), 没实际结果用 best_score (预测)
+          // 旧版 fallback '-' 导致小组赛未踢场全空
+          const hasActual = !!m.actual_score;
+          const score = hasActual ? m.actual_score : (m.best_score || '-');
+          const scoreCls = hasActual ? 'actual' : 'predicted';
+          const penTag = m.went_to_pen ? ' <span class="pen">点</span>' : '';
+          return `
           <div class="match-mini" onclick="openMatchDetail('${m.match_id}')">
             <span>
-              <span class="${m.winner === m.home || (m.home_pts === 1 && m.winner === m.home) ? 'winner' : 'loser'}">${FLAGS[m.home] || ''} ${escHtml(m.home)}</span>
+              <span class="${m.winner === m.home || (m.home_pts === 1 && m.winner === m.home) ? 'winner' : (hasActual ? 'loser' : '')}">${FLAGS[m.home] || ''} ${escHtml(m.home)}</span>
               <span class="muted">vs</span>
-              <span class="${m.winner === m.away ? 'winner' : 'loser'}">${FLAGS[m.away] || ''} ${escHtml(m.away)}</span>
+              <span class="${m.winner === m.away ? 'winner' : (hasActual ? 'loser' : '')}">${FLAGS[m.away] || ''} ${escHtml(m.away)}</span>
             </span>
-            <span class="score">${m.actual_score || '-'}</span>
-          </div>
-        `).join('')}
+            <span class="score ${scoreCls}">${score}${penTag}</span>
+          </div>`;
+        }).join('')}
       </div>
     </div>`;
   });
@@ -2944,8 +3210,6 @@ function exportConfig() {
   $id('statChampion').textContent = PREDICTIONS.find(p => p.stage === 'FINAL')?.winner || '-';
   $id('statRunnerUp').textContent = PREDICTIONS.find(p => p.stage === 'FINAL')?.loser || '-';
   $id('statThird').textContent = PREDICTIONS.find(p => p.stage === '3RD')?.winner || '-';
-  // v2.2 校准
-  loadCalibration();
 }
 
 // 启动：从后端加载数据
@@ -2955,390 +3219,6 @@ loadFromBackend().catch(err => {
   alert('无法连接后端 http://localhost:8765，请先启动 backend/server.py');
 });
 
-// ============================================================
-// v2.2 校准 Tab
-// ============================================================
-let DYNAMIC_FACTORS = {factors: {}, defaults: {}, ranges: {}};
-let CALIB_DATA = {evaluation: {}, history: [], best: null};
-let CURRENT_FGROUP = 'coach_bio';
-
-async function loadCalibration() {
-  try {
-    // 1. 拉动态因子 schema
-    const dfResp = await fetch(`${API_BASE}/api/dynamic-factors`);
-    DYNAMIC_FACTORS = await dfResp.json();
-    // 2. 拉校准评估
-    const w = currentWeights || DEFAULT_WEIGHTS;
-    const wStr = encodeURIComponent(JSON.stringify(w));
-    const cResp = await fetch(`${API_BASE}/api/calibration?weights=${wStr}`);
-    CALIB_DATA = await cResp.json();
-    // 3. 渲染
-    renderCalibration();
-  } catch (e) {
-    console.error('loadCalibration failed:', e);
-  }
-}
-
-function renderCalibration() {
-  // meta
-  const ev = CALIB_DATA.evaluation || {};
-  if (ev.error) {
-    $id('calibSampleCount').textContent = '暂无数据';
-    $id('calibAccuracy').textContent = '-';
-    $id('calibMAE').textContent = '-';
-    $id('calibLoss').textContent = '-';
-  } else {
-    $id('calibSampleCount').textContent = `${ev.match_count} 场`;
-    $id('calibAccuracy').textContent = `${(ev.win_accuracy * 100).toFixed(1)}% (${ev.win_correct}/${ev.match_count})`;
-    $id('calibMAE').textContent = ev.score_mae;
-    $id('calibLoss').textContent = ev.loss;
-  }
-
-  // 动态因子滑块
-  renderDynamicFactors(CURRENT_FGROUP);
-
-  // 折线图
-  drawCalibChart();
-  renderChampionBar();
-  drawChampionTimeline();
-
-  // 命中对比表
-  renderCalibDetails();
-}
-
-function renderDynamicFactors(group) {
-  CURRENT_FGROUP = group;
-  // 激活 tab
-  document.querySelectorAll('.calib-mini-tab').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.fgroup === group);
-  });
-  const list = $id('calibDynamicFactors');
-  list.innerHTML = '';
-  const factors = DYNAMIC_FACTORS.factors || {};
-  for (const [key, meta] of Object.entries(factors)) {
-    if (meta.group !== group) continue;
-    const w = DYNAMIC_FACTORS.defaults[key] || meta.base || 0;
-    const [lo, hi] = DYNAMIC_FACTORS.ranges[key] || [0, 100];
-    const row = document.createElement('div');
-    row.className = 'calib-factor';
-    row.innerHTML = `
-      <label title="${meta.pitfall || ''}">${meta.label}</label>
-      <span class="val" id="df-val-${key}">${w.toFixed(1)}</span>
-      <input type="range" min="${lo}" max="${hi}" step="${(hi-lo)/100}" value="${w}"
-        oninput="$id('df-val-${key}').textContent = parseFloat(this.value).toFixed(1); DYNAMIC_FACTORS.defaults['${key}'] = parseFloat(this.value);"
-      >`;
-    list.appendChild(row);
-  }
-}
-
-function drawCalibChart() {
-  const canvas = $id('calibChart');
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const history = CALIB_DATA.history || [];
-  if (history.length === 0) {
-    ctx.fillStyle = '#6b7280';
-    ctx.font = '13px sans-serif';
-    ctx.fillText('暂无校准历史 - 点击"触发贝叶斯校准"开始', 50, 100);
-    return;
-  }
-  // 取最近一次校准的 losses
-  const last = history[history.length - 1];
-  const losses = last.iterations_summary.losses || [];
-  if (losses.length === 0) return;
-  const w = canvas.width - 40;
-  const h = canvas.height - 40;
-  const minL = Math.min(...losses);
-  const maxL = Math.max(...losses);
-  const range = maxL - minL || 1;
-  // 网格
-  ctx.strokeStyle = '#21262d';
-  ctx.lineWidth = 1;
-  for (let i = 0; i < 5; i++) {
-    const y = 20 + (h / 4) * i;
-    ctx.beginPath(); ctx.moveTo(20, y); ctx.lineTo(w + 20, y); ctx.stroke();
-  }
-  // 折线
-  ctx.strokeStyle = '#58a6ff';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  losses.forEach((lv, i) => {
-    const x = 20 + (w / (losses.length - 1 || 1)) * i;
-    const y = 20 + h - ((lv - minL) / range) * h;
-    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-  });
-  ctx.stroke();
-  // 点
-  ctx.fillStyle = '#58a6ff';
-  losses.forEach((lv, i) => {
-    const x = 20 + (w / (losses.length - 1 || 1)) * i;
-    const y = 20 + h - ((lv - minL) / range) * h;
-    ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI*2); ctx.fill();
-  });
-  // 标签
-  ctx.fillStyle = '#6b7280';
-  ctx.font = '11px sans-serif';
-  ctx.fillText(`最近校准: ${last.timestamp} (${last.method}, ${last.n_iter}轮)`, 22, 16);
-  ctx.fillText(`min loss: ${minL.toFixed(2)} | max: ${maxL.toFixed(2)}`, 22, h + 34);
-}
-
-// === 冠军分布柱状图 ===
-function renderChampionBar() {
-  const div = $id('championBar');
-  if (!div) return;
-  const history = CALIB_DATA.history || [];
-  if (history.length === 0) {
-    div.innerHTML = '<div style="color:var(--text-3);text-align:center;padding:20px;">暂无校准历史</div>';
-    return;
-  }
-  const last = history[history.length - 1];
-  const champions = last.iterations_summary.champions || [];
-  if (champions.length === 0) {
-    div.innerHTML = '<div style="color:var(--text-3);text-align:center;padding:20px;">数据未包含 champion 字段, 请重新跑一次校准</div>';
-    return;
-  }
-  // 统计冠军出现频次
-  const counts = {};
-  champions.forEach(c => { counts[c] = (counts[c] || 0) + 1; });
-  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-  const total = champions.length;
-  const maxCount = sorted[0]?.[1] || 1;
-  let html = '';
-  for (const [name, count] of sorted.slice(0, 8)) {
-    const pct = (count / total * 100).toFixed(0);
-    const barW = (count / maxCount * 100).toFixed(0);
-    html += `<div class="champ-row">
-      <span class="champ-name">${escHtml(name)}</span>
-      <div class="champ-bar-bg"><div class="champ-bar-fill" style="width:${barW}%"></div></div>
-      <span class="champ-count">${count}</span>
-      <span class="champ-pct">${pct}%</span>
-    </div>`;
-  }
-  if (sorted.length > 8) {
-    html += `<div style="color:var(--text-3);font-size:11px;margin-top:6px;text-align:center;">共 ${sorted.length} 个不同冠军, 仅显示前 8</div>`;
-  }
-  div.innerHTML = html;
-}
-
-// === 冠军/亚军/季军 变迁 timeline ===
-function drawChampionTimeline() {
-  const canvas = $id('championTimeline');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const history = CALIB_DATA.history || [];
-  if (history.length === 0) return;
-  const last = history[history.length - 1];
-  const champions = last.iterations_summary.champions || [];
-  const runners = last.iterations_summary.runner_ups || [];
-  const thirds = last.iterations_summary.third_places || [];
-  if (champions.length === 0) return;
-  // 取最近 20 轮
-  const N = Math.min(20, champions.length);
-  const start = Math.max(0, champions.length - N);
-  const champSeg = champions.slice(start);
-  const runSeg = runners.slice(start);
-  const thirdSeg = thirds.slice(start);
-  const w = canvas.width - 50;
-  const h = canvas.height - 30;
-  // 3 条线: 冠军(顶) / 亚军(中) / 季军(底)
-  const yCh = 25, yR = h/2 + 15, yT = h - 5;
-  // 用字符代替具体国家名 -> y 坐标
-  function drawLine(values, y, color) {
-    // 统计不重复, 给每个国家一个 y offset
-    const unique = [...new Set(values)];
-    const yMap = {};
-    unique.forEach((u, i) => { yMap[u] = i; });
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    values.forEach((v, i) => {
-      const x = 40 + (w / Math.max(1, values.length - 1)) * i;
-      const yPos = y - yMap[v] * 12;
-      if (i === 0) ctx.moveTo(x, yPos);
-      else ctx.lineTo(x, yPos);
-    });
-    ctx.stroke();
-    // 标签
-    ctx.fillStyle = color;
-    ctx.font = '10px monospace';
-    values.slice(-3).forEach((v, i) => {
-      const x = 40 + (w / Math.max(1, values.length - 1)) * (values.length - 3 + i);
-      const yPos = y - yMap[v] * 12;
-      ctx.fillText(v, x - 10, yPos - 5);
-    });
-  }
-  drawLine(thirdSeg, yT, '#cd7f32');
-  drawLine(runSeg, yR, '#c0c0c0');
-  drawLine(champSeg, yCh, '#facc15');
-  // 图例
-  ctx.fillStyle = '#cd7f32'; ctx.fillRect(8, yT - 8, 6, 6); ctx.fillStyle = '#cd7f32'; ctx.fillText('季军', 18, yT - 2);
-  ctx.fillStyle = '#c0c0c0'; ctx.fillRect(8, yR - 8, 6, 6); ctx.fillStyle = '#c0c0c0'; ctx.fillText('亚军', 18, yR - 2);
-  ctx.fillStyle = '#facc15'; ctx.fillRect(8, yCh - 8, 6, 6); ctx.fillStyle = '#facc15'; ctx.fillText('冠军', 18, yCh - 2);
-}
-
-function renderCalibDetails() {
-  const div = $id('calibDetails');
-  const details = (CALIB_DATA.evaluation || {}).details || [];
-  if (details.length === 0) {
-    div.innerHTML = '<div style="color:var(--text-2);padding:8px;">暂无对比数据 (match_results.csv 至少 1 场)</div>';
-    return;
-  }
-  let html = '<div class="calib-row header"><span>日期</span><span>主队 vs 客队</span><span>预测/真实</span><span>WDL</span><span>diff</span></div>';
-  for (const d of details) {
-    const ok = d.wdl_correct;
-    html += `<div class="calib-row">
-      <span>${d.date}</span>
-      <span>${d.home} vs ${d.away}</span>
-      <span>${d.predicted} / ${d.actual}</span>
-      <span class="${ok ? 'calib-correct' : 'calib-wrong'}">${d.pred_wdl}=${d.actual_wdl}${ok ? '✓' : '✗'}</span>
-      <span>${d.score_diff}</span>
-    </div>`;
-  }
-  div.innerHTML = html;
-}
-
-async function runCalibration() {
-  // 弹窗让用户输入轮数 (1-20000, 提示不同档位耗时)
-  const input = prompt(
-    '启动贝叶斯校准, 选迭代轮数:\\n\\n' +
-    '  • 20 轮  ≈ 30秒  (快速试)\n' +
-    '  • 50 轮  ≈ 1分钟 (推荐)\n' +
-    '  • 200 轮 ≈ 5分钟 (深度)\n' +
-    '  • 2000 轮 ≈ 30分钟 (极限)\\n\\n' +
-    '最大 20000, 最小 1',
-    '20'
-  );
-  if (input === null) return;  // 取消
-  const n_iter = parseInt(input, 10);
-  if (isNaN(n_iter) || n_iter < 1 || n_iter > 20000) {
-    alert('轮数必须是 1-20000 之间的整数');
-    return;
-  }
-  if (!confirm(`启动贝叶斯校准 (${n_iter} 轮)? 日志会实时显示在弹窗中。`)) return;
-  // 1. 开日志弹窗
-  openCalibLog();
-  appendCalibLog('info', `🎯 启动 ${n_iter} 轮贝叶斯校准...`);
-  let resp, data;
-  try {
-    resp = await fetch(`${API_BASE}/api/calibration/run?n_iter=${n_iter}&use_bayes=true`, {method: 'POST'});
-    data = await resp.json();
-  } catch (e) {
-    appendCalibLog('error', '❌ 启动失败: ' + e.message);
-    $id('calibLogStatus').textContent = '启动失败';
-    return;
-  }
-  if (!data.run_id) {
-    appendCalibLog('error', '❌ 启动失败: 未拿到 run_id');
-    return;
-  }
-  appendCalibLog('info', `✅ 已启动, run_id=${data.run_id}`);
-  $id('calibLogStatus').textContent = '运行中...';
-  $id('calibLogProgress').textContent = `0/${data.n_iter} 轮`;
-
-  // 2. SSE 监听
-  let iterCount = 0;
-  const es = new EventSource(`${API_BASE}${data.stream_url}`);
-  es.onmessage = (e) => {
-    try {
-      const item = JSON.parse(e.data);
-      appendCalibLog(item.level, item.msg);
-      // 提取 iter 进度
-      const m = (item.msg || '').match(/iter (\d+)\/(\d+)/);
-      if (m) {
-        iterCount = parseInt(m[1]);
-        const total = parseInt(m[2], 10);
-        $id('calibLogProgress').textContent = `${iterCount}/${total} 轮`;
-        // 进度条
-        const pct = Math.min(100, Math.round(iterCount / total * 100));
-        const bar = $id('calibLogProgressBar');
-        if (bar) bar.style.width = pct + '%';
-      }
-      if (item.level === 'close') {
-        $id('calibLogStatus').textContent = '✅ 已完成';
-        $id('calibLogProgress').textContent = `完成 (${iterCount} 轮)`;
-        const bar = $id('calibLogProgressBar');
-        if (bar) bar.style.width = '100%';
-        // 显示"应用最佳"按钮
-        const btn = $id('calibLogApplyBest');
-        if (btn) btn.style.display = 'inline-block';
-        es.close();
-        // 刷新校准数据
-        setTimeout(() => loadCalibration(), 500);
-      }
-      if (item.level === 'error') {
-        $id('calibLogStatus').textContent = '❌ 错误';
-      }
-    } catch (err) {
-      console.error('SSE parse err', err);
-    }
-  };
-  es.onerror = (e) => {
-    appendCalibLog('close', '⚠️ SSE 连接断开');
-    $id('calibLogStatus').textContent = '已断开';
-    es.close();
-  };
-}
-
-function openCalibLog() {
-  $id('calibLogModal').style.display = 'flex';
-  $id('calibLogBody').innerHTML = '';
-  $id('calibLogStatus').textContent = '连接中...';
-  $id('calibLogProgress').textContent = '等待启动...';
-}
-
-function closeCalibLog() {
-  $id('calibLogModal').style.display = 'none';
-}
-
-// 应用最佳校准结果: 把 best_weights 加载到 currentWeights + 重算所有预测
-async function applyBestWeights() {
-  try {
-    const resp = await fetch(`${API_BASE}/api/calibration`);
-    const data = await resp.json();
-    if (!data.best || !data.best.weights) {
-      appendCalibLog('error', '❌ 没有最佳校准记录');
-      return;
-    }
-    // 加载 best_weights 到 currentWeights
-    currentWeights = JSON.parse(JSON.stringify(data.best.weights));
-    // 重渲染滑块 (UI 同步显示)
-    renderSliders();
-    appendCalibLog('done', `🏆 已应用最佳校准 (loss=${data.best.loss.toFixed(2)}), 预测即将刷新`);
-    $id('calibLogStatus').textContent = '🏆 已应用最佳';
-    // 关闭弹窗 + 触发预测重算
-    setTimeout(() => {
-      closeCalibLog();
-      // 触发 runPrediction() 等价于: 重拉 /api/predictions
-      runPrediction();
-    }, 800);
-  } catch (e) {
-    appendCalibLog('error', '❌ 应用失败: ' + e.message);
-  }
-}
-
-function appendCalibLog(level, msg) {
-  const body = $id('calibLogBody');
-  const line = document.createElement('div');
-  line.className = `calib-log-line ${level}`;
-  const ts = new Date().toLocaleTimeString('zh-CN', {hour12: false});
-  line.innerHTML = `<span class="ts">${ts}</span>${escapeHtml(msg)}`;
-  body.appendChild(line);
-  // 滚动到底
-  body.scrollTop = body.scrollHeight;
-}
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-// 校准 mini tab click
-document.addEventListener('click', (e) => {
-  if (e.target.classList && e.target.classList.contains('calib-mini-tab')) {
-    const group = e.target.dataset.fgroup;
-    if (group) renderDynamicFactors(group);
-  }
-});
-</script>
+</script></script>
 </body>
 </html>

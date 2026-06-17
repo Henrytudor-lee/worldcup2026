@@ -9,25 +9,17 @@ Mavis PDP Backend Server
 """
 import json
 import csv
-import threading
-import queue
-import time
-import uuid
 from pathlib import Path
-from fastapi import FastAPI, Query, HTTPException, BackgroundTasks
+from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse
 import predictor
-import calibrator
 import dynamic_factors
 from weights_schema import DEFAULT, PRESETS, validate, merge_with_default
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-app = FastAPI(title="Mavis PDP Backend", version="2.2.1")
-
-# 校准日志: {run_id: Queue} 全局 dict
-CALIB_QUEUES: dict = {}
+app = FastAPI(title="Mavis PDP Backend", version="2.3.0")
 
 # CORS: 允许前端 8765 / 8000 / 8080 跨域调
 app.add_middleware(
@@ -62,7 +54,7 @@ def _parse_weights(weights_str: str = Query(default="default", description="JSON
 def root():
     return {
         "service": "Mavis PDP Backend",
-        "version": "2.2",
+        "version": "2.3.2",
         "endpoints": [
             "GET /api/ranking",
             "GET /api/predictions?weights=default",
@@ -70,8 +62,9 @@ def root():
             "GET /api/weights/default",
             "GET /api/weights/presets",
             "GET /api/dynamic-factors  (v2.2 30+ 动态因子 schema)",
-            "GET /api/calibration       (v2.2 校准评估 + 历史)",
-            "POST /api/calibration/run  (v2.2 触发贝叶斯校准)",
+            "GET /api/match-stats          (v2.3.2 已完赛列表)",
+            "GET /api/match-stats/finished (v2.3.2 已完赛列表)",
+            "GET /api/match-stats/{match_id} (v2.3.2 单场详细: 队伍/球员/事件)",
         ],
     }
 
@@ -196,96 +189,112 @@ def get_dynamic_factors():
     }
 
 
-@app.get("/api/calibration")
-def get_calibration(weights: str = Query(default="default")):
-    """校准评估 + 历史
-    1. 用当前 weights 评估 match_results.csv
-    2. 返校准历史 (calibration_history.json)
-    """
-    w = _parse_weights(weights)
-    ev = calibrator.evaluate(w, verbose=False)
-    summary = calibrator.get_calibration_summary()
+# ============================================================
+# v2.3.2 赛事详细数据 (ESPN 抓取 + ETL)
+# ============================================================
+import csv
+def _load_match_stats_csv(filename):
+    """读赛事统计 CSV, 返回 list[dict]"""
+    csv_path = PROJECT_ROOT / "1_数据基础" / filename
+    if not csv_path.exists():
+        return []
+    with open(csv_path, encoding='utf-8') as f:
+        return list(csv.DictReader(f))
+
+
+@app.get("/api/match-stats/finished")
+def list_finished_matches():
+    """列出所有已完赛 (Full Time) 比赛, 含 match_id"""
+    rows = _load_match_stats_csv("match_team_stats.csv")
     return {
-        "evaluation": ev,
-        "history": summary.get('history', []),
-        "best": summary.get('best'),
+        "matches": [
+            {
+                "match_id": r["match_id"],
+                "espn_event_id": r["espn_event_id"],
+                "date": r["date"],
+                "home_team_cn": r["home_team_cn"],
+                "away_team_cn": r["away_team_cn"],
+                "home_score": int(r["home_score"]) if r.get("home_score") else 0,
+                "away_score": int(r["away_score"]) if r.get("away_score") else 0,
+                "status": r.get("status", "Full Time"),
+                "venue": r.get("venue", ""),
+            }
+            for r in rows
+        ],
+        "count": len(rows),
     }
 
 
-@app.post("/api/calibration/run")
-def run_calibration(
-    n_iter: int = Query(default=20, ge=1, le=20000),
-    use_bayes: bool = Query(default=True),
-):
-    """触发贝叶斯校准 (后台异步跑, 1-2 分钟)
-    返回 run_id, 前端用 EventSource 监听 /api/calibration/stream?run_id=xxx
+@app.get("/api/match-stats/{match_id}")
+def get_match_stats(match_id: str):
+    """按 match_id 返一场比赛的详细数据: 队伍统计 + 球员统计 + 事件流
+    match_id 接受两种格式:
+    - 长: 2026-06-11_墨西哥_vs_南非 (从 match_team_stats.csv 完整读)
+    - 短: 墨西哥_vs_南非 (fallback 模糊匹配, 多场同对可能返回最近一场)
     """
-    run_id = str(uuid.uuid4())[:8]
-    q = queue.Queue(maxsize=1000)
-    CALIB_QUEUES[run_id] = q
+    team_all = _load_match_stats_csv("match_team_stats.csv")
+    player_all = _load_match_stats_csv("match_player_stats.csv")
+    event_all = _load_match_stats_csv("match_events.csv")
 
-    def _run():
-        def log_callback(level, msg):
-            try:
-                q.put_nowait({'level': level, 'msg': msg, 'ts': time.time()})
-            except queue.Full:
-                pass  # 队列满就丢, 避免阻塞主流程
-        try:
-            calibrator.calibrate(n_iter=n_iter, use_bayes=use_bayes,
-                                 verbose=False, log_callback=log_callback)
-        except Exception as e:
-            log_callback('error', f"calibrate 异常: {e}")
-        finally:
-            log_callback('close', 'DONE')  # 关闭信号
+    # 长格式: 精确匹配
+    team_rows = [r for r in team_all if r["match_id"] == match_id]
+    if not team_rows and "_vs_" in match_id:
+        # 短格式: 按 home_vs_away 模糊匹配 (取最近一场)
+        key = match_id.split("_vs_")
+        if len(key) == 2:
+            cands = [r for r in team_all if r["home_team_cn"] == key[0] and r["away_team_cn"] == key[1]]
+            if cands:
+                # 按 date 降序, 取最近
+                cands.sort(key=lambda r: r["date"], reverse=True)
+                team_rows = cands[:1]
+                real_id = team_rows[0]["match_id"]
+                player_rows = [r for r in player_all if r["match_id"] == real_id]
+                event_rows = [r for r in event_all if r["match_id"] == real_id]
+                if not team_rows:
+                    raise HTTPException(status_code=404, detail=f"match_id '{match_id}' not found or not yet finished")
+            else:
+                raise HTTPException(status_code=404, detail=f"match_id '{match_id}' not found or not yet finished")
+        else:
+            raise HTTPException(status_code=404, detail=f"match_id '{match_id}' not found or not yet finished")
+    else:
+        player_rows = [r for r in player_all if r["match_id"] == match_id]
+        event_rows = [r for r in event_all if r["match_id"] == match_id]
 
-    t = threading.Thread(target=_run, daemon=True)
-    t.start()
+    if not team_rows:
+        raise HTTPException(status_code=404, detail=f"match_id '{match_id}' not found or not yet finished")
+
+    team = team_rows[0]
+    # 球员分主客队
+    home_players = [p for p in player_rows if p.get("home_away") == "home"]
+    away_players = [p for p in player_rows if p.get("home_away") == "away"]
 
     return {
-        "status": "started",
-        "run_id": run_id,
-        "n_iter": n_iter,
-        "method": "bayes" if use_bayes else "grid",
-        "stream_url": f"/api/calibration/stream?run_id={run_id}",
-        "message": f"校准已启动 ({n_iter} 轮), 通过 EventSource 监听 stream_url 实时看日志",
-    }
-
-
-@app.get("/api/calibration/stream")
-def calibration_stream(run_id: str = Query(...)):
-    """SSE 流式输出校准日志
-
-    前端: new EventSource(`/api/calibration/stream?run_id=${run_id}`)
-    """
-    if run_id not in CALIB_QUEUES:
-        raise HTTPException(status_code=404, detail=f"run_id '{run_id}' 不存在或已完成")
-
-    q = CALIB_QUEUES[run_id]
-
-    def event_stream():
-        # 启动消息
-        yield f"data: {json.dumps({'level': 'info', 'msg': f'📡 SSE 已连接 (run_id={run_id})'})}\n\n"
-        while True:
-            try:
-                item = q.get(timeout=30)  # 30s 无消息自动断
-            except queue.Empty:
-                # 心跳包
-                yield ": heartbeat\n\n"
-                continue
-            yield f"data: {json.dumps(item, ensure_ascii=False)}\n\n"
-            if item.get('level') == 'close':
-                break
-        # 清理
-        CALIB_QUEUES.pop(run_id, None)
-
-    return StreamingResponse(
-        event_stream(),
-        media_type="text/event-stream",
-        headers={
-            "Cache-Control": "no-cache",
-            "X-Accel-Buffering": "no",  # 禁用 nginx 缓冲
+        "match": {
+            "match_id": team["match_id"],
+            "espn_event_id": team["espn_event_id"],
+            "date": team["date"],
+            "home_team_cn": team["home_team_cn"],
+            "away_team_cn": team["away_team_cn"],
+            "home_team_en": team["home_team_en"],
+            "away_team_en": team["away_team_en"],
+            "home_score": int(team["home_score"]) if team.get("home_score") else 0,
+            "away_score": int(team["away_score"]) if team.get("away_score") else 0,
+            "home_winner": team.get("home_winner") == "True",
+            "away_winner": team.get("away_winner") == "True",
+            "venue": team.get("venue", ""),
+            "status": team.get("status", "Full Time"),
         },
-    )
+        "team_stats": team,
+        "home_players": home_players,
+        "away_players": away_players,
+        "events": event_rows,
+    }
+
+
+@app.get("/api/match-stats")
+def list_or_summary():
+    """默认返赛事统计汇总 (轻量列表, 前端赛程 Tab 调用)"""
+    return list_finished_matches()
 
 
 if __name__ == '__main__':

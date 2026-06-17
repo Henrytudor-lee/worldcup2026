@@ -944,20 +944,41 @@ def compute_predictions(weights):
             round_of_32.append((t1, t2))
 
     # === 5. 跑淘汰赛 ===
-    # FIFA 2026 淘汰赛日期 (基于官方公布时间表)
+    # FIFA 2026 淘汰赛日期 (北京时间, 来源 FIFA 官方赛程)
+    # 修正历史: v2.3.1 之前 KO 阶段硬编码早 1-2 天, 现统一为 FIFA 官方北京时间
+    # KO_DATES[i] = 第 i 个比赛日; KO_WEIGHTS = 每个比赛日多少场 (累加 = 总场数)
+    # R32 实际是 2+4+2+2+4+2=16 (头尾 2 场/天, 中间 4 场/天)
+    # QF 实际是 1+2+1=4
     KO_DATES = {
-        'R32': ['2026-06-30', '2026-07-01', '2026-07-02', '2026-07-03'],  # 4 天 16 场, 每天 4 场
-        'R16': ['2026-07-06', '2026-07-07'],  # 2 天 8 场, 每天 4 场
-        'QF':  ['2026-07-10', '2026-07-11'],  # 2 天 4 场, 每天 2 场
-        'SF':  ['2026-07-14', '2026-07-15'],  # 2 天 2 场, 每天 1 场
-        '3RD': ['2026-07-18'],                # 季军赛
-        'FINAL': ['2026-07-19'],              # 决赛
+        'R32': ['2026-06-29', '2026-06-30', '2026-07-01', '2026-07-02', '2026-07-03', '2026-07-04'],
+        'R16': ['2026-07-05', '2026-07-06', '2026-07-07', '2026-07-08'],
+        'QF':  ['2026-07-10', '2026-07-11', '2026-07-12'],
+        'SF':  ['2026-07-15', '2026-07-16'],
+        '3RD': ['2026-07-19'],                # 季军赛 (北京时间)
+        'FINAL': ['2026-07-20'],              # 决赛 (北京时间, ET 7/19 15:00)
+    }
+    KO_WEIGHTS = {
+        'R32': [2, 4, 2, 2, 4, 2],  # 6 个比赛日, 累加 16
+        'R16': [2, 2, 2, 2],         # 4 个比赛日, 累加 8 (均匀)
+        'QF':  [1, 2, 1],            # 3 个比赛日, 累加 4
+        'SF':  [1, 1],                # 2 个比赛日, 累加 2
     }
 
+    def ko_date_for(stage, i):
+        """根据 i (0-based 场次序号) 返回该场次对应的 FIFA 官方比赛日 (北京时间)"""
+        weights = KO_WEIGHTS[stage]
+        cum = 0
+        for di, w in enumerate(weights):
+            if i < cum + w:
+                return KO_DATES[stage][di]
+            cum += w
+        return KO_DATES[stage][-1]  # 兜底
+
     def make_ko_pred(home, away, stage, round_name, prefix, date):
-        # v2.2.4-5 修: KO 阶段用临时 lambda_cap=5.5 (强队决赛能突破 4.0 撞顶, 反映真实差距)
-        # 保留 weights 的 lambda_cap 给小组赛用
-        ko_weights = {**weights, 'lambda_cap': 5.5} if weights else {'lambda_cap': 5.5}
+        # v2.2.4-8 改: KO 阶段用临时 lambda_cap=4.5 (强队决赛能突破 weights 的 3.5 上限)
+        # 旧版 cap=5.5 太高导致 5-3 5-5; 用 weights 自己的 3.5 又太低, 60% KO 走点球
+        # 4.5 是中间值, 强队 λ ~4.0 反映真实, 但不会出 5-5 这种夸张比分
+        ko_weights = {**weights, 'lambda_cap': 4.5} if weights else {'lambda_cap': 4.5}
         pred = predict_match(home, away, ranking_dict, fifa_data, venue_cfg=venue_cfg,
                              home_leagues={'fw': ranking_dict.get(home, {}).get('fw_leagues', []),
                                            'mid': ranking_dict.get(home, {}).get('mid_leagues', []),
@@ -1003,29 +1024,29 @@ def compute_predictions(weights):
         return pred
 
     for i, (h, a) in enumerate(round_of_32):
-        # R32 每天 4 场, M1-M4=第1天, M5-M8=第2天, M9-M12=第3天, M13-M16=第4天
-        date = KO_DATES['R32'][i // 4]
+        # R32 16 场按 FIFA 官方比赛日分布 (2+4+2+2+4+2=16)
+        date = ko_date_for('R32', i)
         make_ko_pred(h, a, 'R32', '32强', 'R32', date)
     r32_winners = [p['winner'] for p in all_predictions[-16:]]
 
     r16_pairs = [(r32_winners[i], r32_winners[i+1]) for i in range(0, 16, 2)]
     for i, (h, a) in enumerate(r16_pairs):
-        # R16 每天 4 场
-        date = KO_DATES['R16'][i // 4]
+        # R16 8 场按 FIFA 官方比赛日分布 (2+2+2+2=8, 均匀)
+        date = ko_date_for('R16', i)
         make_ko_pred(h, a, 'R16', '16强', 'R16', date)
     r16_winners = [p['winner'] for p in all_predictions[-8:]]
 
     qf_pairs = [(r16_winners[i], r16_winners[i+1]) for i in range(0, 8, 2)]
     for i, (h, a) in enumerate(qf_pairs):
-        # QF 每天 2 场
-        date = KO_DATES['QF'][i // 2]
+        # QF 4 场按 FIFA 官方比赛日分布 (1+2+1=4)
+        date = ko_date_for('QF', i)
         make_ko_pred(h, a, 'QF', '8强', 'QF', date)
     qf_winners = [p['winner'] for p in all_predictions[-4:]]
 
     sf_pairs = [(qf_winners[i], qf_winners[i+1]) for i in range(0, 4, 2)]
     for i, (h, a) in enumerate(sf_pairs):
-        # SF 每天 1 场
-        date = KO_DATES['SF'][i // 1]
+        # SF 2 场按 FIFA 官方比赛日分布 (1+1=2)
+        date = ko_date_for('SF', i)
         make_ko_pred(h, a, 'SF', '半决赛', 'SF', date)
     sf_winners = [p['winner'] for p in all_predictions[-2:]]
     sf_losers = [p['loser'] for p in all_predictions[-2:]]
