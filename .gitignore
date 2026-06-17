@@ -58,3 +58,16 @@ fbref_data.json
 fbref_scraped.json
 scrape_fbref*.py
 arsenal_stats_snapshot.txt
+
+# ============ 临时脚本 (另一 agent 跑的 age 补全等) ============
+1_数据基础/age*.py
+1_数据基础/fill_age*.py
+1_数据基础/add_age*.py
+
+# ============ ESPN 抓取产物 (raw 可重抓) ============
+1_数据基础/espn_match_data/
+1_数据基础/espn_cron_report.json
+
+# ============ 校准已删, 产物/报告 不进 git ============
+5_算法/calibration_*.json
+4_可视化/
