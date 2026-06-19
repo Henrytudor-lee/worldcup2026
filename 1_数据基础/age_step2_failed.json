@@ -1,0 +1,282 @@
+[
+  {
+    "country": "加拿大",
+    "name": "阿尔菲·琼斯",
+    "reason": "Alfie Jones NO_BIRTH"
+  },
+  {
+    "country": "厄瓜多尔",
+    "name": "拉米雷斯",
+    "reason": "Álex Ramírez NO_BIRTH"
+  },
+  {
+    "country": "厄瓜多尔",
+    "name": "约翰·叶博亚",
+    "reason": "John Yeboah NO_BIRTH"
+  },
+  {
+    "country": "德国",
+    "name": "曼努埃尔·诺伊尔",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "德国",
+    "name": "安东",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "德国",
+    "name": "大卫·劳姆",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "德国",
+    "name": "布朗",
+    "reason": "Braun NO_BIRTH"
+  },
+  {
+    "country": "荷兰",
+    "name": "丹泽尔·邓弗里斯",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "荷兰",
+    "name": "弗朗基·德容",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "荷兰",
+    "name": "昆滕·廷伯",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "荷兰",
+    "name": "孟菲斯·德佩",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "巴拿马",
+    "name": "埃里克·戴维斯",
+    "reason": "Éric Davis NO_BIRTH"
+  },
+  {
+    "country": "英格兰",
+    "name": "约翰·斯通斯",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "英格兰",
+    "name": "马克·格伊",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "英格兰",
+    "name": "贾雷尔·宽萨",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "摩洛哥",
+    "name": "阿格尔德",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "摩洛哥",
+    "name": "哈努斯",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "澳大利亚",
+    "name": "亚历山德罗·西卡蒂",
+    "reason": "Alessandro Circati NO_BIRTH"
+  },
+  {
+    "country": "澳大利亚",
+    "name": "穆罕默德·图雷",
+    "reason": "Mohamed Toure WIKI_NO_HIT"
+  },
+  {
+    "country": "澳大利亚",
+    "name": "克里斯蒂安·沃尔帕托",
+    "reason": "Christian Volpato WIKI_NO_HIT"
+  },
+  {
+    "country": "西班牙",
+    "name": "艾梅里克·拉波尔特",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "西班牙",
+    "name": "罗德里戈·埃尔南德斯",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "西班牙",
+    "name": "尼科·威廉姆斯",
+    "reason": "Nico Williams WIKI_NO_HIT"
+  },
+  {
+    "country": "葡萄牙",
+    "name": "若昂·内维斯",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "葡萄牙",
+    "name": "维蒂尼亚",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "葡萄牙",
+    "name": "布鲁诺·费尔南德斯",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "科特迪瓦",
+    "name": "穆罕默德·科内",
+    "reason": "Mohamed Koné WIKI_NO_HIT"
+  },
+  {
+    "country": "埃及",
+    "name": "马哈茂德·萨比尔",
+    "reason": "Mahmoud Saber WIKI_NO_HIT"
+  },
+  {
+    "country": "阿尔及利亚",
+    "name": "艾萨·曼迪",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "民主刚果",
+    "name": "萨迪基",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "民主刚果",
+    "name": "卡库塔",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "民主刚果",
+    "name": "班扎",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "伊朗",
+    "name": "丹尼斯·埃克特",
+    "reason": "Dennis Eckert WIKI_NO_HIT"
+  },
+  {
+    "country": "伊拉克",
+    "name": "埃曼·侯赛因",
+    "reason": "Aiman Hussein WIKI_NO_HIT"
+  },
+  {
+    "country": "伊拉克",
+    "name": "莫哈纳德·阿里",
+    "reason": "Mohanad Ali WIKI_NO_HIT"
+  },
+  {
+    "country": "卡塔尔",
+    "name": "哈桑·艾尔·海多斯",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "卡塔尔",
+    "name": "穆罕默德·蒙塔里",
+    "reason": "Mohammed Muntari WIKI_NO_HIT"
+  },
+  {
+    "country": "沙特",
+    "name": "纳赛尔·多萨里",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "沙特",
+    "name": "卡努",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "挪威",
+    "name": "伊恩·尼兰德",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "挪威",
+    "name": "埃尔林·哈兰德",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "瑞士",
+    "name": "马文·凯勒",
+    "reason": "Marvin Keller WIKI_NO_HIT"
+  },
+  {
+    "country": "瑞士",
+    "name": "约翰·曼赞比",
+    "reason": "Joël Monzango WIKI_NO_HIT"
+  },
+  {
+    "country": "瑞士",
+    "name": "布里尔·恩博洛",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "苏格兰",
+    "name": "安迪·罗伯逊",
+    "reason": "Andrew Robertson WIKI_NO_HIT"
+  },
+  {
+    "country": "苏格兰",
+    "name": "约翰·苏塔尔",
+    "reason": "John Souttar WIKI_NO_HIT"
+  },
+  {
+    "country": "苏格兰",
+    "name": "约翰·麦金",
+    "reason": "John McGinn WIKI_NO_HIT"
+  },
+  {
+    "country": "苏格兰",
+    "name": "乔治·赫斯特",
+    "reason": "George Hirst WIKI_NO_HIT"
+  },
+  {
+    "country": "奥地利",
+    "name": "亚历山大·普拉斯",
+    "reason": "Alexander Prass WIKI_NO_HIT"
+  },
+  {
+    "country": "奥地利",
+    "name": "大卫·阿芬格鲁伯",
+    "reason": "David Affengruber WIKI_NO_HIT"
+  },
+  {
+    "country": "瑞典",
+    "name": "伊萨克·希恩",
+    "reason": "NO_MANUAL_MAP"
+  },
+  {
+    "country": "波黑",
+    "name": "丹尼斯·哈季卡杜尼奇",
+    "reason": "Denis Hadžikadunić WIKI_NO_HIT"
+  },
+  {
+    "country": "美国",
+    "name": "克里斯·布雷迪",
+    "reason": "Chris Brady WIKI_NO_HIT"
+  },
+  {
+    "country": "美国",
+    "name": "亚历克斯·弗里曼",
+    "reason": "Alex Freeman WIKI_NO_HIT"
+  },
+  {
+    "country": "美国",
+    "name": "泰勒·亚当斯",
+    "reason": "Tyler Adams WIKI_NO_HIT"
+  },
+  {
+    "country": "墨西哥",
+    "name": "圣地亚哥·希门尼斯",
+    "reason": "NO_MANUAL_MAP"
+  }
+]
