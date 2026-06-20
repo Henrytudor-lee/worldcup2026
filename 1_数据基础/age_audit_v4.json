@@ -1,0 +1,524 @@
+[
+  {
+    "team": "厄瓜多尔",
+    "cn": "约翰·叶博亚",
+    "en": "John Yeboah",
+    "before": "109",
+    "after": "25",
+    "dob": "2000-06-23",
+    "score": 5
+  },
+  {
+    "team": "库拉索",
+    "cn": "汉森",
+    "en": "Sontje Hansen",
+    "before": "X待核实",
+    "after": "24",
+    "dob": "2002-05-18",
+    "score": 5
+  },
+  {
+    "team": "库拉索",
+    "cn": "卡斯塔内尔",
+    "en": "Gervane Kastaneer",
+    "before": "X待核实",
+    "after": "30",
+    "dob": "1996-06-09",
+    "score": 5
+  },
+  {
+    "team": "库拉索",
+    "cn": "库瓦斯",
+    "en": "Brandley Kuwas",
+    "before": "X待核实",
+    "after": "33",
+    "dob": "1992-09-19",
+    "score": 5
+  },
+  {
+    "team": "巴拿马",
+    "cn": "奥兰多·莫斯克拉",
+    "en": "Orlando Mosquera",
+    "before": "X待核实",
+    "after": "31",
+    "dob": "1994-12-25",
+    "score": 5
+  },
+  {
+    "team": "巴拿马",
+    "cn": "塞萨尔·萨穆迪奥",
+    "en": "César Samudio",
+    "before": "X待核实",
+    "after": "32",
+    "dob": "1994-02-23",
+    "score": 5
+  },
+  {
+    "team": "巴拿马",
+    "cn": "豪尔赫·古铁雷斯",
+    "en": "Jorge Gutiérrez",
+    "before": "X待核实",
+    "after": "27",
+    "dob": "1998-09-01",
+    "score": 5
+  },
+  {
+    "team": "巴拿马",
+    "cn": "塞萨尔·亚尼斯",
+    "en": "César Yanis",
+    "before": "X待核实",
+    "after": "30",
+    "dob": "1996-01-28",
+    "score": 5
+  },
+  {
+    "team": "加纳",
+    "cn": "约瑟夫·阿南",
+    "en": "Joseph Anang",
+    "before": "X待核实",
+    "after": "26",
+    "dob": "2000-06-08",
+    "score": 5
+  },
+  {
+    "team": "加纳",
+    "cn": "吉迪恩·门萨",
+    "en": "Gideon Mensah",
+    "before": "X待核实",
+    "after": "27",
+    "dob": "1998-07-18",
+    "score": 5
+  },
+  {
+    "team": "加纳",
+    "cn": "德里克·卢卡森",
+    "en": "Derrick Luckassen",
+    "before": "X待核实",
+    "after": "30",
+    "dob": "1995-07-03",
+    "score": 5
+  },
+  {
+    "team": "摩洛哥",
+    "cn": "努萨伊·马兹拉维",
+    "en": "Noussair Mazraoui",
+    "before": "X待核实",
+    "after": "28",
+    "dob": "1997-11-14",
+    "score": 6
+  },
+  {
+    "team": "澳大利亚",
+    "cn": "乔丹·博斯",
+    "en": "Jordan Bos",
+    "before": "X待核实",
+    "after": "23",
+    "dob": "2002-10-29",
+    "score": 5
+  },
+  {
+    "team": "澳大利亚",
+    "cn": "卢卡斯·赫林顿",
+    "en": "Lucas Herrington",
+    "before": "X待核实",
+    "after": "18",
+    "dob": "2007-09-05",
+    "score": 5
+  },
+  {
+    "team": "南非",
+    "cn": "西波·查内",
+    "en": "Sipho Chaine",
+    "before": "X待核实",
+    "after": "29",
+    "dob": "1996-12-14",
+    "score": 5
+  },
+  {
+    "team": "南非",
+    "cn": "库利索·穆达乌",
+    "en": "Khuliso Mudau",
+    "before": "X待核实",
+    "after": "31",
+    "dob": "1995-04-26",
+    "score": 6
+  },
+  {
+    "team": "突尼斯",
+    "cn": "阿亚里",
+    "en": "Khalil Ayari",
+    "before": "X待核实",
+    "after": "21",
+    "dob": "2005-02-02",
+    "score": 5
+  },
+  {
+    "team": "佛得角",
+    "cn": "杰米罗·蒙特罗",
+    "en": "Ryan Mendes",
+    "before": "X待核实",
+    "after": "36",
+    "dob": "1990-01-08",
+    "score": 5
+  },
+  {
+    "team": "佛得角",
+    "cn": "戴龙·利夫拉门托",
+    "en": "Dailon Livramento",
+    "before": "X待核实",
+    "after": "25",
+    "dob": "2001-05-04",
+    "score": 6
+  },
+  {
+    "team": "阿尔及利亚",
+    "cn": "阿什里夫·阿巴达",
+    "en": "Achraf Abada",
+    "before": "X待核实",
+    "after": "27",
+    "dob": "1999-06-15",
+    "score": 6
+  },
+  {
+    "team": "阿尔及利亚",
+    "cn": "侯塞姆·奥阿尔",
+    "en": "Houssem Aouar",
+    "before": "X待核实",
+    "after": "27",
+    "dob": "1998-06-30",
+    "score": 6
+  },
+  {
+    "team": "民主刚果",
+    "cn": "法尤鲁",
+    "en": "Timothy Fayulu",
+    "before": "X待核实",
+    "after": "26",
+    "dob": "1999-07-24",
+    "score": 5
+  },
+  {
+    "team": "民主刚果",
+    "cn": "萨迪基",
+    "en": "Noah Sadiki",
+    "before": "2004-12-17",
+    "after": "21",
+    "dob": "2004-12-17",
+    "score": 5
+  },
+  {
+    "team": "民主刚果",
+    "cn": "穆考",
+    "en": "Ngal'ayel Mukau",
+    "before": "X待核实",
+    "after": "21",
+    "dob": "2004-11-03",
+    "score": 5
+  },
+  {
+    "team": "伊朗",
+    "cn": "帕亚姆·尼亚曼德",
+    "en": "Payam Niazmand",
+    "before": "X待核实",
+    "after": "31",
+    "dob": "1995-04-06",
+    "score": 6
+  },
+  {
+    "team": "伊拉克",
+    "cn": "雷宾·苏拉卡",
+    "en": "Rebin Sulaka",
+    "before": "X待核实",
+    "after": "34",
+    "dob": "1992-04-12",
+    "score": 5
+  },
+  {
+    "team": "伊拉克",
+    "cn": "穆斯塔法·萨敦",
+    "en": "Mustafa Saadoon",
+    "before": "X待核实",
+    "after": "25",
+    "dob": "2001-05-25",
+    "score": 6
+  },
+  {
+    "team": "伊拉克",
+    "cn": "优素福·阿明",
+    "en": "Youssef Amyn",
+    "before": "X待核实",
+    "after": "22",
+    "dob": "2003-08-21",
+    "score": 6
+  },
+  {
+    "team": "伊拉克",
+    "cn": "马科·法尔吉",
+    "en": "Marko Farji",
+    "before": "X待核实",
+    "after": "22",
+    "dob": "2004-03-16",
+    "score": 5
+  },
+  {
+    "team": "约旦",
+    "cn": "阿卜杜拉·纳西布",
+    "en": "Abdallah Nasib",
+    "before": "X待核实",
+    "after": "32",
+    "dob": "1994-02-25",
+    "score": 5
+  },
+  {
+    "team": "约旦",
+    "cn": "拉杰伊·阿耶德",
+    "en": "Rajaei Ayed",
+    "before": "X待核实",
+    "after": "32",
+    "dob": "1993-07-25",
+    "score": 5
+  },
+  {
+    "team": "卡塔尔",
+    "cn": "梅萨尔·巴沙姆",
+    "en": "Meshaal Barsham",
+    "before": "X待核实",
+    "after": "28",
+    "dob": "1998-02-14",
+    "score": 5
+  },
+  {
+    "team": "卡塔尔",
+    "cn": "伊萨·拉耶",
+    "en": "Issa Laye",
+    "before": "X待核实",
+    "after": "28",
+    "dob": "1997-12-22",
+    "score": 5
+  },
+  {
+    "team": "卡塔尔",
+    "cn": "穆罕默德·蒙塔里",
+    "en": "Lucas Mendes",
+    "before": "56",
+    "after": "35",
+    "dob": "1990-07-03",
+    "score": 5
+  },
+  {
+    "team": "沙特",
+    "cn": "拉贾米",
+    "en": "Ali Lajami",
+    "before": "X待核实",
+    "after": "30",
+    "dob": "1996-04-24",
+    "score": 5
+  },
+  {
+    "team": "乌兹别克斯坦",
+    "cn": "鲁斯塔姆忠·阿舒尔马托夫",
+    "en": "Rustam Ashurmatov",
+    "before": "X待核实",
+    "after": "29",
+    "dob": "1996-07-07",
+    "score": 5
+  },
+  {
+    "team": "乌兹别克斯坦",
+    "cn": "阿卜杜拉·阿卜杜拉耶夫",
+    "en": "Abdulla Abdullaev",
+    "before": "X待核实",
+    "after": "28",
+    "dob": "1997-09-01",
+    "score": 5
+  },
+  {
+    "team": "乌兹别克斯坦",
+    "cn": "科贾阿克巴尔·阿里忠诺夫",
+    "en": "Khojiakbar Alijonov",
+    "before": "X待核实",
+    "after": "29",
+    "dob": "1997-04-19",
+    "score": 6
+  },
+  {
+    "team": "乌兹别克斯坦",
+    "cn": "阿齐兹别克·阿莫诺夫",
+    "en": "Azizbek Amonov",
+    "before": "X待核实",
+    "after": "28",
+    "dob": "1997-10-30",
+    "score": 6
+  },
+  {
+    "team": "挪威",
+    "cn": "亨里克·法尔切纳",
+    "en": "Henrik Falchener",
+    "before": "X待核实",
+    "after": "23",
+    "dob": "2003-05-08",
+    "score": 6
+  },
+  {
+    "team": "挪威",
+    "cn": "托尔比约恩·赫格姆",
+    "en": "Torbjørn Heggem",
+    "before": "X待核实",
+    "after": "27",
+    "dob": "1999-01-12",
+    "score": 6
+  },
+  {
+    "team": "挪威",
+    "cn": "戴维·沃尔费",
+    "en": "David Møller Wolfe",
+    "before": "X待核实",
+    "after": "24",
+    "dob": "2002-04-23",
+    "score": 5
+  },
+  {
+    "team": "瑞士",
+    "cn": "约翰·曼赞比",
+    "en": "Johan Manzambi",
+    "before": "109",
+    "after": "20",
+    "dob": "2005-10-14",
+    "score": 5
+  },
+  {
+    "team": "苏格兰",
+    "cn": "杰克·亨德利",
+    "en": "Jack Hendry",
+    "before": "X待核实",
+    "after": "31",
+    "dob": "1995-05-07",
+    "score": 6
+  },
+  {
+    "team": "苏格兰",
+    "cn": "瑞安·克里斯蒂",
+    "en": "Liam Kelly",
+    "before": "X待核实",
+    "after": "30",
+    "dob": "1996-01-23",
+    "score": 5
+  },
+  {
+    "team": "捷克",
+    "cn": "罗比·泽勒尼",
+    "en": "Jaroslav Zelený",
+    "before": "X待核实",
+    "after": "33",
+    "dob": "1992-08-20",
+    "score": 5
+  },
+  {
+    "team": "捷克",
+    "cn": "马赛尔·萨迪莱克",
+    "en": "Michal Sadílek",
+    "before": "X待核实",
+    "after": "27",
+    "dob": "1999-05-31",
+    "score": 6
+  },
+  {
+    "team": "瑞典",
+    "cn": "维克托·林德勒夫",
+    "en": "Victor Lindelöf",
+    "before": "X待核实",
+    "after": "31",
+    "dob": "1994-07-17",
+    "score": 5
+  },
+  {
+    "team": "瑞典",
+    "cn": "加布里埃尔·古德蒙德森",
+    "en": "Gabriel Gudmundsson",
+    "before": "X待核实",
+    "after": "27",
+    "dob": "1999-04-29",
+    "score": 5
+  },
+  {
+    "team": "哥伦比亚",
+    "cn": "路易斯·苏亚雷斯",
+    "en": "Luis Suárez",
+    "before": "X待核实",
+    "after": "28",
+    "dob": "1997-12-02",
+    "score": 5
+  },
+  {
+    "team": "哥伦比亚",
+    "cn": "马查多",
+    "en": "Deiver Machado",
+    "before": "X待核实",
+    "after": "32",
+    "dob": "1993-09-02",
+    "score": 5
+  },
+  {
+    "team": "哥伦比亚",
+    "cn": "迪塔",
+    "en": "Willer Ditta",
+    "before": "X待核实",
+    "after": "28",
+    "dob": "1998-01-23",
+    "score": 5
+  },
+  {
+    "team": "巴拉圭",
+    "cn": "伊西德罗·皮塔",
+    "en": "Isidro Pitta",
+    "before": "X待核实",
+    "after": "26",
+    "dob": "1999-08-14",
+    "score": 5
+  },
+  {
+    "team": "巴拉圭",
+    "cn": "亚历杭德罗·迈达纳",
+    "en": "Alexandro Maidana",
+    "before": "X待核实",
+    "after": "20",
+    "dob": "2005-07-26",
+    "score": 5
+  },
+  {
+    "team": "巴拉圭",
+    "cn": "法比安·巴尔武埃纳",
+    "en": "Fabián Balbuena",
+    "before": "X待核实",
+    "after": "34",
+    "dob": "1991-08-23",
+    "score": 6
+  },
+  {
+    "team": "新西兰",
+    "cn": "米切尔·伯克萨尔",
+    "en": "Michael Boxall",
+    "before": "X待核实",
+    "after": "37",
+    "dob": "1988-08-18",
+    "score": 5
+  },
+  {
+    "team": "墨西哥",
+    "cn": "布莱恩·古铁雷斯",
+    "en": "Brian Gutiérrez",
+    "before": "X待核实",
+    "after": "22",
+    "dob": "2003-06-17",
+    "score": 6
+  },
+  {
+    "team": "墨西哥",
+    "cn": "奥韦林·皮内达",
+    "en": "Orbelín Pineda",
+    "before": "X待核实",
+    "after": "30",
+    "dob": "1996-03-24",
+    "score": 5
+  }
+]
