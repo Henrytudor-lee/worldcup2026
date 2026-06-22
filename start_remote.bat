@@ -114,7 +114,7 @@ echo.
 REM ====== 5. 启动前端 ======
 echo [5/5] 启动前端 (HTTP :%FRONTEND_PORT%)...
 set "FRONTEND_LOG=%LOG_DIR%\frontend.log"
-start "Mavis-Frontend" /D "%FRONTEND_DIR%" /B cmd /c "python -m http.server %FRONTEND_PORT% --bind 0.0.0.0 > "%FRONTEND_LOG%" 2>&1"
+start "Mavis-Frontend" /D "%FRONTEND_DIR%" /B cmd /c "python -m http.server %FRONTEND_PORT% --bind 0.0.0.0 > ""%FRONTEND_LOG%"" 2>&1"
 timeout /t 2 /nobreak >nul
 curl -s -o nul -w "  本机状态码: %%{http_code}\n" "http://localhost:%FRONTEND_PORT%/world_cup_2026_spa.html" 2>nul
 curl -s -o nul -w "  远程状态码: %%{http_code}\n" "http://%LOCAL_IP%:%FRONTEND_PORT%/world_cup_2026_spa.html" 2>nul

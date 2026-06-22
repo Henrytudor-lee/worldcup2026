@@ -39,13 +39,15 @@ echo.
 
 REM 4. 项目结构
 echo [4] 项目结构
-set "SCRIPT_DIR=%~dp0"
-if exist "%SCRIPT_DIR%backend\server.py" (
+REM check_env.bat 在 0_scripts/ 里, 项目根是上级目录
+set "SCRIPT_DIR=%~dp0.."
+for %%I in ("%SCRIPT_DIR%") do set "SCRIPT_DIR=%%~fI"
+if exist "%SCRIPT_DIR%\backend\server.py" (
     echo     √ backend\server.py
 ) else (
     echo     X backend\server.py 缺失
 )
-if exist "%SCRIPT_DIR%4_比赛预测\world_cup_2026_spa.html" (
+if exist "%SCRIPT_DIR%\4_比赛预测\world_cup_2026_spa.html" (
     echo     √ 4_比赛预测\world_cup_2026_spa.html
 ) else (
     echo     X 4_比赛预测\world_cup_2026_spa.html 缺失
@@ -87,8 +89,8 @@ echo.
 
 REM 8. 关键文件编码
 echo [8] 中文路径探测
-if exist "%SCRIPT_DIR%4_比赛预测" (
-    cd /d "%SCRIPT_DIR%4_比赛预测"
+if exist "%SCRIPT_DIR%\4_比赛预测" (
+    cd /d "%SCRIPT_DIR%\4_比赛预测"
     dir /b "*.html" >nul 2>&1 && echo     √ 4_比赛预测\ 可访问 (中文路径)
     cd /d "%SCRIPT_DIR%"
 ) else (
