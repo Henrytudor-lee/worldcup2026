@@ -45,6 +45,11 @@ NUMERIC_FIELDS = ['身价_万欧', '国家队进球', '国家队助攻']
 # 出生年 (可能有或没有)
 BIRTH_YEAR_FIELD = None  # 我们的 CSV 没这字段, 跳过
 
+# ⚠️ v2.2.4-10: 号码字段不是"必填"但有范围+唯一性约束
+# 重要: 这里的"号码"是俱乐部号码, 不是世界杯官方号码 (不同赛事号码会变)
+JERSEY_NUMBER_FIELD = '号码'
+VALID_JERSEY_RANGE = (1, 99)  # 俱乐部+国家队号码合理范围
+
 
 def load_known_mismatches():
     if MISMATCHES.exists():
@@ -118,6 +123,30 @@ def audit_field(player, field, value, all_players):
         if 'U-20' in text and '世界杯冠军' in text and 'U-20 世青赛冠军' not in text:
             issues.append({'level': 'warn', 'field': field, 'msg': f'荣誉同时含 "U-20" 和 "世界杯冠军" - 是否误写? {text[:60]}'})
 
+    # 7. ⚠️ v2.2.4-10: 号码字段审核 (注意: 当前 CSV 存的是俱乐部号码, 不是世界杯官方号码)
+    if field == JERSEY_NUMBER_FIELD and value:
+        text = str(value).strip()
+        try:
+            n = int(text)
+            if n < VALID_JERSEY_RANGE[0] or n > VALID_JERSEY_RANGE[1]:
+                issues.append({'level': 'error', 'field': field, 'msg': f'号码超出合理范围 {VALID_JERSEY_RANGE}: {n}'})
+            elif n == 0:
+                issues.append({'level': 'warn', 'field': field, 'msg': f'号码为 0 (异常)'})
+        except (ValueError, TypeError):
+            issues.append({'level': 'error', 'field': field, 'msg': f'号码无法解析: {value!r}'})
+
+    # 8. ⚠️ v2.2.4-10: 世界杯号码审核 (新增字段, 待核查 = 空)
+    if field == '世界杯号码':
+        if value == '' or value is None:
+            issues.append({'level': 'info', 'field': field, 'msg': '世界杯官方号码未核查 (留空)'})
+        else:
+            try:
+                n = int(str(value).strip())
+                if n < 1 or n > 99:
+                    issues.append({'level': 'error', 'field': field, 'msg': f'世界杯号码超出 1-99 范围: {n}'})
+            except (ValueError, TypeError):
+                issues.append({'level': 'error', 'field': field, 'msg': f'世界杯号码无法解析: {value!r}'})
+
     return issues
 
 
@@ -166,6 +195,51 @@ def audit_all():
     # known_mismatches 比对
     km_issues = audit_known_mismatches(players, mismatches)
     all_issues.extend(km_issues)
+
+    # ⚠️ v2.2.4-10: 跨球员号码唯一性审核 (同队号码冲突)
+    # 1) 俱乐部号码唯一性
+    from collections import Counter, defaultdict
+    team_num_players = defaultdict(list)
+    for p in players:
+        cn = p.get('国家', '?')
+        num = str(p.get('俱乐部号码', p.get('号码', ''))).strip()  # 兼容旧字段
+        if num and num != '0':
+            team_num_players[cn].append((p.get('球员', '?'), num))
+    for team, lst in team_num_players.items():
+        nums = Counter(n for _, n in lst)
+        dups = {n: c for n, c in nums.items() if c > 1}
+        for n, c in dups.items():
+            players_with_num = [name for name, num in lst if num == n]
+            all_issues.append({
+                'level': 'error',
+                'field': '俱乐部号码',
+                'country': team,
+                'name': '、'.join(players_with_num),
+                'msg': f'同队 {len(players_with_num)} 人共用俱乐部号 {n}: {players_with_num}'
+            })
+
+    # 2) 世界杯号码唯一性
+    team_wc_num_players = defaultdict(list)
+    wc_filled = 0
+    for p in players:
+        cn = p.get('国家', '?')
+        wn = str(p.get('世界杯号码', '')).strip()
+        if wn:
+            wc_filled += 1
+            team_wc_num_players[cn].append((p.get('球员', '?'), wn))
+    for team, lst in team_wc_num_players.items():
+        nums = Counter(n for _, n in lst)
+        dups = {n: c for n, c in nums.items() if c > 1}
+        for n, c in dups.items():
+            players_with_num = [name for name, num in lst if num == n]
+            all_issues.append({
+                'level': 'error',
+                'field': '世界杯号码',
+                'country': team,
+                'name': '、'.join(players_with_num),
+                'msg': f'同队 {len(players_with_num)} 人共用世界杯号 {n}: {players_with_num}'
+            })
+    print(f'  [wc-num] 已填世界杯号: {wc_filled}/{len(players)} ({100*wc_filled/len(players):.1f}%)')
 
     # 统计
     stats = {

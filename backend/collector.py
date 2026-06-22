@@ -26,38 +26,48 @@ DATA_DIR = PROJECT_ROOT / "1_数据基础"
 CSV_RESULTS = DATA_DIR / "match_results.csv"
 
 
-# 48 强英文→中文映射 (48 队)
+# 2026 世界杯 48 强英文→中文映射 (完整版)
 TEAM_ALIASES = {
-    'Canada': '加拿大', 'Bosnia-Herzegovina': '波黑', 'Bosnia': '波黑',
-    'United States': '美国', 'USA': '美国', 'Paraguay': '巴拉圭',
-    'Qatar': '卡塔尔', 'Switzerland': '瑞士',
-    'Brazil': '巴西', 'Morocco': '摩洛哥',
-    'Haiti': '海地', 'Scotland': '苏格兰',
+    # Group A
     'Mexico': '墨西哥', 'South Africa': '南非',
     'South Korea': '韩国', 'Korea Republic': '韩国',
-    'Germany': '德国', 'Curacao': '库拉索', 'Curaçao': '库拉索',
-    'Netherlands': '荷兰', 'Japan': '日本',
-    'Spain': '西班牙', 'Cape Verde': '佛得角',
-    'Ivory Coast': '科特迪瓦', "Côte d'Ivoire": '科特迪瓦',
-    'Iran': '伊朗', 'New Zealand': '新西兰',
-    'Portugal': '葡萄牙', 'Norway': '挪威',
-    'France': '法国', 'Senegal': '塞内加尔',
-    'Argentina': '阿根廷', 'Algeria': '阿尔及利亚',
-    'England': '英格兰', 'Croatia': '克罗地亚',
-    'Tunisia': '突尼斯',
-    'Belgium': '比利时', 'Egypt': '埃及',
-    'Italy': '意大利', 'Uzbekistan': '乌兹别克斯坦',
-    'Poland': '波兰',
-    'Uruguay': '乌拉圭', 'Ghana': '加纳', 'Panama': '巴拿马',
-    'Saudi Arabia': '沙特', 'Australia': '澳大利亚',
-    'Colombia': '哥伦比亚', 'Ecuador': '厄瓜多尔',
-    'Cameroon': '喀麦隆', 'Costa Rica': '哥斯达黎加',
-    'Denmark': '丹麦', 'Turkey': '土耳其', 'Austria': '奥地利',
-    'Jordan': '约旦', 'Albania': '阿尔巴尼亚',
     'Czechia': '捷克', 'Czech Republic': '捷克',
-    'Sweden': '瑞典', 'Ukraine': '乌克兰', 'Kosovo': '科索沃',
-    'Romania': '罗马尼亚', 'Slovakia': '斯洛伐克', 'Slovenia': '斯洛文尼亚',
-    'Nigeria': '尼日利亚', 'Chile': '智利', 'Peru': '秘鲁', 'Bolivia': '玻利维亚',
+    # Group B
+    'Canada': '加拿大', 'Bosnia-Herzegovina': '波黑', 'Bosnia': '波黑',
+    'Qatar': '卡塔尔', 'Switzerland': '瑞士',
+    # Group C
+    'Brazil': '巴西', 'Morocco': '摩洛哥',
+    'Haiti': '海地', 'Scotland': '苏格兰',
+    # Group D
+    'United States': '美国', 'USA': '美国', 'Paraguay': '巴拉圭',
+    'Australia': '澳大利亚', 'Turkey': '土耳其', 'Türkiye': '土耳其',
+    # Group E
+    'Germany': '德国',
+    'Curacao': '库拉索', 'Curaçao': '库拉索', 'Curaçao': '库拉索',
+    'Ivory Coast': '科特迪瓦', "Côte d'Ivoire": '科特迪瓦', "Cote d'Ivoire": '科特迪瓦',
+    'Ecuador': '厄瓜多尔',
+    # Group F
+    'Netherlands': '荷兰', 'Japan': '日本',
+    'Sweden': '瑞典', 'Tunisia': '突尼斯',
+    # Group G
+    'Iran': '伊朗', 'New Zealand': '新西兰',
+    'Belgium': '比利时', 'Egypt': '埃及',
+    # Group H
+    'Spain': '西班牙', 'Cape Verde': '佛得角',
+    'Saudi Arabia': '沙特', 'Uruguay': '乌拉圭',
+    # Group I
+    'France': '法国', 'Senegal': '塞内加尔',
+    'Norway': '挪威', 'Iraq': '伊拉克',
+    # Group J
+    'Argentina': '阿根廷', 'Algeria': '阿尔及利亚',
+    'Austria': '奥地利', 'Jordan': '约旦',
+    # Group K
+    'Portugal': '葡萄牙', 'Colombia': '哥伦比亚',
+    'Uzbekistan': '乌兹别克斯坦',
+    'DR Congo': '民主刚果', 'Congo DR': '民主刚果', 'Democratic Republic of the Congo': '民主刚果',
+    # Group L
+    'England': '英格兰', 'Croatia': '克罗地亚',
+    'Ghana': '加纳', 'Panama': '巴拿马',
 }
 
 
@@ -121,29 +131,49 @@ def fetch_espn_scoreboard(date_str):
         a_team_en, a_score = items[i + 1]
         h_team = to_zh(h_team_en)
         a_team = to_zh(a_team_en)
-        if h_team_en in TEAM_ALIASES and a_team_en in TEAM_ALIASES:
-            games.append((h_team, a_team, int(h_score), int(a_score), ''))
+        # Always include match, even if team not in mapping (warn about unmapped)
+        if h_team_en not in TEAM_ALIASES:
+            print(f"  [warn] unmapped home team: {h_team_en}")
+        if a_team_en not in TEAM_ALIASES:
+            print(f"  [warn] unmapped away team: {a_team_en}")
+        games.append((h_team, a_team, int(h_score), int(a_score), ""))
 
-    return games
+    # Filter to only World Cup teams (ignore club/youth matches)
+    wc_teams = set()
+    try:
+        schedule_path = DATA_DIR / 'world_cup_2026_group_schedule.csv'
+        if schedule_path.exists():
+            with open(schedule_path, encoding='utf-8') as f:
+                for row in csv.DictReader(f):
+                    wc_teams.add(row['主队'])
+                    wc_teams.add(row['客队'])
+    except Exception:
+        pass  # If schedule not available, don't filter
+    
+    wc_games = []
+    if wc_teams:
+        wc_games = [g for g in games if g[0] in wc_teams and g[1] in wc_teams]
+    else:
+        wc_games = games
+    
+    return wc_games
 
 
-def collect_results(start_date='2026-06-11', end_date='2026-07-19', overwrite=True):
+def collect_results(start_date='2026-06-11', end_date='2026-07-19', overwrite=False):
     """收集世界杯期间全部比赛结果, 写入 match_results.csv
 
-    overwrite=True 时, 用 collector 数据完全覆盖手写种子数据
-              (避免手动种子和抓取结果不一致)
-    overwrite=False 时, 保留已有, 只追加新的
+    overwrite=False (默认) 时, 保留已有数据, 只追加新比赛
+    overwrite=True 时, 备份后重新全量抓取
     """
     if overwrite and CSV_RESULTS.exists():
-        # 备份后清空, 重新写入 (避免重复)
         import shutil
         backup = CSV_RESULTS.with_suffix('.csv.bak')
         shutil.copy(CSV_RESULTS, backup)
         print(f"  [info] 备份到 {backup.name}, 重新写入")
 
-    # 加载已有结果
+    # 加载已有结果 (始终加载, 不对已有做覆盖)
     existing = {}
-    if not overwrite and CSV_RESULTS.exists():
+    if CSV_RESULTS.exists():
         with open(CSV_RESULTS, encoding='utf-8') as f:
             for row in csv.DictReader(f):
                 key = (row['date'], row['home'], row['away'])

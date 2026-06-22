@@ -71,3 +71,23 @@ arsenal_stats_snapshot.txt
 # ============ 校准已删, 产物/报告 不进 git ============
 5_算法/calibration_*.json
 4_可视化/
+
+# ============ Mavis 临时脑暴数据 ============
+.superpowers/
+
+# ============ 整理归档目录 ============
+# 0_备份/ 是 .bak 备份, git 历史可恢复
+0_备份/
+"EOF
+echo "--- 更新后 .gitignore 末尾 ---"
+tail -10 .gitignore
+# ============ Node 依赖 (重装可重生成) ============
+node_modules/
+package-lock.json
+
+# ============ 临时备份 (下划线开头) ============
+_avail_*.csv
+_avail_*.json
+
+# ============ Cron 调试多余 audit (只保留 latest.html) ============
+6_审核报告/field_audit/audit_*.html

@@ -23,6 +23,7 @@ CSV_COACHES = DATA_DIR / "world_cup_2026_coaches.csv"
 CSV_FIFA = DATA_DIR / "world_cup_2026_fifa_ranking.csv"
 CSV_SCHEDULE = DATA_DIR / "world_cup_2026_group_schedule.csv"
 CSV_STATUS = DATA_DIR / "world_cup_2026_player_status_all.csv"
+CSV_AVAIL = DATA_DIR / "player_availability.csv"
 
 
 # ============================================================
@@ -163,6 +164,24 @@ def load_fifa():
     return fifa
 
 
+def load_availability():
+    """读 关键球员 availability (0=缺席, 1=全状态), 文件不存在返回空字典"""
+    avail = {}
+    if not CSV_AVAIL.exists():
+        return avail
+    try:
+        with open(CSV_AVAIL, encoding='utf-8') as f:
+            for rec in csv.DictReader(f):
+                try:
+                    a = float(rec.get('availability', '1.0'))
+                except (ValueError, TypeError):
+                    a = 1.0
+                avail[(rec['国家'], rec['球员'])] = max(0.0, min(1.0, a))
+    except Exception as e:
+        print(f'[warn] load_availability failed: {e}')
+    return avail
+
+
 def load_status():
     """读 2025-26 状态数据（可选，文件不存在返回空）"""
     status = {}
@@ -263,10 +282,11 @@ def apply_formation_to_team(team_result, dynamic_weights):
     return new_fw, new_mid, new_def, new_gk, formation
 
 
-def calc_player_score_with_weights(player, status_rec, weights):
+def calc_player_score_with_weights(player, status_rec, weights, availability=1.0):
     """
-    球员评分（接受 weights）
+    球员评分（接受 weights + 可选 availability）
     区分前锋/中场 vs 后卫/门
+    availability: 0=完全缺席, 1=全状态, 0.5=预计踢半场
     """
     pos = player.get('位置', '').strip()
     val = ranking_v2.parse_value(player.get('身价_万欧', '0'))
@@ -289,12 +309,13 @@ def calc_player_score_with_weights(player, status_rec, weights):
         nat_goals = ranking_v2.parse_value(player.get('国家队进球', '0'))
         nat_assists = ranking_v2.parse_value(player.get('国家队助攻', '0'))
         sw += nat_goals / nat_cfg['g_per_goal'] + nat_assists / nat_cfg['a_per_assist']
-        return base * (1 + sw), base, sw
+        score = base * (1 + sw) * availability
+        return score, base * availability, sw
     else:
         # 后卫/门：用经验 + 荣誉
         honors = ranking_v2.parse_honors(player.get('主要荣誉', ''))
-        score = base * def_cfg['base_factor'] + honors * def_cfg['honors_per_champ']
-        return score, base, 0
+        score = (base * def_cfg['base_factor'] + honors * def_cfg['honors_per_champ']) * availability
+        return score, base * availability, 0
 
 
 # ============================================================
@@ -305,6 +326,7 @@ def compute_ranking(weights):
     players = load_players()
     coaches = load_coaches()
     status = load_status()
+    availability_map = load_availability()  # {(国家, 球员): 0~1}
     fifa_rank = {}
     with open(CSV_FIFA, encoding='utf-8') as f:
         for r in csv.DictReader(f):
@@ -333,10 +355,16 @@ def compute_ranking(weights):
 
     results = []
     for country, slots in teams.items():
-        scored_fw = [(calc_player_score_with_weights(p, status.get((country, p['球员']), {}), weights)[0], p) for p in slots['fw']]
-        scored_mid = [(calc_player_score_with_weights(p, status.get((country, p['球员']), {}), weights)[0], p) for p in slots['mid']]
-        scored_def = [(calc_player_score_with_weights(p, status.get((country, p['球员']), {}), weights)[0], p) for p in slots['def']]
-        scored_gk = [(calc_player_score_with_weights(p, status.get((country, p['球员']), {}), weights)[0], p) for p in slots['gk']]
+        def _score(p):
+            avail = availability_map.get((country, p['球员']), 1.0)
+            return calc_player_score_with_weights(
+                p, status.get((country, p['球员']), {}), weights,
+                availability=avail
+            )[0]
+        scored_fw = [(_score(p), p) for p in slots['fw']]
+        scored_mid = [(_score(p), p) for p in slots['mid']]
+        scored_def = [(_score(p), p) for p in slots['def']]
+        scored_gk = [(_score(p), p) for p in slots['gk']]
 
         scored_fw.sort(reverse=True, key=lambda x: x[0])
         scored_mid.sort(reverse=True, key=lambda x: x[0])
@@ -614,7 +642,7 @@ def team_metrics(country, ranking_dict, fifa_data, is_home=True, venue_alt=0, ve
 
 def calc_lambda(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25, venue_cfg=None,
                  home_leagues=None, away_leagues=None, adaptation_weight=0.5, weights=None,
-                 venue_humidity=60):
+                 venue_humidity=60, availability_map=None):
     """算主/客队 λ（4 维对位）"""
     if weights is None:
         weights = {}
@@ -629,6 +657,10 @@ def calc_lambda(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25,
 
     home_attack = H['attack']
     home_lambda = 1.3 * H['possession'] * math.sqrt(home_attack * 0.001) * H['coach_coef'] * H['venue_coef'] * H['fifa_coef']
+    # v2.2.4-9: 关键球员 availability 直接乘到 λ 上 (绕开 lambda_cap 让关键球员折算穿透)
+    if availability_map:
+        home_key_coef = _calc_key_player_coef(home, ranking_dict, availability_map)
+        home_lambda *= home_key_coef
     lambda_cap = weights.get('lambda_cap', 3.5) if weights else 3.5
     home_lambda = min(max(home_lambda, 0.3), lambda_cap)
 
@@ -637,9 +669,37 @@ def calc_lambda(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25,
     # 新逻辑: A 队持球率独立算, 客队控球多 = 客队进攻多
     away_poss = A['possession']
     away_lambda = 1.3 * away_poss * math.sqrt(A['attack'] * 0.001) * A['coach_coef'] * A['venue_coef'] * A['fifa_coef']
+    if availability_map:
+        away_key_coef = _calc_key_player_coef(away, ranking_dict, availability_map)
+        away_lambda *= away_key_coef
     away_lambda = min(max(away_lambda, 0.3), lambda_cap)
 
     return home_lambda, away_lambda
+
+
+def _calc_key_player_coef(team, ranking_dict, availability_map):
+    """
+    计算关键球员 availability 折扣系数
+    算法: 看该队锋线 + 中场 top 4 中, availability < 1 的球员占比,
+    按权重算一个 λ 系数 (1.0=无折扣, 0.7=关键球员只踢30%)
+    """
+    r = ranking_dict.get(team, {})
+    fw_names = r.get('fw_top_names', []) or []
+    mid_names = r.get('mid_top_names', []) or []
+    all_key = fw_names + mid_names
+    if not all_key:
+        return 1.0
+    # 统计: 关键球员在 availability_map 里的 (有缺失的就当 1.0)
+    avail_values = []
+    for name in all_key:
+        a = availability_map.get((team, name), 1.0)
+        if a < 1.0:  # 只折扣受伤球员
+            avail_values.append(a)
+    if not avail_values:
+        return 1.0
+    # 算术平均 (保守策略: 多个核心伤只算一次折扣)
+    coef = sum(avail_values) / len(avail_values)
+    return max(0.4, min(1.0, coef))
 
 
 def poisson_pmf(lam, k):
@@ -664,7 +724,8 @@ def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=2
                      weights=weights, venue_humidity=venue_humidity)
     lh, la = calc_lambda(home, away, ranking_dict, fifa_data, venue_alt, venue_temp, venue_cfg,
                           home_leagues=home_leagues, away_leagues=away_leagues,
-                          adaptation_weight=adaptation_weight, weights=weights)
+                          adaptation_weight=adaptation_weight, weights=weights,
+                          availability_map=load_availability())
 
     score_probs = {}
     for k in range(7):

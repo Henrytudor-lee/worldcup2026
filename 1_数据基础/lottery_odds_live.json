@@ -1,0 +1,214 @@
+{
+  "scraped_at": "2026-06-21T09:05:35.879+00:00",
+  "source": "https://www.lottery.gov.cn/jc/jsq/zqspf/",
+  "matches": [
+    {
+      "home": "西班牙",
+      "away": "沙特",
+      "code": "周日037",
+      "had_status": "未开售",
+      "had_available": false,
+      "hhad_status": "-2",
+      "hhad_handicap": -2,
+      "hhad": {
+        "home": 1.63,
+        "draw": 4.5,
+        "away": 3.4
+      }
+    },
+    {
+      "home": "比利时",
+      "away": "伊朗",
+      "code": "周日038",
+      "had_status": "0",
+      "had_available": true,
+      "hhad_status": "-1",
+      "hhad_handicap": -1,
+      "had": {
+        "home": 1.28,
+        "draw": 4.61,
+        "away": 7.6
+      },
+      "hhad": {
+        "home": 1.92,
+        "draw": 3.72,
+        "away": 2.94
+      }
+    },
+    {
+      "home": "乌拉圭",
+      "away": "佛得角",
+      "code": "周日039",
+      "had_status": "0",
+      "had_available": true,
+      "hhad_status": "-1",
+      "hhad_handicap": -1,
+      "had": {
+        "home": 1.3,
+        "draw": 4.05,
+        "away": 8.8
+      },
+      "hhad": {
+        "home": 2.14,
+        "draw": 3.23,
+        "away": 2.84
+      }
+    },
+    {
+      "home": "新西兰",
+      "away": "埃及",
+      "code": "周日040",
+      "had_status": "0",
+      "had_available": true,
+      "hhad_status": "+1",
+      "hhad_handicap": 1,
+      "had": {
+        "home": 5.85,
+        "draw": 3.8,
+        "away": 1.44
+      },
+      "hhad": {
+        "home": 2.4,
+        "draw": 3.34,
+        "away": 2.42
+      }
+    },
+    {
+      "home": "阿根廷",
+      "away": "奥地利",
+      "code": "周一041",
+      "had_status": "0",
+      "had_available": true,
+      "hhad_status": "-1",
+      "hhad_handicap": -1,
+      "had": {
+        "home": 1.4,
+        "draw": 3.98,
+        "away": 6.1
+      },
+      "hhad": {
+        "home": 2.28,
+        "draw": 3.48,
+        "away": 2.48
+      }
+    },
+    {
+      "home": "法国",
+      "away": "伊拉克",
+      "code": "周一042",
+      "had_status": "未开售",
+      "had_available": false,
+      "hhad_status": "-3",
+      "hhad_handicap": -3,
+      "hhad": {
+        "home": 2.61,
+        "draw": 4.5,
+        "away": 1.91
+      }
+    },
+    {
+      "home": "挪威",
+      "away": "塞内加尔",
+      "code": "周一043",
+      "had_status": "0",
+      "had_available": true,
+      "hhad_status": "-1",
+      "hhad_handicap": -1,
+      "had": {
+        "home": 1.95,
+        "draw": 3.3,
+        "away": 3.2
+      },
+      "hhad": {
+        "home": 3.88,
+        "draw": 3.82,
+        "away": 1.64
+      }
+    },
+    {
+      "home": "约旦",
+      "away": "阿尔及利",
+      "code": "周一044",
+      "had_status": "0",
+      "had_available": true,
+      "hhad_status": "+1",
+      "hhad_handicap": 1,
+      "had": {
+        "home": 5.82,
+        "draw": 3.8,
+        "away": 1.44
+      },
+      "hhad": {
+        "home": 2.4,
+        "draw": 3.35,
+        "away": 2.42
+      }
+    },
+    {
+      "home": "葡萄牙",
+      "away": "乌兹别克",
+      "code": "周二045",
+      "had_status": "未开售",
+      "had_available": false,
+      "hhad_status": "-2",
+      "hhad_handicap": -2,
+      "hhad": {
+        "home": 2.39,
+        "draw": 3.9,
+        "away": 2.2
+      }
+    },
+    {
+      "home": "英格兰",
+      "away": "加纳",
+      "code": "周二046",
+      "had_status": "未开售",
+      "had_available": false,
+      "hhad_status": "-2",
+      "hhad_handicap": -2,
+      "hhad": {
+        "home": 2.49,
+        "draw": 3.9,
+        "away": 2.12
+      }
+    },
+    {
+      "home": "巴拿马",
+      "away": "克罗地亚",
+      "code": "周二047",
+      "had_status": "0",
+      "had_available": true,
+      "hhad_status": "+1",
+      "hhad_handicap": 1,
+      "had": {
+        "home": 6,
+        "draw": 3.95,
+        "away": 1.41
+      },
+      "hhad": {
+        "home": 2.42,
+        "draw": 3.4,
+        "away": 2.37
+      }
+    },
+    {
+      "home": "哥伦比亚",
+      "away": "刚果金",
+      "code": "周二048",
+      "had_status": "0",
+      "had_available": true,
+      "hhad_status": "-1",
+      "hhad_handicap": -1,
+      "had": {
+        "home": 1.36,
+        "draw": 3.85,
+        "away": 7.5
+      },
+      "hhad": {
+        "home": 2.27,
+        "draw": 3.3,
+        "away": 2.6
+      }
+    }
+  ]
+}

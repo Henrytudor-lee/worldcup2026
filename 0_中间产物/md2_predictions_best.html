@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>WorldCup 2026 第二轮预测 (6/19-6/24) - Best Weights</title>
+<style>
+  body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+         max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f7fa; }
+  h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; }
+  .meta { background: #fff; padding: 15px; border-radius: 8px; margin: 15px 0;
+           box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 14px; color: #555; }
+  .meta strong { color: #e74c3c; }
+  .date-group { background: #fff; margin: 20px 0; border-radius: 8px;
+                 box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+  .date-header { background: #34495e; color: #fff; padding: 12px 18px;
+                  font-size: 18px; font-weight: bold; }
+  .match { padding: 14px 18px; border-bottom: 1px solid #ecf0f1;
+            display: grid; grid-template-columns: 100px 1fr 1.5fr 1.5fr;
+            gap: 15px; align-items: center; }
+  .match:last-child { border-bottom: none; }
+  .match.highlight { background: #fffbe6; }
+  .time { font-weight: bold; color: #2c3e50; }
+  .teams { font-size: 16px; }
+  .teams .vs { color: #95a5a6; margin: 0 8px; }
+  .star { color: #f39c12; margin-right: 4px; }
+  .probs { font-family: monospace; font-size: 13px; }
+  .p-home { color: #27ae60; font-weight: bold; }
+  .p-draw { color: #f39c12; font-weight: bold; }
+  .p-away { color: #e74c3c; font-weight: bold; }
+  .detail { font-size: 12px; color: #7f8c8d; font-family: monospace; }
+  .ceiling { color: #e74c3c; font-weight: bold; }
+  .ceiling-warn { background: #ffebee; border-left: 4px solid #e74c3c;
+                   padding: 12px 18px; margin: 15px 0; border-radius: 4px; }
+  .algorithm-info { background: #e8f5e9; border-left: 4px solid #4caf50;
+                     padding: 12px 18px; margin: 15px 0; border-radius: 4px;
+                     font-size: 13px; }
+  .group { color: #3498db; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>⚽ WorldCup 2026 - 第二轮 (Match Day 2) 赛前预测</h1>
+
+<div class="meta">
+  <div><strong>📅 比赛日期:</strong> 2026-06-19 ~ 2026-06-24 (北京时间)</div>
+  <div><strong>🎯 预测依据:</strong> 6/18 校准后 best weights (loss = -53.12, n=24 场真实结果训练)</div>
+  <div><strong>⚙️ 算法:</strong> λ = 1.3 × 持球率 × √(attack×0.001) × 教练 × 场地 × FIFA → Poisson 进球分布</div>
+  <div><strong>📊 训练数据:</strong> 第一轮 24 场真实结果 (6/11-6/18, win_acc 67%, MAE 2.71)</div>
+  <div><strong>🏆 冠军预测:</strong> 🇫🇷 法国 (基于 best weights, 7.8% 夺冠概率)</div>
+</div>
+
+<div class="algorithm-info">
+  <strong>💡 算法当前状态:</strong><br>
+  • 强队系统性低估进球期望: λ ceiling = 4.1, 巴西/西班牙/法国/比利时/葡萄牙/阿根廷/英格兰/德国/荷兰/挪威等强队都撞顶<br>
+  • 平局概率系统性低估: 6/14-6/15 四场"热门身价全平"显示算法对"强强对"和"湿热气候"识别不足<br>
+  • 当前 draw_boost: 1.5, 已在 best weights 中调到最优<br>
+  • 训练数据 n=24 仍偏少, 6/19 12:00 cron 会再用 n=24 重新校准一次
+</div>
+
+<div class="ceiling-warn">
+  <strong>⚠️ λ Ceiling 警告:</strong> 共有 <span class="ceiling">10 场</span> 强队比赛 λ 撞顶 4.10,
+  这些比赛的"真实概率"被系统性低估 (因为 λ 没法再涨). 实际比分通常比预测更悬殊.<br>
+  受影响: 巴西 vs 海地 / 西班牙 vs 沙特 / 比利时 vs 伊朗 / 法国 vs 伊拉克 / 葡萄牙 vs 乌兹别克斯坦 /
+  阿根廷 vs 奥地利 / 英格兰 vs 加纳 / 挪威 vs 塞内加尔 / 荷兰 vs 瑞典 / 德国 vs 科特迪瓦
+</div>
+
+<div class="date-group">
+<div class="date-header">📅 2026-06-19 (周五) · 北京时间 · 4 场</div>
+<div class="match">
+  <div class="time">00:00</div>
+  <div class="teams"><span class="star">  </span><span class="group">[A]</span> <strong>捷克</strong> <span class="vs">vs</span> <strong>南非</strong></div>
+  <div class="probs">主<span class="p-home">48.8%</span> 平<span class="p-draw">31.5%</span> 客<span class="p-away">19.7%</span></div>
+  <div class="detail">最可能: <strong>1-0</strong> (17.5%) | λ 1.29 vs 0.71</div>
+</div>
+<div class="match">
+  <div class="time">03:00</div>
+  <div class="teams"><span class="star">  </span><span class="group">[B]</span> <strong>瑞士</strong> <span class="vs">vs</span> <strong>波黑</strong></div>
+  <div class="probs">主<span class="p-home">81.0%</span> 平<span class="p-draw">11.9%</span> 客<span class="p-away">7.1%</span></div>
+  <div class="detail">最可能: <strong>3-1</strong> (7.9%) | λ 3.52 vs 1.02</div>
+</div>
+<div class="match">
+  <div class="time">06:00</div>
+  <div class="teams"><span class="star">  </span><span class="group">[B]</span> <strong>加拿大</strong> <span class="vs">vs</span> <strong>卡塔尔</strong></div>
+  <div class="probs">主<span class="p-home">67.1%</span> 平<span class="p-draw">24.1%</span> 客<span class="p-away">8.8%</span></div>
+  <div class="detail">最可能: <strong>1-0</strong> (19.8%) | λ 1.72 vs 0.44</div>
+</div>
+<div class="match highlight">
+  <div class="time">09:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[A]</span> <strong>墨西哥</strong> <span class="vs">vs</span> <strong>韩国</strong></div>
+  <div class="probs">主<span class="p-home">49.8%</span> 平<span class="p-draw">26.6%</span> 客<span class="p-away">23.6%</span></div>
+  <div class="detail">最可能: <strong>1-1</strong> (11.6%) | λ 1.66 vs 1.06</div>
+</div>
+</div>
+<div class="date-group">
+<div class="date-header">📅 2026-06-20 (周六) · 北京时间 · 4 场</div>
+<div class="match highlight">
+  <div class="time">03:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[D]</span> <strong>美国</strong> <span class="vs">vs</span> <strong>澳大利亚</strong></div>
+  <div class="probs">主<span class="p-home">76.8%</span> 平<span class="p-draw">15.0%</span> 客<span class="p-away">8.2%</span></div>
+  <div class="detail">最可能: <strong>2-0</strong> (10.5%) | λ 2.81 vs 0.81</div>
+</div>
+<div class="match">
+  <div class="time">06:00</div>
+  <div class="teams"><span class="star">  </span><span class="group">[C]</span> <strong>苏格兰</strong> <span class="vs">vs</span> <strong>摩洛哥</strong></div>
+  <div class="probs">主<span class="p-home">16.5%</span> 平<span class="p-draw">15.2%</span> 客<span class="p-away">68.3%</span></div>
+  <div class="detail">最可能: <strong>2-4</strong> (5.3%) | λ 2.10 vs ⚠️4.10</div>
+</div>
+<div class="match highlight">
+  <div class="time">08:30</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[C]</span> <strong>巴西</strong> <span class="vs">vs</span> <strong>海地</strong></div>
+  <div class="probs">主<span class="p-home">89.5%</span> 平<span class="p-draw">7.4%</span> 客<span class="p-away">3.2%</span></div>
+  <div class="detail">最可能: <strong>4-0</strong> (9.2%) | λ ⚠️4.10 vs 0.76</div>
+</div>
+<div class="match">
+  <div class="time">11:00</div>
+  <div class="teams"><span class="star">  </span><span class="group">[D]</span> <strong>土耳其</strong> <span class="vs">vs</span> <strong>巴拉圭</strong></div>
+  <div class="probs">主<span class="p-home">74.3%</span> 平<span class="p-draw">14.0%</span> 客<span class="p-away">11.8%</span></div>
+  <div class="detail">最可能: <strong>3-1</strong> (7.0%) | λ 3.71 vs 1.51</div>
+</div>
+</div>
+<div class="date-group">
+<div class="date-header">📅 2026-06-21 (周日) · 北京时间 · 4 场</div>
+<div class="match highlight">
+  <div class="time">01:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[F]</span> <strong>荷兰</strong> <span class="vs">vs</span> <strong>瑞典</strong></div>
+  <div class="probs">主<span class="p-home">40.3%</span> 平<span class="p-draw">19.4%</span> 客<span class="p-away">40.3%</span></div>
+  <div class="detail">最可能: <strong>4-4</strong> (3.8%) | λ ⚠️4.10 vs ⚠️4.10</div>
+</div>
+<div class="match highlight">
+  <div class="time">04:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[E]</span> <strong>德国</strong> <span class="vs">vs</span> <strong>科特迪瓦</strong></div>
+  <div class="probs">主<span class="p-home">40.3%</span> 平<span class="p-draw">19.4%</span> 客<span class="p-away">40.3%</span></div>
+  <div class="detail">最可能: <strong>4-4</strong> (3.8%) | λ ⚠️4.10 vs ⚠️4.10</div>
+</div>
+<div class="match">
+  <div class="time">08:00</div>
+  <div class="teams"><span class="star">  </span><span class="group">[E]</span> <strong>厄瓜多尔</strong> <span class="vs">vs</span> <strong>库拉索</strong></div>
+  <div class="probs">主<span class="p-home">69.4%</span> 平<span class="p-draw">21.8%</span> 客<span class="p-away">8.8%</span></div>
+  <div class="detail">最可能: <strong>1-0</strong> (16.9%) | λ 1.92 vs 0.51</div>
+</div>
+<div class="match highlight">
+  <div class="time">12:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[F]</span> <strong>突尼斯</strong> <span class="vs">vs</span> <strong>日本</strong></div>
+  <div class="probs">主<span class="p-home">11.6%</span> 平<span class="p-draw">19.0%</span> 客<span class="p-away">69.4%</span></div>
+  <div class="detail">最可能: <strong>0-2</strong> (11.1%) | λ 0.86 vs 2.38</div>
+</div>
+</div>
+<div class="date-group">
+<div class="date-header">📅 2026-06-22 (周一) · 北京时间 · 4 场</div>
+<div class="match highlight">
+  <div class="time">00:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[H]</span> <strong>西班牙</strong> <span class="vs">vs</span> <strong>沙特</strong></div>
+  <div class="probs">主<span class="p-home">92.8%</span> 平<span class="p-draw">5.5%</span> 客<span class="p-away">1.7%</span></div>
+  <div class="detail">最可能: <strong>4-0</strong> (11.9%) | λ ⚠️4.10 vs 0.49</div>
+</div>
+<div class="match highlight">
+  <div class="time">03:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[G]</span> <strong>比利时</strong> <span class="vs">vs</span> <strong>伊朗</strong></div>
+  <div class="probs">主<span class="p-home">91.4%</span> 平<span class="p-draw">6.3%</span> 客<span class="p-away">2.3%</span></div>
+  <div class="detail">最可能: <strong>4-0</strong> (10.7%) | λ ⚠️4.10 vs 0.61</div>
+</div>
+<div class="match highlight">
+  <div class="time">06:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[H]</span> <strong>乌拉圭</strong> <span class="vs">vs</span> <strong>佛得角</strong></div>
+  <div class="probs">主<span class="p-home">86.8%</span> 平<span class="p-draw">9.7%</span> 客<span class="p-away">3.5%</span></div>
+  <div class="detail">最可能: <strong>3-0</strong> (12.8%) | λ 3.26 vs 0.55</div>
+</div>
+<div class="match">
+  <div class="time">09:00</div>
+  <div class="teams"><span class="star">  </span><span class="group">[G]</span> <strong>新西兰</strong> <span class="vs">vs</span> <strong>埃及</strong></div>
+  <div class="probs">主<span class="p-home">7.0%</span> 平<span class="p-draw">18.0%</span> 客<span class="p-away">75.1%</span></div>
+  <div class="detail">最可能: <strong>0-2</strong> (16.1%) | λ 0.51 vs 2.22</div>
+</div>
+</div>
+<div class="date-group">
+<div class="date-header">📅 2026-06-23 (周二) · 北京时间 · 4 场</div>
+<div class="match highlight">
+  <div class="time">01:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[J]</span> <strong>阿根廷</strong> <span class="vs">vs</span> <strong>奥地利</strong></div>
+  <div class="probs">主<span class="p-home">71.3%</span> 平<span class="p-draw">14.4%</span> 客<span class="p-away">14.3%</span></div>
+  <div class="detail">最可能: <strong>4-1</strong> (5.5%) | λ ⚠️4.10 vs 1.91</div>
+</div>
+<div class="match highlight">
+  <div class="time">05:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[I]</span> <strong>法国</strong> <span class="vs">vs</span> <strong>伊拉克</strong></div>
+  <div class="probs">主<span class="p-home">92.7%</span> 平<span class="p-draw">5.6%</span> 客<span class="p-away">1.7%</span></div>
+  <div class="detail">最可能: <strong>4-0</strong> (11.8%) | λ ⚠️4.10 vs 0.50</div>
+</div>
+<div class="match highlight">
+  <div class="time">08:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[I]</span> <strong>挪威</strong> <span class="vs">vs</span> <strong>塞内加尔</strong></div>
+  <div class="probs">主<span class="p-home">40.3%</span> 平<span class="p-draw">19.4%</span> 客<span class="p-away">40.3%</span></div>
+  <div class="detail">最可能: <strong>4-4</strong> (3.8%) | λ ⚠️4.10 vs ⚠️4.10</div>
+</div>
+<div class="match">
+  <div class="time">11:00</div>
+  <div class="teams"><span class="star">  </span><span class="group">[J]</span> <strong>约旦</strong> <span class="vs">vs</span> <strong>阿尔及利亚</strong></div>
+  <div class="probs">主<span class="p-home">6.2%</span> 平<span class="p-draw">17.7%</span> 客<span class="p-away">76.0%</span></div>
+  <div class="detail">最可能: <strong>0-2</strong> (16.9%) | λ 0.46 vs 2.21</div>
+</div>
+</div>
+<div class="date-group">
+<div class="date-header">📅 2026-06-24 (周三) · 北京时间 · 4 场</div>
+<div class="match highlight">
+  <div class="time">01:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[K]</span> <strong>葡萄牙</strong> <span class="vs">vs</span> <strong>乌兹别克斯坦</strong></div>
+  <div class="probs">主<span class="p-home">90.1%</span> 平<span class="p-draw">7.1%</span> 客<span class="p-away">2.9%</span></div>
+  <div class="detail">最可能: <strong>4-0</strong> (9.6%) | λ ⚠️4.10 vs 0.71</div>
+</div>
+<div class="match highlight">
+  <div class="time">04:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[L]</span> <strong>英格兰</strong> <span class="vs">vs</span> <strong>加纳</strong></div>
+  <div class="probs">主<span class="p-home">68.3%</span> 平<span class="p-draw">15.2%</span> 客<span class="p-away">16.5%</span></div>
+  <div class="detail">最可能: <strong>4-2</strong> (5.3%) | λ ⚠️4.10 vs 2.10</div>
+</div>
+<div class="match">
+  <div class="time">07:00</div>
+  <div class="teams"><span class="star">  </span><span class="group">[L]</span> <strong>巴拿马</strong> <span class="vs">vs</span> <strong>克罗地亚</strong></div>
+  <div class="probs">主<span class="p-home">6.8%</span> 平<span class="p-draw">18.5%</span> 客<span class="p-away">74.8%</span></div>
+  <div class="detail">最可能: <strong>0-2</strong> (16.7%) | λ 0.47 vs 2.15</div>
+</div>
+<div class="match">
+  <div class="time">10:00</div>
+  <div class="teams"><span class="star">  </span><span class="group">[K]</span> <strong>哥伦比亚</strong> <span class="vs">vs</span> <strong>民主刚果</strong></div>
+  <div class="probs">主<span class="p-home">65.9%</span> 平<span class="p-draw">19.4%</span> 客<span class="p-away">14.6%</span></div>
+  <div class="detail">最可能: <strong>2-1</strong> (9.5%) | λ 2.46 vs 1.07</div>
+</div>
+</div>
+<div class="date-group">
+<div class="date-header" style="background:#e74c3c;">🔥 强强对话 - 算法对位不下的 3 场对称预测</div>
+<div class="match highlight">
+  <div class="time">04:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[E]</span> <strong>德国</strong> <span class="vs">vs</span> <strong>科特迪瓦</strong></div>
+  <div class="probs">主<span class="p-home">40.3%</span> 平<span class="p-draw">19.4%</span> 客<span class="p-away">40.3%</span></div>
+  <div class="detail">⚠️ 双强撞顶, 算法对位不下. 真实胜负 50:50 取决于临场.</div>
+</div>
+<div class="match highlight">
+  <div class="time">01:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[F]</span> <strong>荷兰</strong> <span class="vs">vs</span> <strong>瑞典</strong></div>
+  <div class="probs">主<span class="p-home">40.3%</span> 平<span class="p-draw">19.4%</span> 客<span class="p-away">40.3%</span></div>
+  <div class="detail">⚠️ 双强撞顶, 算法对位不下. 真实胜负 50:50 取决于临场.</div>
+</div>
+<div class="match highlight">
+  <div class="time">08:00</div>
+  <div class="teams"><span class="star">⭐</span><span class="group">[I]</span> <strong>挪威</strong> <span class="vs">vs</span> <strong>塞内加尔</strong></div>
+  <div class="probs">主<span class="p-home">40.3%</span> 平<span class="p-draw">19.4%</span> 客<span class="p-away">40.3%</span></div>
+  <div class="detail">⚠️ 双强撞顶, 算法对位不下. 真实胜负 50:50 取决于临场.</div>
+</div>
+</div>
+
+<div class="meta" style="margin-top:30px; background:#fff3cd; border-left:4px solid #ffc107;">
+  <strong>📌 等 6/19 12:00 cron 自动校准:</strong><br>
+  • 当前 best weights 基于 n=24 训练<br>
+  • 6/19 12:00 cron 会跑 50 轮贝叶斯再优化一次<br>
+  • 如果新 loss 破纪录, weights 会更新 (但 save_best bug 暂未修, 不做"是否破纪录"判断)<br>
+  • 6/19 第一场 00:00 捷克 vs 南非, 24:00 自动入库后 cron 会拿来训练
+</div>
+
+</body>
+</html>

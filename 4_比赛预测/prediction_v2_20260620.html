@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Mavis PDP 预测 v2 (2026-06-20)</title>
+<style>
+body { font-family: -apple-system, sans-serif; margin: 20px; background: #0f172a; color: #e2e8f0; }
+h1 { color: #38bdf8; text-align: center; }
+h2 { color: #fbbf24; border-left: 4px solid #fbbf24; padding-left: 10px; margin-top: 30px; }
+.summary { background: #1e293b; padding: 16px; border-radius: 8px; margin: 16px 0; }
+table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+th { background: #334155; padding: 8px; text-align: left; }
+td { padding: 6px 8px; border-bottom: 1px solid #334155; }
+tr:hover { background: #1e293b; }
+.champion { color: #fbbf24; font-weight: bold; font-size: 18px; }
+.runnerup { color: #94a3b8; }
+.third { color: #cd7f32; }
+.correct { color: #4ade80; }
+.wrong { color: #f87171; }
+.match-row:hover { background: #1e293b; }
+.match-correct { color: #4ade80; }
+.match-wrong { color: #f87171; }
+.date-col { color: #94a3b8; font-family: monospace; }
+.team { color: #38bdf8; }
+.score { font-weight: bold; font-family: monospace; }
+.pill { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 8px; }
+.pill-w { background: #14532d; color: #4ade80; }
+.pill-d { background: #713f12; color: #fbbf24; }
+.pill-l { background: #7f1d1d; color: #f87171; }
+.kpi-row { display: flex; gap: 20px; flex-wrap: wrap; }
+.kpi { background: #1e293b; padding: 12px 20px; border-radius: 8px; flex: 1; min-width: 200px; }
+.kpi-value { font-size: 28px; font-weight: bold; color: #38bdf8; }
+.kpi-label { color: #94a3b8; font-size: 13px; }
+.bracket { background: #1e293b; padding: 16px; border-radius: 8px; margin: 16px 0; }
+.evo-row { display: flex; justify-content: space-between; padding: 8px 12px; background: #1e293b; margin: 4px 0; border-radius: 4px; border-left: 3px solid #38bdf8; }
+.evo-row.best { border-left-color: #4ade80; background: #064e3b; }
+.evo-row.bad { border-left-color: #f87171; }
+</style>
+</head>
+<body>
+
+<h1>🏆 Mavis PDP 预测 v2 — 2026 世界杯</h1>
+
+<div class="summary">
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-label">冠军预测</div>
+    <div class="kpi-value">🇧🇷 巴西</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">校准 loss (24 场)</div>
+    <div class="kpi-value">-56.25</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">WDL 命中率</div>
+    <div class="kpi-value">66.7%</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">比分 MAE</div>
+    <div class="kpi-value">2.08</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">完全命中比分</div>
+    <div class="kpi-value">1/24</div>
+  </div>
+</div>
+<p style="margin-top: 16px;">
+  校准时间: <code>2026-06-20 16:38:47</code> | 训练样本: 24 场 (6/11 - 6/18) | 数据基础: <strong>1248/1248 真生日 100% 完成</strong>
+</p>
+</div>
+
+<h2>📊 48 强排名 (Top 16, 算法综合实力)</h2>
+<table>
+<tr><th>#</th><th>国家</th><th>FIFA 排名</th></tr>
+<tr><td>1</td><td><span class="team">西班牙</span></td><td>#2</td></tr><tr><td>2</td><td><span class="team">英格兰</span></td><td>#4</td></tr><tr><td>3</td><td><span class="team">葡萄牙</span></td><td>#5</td></tr><tr><td>4</td><td><span class="team">法国</span></td><td>#1</td></tr><tr><td>5</td><td><span class="team">荷兰</span></td><td>#7</td></tr><tr><td>6</td><td><span class="team">德国</span></td><td>#10</td></tr><tr><td>7</td><td><span class="team">阿根廷</span></td><td>#3</td></tr><tr><td>8</td><td><span class="team">巴西</span></td><td>#6</td></tr><tr><td>9</td><td><span class="team">挪威</span></td><td>#31</td></tr><tr><td>10</td><td><span class="team">摩洛哥</span></td><td>#8</td></tr><tr><td>11</td><td><span class="team">比利时</span></td><td>#9</td></tr><tr><td>12</td><td><span class="team">瑞典</span></td><td>#38</td></tr><tr><td>13</td><td><span class="team">塞内加尔</span></td><td>#14</td></tr><tr><td>14</td><td><span class="team">科特迪瓦</span></td><td>#34</td></tr><tr><td>15</td><td><span class="team">乌拉圭</span></td><td>#17</td></tr><tr><td>16</td><td><span class="team">克罗地亚</span></td><td>#11</td></tr>
+</table>
+
+<h2>✅ 24 场预测 vs 实际 (校准验证)</h2>
+<table>
+<tr>
+  <th>日期</th><th>主队</th><th>vs</th><th>客队</th><th>预测</th><th>实际</th><th>结果</th><th>比分差</th>
+</tr>
+<tr class="match-row"><td class="date-col">2026-06-11</td><td><span class="team">墨西哥</span></td><td>vs</td><td><span class="team">南非</span></td><td><span class="score">1-0</span></td><td><span class="score">2-0</span></td><td><span class="match-correct">✓ W</span></td><td>1</td></tr><tr class="match-row"><td class="date-col">2026-06-11</td><td><span class="team">韩国</span></td><td>vs</td><td><span class="team">捷克</span></td><td><span class="score">1-1</span></td><td><span class="score">2-1</span></td><td><span class="match-wrong">✗ W</span></td><td>1</td></tr><tr class="match-row"><td class="date-col">2026-06-12</td><td><span class="team">加拿大</span></td><td>vs</td><td><span class="team">波黑</span></td><td><span class="score">1-1</span></td><td><span class="score">1-1</span></td><td><span class="match-correct">✓ D</span></td><td>0</td></tr><tr class="match-row"><td class="date-col">2026-06-12</td><td><span class="team">美国</span></td><td>vs</td><td><span class="team">巴拉圭</span></td><td><span class="score">3-1</span></td><td><span class="score">4-1</span></td><td><span class="match-correct">✓ W</span></td><td>1</td></tr><tr class="match-row"><td class="date-col">2026-06-13</td><td><span class="team">卡塔尔</span></td><td>vs</td><td><span class="team">瑞士</span></td><td><span class="score">0-2</span></td><td><span class="score">1-1</span></td><td><span class="match-wrong">✗ D</span></td><td>2</td></tr><tr class="match-row"><td class="date-col">2026-06-13</td><td><span class="team">巴西</span></td><td>vs</td><td><span class="team">摩洛哥</span></td><td><span class="score">3-2</span></td><td><span class="score">1-1</span></td><td><span class="match-wrong">✗ D</span></td><td>3</td></tr><tr class="match-row"><td class="date-col">2026-06-13</td><td><span class="team">海地</span></td><td>vs</td><td><span class="team">苏格兰</span></td><td><span class="score">0-2</span></td><td><span class="score">0-1</span></td><td><span class="match-correct">✓ L</span></td><td>1</td></tr><tr class="match-row"><td class="date-col">2026-06-14</td><td><span class="team">德国</span></td><td>vs</td><td><span class="team">库拉索</span></td><td><span class="score">3-0</span></td><td><span class="score">7-1</span></td><td><span class="match-correct">✓ W</span></td><td>5</td></tr><tr class="match-row"><td class="date-col">2026-06-14</td><td><span class="team">澳大利亚</span></td><td>vs</td><td><span class="team">土耳其</span></td><td><span class="score">0-2</span></td><td><span class="score">2-0</span></td><td><span class="match-wrong">✗ W</span></td><td>4</td></tr><tr class="match-row"><td class="date-col">2026-06-14</td><td><span class="team">瑞典</span></td><td>vs</td><td><span class="team">突尼斯</span></td><td><span class="score">2-0</span></td><td><span class="score">5-1</span></td><td><span class="match-correct">✓ W</span></td><td>4</td></tr><tr class="match-row"><td class="date-col">2026-06-14</td><td><span class="team">科特迪瓦</span></td><td>vs</td><td><span class="team">厄瓜多尔</span></td><td><span class="score">2-1</span></td><td><span class="score">1-0</span></td><td><span class="match-correct">✓ W</span></td><td>2</td></tr><tr class="match-row"><td class="date-col">2026-06-14</td><td><span class="team">荷兰</span></td><td>vs</td><td><span class="team">日本</span></td><td><span class="score">3-1</span></td><td><span class="score">2-2</span></td><td><span class="match-wrong">✗ D</span></td><td>2</td></tr><tr class="match-row"><td class="date-col">2026-06-15</td><td><span class="team">伊朗</span></td><td>vs</td><td><span class="team">新西兰</span></td><td><span class="score">0-0</span></td><td><span class="score">2-2</span></td><td><span class="match-correct">✓ D</span></td><td>4</td></tr><tr class="match-row"><td class="date-col">2026-06-15</td><td><span class="team">比利时</span></td><td>vs</td><td><span class="team">埃及</span></td><td><span class="score">2-2</span></td><td><span class="score">1-1</span></td><td><span class="match-correct">✓ D</span></td><td>2</td></tr><tr class="match-row"><td class="date-col">2026-06-15</td><td><span class="team">沙特</span></td><td>vs</td><td><span class="team">乌拉圭</span></td><td><span class="score">0-2</span></td><td><span class="score">1-1</span></td><td><span class="match-wrong">✗ D</span></td><td>2</td></tr><tr class="match-row"><td class="date-col">2026-06-15</td><td><span class="team">西班牙</span></td><td>vs</td><td><span class="team">佛得角</span></td><td><span class="score">3-0</span></td><td><span class="score">0-0</span></td><td><span class="match-wrong">✗ D</span></td><td>3</td></tr><tr class="match-row"><td class="date-col">2026-06-16</td><td><span class="team">法国</span></td><td>vs</td><td><span class="team">塞内加尔</span></td><td><span class="score">3-2</span></td><td><span class="score">3-1</span></td><td><span class="match-correct">✓ W</span></td><td>1</td></tr><tr class="match-row"><td class="date-col">2026-06-17</td><td><span class="team">伊拉克</span></td><td>vs</td><td><span class="team">挪威</span></td><td><span class="score">0-3</span></td><td><span class="score">1-4</span></td><td><span class="match-correct">✓ L</span></td><td>2</td></tr><tr class="match-row"><td class="date-col">2026-06-17</td><td><span class="team">加纳</span></td><td>vs</td><td><span class="team">巴拿马</span></td><td><span class="score">2-0</span></td><td><span class="score">1-0</span></td><td><span class="match-correct">✓ W</span></td><td>1</td></tr><tr class="match-row"><td class="date-col">2026-06-17</td><td><span class="team">奥地利</span></td><td>vs</td><td><span class="team">约旦</span></td><td><span class="score">2-0</span></td><td><span class="score">3-1</span></td><td><span class="match-correct">✓ W</span></td><td>2</td></tr><tr class="match-row"><td class="date-col">2026-06-17</td><td><span class="team">英格兰</span></td><td>vs</td><td><span class="team">克罗地亚</span></td><td><span class="score">3-1</span></td><td><span class="score">4-2</span></td><td><span class="match-correct">✓ W</span></td><td>2</td></tr><tr class="match-row"><td class="date-col">2026-06-17</td><td><span class="team">葡萄牙</span></td><td>vs</td><td><span class="team">民主刚果</span></td><td><span class="score">3-1</span></td><td><span class="score">1-1</span></td><td><span class="match-wrong">✗ D</span></td><td>2</td></tr><tr class="match-row"><td class="date-col">2026-06-17</td><td><span class="team">阿根廷</span></td><td>vs</td><td><span class="team">阿尔及利亚</span></td><td><span class="score">3-1</span></td><td><span class="score">3-0</span></td><td><span class="match-correct">✓ W</span></td><td>1</td></tr><tr class="match-row"><td class="date-col">2026-06-18</td><td><span class="team">乌兹别克斯坦</span></td><td>vs</td><td><span class="team">哥伦比亚</span></td><td><span class="score">0-2</span></td><td><span class="score">1-3</span></td><td><span class="match-correct">✓ L</span></td><td>2</td></tr>
+</table>
+
+<p>
+  按真实结果分:
+  <span class="pill pill-w">W 10/12 = 83.3%</span>
+  <span class="pill pill-d">D 3/9 = 33.3%</span>
+  <span class="pill pill-l">L 3/3 = 100%</span>
+  → <strong style="color:#f87171;">算法系统性低估平局！</strong> 9 场平局只命中 3 场 (33%)。
+</p>
+
+<h2>🏆 淘汰赛预测 (32 → 1)</h2>
+<div class="bracket">
+<h3>32 强</h3><table><tr><th>主队</th><th>比分</th><th>客队</th><th>晋级</th><th>P(H/D/A)</th></tr></table><h3>16 强</h3><table><tr><th>主队</th><th>比分</th><th>客队</th><th>晋级</th></tr></table><h3>8 强</h3><table><tr><th>主队</th><th>比分</th><th>客队</th><th>晋级</th></tr></table><h3>半决赛</h3><table><tr><th>主队</th><th>比分</th><th>客队</th><th>晋级</th></tr></table>
+<h2>🥇 决赛 / 季军战</h2>
+<table>
+<tr><th>类型</th><th>主队</th><th>比分</th><th>客队</th><th>胜者</th><th>P(H/D/A)</th></tr>
+<tr><td>决赛</td><td class="team">巴西</td><td class="score">4-4</td><td class="team">法国</td><td class="champion">巴西 🏆</td><td>35.8% / 28.4% / 35.8%</td></tr>
+<tr><td>3-4 名</td><td class="team">德国</td><td class="score">4-3</td><td class="team">挪威</td><td class="third">德国</td><td>46.1% / 26.7% / 27.2%</td></tr>
+</table>
+
+<h2>📈 冠军演变 (历史 32 次校准)</h2>
+<div class="evo-row "><span><strong>2026-06-15 12:00:54</strong> | loss=-80.71 | iter=30 | 方法=bayes</span><span>冠军: <span class="champion">荷兰</span> (acc=85.7%, MAE=1.00)</span></div><div class="evo-row best"><span><strong>2026-06-15 21:34:19</strong> | loss=-82.27 | iter=50 | 方法=bayes</span><span>冠军: <span class="champion">韩国</span> (acc=90.9%, MAE=1.73)</span></div><div class="evo-row "><span><strong>2026-06-15 23:21:42</strong> | loss=-54.55 | iter=20 | 方法=bayes</span><span>冠军: <span class="champion">瑞士</span> (acc=63.6%, MAE=1.82)</span></div><div class="evo-row "><span><strong>2026-06-16 10:39:31</strong> | loss=-51.33 | iter=20 | 方法=bayes</span><span>冠军: <span class="champion">韩国</span> (acc=60.0%, MAE=1.73)</span></div><div class="evo-row "><span><strong>2026-06-16 11:04:55</strong> | loss=-70.33 | iter=200 | 方法=bayes</span><span>冠军: <span class="champion">韩国</span> (acc=80.0%, MAE=1.93)</span></div><div class="evo-row "><span><strong>2026-06-16 11:23:21</strong> | loss=-70.67 | iter=200 | 方法=bayes</span><span>冠军: <span class="champion">韩国</span> (acc=80.0%, MAE=1.87)</span></div><div class="evo-row "><span><strong>2026-06-16 23:11:25</strong> | loss=-57.33 | iter=100 | 方法=grid</span><span>冠军: <span class="champion">巴西</span> (acc=66.7%, MAE=1.87)</span></div><div class="evo-row "><span><strong>2026-06-16 23:11:44</strong> | loss=-57.33 | iter=100 | 方法=grid</span><span>冠军: <span class="champion">巴西</span> (acc=66.7%, MAE=1.87)</span></div><div class="evo-row "><span><strong>2026-06-17 12:02:48</strong> | loss=-52.65 | iter=30 | 方法=bayes</span><span>冠军: <span class="champion">西班牙</span> (acc=64.7%, MAE=2.41)</span></div><div class="evo-row "><span><strong>2026-06-18 15:09:14</strong> | loss=-53.12 | iter=10 | 方法=bayes</span><span>冠军: <span class="champion">法国</span> (acc=66.7%, MAE=2.71)</span></div><div class="evo-row "><span><strong>2026-06-20 16:37:51</strong> | loss=-56.25 | iter=15 | 方法=bayes</span><span>冠军: <span class="champion">巴西</span> (acc=66.7%, MAE=2.08)</span></div><div class="evo-row "><span><strong>2026-06-20 16:38:47</strong> | loss=-56.25 | iter=15 | 方法=bayes</span><span>冠军: <span class="champion">巴西</span> (acc=66.7%, MAE=2.08)</span></div>
+</div>
+
+<h2>🇨🇳 中国小组赛预测</h2>
+<table>
+<tr><th>轮</th><th>主队</th><th>比分</th><th>客队</th><th>P(H/D/A)</th></tr>
+
+</table>
+
+<p style="margin-top: 30px; color: #94a3b8; font-size: 12px;">
+生成于 2026-06-20 16:42 (Asia/Shanghai) by Mavis PDP | 1248 球员真生日 100% 完成 + 24 场校准
+</p>
+
+</body>
+</html>
