@@ -84,9 +84,10 @@ def parse_num(s):
     m = re.match(r'^(\d+(?:\.\d+)?)', s)
     if m:
         v = float(m.group(1))
+        # v >= 100 且像"2025 赛季"格式 → 当作年份/ID 丢弃
         if v >= 100 and ('赛季' in s or '20' in s[:6] or len(s) > 8):
             return 0
-        return v if v < 100 else 0
+        return v  # < 100 一定不是年份, 直接返回
     return 0
 
 def calc_status_weight(goals_str, assists_str, who_str, weights):
@@ -106,14 +107,31 @@ def parse_value(s):
     if m: return float(m.group(1))
     return 0
 
-def parse_honors(s):
+def parse_honors(s, weights=None):
+    """v2.3.2: 接受 weights 参数, 与 weights_schema.py honors_per_champ 保持一致.
+    不传 weights 时用旧默认值 (向后兼容).
+    """
     if not s: return 0
     s = str(s)
-    return s.count('冠军') * 5 + s.count('金靴') * 2 + s.count('最佳') * 3 + s.count('MVP') * 2
+    if weights is None:
+        # 旧硬编码默认值
+        return s.count('冠军') * 5 + s.count('金靴') * 2 + s.count('最佳') * 3 + s.count('MVP') * 2
+    honors_per_champ = weights.get('def_gk_weights', {}).get('honors_per_champ', 15)
+    # 保留旧的"金靴/最佳/MVP"加权作为附加分, 但"冠军"按 weights 来
+    return s.count('冠军') * honors_per_champ + s.count('金靴') * 2 + s.count('最佳') * 3 + s.count('MVP') * 2
 
 def load_status_data():
+    """v2.3.2: 优雅降级. 2_数据补全/world_cup_2026_player_status_all.csv 已被删
+    (数据已融合到 world_cup_2026_complete.csv), 文件找不到时返回空 dict.
+    算法对每个球员 status.get((country, name), {}) 会拿到 {}, 状态分都为 0,
+    但球员身价/教练分/位置分仍生效, ranking 仍能跑.
+    """
+    import os
     status = {}
-    with open('/Users/garcia/Desktop/WorldCup2026/2_数据补全/world_cup_2026_player_status_all.csv') as f:
+    path = '/Users/garcia/Desktop/WorldCup2026/1_数据基础/world_cup_2026_player_status_all.csv'
+    if not os.path.exists(path):
+        return status
+    with open(path, encoding='utf-8') as f:
         for rec in csv.DictReader(f):
             key = (rec['country'], rec['name_zh'])
             if key in status:
@@ -149,7 +167,7 @@ def calc_player_score(player, status, weights):
     else:
         # 后/门 v3.1
         dgw = weights['def_gk_weights']
-        honors = parse_honors(player.get('主要荣誉', ''))
+        honors = parse_honors(player.get('主要荣誉', ''), weights)  # v2.3.2: 传 weights 保持一致
         honors_score = honors * dgw['honors_per_champ']
 
         jersey = parse_value(player.get('号码', '0'))
@@ -371,7 +389,7 @@ def main(custom_weights_path=None):
                   'fw_score', 'mid_score', 'def_score', 'gk_score',
                   'fw_top_names', 'mid_top_names', 'def_top_names', 'gk_top_name',
                   'coach_name', 'coach_details']
-    with open('/Users/garcia/Desktop/WorldCup2026/3_排名v2.0/world_cup_2026_ranking_v2_0.csv', 'w', newline='', encoding='utf-8') as f:
+    with open('/Users/garcia/Desktop/WorldCup2026/1_数据基础/world_cup_2026_ranking_v2_0.csv', 'w', newline='', encoding='utf-8') as f:  # v2.3.2: 3_排名v2.0/ 目录已删, 输出到 1_数据基础/
         w = csv.DictWriter(f, fieldnames=csv_fields)
         w.writeheader()
         for r in results:
