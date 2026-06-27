@@ -2,31 +2,42 @@
 """
 build_spa.py - 把所有数据和模板合成一个 SPA HTML
 读取:
-  - /5_算法/weights_v21.json
+  - /backend/weights_schema.py (v2.2.4 source of truth) → DEFAULT + 6 PRESETS
   - /5_算法/ranking_v20.json
   - /5_算法/all_104_predictions.json
-  - /5_算法/players_data_v21.json
+  - /5_算法/players_data_v22.json
 输出:
   - /4_比赛预测/world_cup_2026_spa.html (单文件, 离线可跑)
+v2.3.2 改: 权重从 weights_schema.py 读, 与后端同步 (修复 #2 #5)
 """
 
 import json
 import os
+import sys
 
 ROOT = "/Users/garcia/Desktop/WorldCup2026"
 ALGO_DIR = f"{ROOT}/5_算法"
 OUT_DIR = f"{ROOT}/4_比赛预测"
 OUT_FILE = f"{OUT_DIR}/world_cup_2026_spa.html"
 
+# v2.3.2: 从 weights_schema.py 读 (与后端 server.py 同源)
+sys.path.insert(0, f"{ROOT}/backend")
+from weights_schema import DEFAULT as WEIGHTS_DEFAULT, PRESETS as WEIGHTS_PRESETS
+
 # ---------- 加载数据 ----------
 def load_json(path):
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
-weights = load_json(f"{ALGO_DIR}/weights_v21.json")
+# v2.3.2: 改用 weights_schema.DEFAULT (与后端同步)
+weights = WEIGHTS_DEFAULT
 ranking = load_json(f"{ALGO_DIR}/ranking_v20.json")
 predictions = load_json(f"{ALGO_DIR}/all_104_predictions.json")
 players_data = load_json(f"{ALGO_DIR}/players_data_v22.json")["players"]
+
+# v2.3.2: 把 PRESETS 也嵌入 (前端 6 个 preset 按钮)
+weights_presets = {k: v["weights"] for k, v in WEIGHTS_PRESETS.items()}
+weights_presets_meta = {k: v.get("label", k) for k, v in WEIGHTS_PRESETS.items()}
 
 # ---------- 合并真实比赛结果 (从 match_results.csv) ----------
 # v2.2.3+: predictor 把 best_score 当 actual_score, 必须用真实比分覆盖
@@ -177,6 +188,8 @@ os.makedirs(OUT_DIR, exist_ok=True)
 # 把 4 个数据序列化进 HTML
 # 注意: 玩家数据可能很大, 但 348KB 还是可以接受
 weights_json = json.dumps(weights, ensure_ascii=False)
+weights_presets_json = json.dumps(weights_presets, ensure_ascii=False)
+weights_presets_meta_json = json.dumps(weights_presets_meta, ensure_ascii=False)
 ranking_json = json.dumps(ranking, ensure_ascii=False)
 predictions_json = json.dumps(predictions, ensure_ascii=False)
 players_json = json.dumps(players_data, ensure_ascii=False)
@@ -186,6 +199,7 @@ match_events_json = json.dumps(match_events_data, ensure_ascii=False)
 
 print(f"数据大小:")
 print(f"  weights: {len(weights_json)/1024:.1f}KB")
+print(f"  weights_presets: {len(weights_presets_json)/1024:.1f}KB ({len(weights_presets)} 个)")
 print(f"  ranking: {len(ranking_json)/1024:.1f}KB")
 print(f"  predictions: {len(predictions_json)/1024:.1f}KB (104 场)")
 print(f"  players: {len(players_json)/1024:.1f}KB (48 队 1248 球员)")
@@ -1174,12 +1188,14 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
         <h3 style="margin-bottom:12px">📋 预设</h3>
         <div class="preset-list" id="presetList"></div>
         <div class="config-action">
-          <button class="btn" onclick="runPrediction()">🚀 开始预测</button>
+          <button class="btn" onclick="runPrediction()">🚀 开始预测（离线）</button>
+          <button class="btn" onclick="runPredictionLive()" id="btnLiveRecalc" title="需后端: cd backend && python3 server.py">🔄 实时刷新（需后端）</button>
           <button class="btn btn-secondary" onclick="resetConfig()">重置</button>
         </div>
         <div class="config-action">
           <button class="btn btn-secondary" onclick="saveAsPreset()">💾 存为新预设</button>
         </div>
+        <p class="muted" style="font-size:11px;margin-top:6px">实时刷新: 调 http://localhost:8765/api/predictions?weights=... 用后端 4 维 λ 算法重算 104 场</p>
       </div>
       <div class="config-panel">
         <div id="slidersContainer"></div>
@@ -1293,6 +1309,8 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 
 <!-- 嵌入数据 -->
 <script id="data-weights" type="application/json">__WEIGHTS__</script>
+<script id="data-weights-presets" type="application/json">__WEIGHTS_PRESETS__</script>
+<script id="data-weights-presets-meta" type="application/json">__WEIGHTS_PRESETS_META__</script>
 <script id="data-ranking" type="application/json">__RANKING__</script>
 <script id="data-predictions" type="application/json">__PREDICTIONS__</script>
 <script id="data-players" type="application/json">__PLAYERS__</script>
@@ -1313,15 +1331,19 @@ const MATCH_EVENTS = JSON.parse(document.getElementById('data-match-events').tex
 // 当前权重 (可变)
 let currentWeights = JSON.parse(JSON.stringify(WEIGHTS));
 
-// 6 个预设
-const PRESETS = {
-  'default': { name: '默认 (均衡)', icon: '⚖️', weights: JSON.parse(JSON.stringify(WEIGHTS)) },
-  'high_value': { name: '身价优先', icon: '💰', weights: { position_top_n: {FW:5, MID:5, DEF:6, GK:1}, status_weights: {g_per_goal: 60, a_per_assist: 90, who_bonus_base: 8, who_bonus_denom: 4}, nat_intl: {g_per_goal: 300, a_per_assist: 400}, def_gk_weights: {base_factor: 0.85, honors_per_champ: 10, starter_jersey_max: 12, starter_bonus: 30, wc_per_ga: 80}, player_to_total: {player_share: 0.85, coach_share: 0.15}, smoothing: {player_div: 3000, coach_div: 100, rank_div: 800} } },
-  'high_form': { name: '状态优先', icon: '🔥', weights: { position_top_n: {FW:3, MID:3, DEF:4, GK:1}, status_weights: {g_per_goal: 25, a_per_assist: 40, who_bonus_base: 10, who_bonus_denom: 3}, nat_intl: {g_per_goal: 100, a_per_assist: 200}, def_gk_weights: {base_factor: 1.0, honors_per_champ: 20, starter_jersey_max: 16, starter_bonus: 80, wc_per_ga: 120}, player_to_total: {player_share: 0.75, coach_share: 0.25}, smoothing: {player_div: 6000, coach_div: 100, rank_div: 1200} } },
-  'low_value': { name: '低身价 (反身价)', icon: '📉', weights: { position_top_n: {FW:4, MID:4, DEF:5, GK:1}, status_weights: {g_per_goal: 50, a_per_assist: 70, who_bonus_base: 7, who_bonus_denom: 4}, nat_intl: {g_per_goal: 250, a_per_assist: 350}, def_gk_weights: {base_factor: 0.95, honors_per_champ: 15, starter_jersey_max: 14, starter_bonus: 50, wc_per_ga: 100}, player_to_total: {player_share: 0.70, coach_share: 0.30}, smoothing: {player_div: 5000, coach_div: 100, rank_div: 1000} } },
-  'coach_heavy': { name: '教练为王', icon: '👔', weights: { position_top_n: {FW:3, MID:3, DEF:4, GK:1}, status_weights: {g_per_goal: 40, a_per_assist: 60, who_bonus_base: 6.5, who_bonus_denom: 4}, nat_intl: {g_per_goal: 200, a_per_assist: 300}, def_gk_weights: {base_factor: 0.95, honors_per_champ: 25, starter_jersey_max: 14, starter_bonus: 80, wc_per_ga: 120}, player_to_total: {player_share: 0.30, coach_share: 0.70}, smoothing: {player_div: 5000, coach_div: 50, rank_div: 800} } },
-  'balance_343': { name: '3-4-3 阵型倾向', icon: '⚔️', weights: { position_top_n: {FW:5, MID:3, DEF:3, GK:1}, status_weights: {g_per_goal: 35, a_per_assist: 55, who_bonus_base: 7, who_bonus_denom: 4}, nat_intl: {g_per_goal: 180, a_per_assist: 280}, def_gk_weights: {base_factor: 1.0, honors_per_champ: 12, starter_jersey_max: 13, starter_bonus: 40, wc_per_ga: 90}, player_to_total: {player_share: 0.78, coach_share: 0.22}, smoothing: {player_div: 4500, coach_div: 100, rank_div: 900} } }
-};
+// v2.3.2: 6 个预设从 build-time 嵌入的 weights_presets 读, 与后端 weights_schema.PRESETS 同源
+const WEIGHTS_PRESETS = JSON.parse(document.getElementById('data-weights-presets').textContent);
+const WEIGHTS_PRESETS_META = JSON.parse(document.getElementById('data-weights-presets-meta').textContent);
+// 6 个 preset 的 emoji + 名字映射 (UI 显示, 与后端 schema 同步)
+const PRESET_ICONS = { 'default': '⚖️', 'high_value': '💰', 'high_form': '🔥', 'low_value': '📉', 'coach_heavy': '👔', 'balance_343': '⚔️' };
+const PRESETS = {};
+for (const [key, w] of Object.entries(WEIGHTS_PRESETS)) {
+  PRESETS[key] = {
+    name: WEIGHTS_PRESETS_META[key] || key,
+    icon: PRESET_ICONS[key] || '⭐',
+    weights: w,
+  };
+}
 
 // ============== 48 强国旗 + 组别映射 ==============
 const FLAGS = {
@@ -2473,6 +2495,48 @@ function saveAsPreset() {
 let savedPresets = {};  // 用户保存的预设
 
 // ============== 预测运行 (浏览器 JS 重算) ==============
+async function runPredictionLive() {
+  // v2.3.2: 调后端 /api/predictions?weights=... 拿真实 4 维 λ 重算
+  // 有后端时优先用后端结果, 没后端时降级为 runPrediction()
+  const btn = $id('btnLiveRecalc');
+  btn.disabled = true; btn.textContent = '⏳ 调后端...';
+  const weightsParam = encodeURIComponent(JSON.stringify(currentWeights));
+  try {
+    const r = await fetch(`http://localhost:8765/api/predictions?weights=${weightsParam}`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+    // 用后端结果刷新 PREDICTIONS + ranking + group_standings
+    if (data.predictions && Array.isArray(data.predictions)) {
+      // 仅替换预测, 保留 player_stats / team_stats
+      window.PREDICTIONS = data.predictions;
+      if (data.ranking) window.RANKING = data.ranking;
+      // 重渲染 KO bracket / 赛程 / 球队
+      if (typeof renderBracket === 'function') renderBracket();
+      if (typeof renderSchedule === 'function') renderSchedule();
+      if (typeof renderTeams === 'function') renderTeams();
+      // 更新顶部统计
+      const f = data.final;
+      if (f) {
+        $id('statChampion').textContent = f.winner || '?';
+        $id('statRunnerUp').textContent = f.loser || '?';
+      }
+      const tp = data.third_place;
+      if (tp) $id('statThird').textContent = tp.winner || '?';
+      btn.textContent = '✅ 已实时刷新';
+      setTimeout(() => { btn.textContent = '🔄 实时刷新（需后端）'; }, 2000);
+    } else {
+      throw new Error('后端返回格式异常 (无 predictions)');
+    }
+  } catch (e) {
+    btn.textContent = '❌ 后端未启动';
+    alert(`实时刷新失败: ${e.message}\n\n请先启动后端:\n  cd backend && python3 server.py\n\n将降级到离线预测 (runPrediction)`);
+    btn.textContent = '🔄 实时刷新（需后端）';
+    runPrediction();  // fallback
+  } finally {
+    btn.disabled = false;
+  }
+}
+
 function runPrediction() {
   // 简化版: 基于 RANKING 重新算 λ + R32
   // 这部分我们用排名分直接驱动 (跳过详细的球员重算, 但用 JS 重新模拟 R32→Final)
@@ -4370,6 +4434,8 @@ $id('statThird').textContent = PREDICTIONS.find(p => p.stage === '3RD')?.winner 
 """
 
 HTML = HTML.replace("__WEIGHTS__", weights_json)
+HTML = HTML.replace("__WEIGHTS_PRESETS__", weights_presets_json)
+HTML = HTML.replace("__WEIGHTS_PRESETS_META__", weights_presets_meta_json)
 HTML = HTML.replace("__RANKING__", ranking_json)
 HTML = HTML.replace("__PREDICTIONS__", predictions_json)
 HTML = HTML.replace("__PLAYERS__", players_json)
