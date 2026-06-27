@@ -197,26 +197,28 @@ def audit_all():
     all_issues.extend(km_issues)
 
     # ⚠️ v2.2.4-10: 跨球员号码唯一性审核 (同队号码冲突)
-    # 1) 俱乐部号码唯一性
+    # 1) 俱乐部号码唯一性 (按俱乐部分组 - 同俱乐部内号码才该唯一)
     from collections import Counter, defaultdict
-    team_num_players = defaultdict(list)
+    team_club_num_players = defaultdict(lambda: defaultdict(list))
     for p in players:
         cn = p.get('国家', '?')
+        club = p.get('俱乐部', '').strip() or '?'
         num = str(p.get('俱乐部号码', p.get('号码', ''))).strip()  # 兼容旧字段
         if num and num != '0':
-            team_num_players[cn].append((p.get('球员', '?'), num))
-    for team, lst in team_num_players.items():
-        nums = Counter(n for _, n in lst)
-        dups = {n: c for n, c in nums.items() if c > 1}
-        for n, c in dups.items():
-            players_with_num = [name for name, num in lst if num == n]
-            all_issues.append({
-                'level': 'error',
-                'field': '俱乐部号码',
-                'country': team,
-                'name': '、'.join(players_with_num),
-                'msg': f'同队 {len(players_with_num)} 人共用俱乐部号 {n}: {players_with_num}'
-            })
+            team_club_num_players[cn][club].append((p.get('球员', '?'), num))
+    for team, clubs in team_club_num_players.items():
+        for club, lst in clubs.items():
+            nums = Counter(n for _, n in lst)
+            dups = {n: c for n, c in nums.items() if c > 1}
+            for n, c in dups.items():
+                players_with_num = [name for name, num in lst if num == n]
+                all_issues.append({
+                    'level': 'error',
+                    'field': '俱乐部号码',
+                    'country': team,
+                    'name': '、'.join(players_with_num),
+                    'msg': f'同队同俱乐部 {club} 共用 {n} 号: {players_with_num}'
+                })
 
     # 2) 世界杯号码唯一性
     team_wc_num_players = defaultdict(list)
