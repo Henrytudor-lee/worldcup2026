@@ -91,3 +91,6 @@ _avail_*.json
 
 # ============ Cron 调试多余 audit (只保留 latest.html) ============
 6_审核报告/field_audit/audit_*.html
+
+# ============ 2026-06-27 清理暂存 ============
+_to_delete_2026_06_27/

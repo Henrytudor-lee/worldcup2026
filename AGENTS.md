@@ -1,7 +1,7 @@
 # AGENTS.md — 2026 世界杯 48 强预测项目
 
 > **目标读者**：未来接手本项目的 Mavis / 其他 AI agent session
-> **最后更新**：2026-06-10（v4.2 - 顺读 5 列 KO + 移动端响应式 + 项目精简到核心文件）
+> **最后更新**：2026-06-27（v2.3.2 - 后端驱动 SPA + 清理冗余文件备份到 `_to_delete_2026_06_27/`）
 
 ---
 
@@ -45,8 +45,8 @@
 - **schema 范围 vs preset 数值要同步**：preset 写 `who_bonus_base=10` 但 schema 卡 `[5.0, 8.0]` → 切 preset 就 400。**改 preset 数值前先 grep `weights_schema.py` 的 `RANGES`**；改 RANGES 也要回头检查所有 preset 是不是还在范围内
 - **前端 fetch 一定要 try/catch + alert**：weights 非法时 `rData.ranking` 是 undefined → 后续 `RANKING.map` 静默崩。runPrediction 函数已经加防御（response.ok 检查 + 弹窗）
 - **FastAPI 默认端口 8000，本项目用 8765**（避免和前端 HTTP 8080 冲突 + 历史约定）
-> **项目**：2026 美加墨世界杯 48 队实力排名 + 104 场（72 小组 + 32 淘汰）预测 → 单 HTML SPA 一站式 + 权重可调 + JS 跑算法
-> **最后更新**：2026-06-10（v4.2 - 顺读 5 列 KO + 移动端响应式 + 项目精简到核心文件）
+> **项目**：2026 美加墨世界杯 48 队实力排名 + 104 场（72 小组 + 32 淘汰）预测 → 后端驱动 SPA + 23 系数实时可调 + FastAPI 重算管线
+> **最后更新**：2026-06-27（v2.3.2 - 后端驱动 SPA + 清理冗余文件备份到 `_to_delete_2026_06_27/`）
 
 ---
 
@@ -102,43 +102,107 @@ cd 4_比赛预测 && ./push_to_github.sh        # 或手动 git add/commit/push
 
 ---
 
-## 3. 精简后的文件结构（87 → 9 个核心）
+## 3. 项目结构（v2.3.2 后端驱动 + 2026-06-27 清理后）
 
 ```
 WorldCup2026/
-├── AGENTS.md                                ← 本文件（工程记忆）
+├── AGENTS.md                                 ← 本文件（工程记忆）
+├── README.md                                 ← 项目入口
+├── README_WINDOWS.md                         ← Windows 启动指南
+├── CLAUDE.md                                 ← Claude 会话说明
+├── start.sh / stop.sh                        ← Mac 启动/停止
+├── start.bat / stop.bat / start_remote.bat   ← Windows 启动/停止
 │
-├── 1_数据基础/                              ← 数据源（4 CSV + 0 备份）
-│   ├── world_cup_2026_complete.csv              ⭐ 球员主表 1248 行 × 17 列（含 2025-26 状态+ WhoScored）
-│   ├── world_cup_2026_coaches.csv               教练表 48 行 × 6 列
+├── 1_数据基础/                               ← 数据源（11 CSV，git 跟踪）
+│   ├── world_cup_2026_complete.csv              ⭐ 球员主表 1248 行 × 17 列
+│   ├── world_cup_2026_coaches.csv               教练 48 行
 │   ├── world_cup_2026_fifa_ranking.csv          FIFA 排名 48 行
-│   └── world_cup_2026_group_schedule.csv        赛程表 72 场
+│   ├── world_cup_2026_group_schedule.csv        赛程 72 场
+│   ├── match_results.csv                         真实比赛结果（v2.3 接入）
+│   ├── match_team_stats.csv                      赛事队伍统计
+│   ├── match_player_stats.csv                    赛事球员统计
+│   ├── match_events.csv                          赛事事件（进球/红黄牌）
+│   ├── player_availability.csv                   球员可用性
+│   ├── player_index.csv                          球员索引（build_player_index 产物）
+│   ├── player_match_master.csv                   球员-比赛主表
+│   └── lottery_odds_live.json                    实时赔率（odds_fetcher 用）
 │
-├── 4_比赛预测/                              ← 主战场
-│   ├── world_cup_2026_spa.html                  ⭐⭐ 主交付物（564KB SPA v4.2）
-│   ├── build_spa.py                             生成器（Python 嵌入 4 个 JSON）
-│   ├── world_cup_2026_all_104_predictions.csv   104 场预测 CSV（28KB）
-│   ├── push_to_github.sh                        Git 推送脚本
+├── 4_比赛预测/                               ← 主战场
+│   ├── world_cup_2026_spa.html                  ⭐⭐ 主交付物（1.4MB SPA v2.3）
+│   ├── world_cup_2026_all_104_predictions.csv   104 场预测 CSV
 │   └── README.md                                本目录说明
 │
-└── 5_算法/                                  ← 复现算法
-    ├── ranking_v2.py                            排名生成器
-    ├── ranking_v20.json                         排名 JSON（嵌入 SPA）
-    ├── all_104_predictions.json                 104 场 JSON（嵌入 SPA）
-    ├── players_data_v21.json                    1248 球员 JSON（嵌入 SPA）
-    ├── weights_v21.json                         23 系数 JSON（嵌入 SPA）
-    └── (其他 .py 辅助脚本)
+├── 5_算法/                                   ← 算法数据（6 JSON，git 跟踪）
+│   ├── ranking_v20.json                         排名 JSON（嵌入 SPA）
+│   ├── all_104_predictions.json                 104 场 JSON（嵌入 SPA）
+│   ├── players_data_v22.json                    1248 球员 JSON（嵌入 SPA）
+│   ├── weights_v21.json                         23 系数 v21（build_spa.py 用）
+│   ├── weights_v22.json                         23 系数 v22（backend server.py 用）
+│   └── situational_lambda_v1.json                场地 λ 因子
+│
+├── backend/                                  ← FastAPI 后端（v2.1 升级）
+│   ├── server.py                                ⭐ 主入口（端口 8765，13 个 API）
+│   ├── predictor.py                             ⭐ 算法包装层（接受 weights）
+│   ├── weights_schema.py                        ⭐ 23 系数 schema + 6 preset
+│   ├── dynamic_factors.py                       ⭐ 30+ 动态因子（教练/球员 bio + 阵型）
+│   ├── round2_predictor.py                      淘汰赛二轮预测
+│   ├── betting_strategy.py                      价值投注策略
+│   ├── odds_fetcher.py                          实时赔率抓取
+│   ├── scrape_lottery_odds.js                   赔率抓取脚本（被 odds_fetcher 调用）
+│   └── README.md                                后端启动文档
+│
+├── 0_scripts/                                ← 数据抓取/校核/报告工具
+│   ├── build_spa.py                             ⭐ SPA 生成器（从 5_算法/ 嵌入数据）
+│   ├── ranking_v2.py                            ⭐ 排名生成器（CLI）
+│   ├── scrape_fbref.py                          fbref 数据抓取
+│   ├── scrape_fbref_playwright.py               fbref Playwright 抓取
+│   ├── batch_worker6_build.py                   数据批处理
+│   ├── run_md2_preds.py / gen_md2_html.py       MD 预测工具
+│   ├── verify_croatia.py / verify_croatia_batch2/3.py  克罗地亚数据校核
+│   ├── fbref_match_urls.json                    fbref URL 列表
+│   ├── check_env.bat / install_deps.py          跨平台环境工具
+│   └── push_to_github.sh                        Git 推送脚本
+│
+├── 6_审核报告/                                ← 审核产物
+│   ├── group_standings.html                     小组赛排行榜
+│   ├── round2_predictions.html                  淘汰赛二轮预测
+│   ├── fbref_validation_2026-06-26.md           fbref 验证
+│   └── field_audit/                             字段审计
+│
+├── 审核日志/                                   ← 审核批次记录
+└── _to_delete_2026_06_27/                     ← ⚠️ 待清理暂存（55MB）
+    ├── 根目录_PNG/                            48 个 Playwright 截图
+    ├── 0_中间产物/                             早期预测中间产物
+    ├── 0_scripts/                              28 个死代码脚本
+    ├── 0_scripts_fbref_raw/                    fbref 抓取 raw JSON
+    ├── 1_数据基础/                              age 补全脚本 + audit + ranking csv
+    ├── 1_数据基础_0_scripts/                    1_数据基础/0_scripts 子目录
+    ├── 1_数据基础_bak_files/                    *.bak* 备份 12 个
+    ├── 1_数据基础_espn_match_data/              ESPN 抓取 29MB
+    ├── 4_比赛预测/                              30+ 老 reports/HTML/JSON
+    ├── 5_算法/                                  calibration_*.json
+    ├── backend/                                 （空）
+    ├── node_modules_etc/                        （空）
+    └── 4_比赛预测_bak_etc/                      （空）
 ```
 
-**已删除（2026-06-10 精简）**：
-- ❌ `2_数据补全/`（中间合并过程产物，已融合到 complete.csv）
-- ❌ `3_排名v2.0/`（老单 HTML 排名页，已被 SPA 整合进球队 Tab）
-- ❌ `6_PNG截图/`（17 个早期截图，HTML 已替代）
-- ❌ `_archive_v1/` 3 个老 HTML（v1 备份，删）
-- ❌ `1_数据基础/_backups/` 8 个备份
-- ❌ `4_比赛预测/` 4 个老 HTML + 2 个 .bak 文件
-- ❌ 2 份修复记录 md（已完成使命，合并到本文件）
-- ❌ `PROJECT_MEMORY.md`（已合并到本文件）
+**文件数对比**：
+- 清理前：~150 个文件，~80MB
+- 清理后：~80 个核心文件，~25MB（项目目录）
+- 备份暂存：55MB（`_to_delete_2026_06_27/`）
+
+**清理原则（2026-06-27 适用）**：
+- ✅ 删：无任何引用的死代码、未跟踪的中间产物、过时的 backup/report
+- ✅ 删：被 `.gitignore` exclude 的临时文件
+- ⏸️ 暂留：被 git tracked 但已无引用的 backend/ 模块（git history 可恢复，不贸然删）
+- ⏸️ 暂留：`_to_delete_2026_06_27/` 暂存备份 → 用户确认无价值后再 `rm -rf`
+
+**已确认活跃模块（清点时引用追踪）**：
+- `0_scripts/build_spa.py` ← 4_比赛预测/world_cup_2026_spa.html 主生成器
+- `0_scripts/ranking_v2.py` ← 排名 CLI（被 build_spa 调用）
+- `backend/server.py` ← 7 个活跃 backend 模块主入口
+- `backend/{predictor,dynamic_factors,weights_schema,round2_predictor,betting_strategy,odds_fetcher}.py`
+- `backend/scrape_lottery_odds.js` ← odds_fetcher 调用
 
 ---
 
