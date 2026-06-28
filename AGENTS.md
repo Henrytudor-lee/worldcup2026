@@ -1,7 +1,7 @@
 # AGENTS.md — 2026 世界杯 48 强预测项目
 
 > **目标读者**：未来接手本项目的 Mavis / 其他 AI agent session
-> **最后更新**：2026-06-27（v2.3.2 - 后端驱动 SPA + 清理冗余文件备份到 `_to_delete_2026_06_27/`）
+> **最后更新**：2026-06-28（v2.3.4 - 全部 72 场小组赛接入 + 6/28 ESPN summary 兜底抓取）
 
 ---
 
@@ -46,7 +46,7 @@
 - **前端 fetch 一定要 try/catch + alert**：weights 非法时 `rData.ranking` 是 undefined → 后续 `RANKING.map` 静默崩。runPrediction 函数已经加防御（response.ok 检查 + 弹窗）
 - **FastAPI 默认端口 8000，本项目用 8765**（避免和前端 HTTP 8080 冲突 + 历史约定）
 > **项目**：2026 美加墨世界杯 48 队实力排名 + 104 场（72 小组 + 32 淘汰）预测 → 后端驱动 SPA + 23 系数实时可调 + FastAPI 重算管线
-> **最后更新**：2026-06-27（v2.3.2 - 后端驱动 SPA + 清理冗余文件备份到 `_to_delete_2026_06_27/`）
+> **最后更新**：2026-06-28（v2.3.4 - 全部 72 场小组赛接入 + 6/28 ESPN summary 兜底抓取）
 
 ---
 
@@ -66,7 +66,7 @@ python3 -m http.server 8765                 # 浏览器开 http://localhost:8765
 cd 4_比赛预测 && ./push_to_github.sh        # 或手动 git add/commit/push
 ```
 
-**主交付物**：`4_比赛预测/world_cup_2026_spa.html`（564KB 单文件离线可跑）
+**主交付物**：`4_比赛预测/world_cup_2026_spa.html`（1.05MB 单文件离线可跑，66 场真实赛果 + 38 场待定）
 **GitHub**：`git@github.com:Henrytudor-lee/worldcup2026.git`（Private，HEAD = `45e15d2`）
 
 ---
@@ -389,6 +389,33 @@ y[29]     = 下半 SF 1 场
 - 同步改 `build_spa.py` 中 `renderBracket` 的 vw 判断
 
 ---
+
+## 10.5 v2.3.3 真实赛果接入（2026-06-28）
+
+### 数据真实化
+- **新增** `0_scripts/sync_match_results.py`：把 `match_results.csv` 真实赛果覆盖到 `5_算法/all_104_predictions.json`
+  - 72 场小组赛（66 场已踢 + 6 场 J/K/L 6/28 未踢）：data_status = `real` / `pending`
+  - R32/R16/QF/SF/Final 32 场：actual_score + winner/loser 全部清空，标 `pending`
+- **修复** build_spa.py 误覆盖 bug：原来用 `home_away` key 覆盖会误伤 R32 同名配对 → 改为只在 `stage === 'group'` 时覆盖
+- **数据快照**（2026-06-28 16:00）：
+  - 66 场真实赛果 / 38 场待定
+  - 8 个最佳第 3 名（FIFA 规则 pts→gd→gf）：韩国 3(-1) / 苏格兰 3(-3) / 巴拉圭 4(-2) / 厄瓜多尔 4(0) / 瑞典 4(0) / 伊朗 3(0) / 塞内加尔 3(+2) / 阿尔及利亚 3(-2)
+  - **伊朗真实：3 战 3 平 0 失球 3 分 0 净胜，意外地挤进最佳第 3 第 6 位** ✅
+
+### KO 卡片显示升级
+- **新增** KO 阶段进度条（6 个：小组赛 / R32 / R16 / QF / SF / 决赛）
+  - 当前 66/72 小组赛（绿），0/16 R32（橙），0/8 R16（紫），0/4 QF（蓝），0/2 SF（粉），0/1 决赛（金）
+- **新增** 状态徽章：✅ real（真实赛果，绿底白字）/ 🕐 pending（待定，灰底虚线）
+- **CSS 新增类**：`.ko-progress` `.ko-progress-item` `.status-badge` `.status-pending` `.status-real`
+- **响应式**：移动端进度条每行 100% 宽度（≤600px 断点）
+
+### 备份
+- `5_算法/all_104_predictions.json.bak_20260628`（sync 前 76KB → sync 后 80KB）
+- `0_scripts/build_spa.py.bak_20260628`（含 build_spa 修复前版本）
+
+### 后续工作
+- R32 真实数据接入：每场比赛结束后手动跑 `python3 sync_match_results.py`（已写好脚本可重复跑）
+- 一旦 R32/R16 真实赛果进入 CSV，sync 脚本会自动识别并更新进度条 + 状态徽章
 
 ## 11. 已知 TODO（未来 session 可推进）
 

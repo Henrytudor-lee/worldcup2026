@@ -23,9 +23,10 @@
     "stadium": "阿兹特克体育场",
     "city": "墨西哥城",
     "roof": "无顶露天",
-    "actual_score": "1-0",
+    "actual_score": "2-0",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "韩国",
@@ -51,9 +52,10 @@
     "stadium": "瓜达拉哈拉体育场",
     "city": "瓜达拉哈拉",
     "roof": "有顶",
-    "actual_score": "2-2",
-    "home_pts": 1,
-    "away_pts": 1
+    "actual_score": "2-1",
+    "home_pts": 3,
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "捷克",
@@ -79,9 +81,10 @@
     "stadium": "梅赛德斯-奔驰体育场",
     "city": "亚特兰大",
     "roof": "可伸缩花瓣顶",
-    "actual_score": "2-0",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "1-1",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "墨西哥",
@@ -107,9 +110,10 @@
     "stadium": "瓜达拉哈拉体育场",
     "city": "瓜达拉哈拉",
     "roof": "有顶",
-    "actual_score": "1-1",
-    "home_pts": 1,
-    "away_pts": 1
+    "actual_score": "1-0",
+    "home_pts": 3,
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "捷克",
@@ -135,9 +139,10 @@
     "stadium": "阿兹特克体育场",
     "city": "墨西哥城",
     "roof": "无顶露天",
-    "actual_score": "2-1",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "0-3",
+    "home_pts": 0,
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "南非",
@@ -163,9 +168,10 @@
     "stadium": "BBVA体育场",
     "city": "蒙特雷",
     "roof": "无顶露天",
-    "actual_score": "0-2",
-    "home_pts": 0,
-    "away_pts": 3
+    "actual_score": "1-0",
+    "home_pts": 3,
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "加拿大",
@@ -191,9 +197,10 @@
     "stadium": "BMO球场",
     "city": "多伦多",
     "roof": "部分可开合",
-    "actual_score": "2-1",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "1-1",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "卡塔尔",
@@ -219,9 +226,10 @@
     "stadium": "李维斯体育场",
     "city": "旧金山湾区",
     "roof": "无顶露天",
-    "actual_score": "0-2",
-    "home_pts": 0,
-    "away_pts": 3
+    "actual_score": "1-1",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "瑞士",
@@ -247,9 +255,10 @@
     "stadium": "SoFi体育场",
     "city": "洛杉矶",
     "roof": "半透明薄膜顶",
-    "actual_score": "2-1",
+    "actual_score": "4-1",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "加拿大",
@@ -275,9 +284,10 @@
     "stadium": "BC广场体育场",
     "city": "温哥华",
     "roof": "可伸缩钢索顶",
-    "actual_score": "2-0",
+    "actual_score": "6-0",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "瑞士",
@@ -305,7 +315,8 @@
     "roof": "可伸缩钢索顶",
     "actual_score": "2-1",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "波黑",
@@ -331,9 +342,10 @@
     "stadium": "流明球场",
     "city": "西雅图",
     "roof": "部分顶",
-    "actual_score": "1-0",
+    "actual_score": "3-1",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "巴西",
@@ -359,9 +371,10 @@
     "stadium": "大都会人寿体育场",
     "city": "纽约/新泽西",
     "roof": "无顶露天",
-    "actual_score": "3-2",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "1-1",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "海地",
@@ -387,9 +400,10 @@
     "stadium": "吉列体育场",
     "city": "波士顿",
     "roof": "无顶露天",
-    "actual_score": "1-2",
+    "actual_score": "0-1",
     "home_pts": 0,
-    "away_pts": 3
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "苏格兰",
@@ -415,9 +429,10 @@
     "stadium": "吉列体育场",
     "city": "波士顿",
     "roof": "无顶露天",
-    "actual_score": "2-2",
-    "home_pts": 1,
-    "away_pts": 1
+    "actual_score": "0-1",
+    "home_pts": 0,
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "巴西",
@@ -445,7 +460,8 @@
     "roof": "无顶露天",
     "actual_score": "3-0",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "摩洛哥",
@@ -471,9 +487,10 @@
     "stadium": "梅赛德斯-奔驰体育场",
     "city": "亚特兰大",
     "roof": "可伸缩花瓣顶",
-    "actual_score": "3-0",
+    "actual_score": "4-2",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "苏格兰",
@@ -499,9 +516,10 @@
     "stadium": "硬石体育场",
     "city": "迈阿密",
     "roof": "无顶露天",
-    "actual_score": "2-3",
+    "actual_score": "0-3",
     "home_pts": 0,
-    "away_pts": 3
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "美国",
@@ -527,9 +545,10 @@
     "stadium": "SoFi体育场",
     "city": "洛杉矶",
     "roof": "半透明薄膜顶",
-    "actual_score": "3-1",
+    "actual_score": "4-1",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "澳大利亚",
@@ -555,9 +574,10 @@
     "stadium": "BC广场体育场",
     "city": "温哥华",
     "roof": "可伸缩钢索顶",
-    "actual_score": "1-2",
-    "home_pts": 0,
-    "away_pts": 3
+    "actual_score": "2-0",
+    "home_pts": 3,
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "美国",
@@ -583,9 +603,10 @@
     "stadium": "流明球场",
     "city": "西雅图",
     "roof": "部分顶",
-    "actual_score": "3-0",
+    "actual_score": "2-0",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "土耳其",
@@ -611,9 +632,10 @@
     "stadium": "李维斯体育场",
     "city": "旧金山湾区",
     "roof": "无顶露天",
-    "actual_score": "3-1",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "0-1",
+    "home_pts": 0,
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "土耳其",
@@ -641,7 +663,8 @@
     "roof": "无顶露天",
     "actual_score": "3-2",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "巴拉圭",
@@ -667,9 +690,10 @@
     "stadium": "NRG体育场",
     "city": "休斯顿",
     "roof": "可伸缩顶",
-    "actual_score": "1-0",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "0-0",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "德国",
@@ -695,9 +719,10 @@
     "stadium": "NRG体育场",
     "city": "休斯顿",
     "roof": "可伸缩顶",
-    "actual_score": "3-0",
+    "actual_score": "7-1",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "科特迪瓦",
@@ -723,9 +748,10 @@
     "stadium": "林肯金融球场",
     "city": "费城",
     "roof": "无顶露天",
-    "actual_score": "3-1",
+    "actual_score": "1-0",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "德国",
@@ -751,9 +777,10 @@
     "stadium": "BMO球场",
     "city": "多伦多",
     "roof": "部分可开合",
-    "actual_score": "3-2",
+    "actual_score": "2-1",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "厄瓜多尔",
@@ -779,9 +806,10 @@
     "stadium": "箭头体育场",
     "city": "堪萨斯城",
     "roof": "无顶露天",
-    "actual_score": "3-0",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "0-0",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "厄瓜多尔",
@@ -807,9 +835,10 @@
     "stadium": "箭头体育场",
     "city": "堪萨斯城",
     "roof": "无顶露天",
-    "actual_score": "3-3",
-    "home_pts": 1,
-    "away_pts": 1
+    "actual_score": "2-1",
+    "home_pts": 3,
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "库拉索",
@@ -835,9 +864,10 @@
     "stadium": "瓜达拉哈拉体育场",
     "city": "瓜达拉哈拉",
     "roof": "有顶",
-    "actual_score": "0-3",
+    "actual_score": "0-2",
     "home_pts": 0,
-    "away_pts": 3
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "荷兰",
@@ -863,9 +893,10 @@
     "stadium": "AT&T体育场",
     "city": "达拉斯",
     "roof": "可伸缩顶",
-    "actual_score": "3-1",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "2-2",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "瑞典",
@@ -891,9 +922,10 @@
     "stadium": "BBVA体育场",
     "city": "蒙特雷",
     "roof": "无顶露天",
-    "actual_score": "3-0",
+    "actual_score": "5-1",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "荷兰",
@@ -919,9 +951,10 @@
     "stadium": "NRG体育场",
     "city": "休斯顿",
     "roof": "可伸缩顶",
-    "actual_score": "3-3",
-    "home_pts": 1,
-    "away_pts": 1
+    "actual_score": "5-1",
+    "home_pts": 3,
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "突尼斯",
@@ -947,9 +980,10 @@
     "stadium": "BBVA体育场",
     "city": "蒙特雷",
     "roof": "无顶露天",
-    "actual_score": "0-2",
+    "actual_score": "0-4",
     "home_pts": 0,
-    "away_pts": 3
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "日本",
@@ -975,9 +1009,10 @@
     "stadium": "AT&T体育场",
     "city": "达拉斯",
     "roof": "可伸缩顶",
-    "actual_score": "2-3",
-    "home_pts": 0,
-    "away_pts": 3
+    "actual_score": "1-1",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "突尼斯",
@@ -1005,7 +1040,8 @@
     "roof": "可伸缩花瓣顶",
     "actual_score": "1-3",
     "home_pts": 0,
-    "away_pts": 3
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "比利时",
@@ -1031,9 +1067,10 @@
     "stadium": "流明球场",
     "city": "西雅图",
     "roof": "部分顶",
-    "actual_score": "3-1",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "1-1",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "伊朗",
@@ -1059,9 +1096,10 @@
     "stadium": "SoFi体育场",
     "city": "洛杉矶",
     "roof": "半透明薄膜顶",
-    "actual_score": "0-0",
+    "actual_score": "2-2",
     "home_pts": 1,
-    "away_pts": 1
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "比利时",
@@ -1087,9 +1125,10 @@
     "stadium": "SoFi体育场",
     "city": "洛杉矶",
     "roof": "半透明薄膜顶",
-    "actual_score": "3-0",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "0-0",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "新西兰",
@@ -1115,9 +1154,10 @@
     "stadium": "BC广场体育场",
     "city": "温哥华",
     "roof": "可伸缩钢索顶",
-    "actual_score": "0-2",
+    "actual_score": "1-3",
     "home_pts": 0,
-    "away_pts": 3
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "埃及",
@@ -1143,9 +1183,10 @@
     "stadium": "硬石体育场",
     "city": "迈阿密",
     "roof": "无顶露天",
-    "actual_score": "2-0",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "1-1",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "新西兰",
@@ -1171,9 +1212,10 @@
     "stadium": "林肯金融球场",
     "city": "费城",
     "roof": "无顶露天",
-    "actual_score": "0-3",
+    "actual_score": "1-5",
     "home_pts": 0,
-    "away_pts": 3
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "西班牙",
@@ -1199,9 +1241,10 @@
     "stadium": "梅赛德斯-奔驰体育场",
     "city": "亚特兰大",
     "roof": "可伸缩花瓣顶",
-    "actual_score": "3-0",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "0-0",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "沙特",
@@ -1227,9 +1270,10 @@
     "stadium": "硬石体育场",
     "city": "迈阿密",
     "roof": "无顶露天",
-    "actual_score": "0-3",
-    "home_pts": 0,
-    "away_pts": 3
+    "actual_score": "1-1",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "西班牙",
@@ -1255,9 +1299,10 @@
     "stadium": "梅赛德斯-奔驰体育场",
     "city": "亚特兰大",
     "roof": "可伸缩花瓣顶",
-    "actual_score": "3-0",
+    "actual_score": "4-0",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "乌拉圭",
@@ -1283,9 +1328,10 @@
     "stadium": "硬石体育场",
     "city": "迈阿密",
     "roof": "无顶露天",
-    "actual_score": "3-0",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "2-2",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "佛得角",
@@ -1313,7 +1359,8 @@
     "roof": "可伸缩花瓣顶",
     "actual_score": "0-0",
     "home_pts": 1,
-    "away_pts": 1
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "乌拉圭",
@@ -1339,9 +1386,10 @@
     "stadium": "AT&T体育场",
     "city": "达拉斯",
     "roof": "可伸缩顶",
-    "actual_score": "3-3",
-    "home_pts": 1,
-    "away_pts": 1
+    "actual_score": "0-1",
+    "home_pts": 0,
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "法国",
@@ -1367,9 +1415,10 @@
     "stadium": "大都会人寿体育场",
     "city": "纽约/新泽西",
     "roof": "无顶露天",
-    "actual_score": "3-2",
+    "actual_score": "3-1",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "伊拉克",
@@ -1395,9 +1444,10 @@
     "stadium": "吉列体育场",
     "city": "波士顿",
     "roof": "无顶露天",
-    "actual_score": "0-3",
+    "actual_score": "1-4",
     "home_pts": 0,
-    "away_pts": 3
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "法国",
@@ -1425,7 +1475,8 @@
     "roof": "无顶露天",
     "actual_score": "3-0",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "挪威",
@@ -1453,7 +1504,8 @@
     "roof": "无顶露天",
     "actual_score": "3-2",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "挪威",
@@ -1479,9 +1531,10 @@
     "stadium": "大都会人寿体育场",
     "city": "纽约/新泽西",
     "roof": "无顶露天",
-    "actual_score": "3-3",
-    "home_pts": 1,
-    "away_pts": 1
+    "actual_score": "1-4",
+    "home_pts": 0,
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "塞内加尔",
@@ -1507,9 +1560,10 @@
     "stadium": "林肯金融球场",
     "city": "费城",
     "roof": "无顶露天",
-    "actual_score": "3-0",
+    "actual_score": "5-0",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "阿根廷",
@@ -1535,9 +1589,10 @@
     "stadium": "箭头体育场",
     "city": "堪萨斯城",
     "roof": "无顶露天",
-    "actual_score": "3-1",
+    "actual_score": "3-0",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "奥地利",
@@ -1563,9 +1618,10 @@
     "stadium": "李维斯体育场",
     "city": "旧金山湾区",
     "roof": "无顶露天",
-    "actual_score": "2-0",
+    "actual_score": "3-1",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "阿根廷",
@@ -1591,9 +1647,10 @@
     "stadium": "AT&T体育场",
     "city": "达拉斯",
     "roof": "可伸缩顶",
-    "actual_score": "3-1",
+    "actual_score": "2-0",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "约旦",
@@ -1619,9 +1676,10 @@
     "stadium": "李维斯体育场",
     "city": "旧金山湾区",
     "roof": "无顶露天",
-    "actual_score": "0-2",
+    "actual_score": "1-2",
     "home_pts": 0,
-    "away_pts": 3
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "阿尔及利亚",
@@ -1647,9 +1705,10 @@
     "stadium": "箭头体育场",
     "city": "堪萨斯城",
     "roof": "无顶露天",
-    "actual_score": "2-1",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "3-3",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "约旦",
@@ -1675,9 +1734,10 @@
     "stadium": "瓜达拉哈拉体育场",
     "city": "瓜达拉哈拉",
     "roof": "有顶",
-    "actual_score": "0-3",
+    "actual_score": "1-3",
     "home_pts": 0,
-    "away_pts": 3
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "葡萄牙",
@@ -1703,9 +1763,10 @@
     "stadium": "NRG体育场",
     "city": "休斯顿",
     "roof": "可伸缩顶",
-    "actual_score": "3-1",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "1-1",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "乌兹别克斯坦",
@@ -1731,9 +1792,10 @@
     "stadium": "阿兹特克体育场",
     "city": "墨西哥城",
     "roof": "无顶露天",
-    "actual_score": "1-2",
+    "actual_score": "1-3",
     "home_pts": 0,
-    "away_pts": 3
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "葡萄牙",
@@ -1759,9 +1821,10 @@
     "stadium": "NRG体育场",
     "city": "休斯顿",
     "roof": "可伸缩顶",
-    "actual_score": "3-0",
+    "actual_score": "5-0",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "哥伦比亚",
@@ -1787,9 +1850,10 @@
     "stadium": "瓜达拉哈拉体育场",
     "city": "瓜达拉哈拉",
     "roof": "有顶",
-    "actual_score": "3-1",
+    "actual_score": "1-0",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "哥伦比亚",
@@ -1815,9 +1879,10 @@
     "stadium": "AT&T体育场",
     "city": "达拉斯",
     "roof": "可伸缩顶",
-    "actual_score": "3-3",
+    "actual_score": "0-0",
     "home_pts": 1,
-    "away_pts": 1
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "民主刚果",
@@ -1843,9 +1908,10 @@
     "stadium": "箭头体育场",
     "city": "堪萨斯城",
     "roof": "无顶露天",
-    "actual_score": "2-0",
+    "actual_score": "3-1",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "英格兰",
@@ -1871,9 +1937,10 @@
     "stadium": "AT&T体育场",
     "city": "达拉斯",
     "roof": "可伸缩顶",
-    "actual_score": "3-1",
+    "actual_score": "4-2",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "加纳",
@@ -1899,9 +1966,10 @@
     "stadium": "BMO球场",
     "city": "多伦多",
     "roof": "部分可开合",
-    "actual_score": "3-0",
+    "actual_score": "1-0",
     "home_pts": 3,
-    "away_pts": 0
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "英格兰",
@@ -1927,9 +1995,10 @@
     "stadium": "吉列体育场",
     "city": "波士顿",
     "roof": "无顶露天",
-    "actual_score": "3-2",
-    "home_pts": 3,
-    "away_pts": 0
+    "actual_score": "0-0",
+    "home_pts": 1,
+    "away_pts": 1,
+    "data_status": "real"
   },
   {
     "home": "巴拿马",
@@ -1955,9 +2024,10 @@
     "stadium": "BMO球场",
     "city": "多伦多",
     "roof": "部分可开合",
-    "actual_score": "0-2",
+    "actual_score": "0-1",
     "home_pts": 0,
-    "away_pts": 3
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "克罗地亚",
@@ -1983,9 +2053,10 @@
     "stadium": "NRG体育场",
     "city": "休斯顿",
     "roof": "可伸缩顶",
-    "actual_score": "2-2",
-    "home_pts": 1,
-    "away_pts": 1
+    "actual_score": "2-1",
+    "home_pts": 3,
+    "away_pts": 0,
+    "data_status": "real"
   },
   {
     "home": "巴拿马",
@@ -2011,9 +2082,10 @@
     "stadium": "林肯金融球场",
     "city": "费城",
     "roof": "无顶露天",
-    "actual_score": "0-3",
+    "actual_score": "0-2",
     "home_pts": 0,
-    "away_pts": 3
+    "away_pts": 3,
+    "data_status": "real"
   },
   {
     "home": "捷克",
@@ -2034,12 +2106,13 @@
     "match_id": "R32_捷克_vs_苏格兰",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "2-1",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "捷克",
-    "loser": "苏格兰",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "瑞士",
@@ -2060,12 +2133,13 @@
     "match_id": "R32_瑞士_vs_波黑",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "2-1",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "瑞士",
-    "loser": "波黑",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "巴西",
@@ -2086,12 +2160,13 @@
     "match_id": "R32_巴西_vs_日本",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "3-1",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "巴西",
-    "loser": "日本",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "土耳其",
@@ -2112,12 +2187,13 @@
     "match_id": "R32_土耳其_vs_巴拉圭",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "3-1",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "土耳其",
-    "loser": "巴拉圭",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "德国",
@@ -2138,12 +2214,13 @@
     "match_id": "R32_德国_vs_墨西哥",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "3-1",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "德国",
-    "loser": "墨西哥",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "瑞典",
@@ -2164,12 +2241,13 @@
     "match_id": "R32_瑞典_vs_塞内加尔",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "3-2",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "瑞典",
-    "loser": "塞内加尔",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "比利时",
@@ -2190,12 +2268,13 @@
     "match_id": "R32_比利时_vs_厄瓜多尔",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "3-1",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "比利时",
-    "loser": "厄瓜多尔",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "乌拉圭",
@@ -2216,12 +2295,13 @@
     "match_id": "R32_乌拉圭_vs_克罗地亚",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "3-1",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "乌拉圭",
-    "loser": "克罗地亚",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "韩国",
@@ -2242,12 +2322,13 @@
     "match_id": "R32_韩国_vs_加纳",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "2-2",
-    "home_pts": 1,
-    "away_pts": 1,
-    "winner": "韩国",
-    "loser": "加纳",
-    "went_to_pen": true
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "加拿大",
@@ -2268,12 +2349,13 @@
     "match_id": "R32_加拿大_vs_哥伦比亚",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "2-2",
-    "home_pts": 1,
-    "away_pts": 1,
-    "winner": "加拿大",
-    "loser": "哥伦比亚",
-    "went_to_pen": true
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "摩洛哥",
@@ -2294,12 +2376,13 @@
     "match_id": "R32_摩洛哥_vs_阿尔及利亚",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "3-1",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "摩洛哥",
-    "loser": "阿尔及利亚",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "美国",
@@ -2320,12 +2403,13 @@
     "match_id": "R32_美国_vs_法国",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "3-3",
-    "home_pts": 1,
-    "away_pts": 1,
-    "winner": "美国",
-    "loser": "法国",
-    "went_to_pen": true
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "挪威",
@@ -2346,12 +2430,13 @@
     "match_id": "R32_挪威_vs_科特迪瓦",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "3-2",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "挪威",
-    "loser": "科特迪瓦",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "阿根廷",
@@ -2372,12 +2457,13 @@
     "match_id": "R32_阿根廷_vs_荷兰",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "3-3",
-    "home_pts": 1,
-    "away_pts": 1,
-    "winner": "阿根廷",
-    "loser": "荷兰",
-    "went_to_pen": true
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "葡萄牙",
@@ -2398,12 +2484,13 @@
     "match_id": "R32_葡萄牙_vs_埃及",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "3-1",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "葡萄牙",
-    "loser": "埃及",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "英格兰",
@@ -2424,12 +2511,13 @@
     "match_id": "R32_英格兰_vs_西班牙",
     "round": "32强",
     "stage": "R32",
-    "actual_score": "3-3",
-    "home_pts": 1,
-    "away_pts": 1,
-    "winner": "英格兰",
-    "loser": "西班牙",
-    "went_to_pen": true
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "捷克",
@@ -2450,12 +2538,13 @@
     "match_id": "R16_捷克_vs_瑞士",
     "round": "16强",
     "stage": "R16",
-    "actual_score": "2-2",
-    "home_pts": 1,
-    "away_pts": 1,
-    "winner": "捷克",
-    "loser": "瑞士",
-    "went_to_pen": true
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "巴西",
@@ -2476,12 +2565,13 @@
     "match_id": "R16_巴西_vs_土耳其",
     "round": "16强",
     "stage": "R16",
-    "actual_score": "3-2",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "巴西",
-    "loser": "土耳其",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "德国",
@@ -2502,12 +2592,13 @@
     "match_id": "R16_德国_vs_瑞典",
     "round": "16强",
     "stage": "R16",
-    "actual_score": "3-3",
-    "home_pts": 1,
-    "away_pts": 1,
-    "winner": "德国",
-    "loser": "瑞典",
-    "went_to_pen": true
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "比利时",
@@ -2528,12 +2619,13 @@
     "match_id": "R16_比利时_vs_乌拉圭",
     "round": "16强",
     "stage": "R16",
-    "actual_score": "3-2",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "比利时",
-    "loser": "乌拉圭",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "韩国",
@@ -2554,12 +2646,13 @@
     "match_id": "R16_韩国_vs_加拿大",
     "round": "16强",
     "stage": "R16",
-    "actual_score": "2-1",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "韩国",
-    "loser": "加拿大",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "摩洛哥",
@@ -2580,12 +2673,13 @@
     "match_id": "R16_摩洛哥_vs_美国",
     "round": "16强",
     "stage": "R16",
-    "actual_score": "3-2",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "摩洛哥",
-    "loser": "美国",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "挪威",
@@ -2606,12 +2700,13 @@
     "match_id": "R16_挪威_vs_阿根廷",
     "round": "16强",
     "stage": "R16",
-    "actual_score": "3-3",
-    "home_pts": 1,
-    "away_pts": 1,
-    "winner": "挪威",
-    "loser": "阿根廷",
-    "went_to_pen": true
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "葡萄牙",
@@ -2632,12 +2727,13 @@
     "match_id": "R16_葡萄牙_vs_英格兰",
     "round": "16强",
     "stage": "R16",
-    "actual_score": "3-3",
-    "home_pts": 1,
-    "away_pts": 1,
-    "winner": "葡萄牙",
-    "loser": "英格兰",
-    "went_to_pen": true
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "捷克",
@@ -2658,12 +2754,13 @@
     "match_id": "QF_捷克_vs_巴西",
     "round": "8强",
     "stage": "QF",
-    "actual_score": "2-3",
-    "home_pts": 0,
-    "away_pts": 3,
-    "winner": "巴西",
-    "loser": "捷克",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "德国",
@@ -2684,12 +2781,13 @@
     "match_id": "QF_德国_vs_比利时",
     "round": "8强",
     "stage": "QF",
-    "actual_score": "3-2",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "德国",
-    "loser": "比利时",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "韩国",
@@ -2710,12 +2808,13 @@
     "match_id": "QF_韩国_vs_摩洛哥",
     "round": "8强",
     "stage": "QF",
-    "actual_score": "2-2",
-    "home_pts": 1,
-    "away_pts": 1,
-    "winner": "韩国",
-    "loser": "摩洛哥",
-    "went_to_pen": true
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "挪威",
@@ -2736,12 +2835,13 @@
     "match_id": "QF_挪威_vs_葡萄牙",
     "round": "8强",
     "stage": "QF",
-    "actual_score": "3-3",
-    "home_pts": 1,
-    "away_pts": 1,
-    "winner": "挪威",
-    "loser": "葡萄牙",
-    "went_to_pen": true
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "巴西",
@@ -2762,12 +2862,13 @@
     "match_id": "SF_巴西_vs_德国",
     "round": "半决赛",
     "stage": "SF",
-    "actual_score": "3-3",
-    "home_pts": 1,
-    "away_pts": 1,
-    "winner": "巴西",
-    "loser": "德国",
-    "went_to_pen": true
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "韩国",
@@ -2788,12 +2889,13 @@
     "match_id": "SF_韩国_vs_挪威",
     "round": "半决赛",
     "stage": "SF",
-    "actual_score": "2-3",
-    "home_pts": 0,
-    "away_pts": 3,
-    "winner": "挪威",
-    "loser": "韩国",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "巴西",
@@ -2814,12 +2916,13 @@
     "match_id": "FINAL_巴西_vs_挪威",
     "round": "决赛",
     "stage": "FINAL",
-    "actual_score": "3-3",
-    "home_pts": 1,
-    "away_pts": 1,
-    "winner": "巴西",
-    "loser": "挪威",
-    "went_to_pen": true
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   },
   {
     "home": "德国",
@@ -2840,11 +2943,12 @@
     "match_id": "3RD_德国_vs_韩国",
     "round": "3-4名决赛",
     "stage": "3RD",
-    "actual_score": "3-1",
-    "home_pts": 3,
-    "away_pts": 0,
-    "winner": "德国",
-    "loser": "韩国",
-    "went_to_pen": false
+    "actual_score": null,
+    "home_pts": null,
+    "away_pts": null,
+    "winner": null,
+    "loser": null,
+    "went_to_pen": false,
+    "data_status": "pending"
   }
 ]

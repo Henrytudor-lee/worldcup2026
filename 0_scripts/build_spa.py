@@ -166,6 +166,10 @@ for k in match_events_data:
 print(f"赛事详情: {len(team_stats_data)} 场 team_stats / {len(match_players_data)} 场 player_stats / {len(match_events_data)} 场 events")
 
 for p in predictions:
+    # 只在小组赛阶段用 CSV 真实赛果覆盖 (避免 R32/R16/QF 等同名 key 误覆盖)
+    if p.get('stage') != 'group':
+        p['played'] = False  # R32 之后默认未踢
+        continue
     key = f"{p['home']}_vs_{p['away']}"
     if key in actual_results:
         ar = actual_results[key]
@@ -340,6 +344,106 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
 .bracket-stage h3 { font-size: 14px; color: var(--accent); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); text-align: center; }
 .bracket-stage .stage-matches { display: flex; flex-direction: column; gap: 10px; }
 /* ===================================================== */
+/* 🏆 KO 淘汰赛 - 进度条 + 状态徽章 */
+/* ===================================================== */
+.ko-progress {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding: 12px 14px;
+  margin: 10px 0 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.ko-progress-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 140px;
+  min-width: 140px;
+}
+.ko-progress-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.ko-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 60px;
+}
+.ko-progress-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+  border-radius: 3px;
+}
+.ko-progress-text {
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 38px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 卡片状态徽章 */
+.bracket-match .status-badge {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 8px;
+  line-height: 1.3;
+  pointer-events: none;
+  z-index: 2;
+}
+.bracket-match .status-badge.real {
+  background: #3fb950;
+  color: #fff;
+}
+.bracket-match .status-badge.pending {
+  background: rgba(110, 118, 129, 0.25);
+  color: var(--text-muted);
+  border: 1px dashed var(--border);
+}
+.bracket-match .status-badge.predicted {
+  background: rgba(240, 136, 62, 0.2);
+  color: #f0883e;
+  border: 1px solid #f0883e;
+}
+.bracket-match {
+  position: relative;
+}
+.bracket-match.status-pending {
+  opacity: 0.7;
+  border-left-color: var(--border) !important;
+}
+.bracket-match.status-pending .team {
+  color: var(--text-muted);
+}
+.bracket-match.status-real.has-winner {
+  border-left-color: #3fb950;
+  box-shadow: 0 1px 6px rgba(63, 185, 80, 0.25);
+}
+
+/* 移动端进度条 */
+@media (max-width: 600px) {
+  .ko-progress-item {
+    flex: 1 1 100%;
+  }
+  .ko-progress {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+}
+
 /* 🏆 KO 淘汰赛 - 卡片视觉系统 */
 /* ===================================================== */
 .bracket-match {
@@ -1217,6 +1321,38 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
     
     <div class="predict-section">
       <div class="predict-section-title">🏆 淘汰赛 (32 场 · 左半区 + 右半区 + 居中决赛 + 季军赛) <span class="count" id="koMatchCount"></span></div>
+      <div class="ko-progress" id="koProgress">
+        <div class="ko-progress-item">
+          <span class="ko-progress-label">小组赛</span>
+          <div class="ko-progress-bar"><div class="ko-progress-fill" id="groupProgressFill" style="width:100%; background:linear-gradient(90deg, #3fb950, #2ea043);"></div></div>
+          <span class="ko-progress-text" id="groupProgressText" style="color:#3fb950;">72/72</span>
+        </div>
+        <div class="ko-progress-item">
+          <span class="ko-progress-label">R32 32强</span>
+          <div class="ko-progress-bar"><div class="ko-progress-fill" id="r32ProgressFill" style="width:0%; background:linear-gradient(90deg, #f0883e, #db6d28);"></div></div>
+          <span class="ko-progress-text" id="r32ProgressText" style="color:#f0883e;">0/16</span>
+        </div>
+        <div class="ko-progress-item">
+          <span class="ko-progress-label">R16 16强</span>
+          <div class="ko-progress-bar"><div class="ko-progress-fill" id="r16ProgressFill" style="width:0%; background:linear-gradient(90deg, #a371f7, #8957e5);"></div></div>
+          <span class="ko-progress-text" id="r16ProgressText" style="color:#a371f7;">0/8</span>
+        </div>
+        <div class="ko-progress-item">
+          <span class="ko-progress-label">QF 8强</span>
+          <div class="ko-progress-bar"><div class="ko-progress-fill" id="qfProgressFill" style="width:0%; background:linear-gradient(90deg, #58a6ff, #1f6feb);"></div></div>
+          <span class="ko-progress-text" id="qfProgressText" style="color:#58a6ff;">0/4</span>
+        </div>
+        <div class="ko-progress-item">
+          <span class="ko-progress-label">SF 半决赛</span>
+          <div class="ko-progress-bar"><div class="ko-progress-fill" id="sfProgressFill" style="width:0%; background:linear-gradient(90deg, #f778ba, #db61a2);"></div></div>
+          <span class="ko-progress-text" id="sfProgressText" style="color:#f778ba;">0/2</span>
+        </div>
+        <div class="ko-progress-item">
+          <span class="ko-progress-label">决赛</span>
+          <div class="ko-progress-bar"><div class="ko-progress-fill" id="finalProgressFill" style="width:0%; background:linear-gradient(90deg, #ffd700, #ffaa00);"></div></div>
+          <span class="ko-progress-text" id="finalProgressText" style="color:#ffd700;">0/1</span>
+        </div>
+      </div>
       <div class="bracket-container">
         <div class="bracket-flow" id="bracketFlow"></div>
       </div>
@@ -1263,7 +1399,7 @@ body { font-family: -apple-system, "Helvetica Neue", "PingFang SC", sans-serif; 
   </div>
 
   <div class="tab-content" id="tab-qualify">
-    <div class="section-title">🏅 晋级分析 (基于已完赛 60 场真实积分)</div>
+    <div class="section-title">🏅 晋级分析 (基于已完赛 <span id="qTotalPlayed">72</span> 场真实积分)</div>
     <div class="review-subtitle">
       已踢 <span id="qPlayed">0</span>/72 场小组赛 ·
       小组前 2 + 8 个最好第 3 = 共 32 队晋级 32 强
@@ -2929,11 +3065,27 @@ function renderBracket() {
     if (hasWin) classes.push('has-winner');
     if (schedInfo) classes.push('has-sched');
     if (!m.winner && !hasWin) classes.push('unplayed');
+    // 状态徽章: real (真实赛果) / pending (待定)
+    let statusBadge = '';
+    let statusCls = '';
+    if (m.actual_score && m.data_status === 'real') {
+      statusBadge = '<span class="status-badge real">✓</span>';
+      statusCls = 'status-real';
+    } else if (!m.actual_score) {
+      statusBadge = '<span class="status-badge pending">待定</span>';
+      statusCls = 'status-pending';
+    } else {
+      // 有 actual_score 但 data_status != real (旧数据)
+      statusBadge = '<span class="status-badge predicted">预测</span>';
+      statusCls = 'status-predicted';
+    }
+    classes.push(statusCls);
     
     return `<div class="${classes.join(' ')}"
       onclick="openMatchByState('${m.match_id}')"
       title="${escHtml(m.home)} vs ${escHtml(m.away)}"
       style="position:absolute; left:${x}px; top:${y}px; width:${w}px; height:${h_}px;">
+      ${statusBadge}
       ${dateCityHtml}
       <div class="team">
         <span class="${m.winner === m.home ? 'winner' : 'loser'}">
@@ -3025,6 +3177,25 @@ function renderBracket() {
   html += '</div>';
   $id('bracketFlow').innerHTML = html;
   $id('koMatchCount').textContent = `· ${currentKoMatches.length} 场`;
+
+  // === KO 阶段进度条 ===
+  const stageCount = (stage) => currentKoMatches.filter(m => m.stage === stage && m.actual_score).length;
+  const stageTotal = { R32: 16, R16: 8, QF: 4, SF: 2, FINAL: 1 };
+  const realGroup = PREDICTIONS.filter(p => p.stage === 'group' && p.actual_score).length;
+  const updateProg = (stage, total, elFill, elText) => {
+    const done = stageCount(stage);
+    const pct = total > 0 ? (done / total * 100) : 0;
+    if ($id(elFill)) $id(elFill).style.width = pct + '%';
+    if ($id(elText)) $id(elText).textContent = `${done}/${total}`;
+  };
+  // 小组赛进度: 用实际数据
+  if ($id('groupProgressText')) $id('groupProgressText').textContent = `${realGroup}/72`;
+  if ($id('groupProgressFill')) $id('groupProgressFill').style.width = (realGroup/72*100) + '%';
+  updateProg('R32', 16, 'r32ProgressFill', 'r32ProgressText');
+  updateProg('R16', 8, 'r16ProgressFill', 'r16ProgressText');
+  updateProg('QF', 4, 'qfProgressFill', 'qfProgressText');
+  updateProg('SF', 2, 'sfProgressFill', 'sfProgressText');
+  updateProg('FINAL', 1, 'finalProgressFill', 'finalProgressText');
 }
 
 // 小组赛: 上半 A-H, 下半 I-L (FIFA 2026 官方分法)
@@ -3547,6 +3718,11 @@ function renderReview() {
 
 // ============== 晋级分析 ==============
 function renderQualify() {
+  // 0. 动态更新标题"已完赛 X 场"
+  const realGroupCnt = PREDICTIONS.filter(p => p.stage === 'group' && p.actual_score).length;
+  const qTotalEl = $id('qTotalPlayed');
+  if (qTotalEl) qTotalEl.textContent = realGroupCnt;
+
   // 1. 收集所有 group 比赛, 按组聚合
   const groups = {};
   const groupMatches = {};
