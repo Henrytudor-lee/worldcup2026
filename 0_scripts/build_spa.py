@@ -2739,20 +2739,26 @@ function simulateKnockout(standings, teamStats) {
   // 32 强配对 (FIFA 2026 跨组规则简化)
   const groups = Object.keys(sorted).sort();
   const r32Pairs = [];
-  // 8 场 1st↔2nd 跨组 (i.e. 1A-2B, 1B-2A, 1C-2D, 1D-2C, 1E-2F, 1F-2E, 1G-2H, 1H-2G)
-  for (let i = 0; i < 8; i += 2) {
-    r32Pairs.push([sorted[groups[i]][0].team, sorted[groups[i+1]][1].team]);
-    r32Pairs.push([sorted[groups[i+1]][0].team, sorted[groups[i]][1].team]);
+  // v2.3.7: 32 强配对严格按 FIFA 2026 官方对阵表 (来源: ESPN API 2026-06-28)
+  // 硬编码跨组配对: [home_group, home_pos, away_group, away_pos]
+  // 顺序严格匹配用户要求的"顺读 5 列": M1..M16 从上到下
+  const OFFICIAL_R32 = [
+    ['A',2,'B',2], ['C',1,'F',2], ['E',1,'D',3], ['F',1,'C',2],
+    ['E',2,'I',2], ['I',1,'F',3], ['A',1,'E',3], ['L',1,'K',3],
+    ['G',1,'I',3], ['D',1,'B',3], ['H',1,'J',2], ['K',2,'L',2],
+    ['B',1,'J',3], ['D',2,'G',2], ['J',1,'H',2], ['K',1,'L',3],
+  ];
+  function teamAt(g, pos) {
+    if (!sorted[g]) return null;
+    const idx = pos - 1;
+    return sorted[g][idx]?.team || null;
   }
-  // 4 场 1st↔3rd 跨组: 1I-3A, 1J-3L, 1K-3C, 1L-3E
-  // 4 场 2nd↔3rd 跨组: 2I-3F, 2J-3I, 2K-3J, 2L-3B
-  // (为了简化, 假设都从有晋级队的组)
-  for (let i = 8; i < 12; i++) {
-    r32Pairs.push([sorted[groups[i]][0].team, sorted[groups[i % 12]][2].team]);
-    r32Pairs.push([sorted[groups[i]][1].team, sorted[groups[(i+1) % 12]][2].team]);
+  const finalR32 = [];
+  for (const [hg, hp, ag, ap] of OFFICIAL_R32) {
+    const h = teamAt(hg, hp);
+    const a = teamAt(ag, ap);
+    if (h && a) finalR32.push([h, a]);
   }
-  // 取前 16 对
-  const finalR32 = r32Pairs.slice(0, 16);
   
   // 模拟 R32
   const statsMap = {};
@@ -2775,18 +2781,24 @@ function simulateKnockout(standings, teamStats) {
   }
   
   const r32 = finalR32.map(([h, a], i) => ({ ...playMatch(h, a), stage: 'R32', match_id: 'JS_R32_' + i, home: h, away: a }));
+  // v2.3.7: R16 配对按 FIFA 真实表 (bracket 几何相邻合并)
+  // 上半 (M1..M8) 4 场: M1-M3, M2-M5, M4-M6, M7-M8
+  // 下半 (M9..M16) 4 场: M11-M12, M9-M10, M14-M16, M13-M15
+  const r16Indices = [[0,2],[1,4],[3,5],[6,7],[10,11],[8,9],[13,15],[12,14]];
   const r16 = [];
-  for (let i = 0; i < r32.length; i += 2) {
-    const m = playMatch(r32[i].winner, r32[i+1].winner);
-    r16.push({ ...m, stage: 'R16', match_id: 'JS_R16_' + (i/2), home: r32[i].winner, away: r32[i+1].winner });
-  }
+  r16Indices.forEach(([a, b], i) => {
+    const m = playMatch(r32[a].winner, r32[b].winner);
+    r16.push({ ...m, stage: 'R16', match_id: 'JS_R16_' + i, home: r32[a].winner, away: r32[b].winner });
+  });
+  // QF: 上半 (R16-1 vs R16-2), (R16-3 vs R16-4); 下半 (R16-5 vs R16-6), (R16-7 vs R16-8)
   const qf = [];
-  for (let i = 0; i < r16.length; i += 2) {
+  for (let i = 0; i < 8; i += 2) {
     const m = playMatch(r16[i].winner, r16[i+1].winner);
     qf.push({ ...m, stage: 'QF', match_id: 'JS_QF_' + (i/2), home: r16[i].winner, away: r16[i+1].winner });
   }
+  // SF: QF-1 vs QF-2 (上+下交叉), QF-3 vs QF-4
   const sf = [];
-  for (let i = 0; i < qf.length; i += 2) {
+  for (let i = 0; i < 4; i += 2) {
     const m = playMatch(qf[i].winner, qf[i+1].winner);
     sf.push({ ...m, stage: 'SF', match_id: 'JS_SF_' + (i/2), home: qf[i].winner, away: qf[i+1].winner });
   }
@@ -2837,7 +2849,7 @@ const KO_SCHEDULE_BY_INDEX = [
   { date: '7月1日',  city: '阿灵顿' },     // 9  M78 科特迪瓦 vs 挪威     | 6/30 美东 AT&T Stadium
   { date: '7月3日',  city: '多伦多' },     // 10 M83 葡萄牙 vs 克罗地亚   | 7/2 美东 BMO Field
   { date: '7月2日',  city: '亚特兰大' },   // 11 M80 英格兰 vs 民主刚果   | 7/1 美东 Mercedes-Benz Stadium
-  { date: '6月30日', city: '蒙特雷' },     // 12 M75 荷兰 vs 摩洛哥       | 6/29 美东 Estadio BBVA
+  { date: '6月30日', city: '瓜达卢佩' },   // 12 M75 荷兰 vs 摩洛哥       | 6/29 美东 Estadio BBVA (Guadalupe, Nuevo León)
   { date: '7月4日',  city: '迈阿密' },     // 13 M86 阿根廷 vs 佛得角     | 7/3 美东 Hard Rock Stadium
   { date: '7月3日',  city: '洛杉矶' },     // 14 M84 西班牙 vs 奥地利     | 7/2 美东 SoFi Stadium
   { date: '7月2日',  city: '圣克拉拉' },   // 15 M81 美国 vs 波黑          | 7/1 美东 Levi's Stadium

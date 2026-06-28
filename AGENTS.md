@@ -417,6 +417,46 @@ y[29]     = 下半 SF 1 场
 - R32 真实数据接入：每场比赛结束后手动跑 `python3 sync_match_results.py`（已写好脚本可重复跑）
 - 一旦 R32/R16 真实赛果进入 CSV，sync 脚本会自动识别并更新进度条 + 状态徽章
 
+
+## 10.6 v2.3.7 真实小组赛出线 → R32→Final 全链路真实化 (2026-06-28)
+
+### 核心改动
+小组赛已结束 (6/28 全部 72 场已踢), 用真实出线队做 R32→Final 预测, 配对严格按 FIFA 2026 官方对阵表.
+
+### 数据接入
+- **CSV 真实赛果覆盖**: `compute_predictions()` 现在读 `1_数据基础/match_results.csv` 自动覆盖 group 阶段 best_score → actual_score, 并按真实赛果算 group_standings → R32 配对
+- **top_8_third 排序修正**: 旧版只按 pts 排, 现按 FIFA 规则 (pts → gd → gf → 字母), 否则 top 8 选错 (塞内加尔 I3 P4 GD+2 进 top 8 vs 韩国 A3 P3 GD-1 落选)
+- **R32 配对硬编码**: `OFFICIAL_R32_PAIRS` 16 场按 (home_group, home_pos, away_group, away_pos) 严格按 FIFA 官方表 (来源: ESPN API 2026-06-28)
+- **R16 配对修正**: 旧 `(0,1)(2,3)...` 错的, 现按 bracket 几何 + FIFA 真实表 (上半 M1-M3/M2-M5/M4-M6/M7-M8, 下半 M11-M12/M9-M10/M14-M16/M13-M15)
+- **KO 日期**: 改用 `KO_SCHEDULE[stage][i]` 逐场精确表 (不再用 KO_DATES+KO_WEIGHTS 推算)
+- **KO 球场/城市**: `KO_VENUES[stage][i]` 16 R32 + 8 R16 + 4 QF + 2 SF + 1 Final + 1 3RD 全部按 ESPN
+- **KO actual_score 留 None**: 旧版把 best_score 当 actual_score → 进度条算 16/16 已完成; 现 KO 全 pending, winner/loser/best_score 保留用于显示预测
+
+### frontend JS 也同步修正
+- `simulateKnockout()`: R32 用 OFFICIAL_R32 + R16/QF/SF 用真实配对 (用户切 preset 时不再算错)
+- `KO_SCHEDULE_BY_INDEX[12]`: "蒙特雷" → "瓜达卢佩" (Estadio BBVA 实际在 Nuevo León 州 Guadalupe 市, 不是 Monterrey)
+
+### 备份
+- `5_算法/all_104_predictions.json.bak_20260628_bracket` (v2.3.6 错配对版)
+- `backend/predictor.py.bak_20260628` (v2.3.6 配对计算版)
+
+### 预测结果 (v2.3.7 默认权重)
+- **冠军**: 🇩🇪 德国 4-4 葡萄牙 (点球)
+- **亚军**: 🇵🇹 葡萄牙
+- **季军**: 🇳🇱 荷兰 4-4 阿根廷 (点球)
+
+### KO 时间表 (北京时间)
+- R32: 6/28 (1) + 6/29 (2) + 6/30 (3) + 7/1 (3) + 7/2 (3) + 7/3 (3) + 7/4 (1) = 16 场
+- R16: 7/4 (2) + 7/5 (2) + 7/6 (2) + 7/7 (2) = 8 场
+- QF: 7/9 + 7/10 + 7/11 (2) = 4 场
+- SF: 7/14 + 7/15 = 2 场
+- 3RD: 7/18, FINAL: 7/19
+
+### 后续工作
+- R32 真实赛果接入: 每场踢完跑 `python3 0_scripts/sync_match_results.py` (R32 走的是同样的 group → R32 链路, 改 sync 脚本覆盖 KO)
+- 一旦 R32 真实赛果进入, 重算 R16 配对 + 重 build SPA
+
+
 ## 11. 已知 TODO（未来 session 可推进）
 
 - 8 个非种子队（苏格兰/威尔士/乌克兰等）FIFA 排名需补全

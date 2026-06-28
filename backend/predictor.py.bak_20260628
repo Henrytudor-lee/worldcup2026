@@ -821,7 +821,6 @@ def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=2
 # ============================================================
 def compute_predictions(weights):
     """跑 72 场小组 + 32 场 KO = 104 场"""
-    import csv
     ranking = compute_ranking(weights)
     ranking_dict = {r['team']: r for r in ranking}
     fifa_data = load_fifa()
@@ -831,19 +830,6 @@ def compute_predictions(weights):
         'temp_threshold': 32, 'temp_penalty': 0.97,
     })
     adaptation_weight = weights.get('venue_adaptation_weight', 0.5)
-
-    # v2.3.7: 读 CSV 真实赛果, 用于覆盖 group 阶段的 actual_score + 算真实 group_standings
-    _real_results_lookup = {}
-    _csv_path = Path(__file__).parent.parent / '1_数据基础' / 'match_results.csv'
-    if _csv_path.exists():
-        with open(_csv_path, encoding='utf-8') as _f:
-            for _row in csv.DictReader(_f):
-                _key = (_row['home'], _row['away'])
-                if _key not in _real_results_lookup:  # 取最早一条
-                    _real_results_lookup[_key] = {
-                        'date': _row['date'],
-                        'score': (int(_row['home_score']), int(_row['away_score'])),
-                    }
 
     # === 1. 跑 72 场小组赛 ===
     group_matches = defaultdict(list)
@@ -892,21 +878,10 @@ def compute_predictions(weights):
         pred['venue_humidity'] = hum
 
         k, m_ = [int(x) for x in pred['best_score'].split('-')]
-        # v2.3.7: 用真实赛果覆盖 (如果 CSV 里有, 否则用预测)
-        csv_real = _real_results_lookup.get((m['主队'], m['客队']))
-        if csv_real:
-            real_score = csv_real['score']  # (hs, as)
-            k, m_ = real_score
-            pred['actual_score'] = f'{k}-{m_}'
-            pred['home_pts'] = 3 if k > m_ else (1 if k == m_ else 0)
-            pred['away_pts'] = 3 if m_ > k else (1 if k == m_ else 0)
-            pred['data_status'] = 'real'
-        else:
-            pred['actual_score'] = f'{k}-{m_}'
-            pred['home_pts'] = 3 if k > m_ else (1 if k == m_ else 0)
-            pred['away_pts'] = 3 if m_ > k else (1 if k == m_ else 0)
-            pred['data_status'] = 'pending'
         group_matches[g].append((m['主队'], m['客队'], k, m_, pred))
+        pred['actual_score'] = f'{k}-{m_}'
+        pred['home_pts'] = 3 if k > m_ else (1 if k == m_ else 0)
+        pred['away_pts'] = 3 if m_ > k else (1 if k == m_ else 0)
         all_predictions.append(pred)
 
     # === 2. 算小组排名 ===
@@ -930,8 +905,7 @@ def compute_predictions(weights):
         if len(group_standings[g]) >= 3:
             third = group_standings[g][2]
             third_placed.append((g, third[0], third[1], third[2], third[3], third[4]))
-    # v2.3.7: 按 FIFA 官方规则排序 (pts > gd > gf > 字母), 不只按 pts
-    third_placed.sort(key=lambda x: (-x[2], -x[3], -x[4], x[0]))
+    third_placed.sort(key=lambda x: -x[2])
     top_8_third = third_placed[:8]
 
     # === 4. 构建 32 强对阵 (按"上下半区"分组, R32 顺序严格对应 R16) ===
@@ -967,156 +941,101 @@ def compute_predictions(weights):
             return t
         return None
 
-    # === v2.3.7: R32 配对用 FIFA 2026 官方真实表 (基于真实晋级队) ===
-    # 硬编码跨组配对: (home_group, home_pos, away_group, away_pos)
-    # 数据来源: ESPN API (2026-06-28 抓取) + FIFA 官方对阵表
-    # 顺序严格匹配用户要求的"顺读 5 列": M1..M16 从上到下
-    OFFICIAL_R32_PAIRS = [
-        ('A', 2, 'B', 2),   # M1   南非(2A) vs 加拿大(2B)
-        ('C', 1, 'F', 2),   # M2   巴西(1C) vs 日本(2F)
-        ('E', 1, 'D', 3),   # M3   德国(1E) vs 巴拉圭(3D)
-        ('F', 1, 'C', 2),   # M4   荷兰(1F) vs 摩洛哥(2C)
-        ('E', 2, 'I', 2),   # M5   科特迪瓦(2E) vs 挪威(2I)
-        ('I', 1, 'F', 3),   # M6   法国(1I) vs 瑞典(3F)
-        ('A', 1, 'E', 3),   # M7   墨西哥(1A) vs 厄瓜多尔(3E)
-        ('L', 1, 'K', 3),   # M8   英格兰(1L) vs 民主刚果(3K)
-        ('G', 1, 'I', 3),   # M9   比利时(1G) vs 塞内加尔(3I)
-        ('D', 1, 'B', 3),   # M10  美国(1D) vs 波黑(3B)
-        ('H', 1, 'J', 2),   # M11  西班牙(1H) vs 奥地利(2J)
-        ('K', 2, 'L', 2),   # M12  葡萄牙(2K) vs 克罗地亚(2L)
-        ('B', 1, 'J', 3),   # M13  瑞士(1B) vs 阿尔及利亚(3J)
-        ('D', 2, 'G', 2),   # M14  澳大利亚(2D) vs 埃及(2G)
-        ('J', 1, 'H', 2),   # M15  阿根廷(1J) vs 佛得角(2H)
-        ('K', 1, 'L', 3),   # M16  哥伦比亚(1K) vs 加纳(3L)
-    ]
-
-    def get_team(g, pos):
-        """按组 + 名次取队名 (1=小组第1, 2=第2, 3=第3)"""
-        if pos == 1: return firsts.get(g)
-        if pos == 2: return seconds.get(g)
-        return by_gp.get(g, {}).get(3)
-
     round_of_32 = []
-    for hg, hp, ag, ap in OFFICIAL_R32_PAIRS:
-        h = get_team(hg, hp)
-        a = get_team(ag, ap)
-        if h and a:
-            round_of_32.append((h, a))
+    # === 上半 M1-M8: A1..H1 各 1 场, 配对 (第 2 名 + 第 3 名) 交替 ===
+    # M1: A1 vs (B2 或 第3), M2: B1 vs (C2 或 第3), M3: C1 vs (D2), M4: D1 vs (A3rd)
+    # 规则: 8 个第 1 各出现 1 次; 8 个第 2 全部配对 (A2-H2 4 场, 第 3 名 4 场)
+    upper_firsts_order = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+    # 8 个第 3 名积分前 4 进上半, 后 4 进下半
+    upper_thirds = [t for g, t in thirds_ranked[:4]]
+    lower_thirds = [t for g, t in thirds_ranked[4:]]
+
+    for i, g in enumerate(upper_firsts_order):
+        t1 = firsts[g]
+        used.add(t1)
+        # 配对: 偶数位置用第 2 名, 奇数位置用第 3 名 (避免连续同组)
+        if i % 2 == 0:
+            # 用下一组的第 2 (B2, D2, F2, H2 选一个还没用的)
+            next_g = upper_firsts_order[(i + 1) % 8]
+            t2 = pick(next_g, 2) or (upper_thirds.pop(0) if upper_thirds else None)
         else:
-            # 兜底: 跳过并 log
-            print(f"⚠️  R32 配对 {hg}{hp} vs {ag}{ap} 缺队: h={h}, a={a}")
+            # 用 1 个上半第 3
+            t2 = upper_thirds.pop(0) if upper_thirds else None
+        if t2:
+            used.add(t2)
+        round_of_32.append((t1, t2))
+
+    # === 下半 M9-M16: I1-L1 各 1 场 + 各组第 2 + 剩余第 3 ===
+    # used 已含上半 16 队, 不重置
+    for t, _ in round_of_32:
+        used.add(t)
+    # 收集所有下半还没用的队伍
+    lower_pool = []
+    for g in ['I', 'J', 'K', 'L']:
+        if firsts.get(g) and firsts[g] not in used:
+            lower_pool.append((firsts[g], 1))
+        if seconds.get(g) and seconds[g] not in used:
+            lower_pool.append((seconds[g], 2))
+    # 加下半第 3
+    for t in lower_thirds:
+        if t not in used:
+            lower_pool.append((t, 3))
+    # 上半没用完的第 2 名 (B2/D2/F2/H2 偶数位置已用, 奇数位置没用)
+    for g in upper_firsts_order:
+        if seconds.get(g) and seconds[g] not in used:
+            lower_pool.append((seconds[g], 2))
+    # 重新排序: I1, J1, K1, L1 先出场, 然后第 2 名
+    lower_pool_sorted = []
+    for g in ['I', 'J', 'K', 'L']:
+        if firsts.get(g) and firsts[g] not in used:
+            lower_pool_sorted.append((firsts[g], g, 1))
+    for g in sorted(by_gp.keys()):
+        if seconds.get(g) and seconds[g] not in used:
+            lower_pool_sorted.append((seconds[g], g, 2))
+    for t in lower_thirds:
+        if t not in used:
+            lower_pool_sorted.append((t, '?', 3))
+
+    # 下半配对: I1 vs J2, K1 vs L2, L1 vs (剩余第 2), (剩余第 2) vs (剩余第 3), ...
+    # 简化: 头 4 个 vs 4 个, 后 4 个 vs 4 个, 尽量避免同组
+    for i in range(8):
+        t1 = lower_pool_sorted[i*2][0] if i*2 < len(lower_pool_sorted) else None
+        t2 = lower_pool_sorted[i*2+1][0] if i*2+1 < len(lower_pool_sorted) else None
+        if t1 and t2:
+            round_of_32.append((t1, t2))
 
     # === 5. 跑淘汰赛 ===
-    # v2.3.7 改: 改用"逐场精确日期" (来源: ESPN API 2026-06-28 抓取)
-    # 不再按"每天几场"推算, 改用 KO_SCHEDULE[stage][i] = 比赛日 (北京时间)
-    # R32: 6/28 (1) + 6/29 (2) + 6/30 (3) + 7/1 (3) + 7/2 (2) + 7/3 (3) + 7/4 (1) = 16 场
-    #   注意: 6/28 是南非 vs 加拿大 (M1), 6/29 是 M2-M3, ...
-    # R16: 7/4(2) + 7/5(2) + 7/6(2) + 7/7(2) = 8 场
-    # QF:  7/9 + 7/10 + 7/11(2) = 4 场
-    # SF:  7/14 + 7/15 = 2 场
-    # 3RD: 7/18 (北京时间, ET 7/18 09:00)
-    # FINAL: 7/19 (北京时间, ET 7/19 15:00)
-    KO_SCHEDULE = {
-        'R32': [
-            '2026-06-28',  # M1  南非 vs 加拿大 (北京时间 7/4:00, ET 6/28 15:00)
-            '2026-06-29',  # M2  巴西 vs 日本
-            '2026-06-29',  # M3  德国 vs 巴拉圭
-            '2026-06-30',  # M4  荷兰 vs 摩洛哥
-            '2026-06-30',  # M5  科特迪瓦 vs 挪威
-            '2026-06-30',  # M6  法国 vs 瑞典
-            '2026-07-01',  # M7  墨西哥 vs 厄瓜多尔
-            '2026-07-01',  # M8  英格兰 vs 民主刚果
-            '2026-07-01',  # M9  比利时 vs 塞内加尔
-            '2026-07-02',  # M10 美国 vs 波黑
-            '2026-07-02',  # M11 西班牙 vs 奥地利
-            '2026-07-02',  # M12 葡萄牙 vs 克罗地亚
-            '2026-07-03',  # M13 瑞士 vs 阿尔及利亚
-            '2026-07-03',  # M14 澳大利亚 vs 埃及
-            '2026-07-03',  # M15 阿根廷 vs 佛得角
-            '2026-07-04',  # M16 哥伦比亚 vs 加纳
-        ],
-        'R16': [
-            '2026-07-04',  # R16-1  R32 W1 vs R32 W3   (上半)
-            '2026-07-04',  # R16-2  R32 W2 vs R32 W5
-            '2026-07-05',  # R16-3  R32 W4 vs R32 W6
-            '2026-07-06',  # R16-4  R32 W7 vs R32 W8
-            '2026-07-06',  # R16-5  R32 W11 vs R32 W12 (下半)
-            '2026-07-07',  # R16-6  R32 W9 vs R32 W10
-            '2026-07-07',  # R16-7  R32 W14 vs R32 W16
-            '2026-07-07',  # R16-8  R32 W13 vs R32 W15
-        ],
-        'QF': [
-            '2026-07-09',  # QF-1  R16 W1 vs R16 W2
-            '2026-07-10',  # QF-2  R16 W5 vs R16 W6
-            '2026-07-11',  # QF-3  R16 W3 vs R16 W4
-            '2026-07-12',  # QF-4  R16 W7 vs R16 W8
-        ],
-        'SF': [
-            '2026-07-14',  # SF-1  QF W1 vs QF W2
-            '2026-07-15',  # SF-2  QF W3 vs QF W4
-        ],
-        '3RD':   ['2026-07-18'],   # 季军赛
-        'FINAL': ['2026-07-19'],   # 决赛 (北京时间 7/20 03:00, ET 7/19 15:00)
+    # FIFA 2026 淘汰赛日期 (北京时间, 来源 FIFA 官方赛程)
+    # 修正历史: v2.3.1 之前 KO 阶段硬编码早 1-2 天, 现统一为 FIFA 官方北京时间
+    # KO_DATES[i] = 第 i 个比赛日; KO_WEIGHTS = 每个比赛日多少场 (累加 = 总场数)
+    # R32 实际是 2+4+2+2+4+2=16 (头尾 2 场/天, 中间 4 场/天)
+    # QF 实际是 1+2+1=4
+    KO_DATES = {
+        'R32': ['2026-06-29', '2026-06-30', '2026-07-01', '2026-07-02', '2026-07-03', '2026-07-04'],
+        'R16': ['2026-07-05', '2026-07-06', '2026-07-07', '2026-07-08'],
+        'QF':  ['2026-07-10', '2026-07-11', '2026-07-12'],
+        'SF':  ['2026-07-15', '2026-07-16'],
+        '3RD': ['2026-07-19'],                # 季军赛 (北京时间)
+        'FINAL': ['2026-07-20'],              # 决赛 (北京时间, ET 7/19 15:00)
+    }
+    KO_WEIGHTS = {
+        'R32': [2, 4, 2, 2, 4, 2],  # 6 个比赛日, 累加 16
+        'R16': [2, 2, 2, 2],         # 4 个比赛日, 累加 8 (均匀)
+        'QF':  [1, 2, 1],            # 3 个比赛日, 累加 4
+        'SF':  [1, 1],                # 2 个比赛日, 累加 2
     }
 
     def ko_date_for(stage, i):
-        """返回第 i 场 (0-based) 的比赛日 (北京时间)"""
-        sch = KO_SCHEDULE[stage]
-        return sch[i] if i < len(sch) else sch[-1]
+        """根据 i (0-based 场次序号) 返回该场次对应的 FIFA 官方比赛日 (北京时间)"""
+        weights = KO_WEIGHTS[stage]
+        cum = 0
+        for di, w in enumerate(weights):
+            if i < cum + w:
+                return KO_DATES[stage][di]
+            cum += w
+        return KO_DATES[stage][-1]  # 兜底
 
-    # v2.3.7: 球场/城市表 (来源: ESPN API 2026-06-28)
-    KO_VENUES = {
-        'R32': [
-            ('SoFi Stadium', 'Inglewood, California'),                            # M1
-            ('NRG Stadium', 'Houston, Texas'),                                    # M2
-            ('Gillette Stadium', 'Foxborough, Massachusetts'),                    # M3
-            ('Estadio BBVA', 'Guadalupe, Mexico'),                                # M4
-            ('AT&T Stadium', 'Arlington, Texas'),                                 # M5
-            ('MetLife Stadium', 'East Rutherford, New Jersey'),                   # M6
-            ('Estadio Banorte', 'Mexico City, Mexico'),                           # M7
-            ('Mercedes-Benz Stadium', 'Atlanta, Georgia'),                        # M8
-            ('Lumen Field', 'Seattle, Washington'),                               # M9
-            ("Levi's Stadium", 'Santa Clara, California'),                        # M10
-            ('SoFi Stadium', 'Inglewood, California'),                            # M11
-            ('BMO Field', 'Toronto, Canada'),                                     # M12
-            ('BC Place', 'Vancouver, Canada'),                                    # M13
-            ('AT&T Stadium', 'Arlington, Texas'),                                 # M14
-            ('Hard Rock Stadium', 'Miami Gardens, Florida'),                      # M15
-            ('GEHA Field at Arrowhead Stadium', 'Kansas City, Missouri'),         # M16
-        ],
-        'R16': [
-            ('NRG Stadium', 'Houston, Texas'),                                    # R16-1
-            ('Lincoln Financial Field', 'Philadelphia, Pennsylvania'),            # R16-2
-            ('MetLife Stadium', 'East Rutherford, New Jersey'),                   # R16-3
-            ('Estadio Banorte', 'Mexico City, Mexico'),                           # R16-4
-            ('AT&T Stadium', 'Arlington, Texas'),                                 # R16-5
-            ('Lumen Field', 'Seattle, Washington'),                               # R16-6
-            ('Mercedes-Benz Stadium', 'Atlanta, Georgia'),                        # R16-7
-            ('BC Place', 'Vancouver, Canada'),                                    # R16-8
-        ],
-        'QF': [
-            ('Gillette Stadium', 'Foxborough, Massachusetts'),                    # QF-1
-            ('SoFi Stadium', 'Inglewood, California'),                            # QF-2
-            ('Hard Rock Stadium', 'Miami Gardens, Florida'),                      # QF-3
-            ('GEHA Field at Arrowhead Stadium', 'Kansas City, Missouri'),         # QF-4
-        ],
-        'SF': [
-            ('AT&T Stadium', 'Arlington, Texas'),                                 # SF-1
-            ('Mercedes-Benz Stadium', 'Atlanta, Georgia'),                        # SF-2
-        ],
-        '3RD':   [('Hard Rock Stadium', 'Miami Gardens, Florida')],              # 3RD
-        'FINAL': [('MetLife Stadium', 'East Rutherford, New Jersey')],           # FINAL
-    }
-
-    def ko_venue_for(stage, i):
-        """返回第 i 场 (0-based) 的 (stadium, city)"""
-        v = KO_VENUES[stage]
-        return v[i] if i < len(v) else v[-1]
-
-    # v2.3.7: KO_VENUE_BY_STAGE 索引 + 计场次用闭包
-    _ko_counter = {'R32': 0, 'R16': 0, 'QF': 0, 'SF': 0, '3RD': 0, 'FINAL': 0}
-
-    def make_ko_pred(home, away, stage, round_name, prefix, date, stadium='', city=''):
+    def make_ko_pred(home, away, stage, round_name, prefix, date):
         # v2.2.4-8 改: KO 阶段用临时 lambda_cap=4.5 (强队决赛能突破 weights 的 3.5 上限)
         # 旧版 cap=5.5 太高导致 5-3 5-5; 用 weights 自己的 3.5 又太低, 60% KO 走点球
         # 4.5 是中间值, 强队 λ ~4.0 反映真实, 但不会出 5-5 这种夸张比分
@@ -1136,18 +1055,8 @@ def compute_predictions(weights):
         pred['round'] = round_name
         pred['stage'] = stage
         pred['date'] = date
-        # v2.3.7: 加 stadium/city/roof 字段 (build_spa.py 用 .stadium/.city 渲染 KO 卡片)
-        if stadium:
-            pred['stadium'] = stadium
-        if city:
-            pred['city'] = city
-        pred['roof'] = '有顶' if 'SoFi' in stadium or 'AT&T' in stadium or 'Hard Rock' in stadium or 'BC Place' in stadium or 'Mercedes-Benz' in stadium or 'NRG' in stadium or 'Lumen' in stadium or 'GEHA' in stadium or 'Gillette' in stadium or 'MetLife' in stadium or 'BC' in stadium or "Levi's" in stadium else '有顶/露天'
-        pred['data_status'] = 'pending'  # KO 都还没踢
         k, m_ = [int(x) for x in pred['best_score'].split('-')]
-        # v2.3.7: KO actual_score 留 None (避免进度条算成 16/16), winner/loser/best_score 保留用于显示预测
-        pred['actual_score'] = None
-        pred['home_pts'] = None
-        pred['away_pts'] = None
+        pred['actual_score'] = f'{k}-{m_}' if k != m_ or pred['p_home_win'] == pred['p_away_win'] else f'{k}-{m_}'
         # v2.2.4-5 修: 平局时按 p_home_win/p_away_win 谁高选谁, 不再总是 home
         # 旧逻辑: pred['winner'] = home if k > m_ else (away if m_ > k else home)  ← 平局总是 home
         # 新逻辑: 平局看 p_home_win vs p_away_win
@@ -1176,42 +1085,35 @@ def compute_predictions(weights):
         return pred
 
     for i, (h, a) in enumerate(round_of_32):
-        # v2.3.7: 逐场取真实 ESPN 日期 + 球场
+        # R32 16 场按 FIFA 官方比赛日分布 (2+4+2+2+4+2=16)
         date = ko_date_for('R32', i)
-        stadium, city = ko_venue_for('R32', i)
-        make_ko_pred(h, a, 'R32', '32强', 'R32', date, stadium, city)
+        make_ko_pred(h, a, 'R32', '32强', 'R32', date)
     r32_winners = [p['winner'] for p in all_predictions[-16:]]
 
-    # v2.3.7: R16 配对严格按 FIFA 2026 官方对阵表（基于 bracket 几何相邻合并）
-    # 上半 (M1..M8) 4 场: M1-M3, M2-M5, M4-M6, M7-M8
-    # 下半 (M9..M16) 4 场: M11-M12, M9-M10, M14-M16, M13-M15
-    r16_indices = [(0,2), (1,4), (3,5), (6,7), (10,11), (8,9), (13,15), (12,14)]
-    r16_pairs = [(r32_winners[a], r32_winners[b]) for a, b in r16_indices]
+    r16_pairs = [(r32_winners[i], r32_winners[i+1]) for i in range(0, 16, 2)]
     for i, (h, a) in enumerate(r16_pairs):
+        # R16 8 场按 FIFA 官方比赛日分布 (2+2+2+2=8, 均匀)
         date = ko_date_for('R16', i)
-        stadium, city = ko_venue_for('R16', i)
-        make_ko_pred(h, a, 'R16', '16强', 'R16', date, stadium, city)
+        make_ko_pred(h, a, 'R16', '16强', 'R16', date)
     r16_winners = [p['winner'] for p in all_predictions[-8:]]
 
     qf_pairs = [(r16_winners[i], r16_winners[i+1]) for i in range(0, 8, 2)]
     for i, (h, a) in enumerate(qf_pairs):
+        # QF 4 场按 FIFA 官方比赛日分布 (1+2+1=4)
         date = ko_date_for('QF', i)
-        stadium, city = ko_venue_for('QF', i)
-        make_ko_pred(h, a, 'QF', '8强', 'QF', date, stadium, city)
+        make_ko_pred(h, a, 'QF', '8强', 'QF', date)
     qf_winners = [p['winner'] for p in all_predictions[-4:]]
 
     sf_pairs = [(qf_winners[i], qf_winners[i+1]) for i in range(0, 4, 2)]
     for i, (h, a) in enumerate(sf_pairs):
+        # SF 2 场按 FIFA 官方比赛日分布 (1+1=2)
         date = ko_date_for('SF', i)
-        stadium, city = ko_venue_for('SF', i)
-        make_ko_pred(h, a, 'SF', '半决赛', 'SF', date, stadium, city)
+        make_ko_pred(h, a, 'SF', '半决赛', 'SF', date)
     sf_winners = [p['winner'] for p in all_predictions[-2:]]
     sf_losers = [p['loser'] for p in all_predictions[-2:]]
 
-    final_pred = make_ko_pred(sf_winners[0], sf_winners[1], 'FINAL', '决赛', 'FINAL', ko_date_for('FINAL', 0),
-                             *ko_venue_for('FINAL', 0))
-    third_pred = make_ko_pred(sf_losers[0], sf_losers[1], '3RD', '3-4名决赛', '3RD', ko_date_for('3RD', 0),
-                            *ko_venue_for('3RD', 0))
+    final_pred = make_ko_pred(sf_winners[0], sf_winners[1], 'FINAL', '决赛', 'FINAL', KO_DATES['FINAL'][0])
+    third_pred = make_ko_pred(sf_losers[0], sf_losers[1], '3RD', '3-4名决赛', '3RD', KO_DATES['3RD'][0])
 
     return {
         'predictions': all_predictions,
