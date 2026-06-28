@@ -131,3 +131,26 @@ WorldCup2026/
 - 工程记忆：`AGENTS.md`（必读）
 - 后端文档：`backend/README.md`
 - 前端代码：`4_比赛预测/world_cup_2026_spa.html`（单文件 HTML）
+
+## 🚀 一键部署到 Vercel
+
+公开 URL：**https://worldcup-2026v.vercel.app**
+
+```bash
+# 改完数据 / 算法后:
+python3 0_scripts/build_spa.py    # 重新生成 SPA
+./deploy.sh                        # 一键：复制 SPA → commit → push → Vercel 自动部署
+
+# 高级用法
+./deploy.sh "更新伊朗 vs 新西兰比分"   # 自定义 commit msg
+./deploy.sh --all                    # 包含所有变更（不只是部署文件）
+./deploy.sh --skip-spa "fix typo"    # 跳过 SPA 复制
+./deploy.sh --dry-run                # 只预览，不真提交
+```
+
+**自动部署链路**：GitHub (`Henrytudor-lee/worldcup2026` main 分支) → Vercel webhook → 2-5 秒构建 → alias URL 自动刷新。
+
+**首次配置（已完成）**：
+- `vercel.json` + `public/index.html` + `deploy.sh` 已 commit 进 main
+- GitHub 仓库已通过 `vercel git connect` 自动连接
+- 3 个 alias URL 已生效：`worldcup-2026v.vercel.app`（推荐）、`world-cup-2026-tan-iota.vercel.app`、`world-cup-2026-git-main-garcialees-projects.vercel.app`
