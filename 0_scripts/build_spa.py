@@ -2823,39 +2823,45 @@ let currentKoMatches = [];
 // 数据来源: zhhans.wikipedia.org/wiki/2026年世界杯足球赛_淘汰赛阶段
 // 索引按 R32 sortById 顺序 (R32_A_vs_B, R32_B_vs_A, R32_C_vs_D...)
 const KO_SCHEDULE_BY_INDEX = [
-  // R32 16 场 (按 sortById 顺序: A_vs_B, B_vs_A, C_vs_D, D_vs_C, ...)
-  { date: '6月29日', city: '瓜达卢佩' },  // 0  A vs B (墨西哥 vs 加拿大) - 实际是 R32 M1 wiki "6月29日 瓜达卢佩"
-  { date: '6月30日', city: '英格尔伍德' },  // 1  B vs A (瑞士 vs 捷克)
-  { date: '6月28日', city: '英格尔伍德' },  // 2  C vs D (巴西 vs 土耳其)
-  { date: '7月2日',  city: '圣克拉拉' },   // 3  D vs C (美国 vs 摩洛哥)
-  { date: '6月30日', city: '休斯敦' },     // 4  E vs F (德国 vs 瑞典)
-  { date: '7月1日',  city: '多伦多' },     // 5  F vs E (荷兰 vs 科特迪瓦)
-  { date: '7月1日',  city: '阿灵顿' },     // 6  G vs H (比利时 vs 乌拉圭)
-  { date: '6月29日', city: '福克斯伯勒' }, // 7  H vs G (西班牙 vs 埃及)
-  { date: '6月28日', city: '英格尔伍德' },  // 8  I vs J
-  { date: '6月29日', city: '福克斯伯勒' },  // 9  J vs I
-  { date: '6月29日', city: '休斯敦' },     // 10 K vs L
-  { date: '6月30日', city: '东拉瑟福德' }, // 11 L vs K
-  { date: '6月30日', city: '墨西哥城' },   // 12 
-  { date: '7月1日',  city: '亚特兰大' },   // 13 
-  { date: '7月2日',  city: '温哥华' },     // 14 
-  { date: '7月3日',  city: '迈阿密加登斯' }// 15
+  // R32 16 场 (按 M73-M88 FIFA 编号顺序, 即 R32_BRACKET 顺序)
+  // 数据源: ESPN FIFA World Cup scoreboard 2026-06-28 拉取
+  { date: '6月29日', city: '洛杉矶' },     // 0  M73 南非 vs 加拿大        | 6/28 美东 SoFi Stadium
+  { date: '7月4日',  city: '堪萨斯城' },   // 1  M87 哥伦比亚 vs 加纳      | 7/3 美东 GEHA Field
+  { date: '7月1日',  city: '墨西哥城' },   // 2  M79 墨西哥 vs 厄瓜多尔   | 6/30 美东 Estadio Banorte
+  { date: '6月30日', city: '休斯敦' },     // 3  M76 巴西 vs 日本          | 6/29 美东 NRG Stadium
+  { date: '6月30日', city: '福克斯伯勒' }, // 4  M74 德国 vs 巴拉圭       | 6/29 美东 Gillette Stadium
+  { date: '7月2日',  city: '西雅图' },     // 5  M82 比利时 vs 塞内加尔   | 7/1 美东 Lumen Field
+  { date: '7月1日',  city: '东卢瑟福' },   // 6  M77 法国 vs 瑞典          | 6/30 美东 MetLife Stadium
+  { date: '7月4日',  city: '阿灵顿' },     // 7  M88 澳大利亚 vs 埃及     | 7/3 美东 AT&T Stadium
+  { date: '7月3日',  city: '温哥华' },     // 8  M85 瑞士 vs 阿尔及利亚   | 7/2 美东 BC Place
+  { date: '7月1日',  city: '阿灵顿' },     // 9  M78 科特迪瓦 vs 挪威     | 6/30 美东 AT&T Stadium
+  { date: '7月3日',  city: '多伦多' },     // 10 M83 葡萄牙 vs 克罗地亚   | 7/2 美东 BMO Field
+  { date: '7月2日',  city: '亚特兰大' },   // 11 M80 英格兰 vs 民主刚果   | 7/1 美东 Mercedes-Benz Stadium
+  { date: '6月30日', city: '蒙特雷' },     // 12 M75 荷兰 vs 摩洛哥       | 6/29 美东 Estadio BBVA
+  { date: '7月4日',  city: '迈阿密' },     // 13 M86 阿根廷 vs 佛得角     | 7/3 美东 Hard Rock Stadium
+  { date: '7月3日',  city: '洛杉矶' },     // 14 M84 西班牙 vs 奥地利     | 7/2 美东 SoFi Stadium
+  { date: '7月2日',  city: '圣克拉拉' },   // 15 M81 美国 vs 波黑          | 7/1 美东 Levi's Stadium
 ];
 const KO_SCHEDULE_R16 = [
-  { date: '7月4日', city: '费城' },     // 0 M1
-  { date: '7月4日', city: '休斯敦' },   // 1 M2
-  { date: '7月5日', city: '东拉瑟福德' }, // 2 M3
-  { date: '7月5日', city: '墨西哥城' }, // 3 M4
-  { date: '7月6日', city: '阿灵顿' },   // 4 M5
-  { date: '7月6日', city: '西雅图' },   // 5 M6
-  { date: '7月7日', city: '亚特兰大' }, // 6 M7
-  { date: '7月7日', city: '温哥华' }    // 7 M8
+  // R16 8 场 (按 match_id 字母序, 对应 JSON R16 元素排序后)
+  // 数据源: ESPN 2026-07-04~07 scoreboard (真实场次日期+球场)
+  // 配对是预测值, 待 R32 真实胜者出来后由 computeActualR16 动态计算
+  { date: '7月4日', city: '费城' },       // 0 R16_巴西_vs_土耳其  → Lincoln Financial Field
+  { date: '7月5日', city: '东卢瑟福' },   // 1 R16_德国_vs_瑞典    → MetLife Stadium
+  { date: '7月7日', city: '亚特兰大' },   // 2 R16_挪威_vs_阿根廷  → Mercedes-Benz Stadium
+  { date: '7月4日', city: '休斯敦' },     // 3 R16_捷克_vs_瑞士    → NRG Stadium
+  { date: '7月6日', city: '西雅图' },     // 4 R16_摩洛哥_vs_美国  → Lumen Field
+  { date: '7月5日', city: '墨西哥城' },   // 5 R16_比利时_vs_乌拉圭 → Estadio Banorte
+  { date: '7月7日', city: '温哥华' },     // 6 R16_葡萄牙_vs_英格兰 → BC Place
+  { date: '7月6日', city: '阿灵顿' }      // 7 R16_韩国_vs_加拿大  → AT&T Stadium
 ];
 const KO_SCHEDULE_QF = [
-  { date: '7月9日',  city: '福克斯伯勒' },  // 0 M1
-  { date: '7月10日', city: '英格尔伍德' },  // 1 M2
-  { date: '7月11日', city: '迈阿密加登斯' }, // 2 M3
-  { date: '7月11日', city: '堪萨斯城' }     // 3 M4
+  // QF 4 场 (按 match_id 字母序, 对应 JSON QF 元素排序后)
+  // 数据源: ESPN 2026-07-09~11 scoreboard
+  { date: '7月10日', city: '洛杉矶' },       // 0 QF_德国_vs_比利时  → SoFi Stadium
+  { date: '7月11日', city: '堪萨斯城' },     // 1 QF_挪威_vs_葡萄牙  → GEHA Field
+  { date: '7月9日',  city: '福克斯伯勒' },   // 2 QF_捷克_vs_巴西    → Gillette Stadium
+  { date: '7月11日', city: '迈阿密' }        // 3 QF_韩国_vs_摩洛哥  → Hard Rock Stadium
 ];
 
 // FIFA 官方 100 场编号 (KO R32 73-88, R16 89-96, QF 97-100, SF 101-102, Final 103...)

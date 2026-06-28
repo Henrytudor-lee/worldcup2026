@@ -2531,9 +2531,9 @@
     "best_score_prob": 0.0681,
     "expected_total": 4.73,
     "expected_diff": 0.39,
-    "venue_alt": 0,
-    "venue_temp": 25,
-    "venue_humidity": 60,
+    "venue_alt": 13,
+    "venue_temp": 32,
+    "venue_humidity": 75,
     "weather_note": "",
     "match_id": "R16_捷克_vs_瑞士",
     "round": "16强",
@@ -2544,7 +2544,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-04 15:00",
+    "stadium": "NRG Stadium",
+    "city": "休斯敦",
+    "roof": "可伸缩顶"
   },
   {
     "home": "巴西",
@@ -2558,9 +2562,9 @@
     "best_score_prob": 0.051,
     "expected_total": 6.4,
     "expected_diff": 1.6,
-    "venue_alt": 0,
-    "venue_temp": 25,
-    "venue_humidity": 60,
+    "venue_alt": 12,
+    "venue_temp": 30,
+    "venue_humidity": 70,
     "weather_note": "",
     "match_id": "R16_巴西_vs_土耳其",
     "round": "16强",
@@ -2571,7 +2575,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-04 19:00",
+    "stadium": "Lincoln Financial Field",
+    "city": "费城",
+    "roof": "无顶露天"
   },
   {
     "home": "德国",
@@ -2585,9 +2593,9 @@
     "best_score_prob": 0.0437,
     "expected_total": 7.07,
     "expected_diff": 0.93,
-    "venue_alt": 0,
-    "venue_temp": 25,
-    "venue_humidity": 60,
+    "venue_alt": 5,
+    "venue_temp": 28,
+    "venue_humidity": 70,
     "weather_note": "",
     "match_id": "R16_德国_vs_瑞典",
     "round": "16强",
@@ -2598,7 +2606,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-05 15:00",
+    "stadium": "MetLife Stadium",
+    "city": "东卢瑟福",
+    "roof": "无顶露天"
   },
   {
     "home": "比利时",
@@ -2612,7 +2624,7 @@
     "best_score_prob": 0.0451,
     "expected_total": 6.91,
     "expected_diff": 1.09,
-    "venue_alt": 0,
+    "venue_alt": 2200,
     "venue_temp": 25,
     "venue_humidity": 60,
     "weather_note": "",
@@ -2625,7 +2637,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-05 21:00",
+    "stadium": "Estadio Banorte",
+    "city": "墨西哥城",
+    "roof": "无顶露天"
   },
   {
     "home": "韩国",
@@ -2639,8 +2655,8 @@
     "best_score_prob": 0.0783,
     "expected_total": 4.02,
     "expected_diff": 0.32,
-    "venue_alt": 0,
-    "venue_temp": 25,
+    "venue_alt": 195,
+    "venue_temp": 33,
     "venue_humidity": 60,
     "weather_note": "",
     "match_id": "R16_韩国_vs_加拿大",
@@ -2652,7 +2668,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-06 18:00",
+    "stadium": "AT&T Stadium",
+    "city": "阿灵顿",
+    "roof": "可伸缩顶"
   },
   {
     "home": "摩洛哥",
@@ -2666,9 +2686,9 @@
     "best_score_prob": 0.0545,
     "expected_total": 6.09,
     "expected_diff": 1.01,
-    "venue_alt": 0,
-    "venue_temp": 25,
-    "venue_humidity": 60,
+    "venue_alt": 5,
+    "venue_temp": 22,
+    "venue_humidity": 70,
     "weather_note": "",
     "match_id": "R16_摩洛哥_vs_美国",
     "round": "16强",
@@ -2679,7 +2699,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-06 20:00",
+    "stadium": "Lumen Field",
+    "city": "西雅图",
+    "roof": "部分顶"
   },
   {
     "home": "挪威",
@@ -2693,9 +2717,9 @@
     "best_score_prob": 0.0382,
     "expected_total": 8.0,
     "expected_diff": 0.0,
-    "venue_alt": 0,
-    "venue_temp": 25,
-    "venue_humidity": 60,
+    "venue_alt": 320,
+    "venue_temp": 30,
+    "venue_humidity": 70,
     "weather_note": "",
     "match_id": "R16_挪威_vs_阿根廷",
     "round": "16强",
@@ -2706,7 +2730,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-07 22:00",
+    "stadium": "Mercedes-Benz Stadium",
+    "city": "亚特兰大",
+    "roof": "可伸缩花瓣顶"
   },
   {
     "home": "葡萄牙",
@@ -2720,9 +2748,9 @@
     "best_score_prob": 0.0382,
     "expected_total": 8.0,
     "expected_diff": 0.0,
-    "venue_alt": 0,
-    "venue_temp": 25,
-    "venue_humidity": 60,
+    "venue_alt": 70,
+    "venue_temp": 19,
+    "venue_humidity": 75,
     "weather_note": "",
     "match_id": "R16_葡萄牙_vs_英格兰",
     "round": "16强",
@@ -2733,7 +2761,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-07 18:00",
+    "stadium": "BC Place",
+    "city": "温哥华",
+    "roof": "可伸缩钢索顶"
   },
   {
     "home": "捷克",
@@ -2747,9 +2779,9 @@
     "best_score_prob": 0.0495,
     "expected_total": 6.56,
     "expected_diff": -1.44,
-    "venue_alt": 0,
-    "venue_temp": 25,
-    "venue_humidity": 60,
+    "venue_alt": 30,
+    "venue_temp": 28,
+    "venue_humidity": 70,
     "weather_note": "",
     "match_id": "QF_捷克_vs_巴西",
     "round": "8强",
@@ -2760,7 +2792,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-09 15:00",
+    "stadium": "Gillette Stadium",
+    "city": "福克斯伯勒",
+    "roof": "无顶露天"
   },
   {
     "home": "德国",
@@ -2774,9 +2810,9 @@
     "best_score_prob": 0.0479,
     "expected_total": 6.7,
     "expected_diff": 1.3,
-    "venue_alt": 0,
-    "venue_temp": 25,
-    "venue_humidity": 60,
+    "venue_alt": 30,
+    "venue_temp": 24,
+    "venue_humidity": 70,
     "weather_note": "",
     "match_id": "QF_德国_vs_比利时",
     "round": "8强",
@@ -2787,7 +2823,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-10 18:00",
+    "stadium": "SoFi Stadium",
+    "city": "洛杉矶",
+    "roof": "半透明薄膜顶"
   },
   {
     "home": "韩国",
@@ -2801,9 +2841,9 @@
     "best_score_prob": 0.067,
     "expected_total": 4.8,
     "expected_diff": -0.47,
-    "venue_alt": 0,
-    "venue_temp": 25,
-    "venue_humidity": 60,
+    "venue_alt": 2,
+    "venue_temp": 30,
+    "venue_humidity": 80,
     "weather_note": "",
     "match_id": "QF_韩国_vs_摩洛哥",
     "round": "8强",
@@ -2814,7 +2854,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-11 15:00",
+    "stadium": "Hard Rock Stadium",
+    "city": "迈阿密",
+    "roof": "无顶露天"
   },
   {
     "home": "挪威",
@@ -2828,9 +2872,9 @@
     "best_score_prob": 0.0382,
     "expected_total": 8.0,
     "expected_diff": 0.0,
-    "venue_alt": 0,
-    "venue_temp": 25,
-    "venue_humidity": 60,
+    "venue_alt": 265,
+    "venue_temp": 30,
+    "venue_humidity": 70,
     "weather_note": "",
     "match_id": "QF_挪威_vs_葡萄牙",
     "round": "8强",
@@ -2841,7 +2885,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-11 19:00",
+    "stadium": "GEHA Field at Arrowhead Stadium",
+    "city": "堪萨斯城",
+    "roof": "无顶露天"
   },
   {
     "home": "巴西",
@@ -2855,8 +2903,8 @@
     "best_score_prob": 0.0382,
     "expected_total": 8.0,
     "expected_diff": 0.0,
-    "venue_alt": 0,
-    "venue_temp": 25,
+    "venue_alt": 195,
+    "venue_temp": 33,
     "venue_humidity": 60,
     "weather_note": "",
     "match_id": "SF_巴西_vs_德国",
@@ -2868,7 +2916,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-14 21:00",
+    "stadium": "AT&T Stadium",
+    "city": "阿灵顿",
+    "roof": "可伸缩顶"
   },
   {
     "home": "韩国",
@@ -2882,9 +2934,9 @@
     "best_score_prob": 0.0525,
     "expected_total": 6.17,
     "expected_diff": -1.83,
-    "venue_alt": 0,
-    "venue_temp": 25,
-    "venue_humidity": 60,
+    "venue_alt": 320,
+    "venue_temp": 30,
+    "venue_humidity": 70,
     "weather_note": "",
     "match_id": "SF_韩国_vs_挪威",
     "round": "半决赛",
@@ -2895,7 +2947,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-15 21:00",
+    "stadium": "Mercedes-Benz Stadium",
+    "city": "亚特兰大",
+    "roof": "可伸缩花瓣顶"
   },
   {
     "home": "巴西",
@@ -2909,9 +2965,9 @@
     "best_score_prob": 0.0382,
     "expected_total": 8.0,
     "expected_diff": 0.0,
-    "venue_alt": 0,
-    "venue_temp": 25,
-    "venue_humidity": 60,
+    "venue_alt": 5,
+    "venue_temp": 28,
+    "venue_humidity": 70,
     "weather_note": "",
     "match_id": "FINAL_巴西_vs_挪威",
     "round": "决赛",
@@ -2922,7 +2978,11 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-19 18:00",
+    "stadium": "MetLife Stadium",
+    "city": "东卢瑟福",
+    "roof": "无顶露天"
   },
   {
     "home": "德国",
@@ -2936,9 +2996,9 @@
     "best_score_prob": 0.0648,
     "expected_total": 5.53,
     "expected_diff": 2.47,
-    "venue_alt": 0,
-    "venue_temp": 25,
-    "venue_humidity": 60,
+    "venue_alt": 2,
+    "venue_temp": 30,
+    "venue_humidity": 80,
     "weather_note": "",
     "match_id": "3RD_德国_vs_韩国",
     "round": "3-4名决赛",
@@ -2949,6 +3009,10 @@
     "winner": null,
     "loser": null,
     "went_to_pen": false,
-    "data_status": "pending"
+    "data_status": "pending",
+    "date": "2026-07-18 18:00",
+    "stadium": "Hard Rock Stadium",
+    "city": "迈阿密",
+    "roof": "无顶露天"
   }
 ]
