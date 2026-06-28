@@ -2835,46 +2835,45 @@ let currentKoMatches = [];
 // 数据来源: zhhans.wikipedia.org/wiki/2026年世界杯足球赛_淘汰赛阶段
 // 索引按 R32 sortById 顺序 (R32_A_vs_B, R32_B_vs_A, R32_C_vs_D...)
 const KO_SCHEDULE_BY_INDEX = [
-  // R32 16 场 (按 M73-M88 FIFA 编号顺序, 即 R32_BRACKET 顺序)
-  // 数据源: ESPN FIFA World Cup scoreboard 2026-06-28 拉取
-  { date: '6月29日', city: '洛杉矶' },     // 0  M73 南非 vs 加拿大        | 6/28 美东 SoFi Stadium
-  { date: '7月4日',  city: '堪萨斯城' },   // 1  M87 哥伦比亚 vs 加纳      | 7/3 美东 GEHA Field
-  { date: '7月1日',  city: '墨西哥城' },   // 2  M79 墨西哥 vs 厄瓜多尔   | 6/30 美东 Estadio Banorte
-  { date: '6月30日', city: '休斯敦' },     // 3  M76 巴西 vs 日本          | 6/29 美东 NRG Stadium
-  { date: '6月30日', city: '福克斯伯勒' }, // 4  M74 德国 vs 巴拉圭       | 6/29 美东 Gillette Stadium
-  { date: '7月2日',  city: '西雅图' },     // 5  M82 比利时 vs 塞内加尔   | 7/1 美东 Lumen Field
-  { date: '7月1日',  city: '东卢瑟福' },   // 6  M77 法国 vs 瑞典          | 6/30 美东 MetLife Stadium
-  { date: '7月4日',  city: '阿灵顿' },     // 7  M88 澳大利亚 vs 埃及     | 7/3 美东 AT&T Stadium
-  { date: '7月3日',  city: '温哥华' },     // 8  M85 瑞士 vs 阿尔及利亚   | 7/2 美东 BC Place
-  { date: '7月1日',  city: '阿灵顿' },     // 9  M78 科特迪瓦 vs 挪威     | 6/30 美东 AT&T Stadium
-  { date: '7月3日',  city: '多伦多' },     // 10 M83 葡萄牙 vs 克罗地亚   | 7/2 美东 BMO Field
-  { date: '7月2日',  city: '亚特兰大' },   // 11 M80 英格兰 vs 民主刚果   | 7/1 美东 Mercedes-Benz Stadium
-  { date: '6月30日', city: '瓜达卢佩' },   // 12 M75 荷兰 vs 摩洛哥       | 6/29 美东 Estadio BBVA (Guadalupe, Nuevo León)
-  { date: '7月4日',  city: '迈阿密' },     // 13 M86 阿根廷 vs 佛得角     | 7/3 美东 Hard Rock Stadium
-  { date: '7月3日',  city: '洛杉矶' },     // 14 M84 西班牙 vs 奥地利     | 7/2 美东 SoFi Stadium
-  { date: '7月2日',  city: '圣克拉拉' },   // 15 M81 美国 vs 波黑          | 7/1 美东 Levi's Stadium
+  // v2.3.7 修: 日期改北京时间 (UTC+8), 来源 ESPN API 2026-06-28 抓取
+  // 索引按 match_id 字母序 (与 PREDICTIONS.filter R32 一致)
+  // 16 场: M1=南非vs加拿大 ... M16=阿根廷vs佛得角
+  { date: '6月29日', city: '洛杉矶' },     // 0  M1  南非 vs 加拿大       | CST 6/29 03:00, UTC 6/28 19:00 SoFi
+  { date: '7月4日',  city: '堪萨斯城' },   // 1  M2  哥伦比亚 vs 加纳     | CST 7/4 09:30, UTC 7/4 01:30 GEHA
+  { date: '7月1日',  city: '墨西哥城' },   // 2  M3  墨西哥 vs 厄瓜多尔   | CST 7/1 09:00, UTC 7/1 01:00 Banorte
+  { date: '6月30日', city: '休斯敦' },     // 3  M4  巴西 vs 日本         | CST 6/30 01:00, UTC 6/29 17:00 NRG
+  { date: '6月30日', city: '福克斯伯勒' }, // 4  M5  德国 vs 巴拉圭       | CST 6/30 04:30, UTC 6/29 20:30 Gillette
+  { date: '7月2日',  city: '西雅图' },     // 5  M6  比利时 vs 塞内加尔   | CST 7/2 04:00, UTC 7/1 20:00 Lumen
+  { date: '7月1日',  city: '东卢瑟福' },   // 6  M7  法国 vs 瑞典         | CST 7/1 05:00, UTC 6/30 21:00 MetLife
+  { date: '7月4日',  city: '阿灵顿' },     // 7  M8  澳大利亚 vs 埃及     | CST 7/4 02:00, UTC 7/3 18:00 AT&T
+  { date: '7月3日',  city: '温哥华' },     // 8  M9  瑞士 vs 阿尔及利亚   | CST 7/3 11:00, UTC 7/3 03:00 BC Place
+  { date: '7月1日',  city: '阿灵顿' },     // 9  M10 科特迪瓦 vs 挪威     | CST 7/1 01:00, UTC 6/30 17:00 AT&T
+  { date: '7月2日',  city: '圣克拉拉' },   // 10 M11 美国 vs 波黑         | CST 7/2 08:00, UTC 7/2 00:00 Levi's
+  { date: '7月2日',  city: '亚特兰大' },   // 11 M12 英格兰 vs 民主刚果   | CST 7/2 00:00, UTC 7/1 16:00 Mercedes-Benz
+  { date: '6月30日', city: '瓜达卢佩' },   // 12 M13 荷兰 vs 摩洛哥       | CST 6/30 09:00, UTC 6/30 01:00 Estadio BBVA
+  { date: '7月3日',  city: '多伦多' },     // 13 M14 葡萄牙 vs 克罗地亚   | CST 7/3 07:00, UTC 7/2 23:00 BMO
+  { date: '7月3日',  city: '洛杉矶' },     // 14 M15 西班牙 vs 奥地利     | CST 7/3 03:00, UTC 7/2 19:00 SoFi
+  { date: '7月4日',  city: '迈阿密' },     // 15 M16 阿根廷 vs 佛得角     | CST 7/4 06:00, UTC 7/3 22:00 Hard Rock
 ];
 const KO_SCHEDULE_R16 = [
-  // R16 8 场 (按 match_id 字母序, 对应 FIFA 2026 官方对阵图)
-  // M89-M96 配对: M73vM75, M74vM78, M76vM79, M77vM81, M83vM84, M82vM80, M85vM88, M86vM87
-  // 数据源: ESPN 2026-07-04~07 scoreboard
-  { date: '7月4日', city: '休斯敦' },     // 0 R16_M73胜_vs_M75胜  (M89)  → NRG Stadium
-  { date: '7月5日', city: '东卢瑟福' },   // 1 R16_M74胜_vs_M78胜  (M91)  → MetLife Stadium
-  { date: '7月4日', city: '费城' },       // 2 R16_M76胜_vs_M79胜  (M90)  → Lincoln Financial Field
-  { date: '7月5日', city: '墨西哥城' },   // 3 R16_M77胜_vs_M81胜  (M92)  → Estadio Banorte
-  { date: '7月6日', city: '西雅图' },     // 4 R16_M82胜_vs_M80胜  (M94)  → Lumen Field
-  { date: '7月6日', city: '阿灵顿' },     // 5 R16_M83胜_vs_M84胜  (M93)  → AT&T Stadium
-  { date: '7月7日', city: '温哥华' },     // 6 R16_M85胜_vs_M88胜  (M96)  → BC Place
-  { date: '7月7日', city: '亚特兰大' }    // 7 R16_M86胜_vs_M87胜  (M95)  → Mercedes-Benz Stadium
+  // v2.3.7 修: 日期改北京时间 (UTC+8)
+  // 索引按 match_id 字母序 (与 PREDICTIONS.filter R16 一致)
+  { date: '7月5日', city: '休斯敦' },     // 0  加拿大 vs 德国       | CST 7/5 01:00, UTC 7/4 17:00 NRG
+  { date: '7月6日', city: '墨西哥城' },   // 1  厄瓜多尔 vs 英格兰   | CST 7/6 08:00, UTC 7/6 00:00 Banorte
+  { date: '7月8日', city: '亚特兰大' },   // 2  埃及 vs 哥伦比亚     | CST 7/8 00:00, UTC 7/7 16:00 Mercedes-Benz
+  { date: '7月7日', city: '西雅图' },     // 3  塞内加尔 vs 美国     | CST 7/7 08:00, UTC 7/7 00:00 Lumen
+  { date: '7月5日', city: '费城' },       // 4  巴西 vs 挪威         | CST 7/5 05:00, UTC 7/4 21:00 Lincoln Financial
+  { date: '7月8日', city: '温哥华' },     // 5  瑞士 vs 阿根廷       | CST 7/8 04:00, UTC 7/7 20:00 BC Place
+  { date: '7月6日', city: '东卢瑟福' },   // 6  荷兰 vs 法国         | CST 7/6 04:00, UTC 7/5 20:00 MetLife
+  { date: '7月7日', city: '阿灵顿' },     // 7  西班牙 vs 葡萄牙     | CST 7/7 03:00, UTC 7/6 19:00 AT&T
 ];
 const KO_SCHEDULE_QF = [
-  // QF 4 场 (按 match_id 字母序, 对应 FIFA 2026 官方对阵图)
-  // M97-M100 配对: M89vM90, M93vM94, M91vM92, M95vM96
-  // 数据源: ESPN 2026-07-09~11 scoreboard
-  { date: '7月9日',  city: '福克斯伯勒' },   // 0 QF_M89胜_vs_M90胜  (M97) → Gillette Stadium
-  { date: '7月11日', city: '迈阿密' },       // 1 QF_M91胜_vs_M92胜  (M99) → Hard Rock Stadium
-  { date: '7月10日', city: '洛杉矶' },       // 2 QF_M93胜_vs_M94胜  (M98) → SoFi Stadium
-  { date: '7月11日', city: '堪萨斯城' }      // 3 QF_M95胜_vs_M96胜  (M100) → GEHA Field
+  // v2.3.7 修: 日期改北京时间 (UTC+8)
+  // 索引按 match_id 字母序
+  { date: '7月12日', city: '堪萨斯城' },   // 0  哥伦比亚 vs 阿根廷 | CST 7/12 09:00, UTC 7/12 01:00 GEHA
+  { date: '7月10日', city: '福克斯伯勒' }, // 1  德国 vs 巴西       | CST 7/10 04:00, UTC 7/9 20:00 Gillette
+  { date: '7月12日', city: '迈阿密' },     // 2  荷兰 vs 英格兰     | CST 7/12 05:00, UTC 7/11 21:00 Hard Rock
+  { date: '7月11日', city: '洛杉矶' },     // 3  葡萄牙 vs 塞内加尔 | CST 7/11 03:00, UTC 7/10 19:00 SoFi
 ];
 
 // FIFA 官方 100 场编号 (KO R32 73-88, R16 89-96, QF 97-100, SF 101-102, Final 103...)
@@ -3147,9 +3146,13 @@ function renderBracket() {
     const sched = KO_SCHEDULE_QF[idx] || { date: 'X待核实', city: 'X待核实' };
     html += renderMatchCard(m, xQF, qfY[idx] - R16_CARD_H / 2, false, false, R16_CARD_H, null);
   });
+  // v2.3.7 修: SF 日期改北京时间 (UTC+8)
+  // SF-1: CST 7/15 03:00 AT&T Stadium (UTC 7/14 19:00) 德国 vs 荷兰
+  // SF-2: CST 7/16 03:00 Mercedes-Benz Stadium (UTC 7/15 19:00) 葡萄牙 vs 阿根廷
+  // 但当前 allSF 顺序: M1=德国vs荷兰, M2=葡萄牙vs阿根廷 (match_id 字母序: 德国_vs_荷兰 在 葡萄牙_vs_阿根廷 前)
+  // 注: SF 卡片不显示 schedInfo (走 null), 这里只保留旧逻辑防报错
   allSF.forEach((m, idx) => {
-    const isSF1 = idx === 0;
-    const sched = isSF1 ? { date: '7月14日', city: '阿灵顿' } : { date: '7月15日', city: '亚特兰大' };
+    const sched = idx === 0 ? { date: '7月15日', city: '阿灵顿' } : { date: '7月16日', city: '亚特兰大' };
     html += renderMatchCard(m, xSF, sfY[idx] - R16_CARD_H / 2, false, false, R16_CARD_H, null);
   });
   if (final) {
