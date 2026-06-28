@@ -2843,25 +2843,26 @@ const KO_SCHEDULE_BY_INDEX = [
   { date: '7月2日',  city: '圣克拉拉' },   // 15 M81 美国 vs 波黑          | 7/1 美东 Levi's Stadium
 ];
 const KO_SCHEDULE_R16 = [
-  // R16 8 场 (按 match_id 字母序, 对应 JSON R16 元素排序后)
-  // 数据源: ESPN 2026-07-04~07 scoreboard (真实场次日期+球场)
-  // 配对是预测值, 待 R32 真实胜者出来后由 computeActualR16 动态计算
-  { date: '7月4日', city: '费城' },       // 0 R16_巴西_vs_土耳其  → Lincoln Financial Field
-  { date: '7月5日', city: '东卢瑟福' },   // 1 R16_德国_vs_瑞典    → MetLife Stadium
-  { date: '7月7日', city: '亚特兰大' },   // 2 R16_挪威_vs_阿根廷  → Mercedes-Benz Stadium
-  { date: '7月4日', city: '休斯敦' },     // 3 R16_捷克_vs_瑞士    → NRG Stadium
-  { date: '7月6日', city: '西雅图' },     // 4 R16_摩洛哥_vs_美国  → Lumen Field
-  { date: '7月5日', city: '墨西哥城' },   // 5 R16_比利时_vs_乌拉圭 → Estadio Banorte
-  { date: '7月7日', city: '温哥华' },     // 6 R16_葡萄牙_vs_英格兰 → BC Place
-  { date: '7月6日', city: '阿灵顿' }      // 7 R16_韩国_vs_加拿大  → AT&T Stadium
+  // R16 8 场 (按 match_id 字母序, 对应 FIFA 2026 官方对阵图)
+  // M89-M96 配对: M73vM75, M74vM78, M76vM79, M77vM81, M83vM84, M82vM80, M85vM88, M86vM87
+  // 数据源: ESPN 2026-07-04~07 scoreboard
+  { date: '7月4日', city: '休斯敦' },     // 0 R16_M73胜_vs_M75胜  (M89)  → NRG Stadium
+  { date: '7月5日', city: '东卢瑟福' },   // 1 R16_M74胜_vs_M78胜  (M91)  → MetLife Stadium
+  { date: '7月4日', city: '费城' },       // 2 R16_M76胜_vs_M79胜  (M90)  → Lincoln Financial Field
+  { date: '7月5日', city: '墨西哥城' },   // 3 R16_M77胜_vs_M81胜  (M92)  → Estadio Banorte
+  { date: '7月6日', city: '西雅图' },     // 4 R16_M82胜_vs_M80胜  (M94)  → Lumen Field
+  { date: '7月6日', city: '阿灵顿' },     // 5 R16_M83胜_vs_M84胜  (M93)  → AT&T Stadium
+  { date: '7月7日', city: '温哥华' },     // 6 R16_M85胜_vs_M88胜  (M96)  → BC Place
+  { date: '7月7日', city: '亚特兰大' }    // 7 R16_M86胜_vs_M87胜  (M95)  → Mercedes-Benz Stadium
 ];
 const KO_SCHEDULE_QF = [
-  // QF 4 场 (按 match_id 字母序, 对应 JSON QF 元素排序后)
+  // QF 4 场 (按 match_id 字母序, 对应 FIFA 2026 官方对阵图)
+  // M97-M100 配对: M89vM90, M93vM94, M91vM92, M95vM96
   // 数据源: ESPN 2026-07-09~11 scoreboard
-  { date: '7月10日', city: '洛杉矶' },       // 0 QF_德国_vs_比利时  → SoFi Stadium
-  { date: '7月11日', city: '堪萨斯城' },     // 1 QF_挪威_vs_葡萄牙  → GEHA Field
-  { date: '7月9日',  city: '福克斯伯勒' },   // 2 QF_捷克_vs_巴西    → Gillette Stadium
-  { date: '7月11日', city: '迈阿密' }        // 3 QF_韩国_vs_摩洛哥  → Hard Rock Stadium
+  { date: '7月9日',  city: '福克斯伯勒' },   // 0 QF_M89胜_vs_M90胜  (M97) → Gillette Stadium
+  { date: '7月11日', city: '迈阿密' },       // 1 QF_M91胜_vs_M92胜  (M99) → Hard Rock Stadium
+  { date: '7月10日', city: '洛杉矶' },       // 2 QF_M93胜_vs_M94胜  (M98) → SoFi Stadium
+  { date: '7月11日', city: '堪萨斯城' }      // 3 QF_M95胜_vs_M96胜  (M100) → GEHA Field
 ];
 
 // FIFA 官方 100 场编号 (KO R32 73-88, R16 89-96, QF 97-100, SF 101-102, Final 103...)
