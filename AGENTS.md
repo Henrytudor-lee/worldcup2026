@@ -457,6 +457,71 @@ y[29]     = 下半 SF 1 场
 - 一旦 R32 真实赛果进入, 重算 R16 配对 + 重 build SPA
 
 
+## 10.7 v2.4.0 Next.js 16 App Router 架构切换 (2026-06-28)
+
+### 核心改动
+单文件 HTML SPA (`world_cup_2026_spa_v237.html`) → Next.js 16 App Router 4 路由 SPA (`web/`)。
+
+### 路由设计
+- `/` ⚽ 球队 — 48 队 grid (锋/中/后/门/总评/综合 + 主帅)
+- `/schedule` 📅 赛程 — 12 小组 A-L (绿底晋级 / 橙底第3 候选 + 全部 72 场)
+- `/config` 🎛️ 配置 — 23 系数滑块 + 6 preset
+- `/predict` 🏆 预测 — 完整 104 场 (R32→Final) + 进度条 + 决赛横幅
+
+### 数据流
+- **Server Component** 直读 `5_算法/*.json` (fs.readFile, 不依赖 FastAPI)
+- **Client Component** 调 FastAPI (8766) + 静态 JSON fallback
+- 两套数据源: `app/lib/data.ts` (server) + `app/lib/api.ts` (client)
+- `.env.local` 切换: `NEXT_PUBLIC_DATA_SOURCE=static` / `BACKEND_URL=...`
+
+### 启动
+```bash
+cd web
+./start.sh prod      # 端口 3010 (8765/3000 被 video-prompt-builder 占)
+./start.sh dev       # Turbopack dev 模式
+./start.sh stop      # 停服务
+```
+
+### 技术栈
+- Next.js 16.2.9 (Turbopack) + React 19.2.4
+- TypeScript 严格模式 + ESLint
+- 纯 vanilla CSS (globals.css) + 暗色主题 + 响应式 ≤768/≤480 断点
+- 无 UI 库依赖, 无 Tailwind, 无 styled-components
+
+### 文件结构
+```
+web/
+├── app/
+│   ├── layout.tsx        (Header + TabNav)
+│   ├── page.tsx          (球队 /)
+│   ├── schedule/page.tsx (赛程)
+│   ├── config/{page,ConfigClient}.tsx (配置 server+client)
+│   ├── predict/page.tsx  (预测)
+│   ├── components/{Header,TabNav}.tsx
+│   ├── lib/{api,data,flag,types}.ts
+│   └── globals.css       (375 行, 含响应式)
+├── public/static-data/   (client fallback JSON)
+├── start.sh              (一键启动/停止)
+├── next.config.ts        (outputFileTracingRoot 修 lockfile 警告)
+├── package.json
+└── .env.local
+```
+
+### 验证
+- ✅ `npm run build` 5 路由全编译 (3.3s)
+- ✅ 4 路由 HTTP 200 + Playwright 截图视觉验证
+- ✅ 配置页 23 滑块 + 6 preset 渲染正常
+- ✅ 预测页 32 场 KO 卡片 + 进度条 + 决赛金边全到位
+
+### 部署
+- 数据源切换: 改 `.env.local` 的 `NEXT_PUBLIC_BACKEND_URL` 即对接 FastAPI
+- Vercel 部署: `web/` 作为 root, build cmd 留空 (Next 自动检测)
+
+### 后续工作
+- 搜索/对比/复盘 4 个 Tab (用户暂时没要, 等指示)
+- 深色/亮色主题切换 (Header 加 toggle)
+- PWA manifest (添加桌面图标)
+
 ## 11. 已知 TODO（未来 session 可推进）
 
 - 8 个非种子队（苏格兰/威尔士/乌克兰等）FIFA 排名需补全
