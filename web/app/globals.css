@@ -1026,102 +1026,16 @@ main { padding: 24px; max-width: 100%; }
 .br-half-upper .br-svg .br-line polyline { stroke: rgba(240, 136, 62, 0.6); }
 .br-half-lower .br-svg .br-line polyline { stroke: rgba(163, 113, 247, 0.6); }
 
-/* Bracket Card */
-.br-card {
-  background: var(--bg-2);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--border);
-  border-radius: 4px;
-  padding: 5px 7px;
-  font-size: 11px;
-  position: relative;
-  transition: border-color 0.15s;
-}
-.br-card:hover { border-color: var(--accent); }
-.br-card.br-pending { border-style: dashed; }
-.br-card.br-has-winner { border-left-color: var(--green); }
-.br-card.br-final {
-  border: 2px solid #ffd700;
-  background: linear-gradient(180deg, rgba(255, 215, 0, 0.06) 0%, var(--bg-2) 100%);
-  box-shadow: 0 4px 24px rgba(255, 215, 0, 0.25);
-  width: 100%;
-}
-.br-card.br-third {
-  border: 2px solid #cd7f32;
-  background: linear-gradient(180deg, rgba(205, 127, 50, 0.06) 0%, var(--bg-2) 100%);
-}
-
-.br-card-head {
-  display: flex;
-  justify-content: space-between;
-  font-size: 9px;
-  color: var(--text-3);
-  font-family: monospace;
-  margin-bottom: 3px;
-  padding-bottom: 2px;
-  border-bottom: 1px solid var(--border);
-}
-.br-card-date { color: var(--text-2); }
-
-.br-team {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0;
-  font-size: 11px;
-  gap: 4px;
-  line-height: 1.4;
-}
-.br-team.is-winner { color: var(--green); font-weight: 700; }
-.br-team.is-loser { color: var(--text-3); opacity: 0.6; text-decoration: line-through; }
-.br-team-name {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  flex: 1;
-}
-.br-flag { font-size: 12px; line-height: 1; flex-shrink: 0; }
-.br-score {
-  font-family: monospace;
-  font-weight: 700;
-  font-size: 11px;
-  min-width: 14px;
-  text-align: right;
-  flex-shrink: 0;
-}
-.br-team.is-winner .br-score {
-  background: var(--green);
-  color: white;
-  padding: 0 4px;
-  border-radius: 2px;
-}
-.br-card.br-pending .br-team.is-winner { color: var(--text-1); font-weight: 600; }
-.br-card.br-pending .br-team.is-winner .br-score { background: var(--bg-3); color: var(--text-3); }
-.br-pending { color: var(--text-3); font-weight: 400; }
-.br-pen {
-  font-size: 8px;
-  padding: 0 3px;
-  background: rgba(255, 215, 0, 0.15);
-  color: #ffd700;
-  border-radius: 2px;
-  font-weight: 700;
-}
-
-
-
 /* ========================================================================
-   🎯 手动对阵页 (/bracket) - FIFA 2026 官方风格 8 列骨架
+   🎯 手动对阵页 (/bracket) - FIFA 2026 官方风格 v4
+   9 列等分 + 绝对定位 + SVG 连接线同步 + 4-pair 几何
    ======================================================================== */
 
 .bracket-page {
   background: #0a0a0a;
   background-image: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.04) 0%, transparent 60%);
   min-height: 100vh;
-  padding: 16px 24px 60px;
+  padding: 12px 16px 60px;
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
 }
@@ -1130,13 +1044,13 @@ main { padding: 24px; max-width: 100%; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 24px;
-  padding-bottom: 18px;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 .bracket-title {
-  font-size: clamp(28px, 4.5vw, 52px);
+  font-size: clamp(24px, 4vw, 44px);
   font-weight: 900;
   letter-spacing: 2px;
   color: white;
@@ -1145,23 +1059,17 @@ main { padding: 24px; max-width: 100%; }
   text-shadow: 0 2px 12px rgba(255,255,255,0.1);
   font-family: "Arial Black", "Helvetica Neue", sans-serif;
 }
-.bracket-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
+.bracket-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
 
 .speed-group { display: flex; gap: 4px; }
 .speed-btn {
-  padding: 5px 12px;
+  padding: 4px 10px;
   font-size: 12px;
   font-weight: 600;
   background: rgba(255,255,255,0.06);
   color: rgba(255,255,255,0.7);
   border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 16px;
+  border-radius: 14px;
   cursor: pointer;
   transition: all 0.15s;
 }
@@ -1170,357 +1078,277 @@ main { padding: 24px; max-width: 100%; }
 .speed-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .play-btn {
-  padding: 8px 22px;
-  font-size: 14px;
+  padding: 7px 18px;
+  font-size: 13px;
   font-weight: 700;
   background: linear-gradient(180deg, #ff6b6b 0%, #ee2233 100%);
   color: white;
   border: none;
-  border-radius: 22px;
+  border-radius: 18px;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(238,34,51,0.4);
+  box-shadow: 0 3px 12px rgba(238,34,51,0.35);
   transition: all 0.2s;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
 }
-.play-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(238,34,51,0.5); }
+.play-btn:hover { transform: translateY(-1px); }
 .play-btn.playing { background: linear-gradient(180deg, #ffa500 0%, #ff6b00 100%); }
 
 .reset-btn {
-  padding: 8px 16px;
-  font-size: 13px;
+  padding: 7px 14px;
+  font-size: 12px;
   background: transparent;
   color: rgba(255,255,255,0.6);
   border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 22px;
+  border-radius: 18px;
   cursor: pointer;
   transition: all 0.15s;
 }
 .reset-btn:hover:not(:disabled) { background: rgba(255,255,255,0.08); color: white; }
 .reset-btn:disabled { opacity: 0.4; }
 
-/* ====== 主骨架 8 列 (4+center+4) ====== */
+/* ====== 9 列主容器: relative + height 固定 ====== */
 .fiba-bracket {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr auto 1fr 1fr 1fr 1fr;
-  gap: 0;
-  max-width: 1500px;
-  margin: 0 auto;
-  align-items: stretch;
   position: relative;
-}
-
-.fiba-half {
-  display: contents;
-}
-
-/* 上半 R32 列 - 8 场 */
-.fiba-col-r32-upper {
-  grid-column: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 6px;
-  padding: 0 6px;
-  height: 100%;
-}
-/* 下半 R32 列 - 8 场 */
-.fiba-col-r32-lower {
-  grid-column: 9;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 6px;
-  padding: 0 6px;
-  height: 100%;
-}
-
-/* 上半 R16 - 4 场, 8 row 用 space-between 让 4 场均匀分布 (R32 中点对齐) */
-.fiba-col-r16-upper {
-  grid-column: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 0 6px;
-  height: 100%;
-}
-/* 下半 R16 - 4 场 */
-.fiba-col-r16-lower {
-  grid-column: 8;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 0 6px;
-  height: 100%;
-}
-
-/* 上半 QF - 2 场 */
-.fiba-col-qf-upper {
-  grid-column: 3;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 80px;
-  padding: 80px 6px;
-  height: 100%;
-}
-/* 下半 QF - 2 场 */
-.fiba-col-qf-lower {
-  grid-column: 7;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 80px;
-  padding: 80px 6px;
-  height: 100%;
-}
-
-/* 上半 SF - 1 场, 居中 */
-.fiba-col-sf-upper {
-  grid-column: 4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 6px;
-  height: 100%;
-}
-/* 下半 SF - 1 场, 居中 */
-.fiba-col-sf-lower {
-  grid-column: 6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 6px;
-  height: 100%;
-}
-
-/* 中央列 - WORLD CHAMPION 顶 + 决赛 + BRONZE 标 + 3rd + 奖杯 + 26 标 */
-.fiba-center {
-  grid-column: 5;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 12px 0;
-  min-width: 120px;
-}
-.fiba-center-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
   width: 100%;
+  max-width: 1100px;
+  height: 880px;
+  margin: 0 auto;
 }
+
+.fiba-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.fiba-svg .fiba-line polyline {
+  stroke: rgba(180, 180, 180, 0.55);
+  stroke-width: 1.5;
+  fill: none;
+  transition: stroke 0.4s, stroke-width 0.4s;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.fiba-svg .fiba-line.is-active polyline {
+  stroke: rgba(255, 180, 50, 0.95);
+  stroke-width: 2.2;
+}
+
+/* ====== slot 绝对定位 (位置由 inline style 控制) ====== */
+.fiba-slot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+.fiba-r32-slot { width: 50px; }
+.fiba-r16-slot { width: 46px; }
+.fiba-qf-slot { width: 46px; }
+.fiba-sf-slot { width: 46px; }
+
+/* ====== R32 上半 8 场定位 (4 pair 视觉) ====== */
+/* pair 中心 12.5, 37.5, 62.5, 87.5; in-pair 偏移 ±5% */
+
+/* ====== R16 上半 4 场定位 ====== */
+
+/* ====== QF 上半 2 场定位 ====== */
+
+/* ====== SF 上半 1 场定位 ====== */
+
+/* ====== 中央列 (绝对定位内部) ====== */
+.fiba-center {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  z-index: 3;
+  pointer-events: none;
+}
+.fiba-center > * { pointer-events: auto; }
+.fiba-champion-title-wrap { position: absolute; top: 6%; left: 50%; transform: translateX(-50%); text-align: center; }
+.fiba-final-wrap { position: absolute; top: 32%; left: 50%; transform: translateX(-50%); margin: 0; }
+.fiba-bronze-label { position: absolute; top: 56%; left: 50%; transform: translateX(-50%); margin: 0; }
+.fiba-center-3rd { position: absolute; top: 60%; left: 50%; transform: translateX(-50%); }
+.fiba-trophy-wrap { position: absolute; top: 72%; left: 50%; transform: translateX(-50%); margin: 0; }
+.fiba-wc26-wrap { position: absolute; top: 90%; left: 50%; transform: translateX(-50%); margin: 0; text-align: center; }
 .fiba-champion-title {
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: 13px;
   font-weight: 900;
-  letter-spacing: 3px;
+  letter-spacing: 1.5px;
   color: white;
   text-align: center;
   line-height: 1.1;
   font-family: "Arial Black", sans-serif;
   text-shadow: 0 2px 8px rgba(255,255,255,0.1);
 }
-.fiba-bronze-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: rgba(255,255,255,0.55);
-  text-align: center;
-  text-transform: uppercase;
-}
-.fiba-bronze-label::before, .fiba-bronze-label::after { content: "—"; margin: 0 4px; opacity: 0.4; }
-
-/* ====== 比赛槽 (1 场 = 2 个旗) ====== */
-.fiba-match {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  align-items: stretch;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
-}
-.fiba-match.is-revealed { animation: fiba-fly-in 0.5s ease-out; }
-@keyframes fiba-fly-in {
-  from { opacity: 0; transform: scale(0.85); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* ====== 旗 chip (圆角矩形 + emoji) ====== */
-.fiba-flag {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 38px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 8px;
-  cursor: pointer;
-  font-family: inherit;
-  padding: 0;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-}
-.fiba-flag:hover:not(.is-locked) {
-  background: rgba(255,255,255,0.12);
-  border-color: rgba(255,255,255,0.25);
-  transform: scale(1.05);
-}
-.fiba-flag:active:not(.is-locked) { transform: scale(0.97); }
-
-.fiba-flag.is-winner {
-  background: linear-gradient(135deg, rgba(46,160,67,0.4) 0%, rgba(46,160,67,0.2) 100%);
-  border: 2px solid #2ea043;
-  box-shadow: 0 0 12px rgba(46,160,67,0.4);
-}
-.fiba-flag.is-loser {
-  background: rgba(255,255,255,0.02);
-  border: 1px dashed rgba(255,255,255,0.12);
-  opacity: 0.35;
-  filter: grayscale(0.5);
-}
-.fiba-flag.is-locked { cursor: not-allowed; opacity: 0.7; }
-.fiba-flag.is-locked.is-real {
-  background: linear-gradient(135deg, rgba(46,160,67,0.3) 0%, rgba(46,160,67,0.1) 100%);
-  border: 2px solid #2ea043;
-  cursor: not-allowed;
-}
-
-.fiba-flag-emoji {
-  font-size: 30px;
+.fiba-champion-flag {
+  font-size: 36px;
   line-height: 1;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));
+  margin-top: 2px;
+  filter: drop-shadow(0 0 12px rgba(255,215,0,0.6));
 }
-.fiba-flag-star {
-  position: absolute;
-  top: 1px;
-  right: 2px;
-  font-size: 8px;
-  color: #ffd700;
-}
-.fiba-flag-score {
-  position: absolute;
-  bottom: 1px;
-  right: 2px;
+.fiba-final-wrap { display: flex; align-items: center; justify-content: center; }
+.fiba-bronze-label {
   font-size: 9px;
   font-weight: 700;
-  color: white;
-  background: rgba(0,0,0,0.6);
-  padding: 0 3px;
-  border-radius: 3px;
-  font-family: monospace;
-}
-.fiba-flag-pen {
-  position: absolute;
-  bottom: 1px;
-  left: 2px;
-  font-size: 8px;
-  font-weight: 700;
-  color: #ffd700;
-  background: rgba(0,0,0,0.6);
-  padding: 0 3px;
-  border-radius: 3px;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 4px;
 }
 
-.fiba-flag-empty {
-  cursor: default;
-  background: rgba(255,255,255,0.03);
-  border: 1px dashed rgba(255,255,255,0.1);
-}
-.fiba-flag-empty:hover { transform: none; background: rgba(255,255,255,0.03); }
-.fiba-flag-q {
-  font-size: 20px;
-  font-weight: 700;
-  color: rgba(255,255,255,0.2);
-  font-family: monospace;
-}
-
-/* 大旗 (Final/3rd 中央) */
-.fiba-flag[large],
-.fiba-final-card .fiba-flag,
-.fiba-third-card .fiba-flag {
-  width: 84px;
-  height: 56px;
-}
-.fiba-final-card .fiba-flag-emoji,
-.fiba-third-card .fiba-flag-emoji {
-  font-size: 44px;
-}
-
-/* ====== 决赛卡 ====== */
-.fiba-final-card {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 6px;
-  background: rgba(255,255,255,0.04);
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.08);
-}
-.fiba-final-card.is-revealed { animation: fiba-fly-in 0.5s ease-out; }
-
-.fiba-third-card {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 4px;
-  background: rgba(255,255,255,0.02);
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.06);
-}
-
-/* ====== 奖杯 ====== */
-.fiba-trophy {
-  margin-top: 16px;
-  filter: drop-shadow(0 8px 24px rgba(218,165,32,0.4));
-}
+.fiba-trophy { filter: drop-shadow(0 6px 18px rgba(218,165,32,0.4)); }
 .fiba-trophy-svg {
-  width: 100px;
-  height: 140px;
+  width: 70px;
+  height: 98px;
   display: block;
 }
-
 .fiba-wc26 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 6px;
+  margin-top: 4px;
   font-family: "Arial Black", sans-serif;
 }
 .fiba-wc26-num {
-  font-size: 56px;
+  font-size: 36px;
   font-weight: 900;
   line-height: 1;
   background: linear-gradient(180deg, #ffffff 0%, #888 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: -2px;
+  letter-spacing: -1.5px;
 }
 .fiba-wc26-text {
-  font-size: 9px;
+  font-size: 7px;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0.6px;
   color: rgba(255,255,255,0.7);
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
-/* ====== 阶段间连接线 (用 ::before/::after 画, 简化) ====== */
-.fiba-col-cascade {
-  position: relative;
+/* ====== SF 下半 1 场定位 ====== */
+.fiba-bracket > .fiba-sf-slot.fiba-sf-lower { top: 32.5%; left: 62%; }  /* SF[1] */
+
+/* ====== QF 下半 2 场定位 ====== */
+/* 因为 nth-of-type 不可靠 (因为 :nth-child 已经被用), 改用 nth-child */
+/* 重新数 slot 位置: SVG 之前是 1, R32 上半 8 场 = 2-9, R16 4 场 = 10-13, QF 2 场 = 14-15, SF 1 = 16, center 17, SF 下半 1 = 18, QF 下半 2 = 19-20, R16 下半 4 = 21-24, R32 下半 8 = 25-32 */
+
+/* ====== R16 下半 4 场定位 ====== */
+
+/* ====== R32 下半 8 场定位 ====== */
+
+/* ====== 1 场比赛 (2 个旗紧贴) ====== */
+.fiba-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: stretch;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
 }
-.fiba-col-r32-upper::after,
-.fiba-col-r32-lower::after {
-  content: '';
+.fiba-pair.is-revealed { animation: fiba-fly-in 0.4s ease-out; }
+@keyframes fiba-fly-in {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+.fiba-pair.is-cascade { align-self: center; }
+.fiba-pair.is-final { align-self: center; padding: 3px; background: rgba(255,215,0,0.06); border-radius: 5px; border: 1px solid rgba(255,215,0,0.3); }
+.fiba-pair.is-third { align-self: center; padding: 2px; background: rgba(205,127,50,0.05); border-radius: 4px; border: 1px solid rgba(205,127,50,0.2); }
+
+/* ====== 旗 chip ====== */
+.fiba-flag {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  margin: 0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  width: 100%;
+  min-height: 0;
+}
+.fiba-flag-sm { height: 26px; }
+.fiba-flag-md { height: 30px; }
+.fiba-flag-lg { height: 36px; }
+
+.fiba-flag:hover:not(.is-locked) {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.3);
+  transform: scale(1.08);
+  z-index: 5;
+}
+.fiba-flag:active:not(.is-locked) { transform: scale(0.95); }
+
+.fiba-flag.is-winner {
+  background: linear-gradient(135deg, rgba(46,160,67,0.5) 0%, rgba(46,160,67,0.25) 100%);
+  border: 1.5px solid #2ea043;
+  box-shadow: 0 0 10px rgba(46,160,67,0.4);
+}
+.fiba-flag.is-loser {
+  background: rgba(255,255,255,0.02);
+  border: 1px dashed rgba(255,255,255,0.12);
+  opacity: 0.32;
+  filter: grayscale(0.7);
+}
+.fiba-flag.is-locked { cursor: not-allowed; opacity: 0.7; }
+.fiba-flag.is-locked.is-winner {
+  background: linear-gradient(135deg, rgba(46,160,67,0.3) 0%, rgba(46,160,67,0.1) 100%);
+  border: 1.5px solid #2ea043;
+  cursor: not-allowed;
+}
+
+.fiba-flag-emoji {
+  font-size: 18px;
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+}
+.fiba-flag-md .fiba-flag-emoji { font-size: 20px; }
+.fiba-flag-lg .fiba-flag-emoji { font-size: 24px; }
+
+.fiba-flag-star {
   position: absolute;
   top: 0;
-  bottom: 0;
-  width: 1px;
-  background: rgba(255,255,255,0.12);
+  right: 2px;
+  font-size: 7px;
+  color: #ffd700;
+  line-height: 1;
 }
-/* 这些细节简化了 - 重点是主结构 */
+.fiba-flag-score {
+  position: absolute;
+  bottom: 0;
+  right: 2px;
+  font-size: 8px;
+  font-weight: 700;
+  color: white;
+  background: rgba(0,0,0,0.65);
+  padding: 0 2px;
+  border-radius: 2px;
+  font-family: monospace;
+  line-height: 1;
+}
+.fiba-flag-pen {
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+  font-size: 7px;
+  font-weight: 700;
+  color: #ffd700;
+  background: rgba(0,0,0,0.65);
+  padding: 0 2px;
+  border-radius: 2px;
+  line-height: 1;
+}
 
 /* ====== Toast ====== */
 .bracket-toast {
@@ -1544,33 +1372,20 @@ main { padding: 24px; max-width: 100%; }
 }
 
 /* ====== 响应式 ====== */
-@media (max-width: 1100px) {
-  .fiba-bracket { grid-template-columns: 56px 56px 56px 56px 110px 56px 56px 56px 56px; }
-  .fiba-flag { width: 48px; height: 32px; }
-  .fiba-flag-emoji { font-size: 24px; }
-  .fiba-final-card .fiba-flag,
-  .fiba-third-card .fiba-flag { width: 64px; height: 44px; }
-  .fiba-final-card .fiba-flag-emoji,
-  .fiba-third-card .fiba-flag-emoji { font-size: 32px; }
-  .fiba-trophy-svg { width: 80px; height: 112px; }
-  .fiba-wc26-num { font-size: 42px; }
+@media (max-width: 900px) {
+  .fiba-bracket { height: 780px; }
 }
-
-@media (max-width: 768px) {
-  .bracket-page { padding: 12px 8px 40px; }
-  .bracket-title { font-size: 24px; letter-spacing: 1px; }
-  .fiba-bracket {
-    grid-template-columns: 48px 48px 48px 48px 90px 48px 48px 48px 48px;
-    overflow-x: auto;
-    padding-bottom: 12px;
-  }
-  .fiba-flag { width: 42px; height: 28px; }
-  .fiba-flag-emoji { font-size: 20px; }
-  .fiba-final-card .fiba-flag,
-  .fiba-third-card .fiba-flag { width: 50px; height: 34px; }
-  .fiba-final-card .fiba-flag-emoji,
-  .fiba-third-card .fiba-flag-emoji { font-size: 24px; }
-  .fiba-trophy-svg { width: 60px; height: 84px; }
-  .fiba-wc26-num { font-size: 30px; }
-  .fiba-champion-title { font-size: 14px; letter-spacing: 1.5px; }
+@media (max-width: 700px) {
+  .fiba-bracket { height: 720px; }
+  .bracket-title { font-size: 22px; }
+  .fiba-flag-emoji { font-size: 15px; }
+  .fiba-flag-md .fiba-flag-emoji { font-size: 17px; }
+  .fiba-flag-lg .fiba-flag-emoji { font-size: 20px; }
+  .fiba-trophy-svg { width: 56px; height: 78px; }
+  .fiba-wc26-num { font-size: 28px; }
+  .fiba-r32-slot { width: 42px; }
+  .fiba-r16-slot { width: 38px; }
+  .fiba-qf-slot { width: 38px; }
+  .fiba-sf-slot { width: 38px; }
+  .fiba-center { width: 90px; }
 }
