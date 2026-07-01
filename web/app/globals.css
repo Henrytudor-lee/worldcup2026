@@ -1032,8 +1032,11 @@ main { padding: 24px; max-width: 100%; }
    ======================================================================== */
 
 .bracket-page {
-  background: #0a0a0a;
-  background-image: radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.04) 0%, transparent 60%);
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 25%, rgba(255,215,0,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(0,150,255,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(255,100,50,0.04) 0%, transparent 60%),
+    linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
   min-height: 100vh;
   padding: 12px 16px 60px;
   color: white;
@@ -1050,13 +1053,13 @@ main { padding: 24px; max-width: 100%; }
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 .bracket-title {
-  font-size: clamp(24px, 4vw, 44px);
+  font-size: clamp(28px, 4.5vw, 52px);
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   color: white;
   margin: 0;
   text-align: center;
-  text-shadow: 0 2px 12px rgba(255,255,255,0.1);
+  text-shadow: 0 4px 20px rgba(255,255,255,0.15), 0 1px 3px rgba(0,0,0,0.8);
   font-family: "Arial Black", "Helvetica Neue", sans-serif;
 }
 .bracket-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
@@ -1124,16 +1127,18 @@ main { padding: 24px; max-width: 100%; }
   z-index: 1;
 }
 .fiba-svg .fiba-line polyline {
-  stroke: rgba(180, 180, 180, 0.55);
-  stroke-width: 1.5;
+  stroke: rgba(220, 220, 220, 0.5);
+  stroke-width: 0.18;
   fill: none;
   transition: stroke 0.4s, stroke-width 0.4s;
   stroke-linecap: round;
   stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
 }
 .fiba-svg .fiba-line.is-active polyline {
-  stroke: rgba(255, 180, 50, 0.95);
-  stroke-width: 2.2;
+  stroke: rgba(255, 200, 80, 1);
+  stroke-width: 1.6;
+  filter: drop-shadow(0 0 3px rgba(255,200,80,0.6));
 }
 
 /* ====== slot 绝对定位 (位置由 inline style 控制) ====== */
@@ -1142,10 +1147,10 @@ main { padding: 24px; max-width: 100%; }
   transform: translate(-50%, -50%);
   z-index: 2;
 }
-.fiba-r32-slot { width: 50px; }
-.fiba-r16-slot { width: 46px; }
-.fiba-qf-slot { width: 46px; }
-.fiba-sf-slot { width: 46px; }
+.fiba-r32-slot { width: 56px; }
+.fiba-r16-slot { width: 56px; }
+.fiba-qf-slot { width: 56px; }
+.fiba-sf-slot { width: 56px; }
 
 /* ====== R32 上半 8 场定位 (4 pair 视觉) ====== */
 /* pair 中心 12.5, 37.5, 62.5, 87.5; in-pair 偏移 ±5% */
@@ -1163,29 +1168,33 @@ main { padding: 24px; max-width: 100%; }
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 110px;
+  width: 100px;
   z-index: 3;
   pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,215,0,0.04) 0%, transparent 25%, transparent 75%, rgba(205,127,50,0.04) 100%);
+  border-left: 1px dashed rgba(255,255,255,0.08);
+  border-right: 1px dashed rgba(255,255,255,0.08);
 }
 .fiba-center > * { pointer-events: auto; }
-.fiba-champion-title-wrap { position: absolute; top: 6%; left: 50%; transform: translateX(-50%); text-align: center; }
-.fiba-final-wrap { position: absolute; top: 32%; left: 50%; transform: translateX(-50%); margin: 0; }
-.fiba-bronze-label { position: absolute; top: 56%; left: 50%; transform: translateX(-50%); margin: 0; }
-.fiba-center-3rd { position: absolute; top: 60%; left: 50%; transform: translateX(-50%); }
-.fiba-trophy-wrap { position: absolute; top: 72%; left: 50%; transform: translateX(-50%); margin: 0; }
-.fiba-wc26-wrap { position: absolute; top: 90%; left: 50%; transform: translateX(-50%); margin: 0; text-align: center; }
+.fiba-champion-title-wrap { position: absolute; top: 2%; left: 50%; transform: translateX(-50%); text-align: center; }
+.fiba-final-wrap { position: absolute; top: 22%; left: 50%; transform: translateX(-50%); margin: 0; }
+.fiba-bronze-label { position: absolute; top: 68%; left: 50%; transform: translateX(-50%); margin: 0; }
+.fiba-center-3rd { position: absolute; top: 71%; left: 50%; transform: translateX(-50%); }
+.fiba-trophy-wrap { position: absolute; top: 42%; left: 50%; transform: translateX(-50%); margin: 0; opacity: 0.6; }
+.fiba-wc26-wrap { position: absolute; top: 60%; left: 50%; transform: translateX(-50%); margin: 0; text-align: center; opacity: 0.4; }
 .fiba-champion-title {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 900;
   letter-spacing: 1.5px;
-  color: white;
+  color: #ffd700;
   text-align: center;
-  line-height: 1.1;
-  font-family: "Arial Black", sans-serif;
-  text-shadow: 0 2px 8px rgba(255,255,255,0.1);
+  line-height: 1.15;
+  font-family: "Arial Black", "Helvetica Neue", sans-serif;
+  text-shadow: 0 0 12px rgba(255,215,0,0.5), 0 2px 4px rgba(0,0,0,0.8);
+  text-transform: uppercase;
 }
 .fiba-champion-flag {
-  font-size: 36px;
+  font-size: 28px;
   line-height: 1;
   margin-top: 2px;
   filter: drop-shadow(0 0 12px rgba(255,215,0,0.6));
@@ -1201,10 +1210,10 @@ main { padding: 24px; max-width: 100%; }
   margin-top: 4px;
 }
 
-.fiba-trophy { filter: drop-shadow(0 6px 18px rgba(218,165,32,0.4)); }
+.fiba-trophy { filter: drop-shadow(0 8px 24px rgba(218,165,32,0.6)) drop-shadow(0 0 12px rgba(255,215,0,0.3)); }
 .fiba-trophy-svg {
-  width: 70px;
-  height: 98px;
+  width: 48px;
+  height: 68px;
   display: block;
 }
 .fiba-wc26 {
@@ -1215,7 +1224,7 @@ main { padding: 24px; max-width: 100%; }
   font-family: "Arial Black", sans-serif;
 }
 .fiba-wc26-num {
-  font-size: 36px;
+  font-size: 24px;
   font-weight: 900;
   line-height: 1;
   background: linear-gradient(180deg, #ffffff 0%, #888 100%);
@@ -1247,7 +1256,7 @@ main { padding: 24px; max-width: 100%; }
 .fiba-pair {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
   align-items: stretch;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
 }
@@ -1257,18 +1266,31 @@ main { padding: 24px; max-width: 100%; }
   to { opacity: 1; transform: scale(1); }
 }
 .fiba-pair.is-cascade { align-self: center; }
-.fiba-pair.is-final { align-self: center; padding: 3px; background: rgba(255,215,0,0.06); border-radius: 5px; border: 1px solid rgba(255,215,0,0.3); }
-.fiba-pair.is-third { align-self: center; padding: 2px; background: rgba(205,127,50,0.05); border-radius: 4px; border: 1px solid rgba(205,127,50,0.2); }
+.fiba-pair.is-final {
+  align-self: center;
+  padding: 4px;
+  background: linear-gradient(135deg, rgba(255,215,0,0.12) 0%, rgba(218,165,32,0.05) 100%);
+  border-radius: 8px;
+  border: 1.5px solid rgba(255,215,0,0.5);
+  box-shadow: 0 0 16px rgba(255,215,0,0.2);
+}
+.fiba-pair.is-third {
+  align-self: center;
+  padding: 3px;
+  background: linear-gradient(135deg, rgba(205,127,50,0.12) 0%, rgba(165,100,40,0.05) 100%);
+  border-radius: 7px;
+  border: 1.5px solid rgba(205,127,50,0.4);
+}
 
-/* ====== 旗 chip ====== */
+/* ====== 旗 chip — FIFA 深色卡片风格 ====== */
 .fiba-flag {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 4px;
+  background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  border-radius: 7px;
   cursor: pointer;
   font-family: inherit;
   padding: 0;
@@ -1277,44 +1299,48 @@ main { padding: 24px; max-width: 100%; }
   overflow: hidden;
   width: 100%;
   min-height: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
 }
-.fiba-flag-sm { height: 26px; }
-.fiba-flag-md { height: 30px; }
-.fiba-flag-lg { height: 36px; }
+.fiba-flag-sm { height: 34px; }
+.fiba-flag-md { height: 40px; }
+.fiba-flag-lg { height: 48px; }
 
 .fiba-flag:hover:not(.is-locked) {
-  background: rgba(255,255,255,0.14);
-  border-color: rgba(255,255,255,0.3);
+  background: linear-gradient(180deg, #3a3a3a 0%, #252525 100%);
+  border-color: rgba(255,255,255,0.4);
   transform: scale(1.08);
   z-index: 5;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
 }
 .fiba-flag:active:not(.is-locked) { transform: scale(0.95); }
 
 .fiba-flag.is-winner {
-  background: linear-gradient(135deg, rgba(46,160,67,0.5) 0%, rgba(46,160,67,0.25) 100%);
-  border: 1.5px solid #2ea043;
-  box-shadow: 0 0 10px rgba(46,160,67,0.4);
+  background: linear-gradient(180deg, #2d6a3e 0%, #1a4527 100%);
+  border: 1.5px solid #4ade80;
+  box-shadow: 0 0 14px rgba(74,222,128,0.45), inset 0 1px 0 rgba(255,255,255,0.15);
 }
 .fiba-flag.is-loser {
-  background: rgba(255,255,255,0.02);
-  border: 1px dashed rgba(255,255,255,0.12);
-  opacity: 0.32;
-  filter: grayscale(0.7);
+  background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+  border: 1px dashed rgba(255,255,255,0.15);
+  opacity: 0.4;
+  filter: grayscale(0.8);
+  box-shadow: none;
 }
-.fiba-flag.is-locked { cursor: not-allowed; opacity: 0.7; }
+.fiba-flag.is-locked { cursor: not-allowed; }
 .fiba-flag.is-locked.is-winner {
-  background: linear-gradient(135deg, rgba(46,160,67,0.3) 0%, rgba(46,160,67,0.1) 100%);
-  border: 1.5px solid #2ea043;
+  background: linear-gradient(180deg, #2d6a3e 0%, #1a4527 100%);
+  border: 1.5px solid #4ade80;
   cursor: not-allowed;
+  box-shadow: 0 0 14px rgba(74,222,128,0.45), inset 0 1px 0 rgba(255,255,255,0.15);
 }
 
 .fiba-flag-emoji {
-  font-size: 18px;
+  font-size: 22px;
   line-height: 1;
   filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
 }
-.fiba-flag-md .fiba-flag-emoji { font-size: 20px; }
-.fiba-flag-lg .fiba-flag-emoji { font-size: 24px; }
+.fiba-flag-md .fiba-flag-emoji { font-size: 26px; }
+.fiba-flag-lg .fiba-flag-emoji { font-size: 32px; }
 
 .fiba-flag-star {
   position: absolute;
@@ -1383,9 +1409,9 @@ main { padding: 24px; max-width: 100%; }
   .fiba-flag-lg .fiba-flag-emoji { font-size: 20px; }
   .fiba-trophy-svg { width: 56px; height: 78px; }
   .fiba-wc26-num { font-size: 28px; }
-  .fiba-r32-slot { width: 42px; }
-  .fiba-r16-slot { width: 38px; }
-  .fiba-qf-slot { width: 38px; }
-  .fiba-sf-slot { width: 38px; }
+  .fiba-r32-slot { width: 48px; }
+  .fiba-r16-slot { width: 48px; }
+  .fiba-qf-slot { width: 48px; }
+  .fiba-sf-slot { width: 48px; }
   .fiba-center { width: 90px; }
 }

@@ -66,15 +66,19 @@ const OFFICIAL_R32_ORDER: string[] = [
 // R16 home/away 显示 JSON 配对的真实胜者 (R16[i].home, R16[i].away)
 // 注: 邻接几何 + JSON home/away 配对可能在 R16 卡内 home/away 跟折线连入位置不一致
 // 但视觉上 R16 位置规则 4 pair 紧贴, 是用户最看重的
+// R16 配对: 严格按 FIFA 2026 官方对阵表 (与 backend/predictor.py r16_indices 一致)
+// 上半 4 场: M1-M3, M2-M5, M4-M6, M7-M8
+// 下半 4 场: M11-M12, M9-M10, M14-M16, M13-M15
+// y 位置 = (R32[a] y + R32[b] y) / 2 (按 R16[i].home/away 真实配对)
 const R16_PAIRING: Array<[number, number]> = [
-  [0, 1],     // R16-1: W1 + W2 (邻接)
-  [2, 3],     // R16-2: W3 + W4 (邻接)
-  [4, 5],     // R16-3: W5 + W6 (邻接)
-  [6, 7],     // R16-4: W7 + W8 (邻接)
-  [8, 9],     // R16-5: W9 + W10 (邻接)
-  [10, 11],   // R16-6: W11 + W12 (邻接)
-  [12, 13],   // R16-7: W13 + W14 (邻接)
-  [14, 15],   // R16-8: W15 + W16 (邻接)
+  [0, 2],     // R16-1: W1 + W3 (M73: M1胜 vs M3胜)
+  [1, 4],     // R16-2: W2 + W5 (M74: M2胜 vs M5胜)
+  [3, 5],     // R16-3: W4 + W6 (M75: M4胜 vs M6胜)
+  [6, 7],     // R16-4: W7 + W8 (M76: M7胜 vs M8胜)
+  [10, 11],   // R16-5: W11 + W12 (M77: M11胜 vs M12胜)
+  [8, 9],     // R16-6: W9 + W10 (M78: M9胜 vs M10胜)
+  [13, 15],   // R16-7: W14 + W16 (M79: M14胜 vs M16胜)
+  [12, 14],   // R16-8: W13 + W15 (M80: M13胜 vs M15胜)
 ];
 
 // QF 邻接: R16[2i]+R16[2i+1]
@@ -98,11 +102,12 @@ const SF_PAIRING: Array<[number, number]> = [
 
 const STAGE_ORDER: Stage[] = ['R32', 'R16', 'QF', 'SF', 'FINAL'];
 
-// === y 坐标公式 (返回 0-100 字符串) ===
-// 上半 R32 8 场 y
-const R32_UPPER_Y = [8.5, 16.5, 33.5, 41.5, 58.5, 66.5, 83.5, 91.5];
-// 下半 R32 8 场 y (镜像上半)
-const R32_LOWER_Y = R32_UPPER_Y.slice().reverse();
+// === y 坐标公式 ===
+// 上半 R32 8 场: 4 pair 紧贴, 在 4% - 49% 范围
+// 配对: pair 中心 7/20/33/46, in-pair 偏移 ±3
+const R32_UPPER_Y = [0, 6, 14, 20, 28, 34, 42, 48];  // pair 内 6%, pair 间 8%
+// 下半 R32 8 场: 4 pair 紧贴, 在 55.5% - 96.5% 范围 (100-y 镜像)
+const R32_LOWER_Y = R32_UPPER_Y.map((y) => 100 - y);
 // R32[i] y
 const r32Y = (i: number) => (i < 8 ? R32_UPPER_Y[i] : R32_LOWER_Y[i - 8]);
 
@@ -158,13 +163,14 @@ export function BracketClient({ initialMatches }: Props) {
     return sorted.slice(0, 16);
   }, [initialMatches]);
 
-  // 按 match_id 拼音取 R16/QF/SF/FINAL/3RD 的 raw 顺序
+  // R16/QF/SF/FINAL/3RD 保持 JSON 数组顺序 (backend 写入顺序 = FIFA 官方 R16-1..R16-8)
+  // 注意: 不能用拼音排序, 会打乱 R16-1..R16-8 顺序
   const rawByStage = useMemo(() => {
     const out: Record<Stage, BracketMatch[]> = { R32: [], R16: [], QF: [], SF: [], FINAL: [], '3RD': [] };
     const byS: Record<Stage, BracketMatch[]> = { R32: [], R16: [], QF: [], SF: [], FINAL: [], '3RD': [] };
     initialMatches.forEach((m) => { byS[m.stage].push(m); });
     (['R16', 'QF', 'SF', 'FINAL', '3RD'] as Stage[]).forEach((s) => {
-      out[s] = [...byS[s]].sort((a, b) => a.match_id.localeCompare(b.match_id));
+      out[s] = byS[s];
     });
     return out;
   }, [initialMatches]);
@@ -517,14 +523,17 @@ export function BracketClient({ initialMatches }: Props) {
           </div>
         ))}
 
-        {/* QF 下半: 2 场, y 动态算 */}
-        {derived.QF.slice(2, 4).map((m, idx) => (
+        {/* QF 下半: 2 场, 视觉顺序按 y 升序 (QF[3]=64 在上, QF[2]=88 在下) */}
+        {[
+          { m: derived.QF[3], yi: 3, vi: 0 },
+          { m: derived.QF[2], yi: 2, vi: 1 },
+        ].filter(x => x.m).map(({ m, yi, vi }) => (
           <div
             key={m.match_id}
             className="fiba-slot fiba-qf-slot fiba-qf-lower"
             data-col="6"
-            data-pair={idx}
-            style={{ top: `${qfYByIdx(idx + 2)}%`, left: `${COL_X.QF_L}%`, '--pair': idx, '--in-pair': 0 } as React.CSSProperties}
+            data-pair={vi}
+            style={{ top: `${qfYByIdx(yi)}%`, left: `${COL_X.QF_L}%`, '--pair': vi, '--in-pair': 0 } as React.CSSProperties}
           >
             <MatchPair
               m={m}
@@ -539,12 +548,12 @@ export function BracketClient({ initialMatches }: Props) {
           </div>
         ))}
 
-        {/* R16 下半: 4 场, y 动态算, 视觉顺序: R16[5](上), R16[4], R16[7], R16[6](下) */}
+        {/* R16 下半: 4 场, 视觉顺序按 y 升序 (从顶到底) */}
         {[
-          { m: derived.R16[5], yi: 5, vi: 0 },
-          { m: derived.R16[4], yi: 4, vi: 1 },
-          { m: derived.R16[7], yi: 7, vi: 2 },
-          { m: derived.R16[6], yi: 6, vi: 3 },
+          { m: derived.R16[6], yi: 6, vi: 0 },  // R16-7 y=54
+          { m: derived.R16[7], yi: 7, vi: 1 },  // R16-8 y=73
+          { m: derived.R16[4], yi: 4, vi: 2 },  // R16-5 y=79
+          { m: derived.R16[5], yi: 5, vi: 3 },  // R16-6 y=97
         ].filter(x => x.m).map(({ m, yi, vi }) => (
           <div
             key={m.match_id}
@@ -720,8 +729,8 @@ function BracketConnectors({ revealedStage }: { revealedStage: Stage | null }) {
   // R32 下半 8 场: R32_LOWER_Y = reverse
   // R16 8 场: y = (r32Y(a) + r32Y(b)) / 2
   // QF/SF 同样
-  const finalY = 30;  // Final 在 30% (中央偏上)
-  const thirdY = 65;  // 3rd 在 65%
+  const finalY = 22;  // Final 跟中央列 .fiba-final-wrap top: 22% 对齐
+  const thirdY = 71;  // 3rd 跟中央列 .fiba-center-3rd top: 71% 对齐
 
   // 列 x 位置 (9 等分, 留 2% padding)
   const COL_W = 10.4; // 100 / 9.6 ≈ 10.4
@@ -733,18 +742,19 @@ function BracketConnectors({ revealedStage }: { revealedStage: Stage | null }) {
 
   return (
     <svg className="fiba-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-      {/* R32 → R16 上半 4 对 */}
+      {/* R32 → R16 上半 4 对 (按 R16_PAIRING 实际配对) */}
       {Array.from({ length: 4 }).map((_, j) => {
         const yTo = r16YByIdx(j);
+        const [a, b] = R16_PAIRING[j];
         const active = revealedStage && STAGE_ORDER.indexOf('R16') <= STAGE_ORDER.indexOf(revealedStage);
         return (
           <g key={`r32-r16-upper-${j}`} className={`fiba-line ${active ? 'is-active' : ''}`}>
             <polyline
-              points={`${colRight(0)},${r32Y(2 * j)} ${midX(0)},${r32Y(2 * j)} ${midX(0)},${yTo} ${colLeft(1)},${yTo}`}
+              points={`${colRight(0)},${r32Y(a)} ${midX(0)},${r32Y(a)} ${midX(0)},${yTo} ${colLeft(1)},${yTo}`}
               fill="none"
             />
             <polyline
-              points={`${colRight(0)},${r32Y(2 * j + 1)} ${midX(0)},${r32Y(2 * j + 1)} ${midX(0)},${yTo} ${colLeft(1)},${yTo}`}
+              points={`${colRight(0)},${r32Y(b)} ${midX(0)},${r32Y(b)} ${midX(0)},${yTo} ${colLeft(1)},${yTo}`}
               fill="none"
             />
           </g>
@@ -817,36 +827,39 @@ function BracketConnectors({ revealedStage }: { revealedStage: Stage | null }) {
         />
       </g>
 
-      {/* R16 → QF 下半 2 对 */}
+      {/* R16 → QF 下半 2 对 (QF-3 = R16-5+R16-6, QF-4 = R16-7+R16-8) */}
       {Array.from({ length: 2 }).map((_, k) => {
         const yTo = qfYByIdx(k + 2);
+        const r16A = 2 * k + 4;  // QF-3: R16[4]+R16[5], QF-4: R16[6]+R16[7]
+        const r16B = 2 * k + 5;
         const active = revealedStage && STAGE_ORDER.indexOf('QF') <= STAGE_ORDER.indexOf(revealedStage);
         return (
           <g key={`r16-qf-lower-${k}`} className={`fiba-line ${active ? 'is-active' : ''}`}>
             <polyline
-              points={`${colLeft(7)},${r16YByIdx(2 * k + 4)} ${midX(7)},${r16YByIdx(2 * k + 4)} ${midX(7)},${yTo} ${colRight(7)},${yTo}`}
+              points={`${colLeft(7)},${r16YByIdx(r16A)} ${midX(7)},${r16YByIdx(r16A)} ${midX(7)},${yTo} ${colRight(7)},${yTo}`}
               fill="none"
             />
             <polyline
-              points={`${colLeft(7)},${r16YByIdx(2 * k + 5)} ${midX(7)},${r16YByIdx(2 * k + 5)} ${midX(7)},${yTo} ${colRight(7)},${yTo}`}
+              points={`${colLeft(7)},${r16YByIdx(r16B)} ${midX(7)},${r16YByIdx(r16B)} ${midX(7)},${yTo} ${colRight(7)},${yTo}`}
               fill="none"
             />
           </g>
         );
       })}
 
-      {/* R32 → R16 下半 4 对 (使用 r16LowerY) */}
+      {/* R32 → R16 下半 4 对 (按 R16_PAIRING 实际配对) */}
       {Array.from({ length: 4 }).map((_, j) => {
         const yTo = r16YByIdx(j + 4);
+        const [a, b] = R16_PAIRING[j + 4];
         const active = revealedStage && STAGE_ORDER.indexOf('R16') <= STAGE_ORDER.indexOf(revealedStage);
         return (
           <g key={`r32-r16-lower-${j}`} className={`fiba-line ${active ? 'is-active' : ''}`}>
             <polyline
-              points={`${colLeft(8)},${r32Y(2 * j)} ${midX(8)},${r32Y(2 * j)} ${midX(8)},${yTo} ${colRight(8)},${yTo}`}
+              points={`${colLeft(8)},${r32Y(a)} ${midX(8)},${r32Y(a)} ${midX(8)},${yTo} ${colRight(8)},${yTo}`}
               fill="none"
             />
             <polyline
-              points={`${colLeft(8)},${r32Y(2 * j + 1)} ${midX(8)},${r32Y(2 * j + 1)} ${midX(8)},${yTo} ${colRight(8)},${yTo}`}
+              points={`${colLeft(8)},${r32Y(b)} ${midX(8)},${r32Y(b)} ${midX(8)},${yTo} ${colRight(8)},${yTo}`}
               fill="none"
             />
           </g>
