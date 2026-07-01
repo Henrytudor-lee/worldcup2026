@@ -457,7 +457,64 @@ y[29]     = 下半 SF 1 场
 - 一旦 R32 真实赛果进入, 重算 R16 配对 + 重 build SPA
 
 
-## 10.7 v2.4.0 Next.js 16 App Router 架构切换 (2026-06-28)
+## 10.7 v2.3.8 KO bracket 全链路顺读 + 日期/城市全量显示 (2026-07-01)
+
+### 背景
+v2.3.7 修完 KO 日期/城市错位后, 全局审查发现两个新问题:
+1. **R32 卡片按 match_id 拼音排序** (localeCompare zh-CN) → 南非vs加拿大 显示在最上面, 但 FIFA bracket 应该是 M73 (A2vsB2) 在最上面
+2. **R16/QF/SF/Final/3rd 卡片不显示日期和城市** → renderBracket 调用 renderMatchCard 时传 null, 但 KO_SCHEDULE_BY_MATCHID map 已有 R16/QF 数据, 只是没用上
+
+### 修复
+**位置:** `4_比赛预测/world_cup_2026_spa.html` `renderBracket()` (lines ~2740-2960)
+
+1. **R32 顺序**: `computeActualR32()` 末尾删掉 `matches.sort((x, y) => x.match_id.localeCompare(y.match_id))`, 保持 R32_BRACKET 定义的 M73-M88 顺序
+2. **R16/QF/SF 顺序**: 改成"按上一轮 bracket 几何位置排序" — 对每场比赛取两个参赛队伍在上一轮中的最小 idx, 小的排前. 这样保证上→下、上半→下半的顺读顺序
+3. **KO 全链路日期/城市**: R16/QF 卡片从 `KO_SCHEDULE_BY_MATCHID[m.match_id]` 取, SF/Final/3rd 用新增的硬编码 SF_SCHEDULE/FINAL_SCHEDULE/THIRD_SCHEDULE (北京时间 UTC+8)
+   - Final 北京时间 7月20日 03:00 (ET 7/19 15:00)
+   - 3rd 北京时间 7月19日 09:00 (ET 7/18 21:00)
+
+### 为什么不用 match_id 排序
+zh-CN locale 的 `localeCompare` 按拼音排: ā → ào → bā → bā lā → bǐ → dé → ... 完全不是 bracket 几何顺序. 任何 sort by id 的方案都会偏离顺读布局.
+
+### 验证
+- 浏览器实测 32 张卡片顺序: R32 M73-M88 ✓, R16 M89-M96 ✓, QF M97-M100 ✓, SF M101-M102 ✓
+- 所有 32 张卡片都显示 日期—城市
+- console 无 error / warning
+- 三档视口 (1280/768/390) 渲染正常, 5 列顺读
+
+
+## 10.9 v2.4.1 手动对阵页 /bracket (2026-07-01)
+
+### 核心改动
+新增 `/bracket` 路由: Next.js 16 客户端组件, 7 列骨架图 (R32 → R16 → QF → SF → Final + 3rd) + 手动标记 + 播放动画.
+
+### 交互
+- **左键点击国旗 chip** = 标记该队晋级 (切换 winner, 自动推进到下一轮 home/away)
+- **右键点击** = 退回 (清除该场手动标记, 恢复 JSON 默认 winner)
+- **🔒 锁定**: `data_status === 'real'` 的场次 (已完赛) → 整张卡 `pointer-events: none` + 🔒 icon + Toast 提示
+- **▶ 播放**: 0.5x/1x/2x 速度, 按 R32 → R16 → QF → SF → Final 顺序 reveal, 折线分阶段变橙色 (`is-active`)
+- **↺ 重置**: 清空所有手动标记
+
+### 几何布局
+- 6 列固定列宽 (R32 200 / R16 200 / QF 200 / SF 200 / Final 220 / 3rd 180) + 5 gap × 20
+- 16 row 等高 grid (`grid-template-rows: repeat(16, 1fr)`), `display: contents` 让 col-head + 比赛卡直接参与外层 grid
+- 比赛卡 grid-row: R32 = `2+i / span 1`, R16 = `2+2j / span 2`, QF = `2+4k / span 4`, SF = `2+8l / span 8`, Final/3rd = `2 / span 16`
+- SVG 折线 (R32→R16→QF→SF→Final + Final→3rd) 按列宽比例定位
+
+### 文件
+- `web/app/bracket/page.tsx` (40 行) - server component, 读 JSON
+- `web/app/bracket/BracketClient.tsx` (~550 行) - 客户端: state + 派生 + 渲染
+- `web/app/components/TabNav.tsx` 加 `🎯 手动对阵` Tab (第 5 个)
+- `web/app/globals.css` +260 行 bracket 样式
+
+### 启动
+同 `web/`: `cd web && npx next start -p 3010` → http://localhost:3010/bracket
+
+### 后续工作
+- R32 真实赛果进入 CSV 后, 锁定逻辑自动生效 (data_status=real)
+- 手动标记未持久化 (刷新页面丢失) - 如需持久化可加 localStorage
+
+## 10.8 v2.4.0 Next.js 16 App Router 架构切换 (2026-06-28)
 
 ### 核心改动
 单文件 HTML SPA (`world_cup_2026_spa_v237.html`) → Next.js 16 App Router 4 路由 SPA (`web/`)。
