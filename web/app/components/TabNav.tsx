@@ -8,7 +8,8 @@ const TABS = [
   { href: '/schedule', label: '📅 赛程' },
   { href: '/config', label: '🎛️ 配置' },
   { href: '/predict', label: '🏆 预测' },
-  { href: '/bracket', label: '🎯 手动对阵' },
+  { href: '/bracket1', label: '🎯 手动对阵' },
+  { href: '/claudeBracket', label: '🤖 Claude对阵' },
 ];
 
 export function TabNav() {
