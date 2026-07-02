@@ -644,18 +644,20 @@ const STAGE_ORDER: Stage[] = ['R32', 'R16', 'QF', 'SF', 'FINAL'];
 
 function BracketConnectors({ revealedStage }: { revealedStage: Stage | null }) {
   const active = (stage: Stage) => revealedStage && STAGE_ORDER.indexOf(stage) <= STAGE_ORDER.indexOf(revealedStage);
-  // 列 x: 5 列 (左 R32/R16/QF/SF + 右 SF/QF/R16/R32)
-  const colR32L = 14;
-  const colR16L = 24;
-  const colQFL = 33;
-  const colSFL = 42;
-  const colSFR = 58;
-  const colQFR = 67;
-  const colR16R = 76;
-  const colR32R = 86;
+  // 列 x: 卡片 left% 中心点 (13/23/32/41 + 59/68/77/87)
+  // SVG viewBox 0 0 100, width 100%, 所以 1 unit ≈ 1% 卡片容器宽度
+  const colR32L = 13;
+  const colR16L = 23;
+  const colQFL = 32;
+  const colSFL = 41;
+  const colSFR = 59;
+  const colQFR = 68;
+  const colR16R = 77;
+  const colR32R = 87;
   const w = 3.5;
-  const colLeft = (idx: number) => colX(idx);
-  const colRight = (idx: number) => colX(idx) + w;
+  // 卡片左右边缘: 卡片宽 ~7% (80/1200), w=3.5 是每边 1.75 unit 偏移
+  const colLeft = (idx: number) => colX(idx) - w / 2;
+  const colRight = (idx: number) => colX(idx) + w / 2;
   function colX(idx: number): number {
     if (idx === 0) return colR32L;
     if (idx === 1) return colR16L;
@@ -701,9 +703,9 @@ function BracketConnectors({ revealedStage }: { revealedStage: Stage | null }) {
       <g className={`fiba-line ${active('FINAL') ? 'is-active' : ''}`}>
         <polyline points={`${colRight(3)},${SF_UPPER_Y} ${midX(3, 4)},${SF_UPPER_Y} ${midX(3, 4)},${FINAL_Y} ${colLeft(4)},${FINAL_Y}`} fill="none" />
       </g>
-      {/* Final → 3RD */}
+      {/* Final → 3RD (从 Final 卡片底部中央到 3RD 卡片顶部中央) */}
       <g className={`fiba-line ${active('FINAL') ? 'is-active' : ''}`}>
-        <polyline points={`${colRight(4)},${FINAL_Y} 50,${FINAL_Y} 50,${THIRD_Y} ${colLeft(4)},${THIRD_Y}`} fill="none" />
+        <polyline points={`50,${FINAL_Y + 10} 50,${THIRD_Y - 6}`} fill="none" />
       </g>
       {/* SF 下面 → Final */}
       <g className={`fiba-line ${active('FINAL') ? 'is-active' : ''}`}>
@@ -724,13 +726,13 @@ function BracketConnectors({ revealedStage }: { revealedStage: Stage | null }) {
           </g>
         );
       })}
-      {/* R32 下面 8 场 → R16 下面 4 场 */}
+      {/* R32 下面 8 场 → R16 下面 4 场 (镜像: R32 右边 → R16 左边) */}
       {Array.from({ length: 4 }).map((_, k) => {
         const yTo = R16_Y[k];
         return (
           <g key={`r32-r16-lower-${k}`} className={`fiba-line ${active('R16') ? 'is-active' : ''}`}>
-            <polyline points={`${colLeft(7)},${r32Y(8 + 2 * k)} ${midX(6, 7)},${r32Y(8 + 2 * k)} ${midX(6, 7)},${yTo} ${colRight(8 - 1)},${yTo}`} fill="none" />
-            <polyline points={`${colLeft(7)},${r32Y(8 + 2 * k + 1)} ${midX(6, 7)},${r32Y(8 + 2 * k + 1)} ${midX(6, 7)},${yTo} ${colRight(8 - 1)},${yTo}`} fill="none" />
+            <polyline points={`${colRight(7)},${r32Y(8 + 2 * k)} ${midX(6, 7)},${r32Y(8 + 2 * k)} ${midX(6, 7)},${yTo} ${colLeft(6)},${yTo}`} fill="none" />
+            <polyline points={`${colRight(7)},${r32Y(8 + 2 * k + 1)} ${midX(6, 7)},${r32Y(8 + 2 * k + 1)} ${midX(6, 7)},${yTo} ${colLeft(6)},${yTo}`} fill="none" />
           </g>
         );
       })}

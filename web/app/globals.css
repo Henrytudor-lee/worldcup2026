@@ -1111,11 +1111,11 @@ main { padding: 24px; max-width: 100%; }
 .reset-btn:hover:not(:disabled) { background: rgba(255,255,255,0.08); color: white; }
 .reset-btn:disabled { opacity: 0.4; }
 
-/* ====== 5 列主容器: 镜像 4 列 + 中央奖杯 (R16→QF→SF→Final) ====== */
+/* ====== 5 列主容器: 镜像布局 + 6 小组均分 0-100% ====== */
 .fiba-bracket {
   position: relative;
   width: 100%;
-  height: 880px;
+  height: 720px;
   background: radial-gradient(ellipse at center, rgba(255,215,0,0.04) 0%, transparent 40%, rgba(30,60,120,0.06) 100%);
   overflow: hidden;
   border-radius: 12px;
@@ -1123,7 +1123,6 @@ main { padding: 24px; max-width: 100%; }
   margin: 0 auto;
 }
 
-/* ====== SVG 折线层 ====== */
 .fiba-svg {
   position: absolute;
   inset: 0;
@@ -1133,8 +1132,8 @@ main { padding: 24px; max-width: 100%; }
   z-index: 1;
 }
 .fiba-svg .fiba-line polyline {
-  stroke: rgba(220, 220, 220, 0.5);
-  stroke-width: 0.18;
+  stroke: rgba(220, 220, 220, 0.65);
+  stroke-width: 1.2;
   fill: none;
   transition: stroke 0.4s, stroke-width 0.4s;
   stroke-linecap: round;
@@ -1147,17 +1146,17 @@ main { padding: 24px; max-width: 100%; }
   filter: drop-shadow(0 0 3px rgba(255,200,80,0.6));
 }
 
-/* ====== slot 通用 ====== */
 .fiba-slot {
   position: absolute;
   transform: translate(-50%, -50%);
   z-index: 2;
 }
+.fiba-r32-slot { width: 80px; }
 .fiba-r16-slot { width: 80px; }
 .fiba-qf-slot { width: 80px; }
 .fiba-sf-slot { width: 80px; }
 
-/* ====== 小组卡片 (列 1, 6 块, 上下半各 3 块) ====== */
+/* ====== 6 小组卡片 (列 1, 6 块均分 0-100%) ====== */
 .fiba-group {
   position: absolute;
   transform: translateY(-50%);
@@ -1197,10 +1196,7 @@ main { padding: 24px; max-width: 100%; }
   min-height: 22px;
   justify-content: center;
 }
-.fiba-group-flag-emoji {
-  font-size: 12px;
-  line-height: 1;
-}
+.fiba-group-flag-emoji { font-size: 12px; line-height: 1; }
 .fiba-group-flag-team {
   font-size: 7px;
   margin-top: 1px;
@@ -1210,7 +1206,7 @@ main { padding: 24px; max-width: 100%; }
   max-width: 32px;
 }
 
-/* ====== 中央列: Final + 奖杯 + 3rd ====== */
+/* ====== 中央列 ====== */
 .fiba-center {
   position: absolute;
   top: 0;
@@ -1263,7 +1259,6 @@ main { padding: 24px; max-width: 100%; }
 }
 .fiba-trophy-wrap {
   position: absolute;
-  top: 38%;
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
@@ -1282,7 +1277,7 @@ main { padding: 24px; max-width: 100%; }
   filter: drop-shadow(0 0 8px rgba(255,215,0,0.6));
 }
 
-/* ====== 比赛 pair 卡片 ====== */
+/* ====== 比赛 pair ====== */
 .fiba-pair {
   display: flex;
   flex-direction: column;
@@ -1314,7 +1309,7 @@ main { padding: 24px; max-width: 100%; }
   letter-spacing: 0.5px;
 }
 
-/* ====== 旗 chip ====== */
+/* ====== 旗 ====== */
 .fiba-flag {
   position: relative;
   display: flex;
@@ -1373,7 +1368,6 @@ main { padding: 24px; max-width: 100%; }
   cursor: not-allowed;
 }
 
-/* ====== toast ====== */
 .bracket-toast {
   position: fixed;
   bottom: 30px;
@@ -1395,31 +1389,30 @@ main { padding: 24px; max-width: 100%; }
 }
 
 /* ====== 响应式 ====== */
-@media (max-width: 900px) {
-  .fiba-bracket { height: 780px; }
-  .fiba-group { width: 68px; }
-  .fiba-group-flag-emoji { font-size: 10px; }
-  .fiba-group-flag-team { font-size: 6px; max-width: 26px; }
-  .fiba-r16-slot, .fiba-qf-slot, .fiba-sf-slot { width: 68px; }
-  .fiba-center { width: 90px; }
+@media (max-width: 1100px) {
+  .fiba-bracket { height: 660px; }
+  .fiba-group { width: 70px; }
+  .fiba-group-flag-emoji { font-size: 11px; }
+  .fiba-group-flag-team { font-size: 6px; max-width: 28px; }
+  .fiba-r32-slot, .fiba-r16-slot, .fiba-qf-slot, .fiba-sf-slot { width: 70px; }
+  .fiba-center { width: 95px; }
   .fiba-trophy-svg { width: 50px; height: 70px; }
   .fiba-flag-emoji { font-size: 12px; }
-  .fiba-flag-team { font-size: 8px; max-width: 40px; }
+  .fiba-flag-team { font-size: 8px; max-width: 42px; }
 }
-@media (max-width: 700px) {
-  .fiba-bracket { height: 720px; }
-  .fiba-group { width: 56px; }
-  .fiba-group-flag-emoji { font-size: 9px; }
+@media (max-width: 800px) {
+  .fiba-bracket { height: 600px; }
+  .fiba-group { width: 58px; padding: 2px; }
+  .fiba-group-flag-emoji { font-size: 10px; }
   .fiba-group-flag-team { display: none; }
-  .fiba-r16-slot, .fiba-qf-slot, .fiba-sf-slot { width: 56px; }
-  .fiba-center { width: 78px; }
+  .fiba-r32-slot, .fiba-r16-slot, .fiba-qf-slot, .fiba-sf-slot { width: 58px; }
+  .fiba-center { width: 80px; }
   .fiba-trophy-svg { width: 42px; height: 60px; }
   .fiba-flag-emoji { font-size: 11px; }
   .fiba-flag-team { display: none; }
   .fiba-pair-label { display: none; }
   .fiba-champion-title { font-size: 11px; }
 }
-
 
 
 @media (max-width: 720px) {
