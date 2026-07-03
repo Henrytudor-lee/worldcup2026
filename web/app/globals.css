@@ -1131,7 +1131,8 @@ main { padding: 24px; max-width: 100%; }
   pointer-events: none;
   z-index: 1;
 }
-.fiba-svg .fiba-line polyline {
+.fiba-svg .fiba-line polyline,
+.fiba-svg .fiba-line line {
   stroke: rgba(220, 220, 220, 0.65);
   stroke-width: 1.2;
   fill: none;
@@ -1140,7 +1141,8 @@ main { padding: 24px; max-width: 100%; }
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
 }
-.fiba-svg .fiba-line.is-active polyline {
+.fiba-svg .fiba-line.is-active polyline,
+.fiba-svg .fiba-line.is-active line {
   stroke: rgba(255, 200, 80, 1);
   stroke-width: 1.6;
   filter: drop-shadow(0 0 3px rgba(255,200,80,0.6));

@@ -694,27 +694,27 @@ function BracketConnectors({ revealedStage }: { revealedStage: Stage | null }) {
           </g>
         );
       })}
-      {/* QF 上面 2 场 → SF 上面 1 场 */}
+      {/* QF 上面 2 场 → SF 上面 1 场 (用 line 避免 0 高度 polyline 不渲染) */}
       <g className={`fiba-line ${active('SF') ? 'is-active' : ''}`}>
-        <polyline points={`${colRight(2)},${QF_Y[0]} ${midX(2, 3)},${QF_Y[0]} ${midX(2, 3)},${SF_UPPER_Y} ${colLeft(3)},${SF_UPPER_Y}`} fill="none" />
-        <polyline points={`${colRight(2)},${QF_Y[1]} ${midX(2, 3)},${QF_Y[1]} ${midX(2, 3)},${SF_UPPER_Y} ${colLeft(3)},${SF_UPPER_Y}`} fill="none" />
+        <line x1={colRight(2)} y1={QF_Y[0]} x2={colLeft(3)} y2={SF_UPPER_Y} />
+        <line x1={colRight(2)} y1={QF_Y[1]} x2={colLeft(3)} y2={SF_UPPER_Y} />
       </g>
       {/* SF 上面 → Final */}
       <g className={`fiba-line ${active('FINAL') ? 'is-active' : ''}`}>
-        <polyline points={`${colRight(3)},${SF_UPPER_Y} ${midX(3, 4)},${SF_UPPER_Y} ${midX(3, 4)},${FINAL_Y} ${colLeft(4)},${FINAL_Y}`} fill="none" />
+        <line x1={colRight(3)} y1={SF_UPPER_Y} x2={colLeft(4)} y2={FINAL_Y} />
       </g>
       {/* Final → 3RD (从 Final 卡片底部中央到 3RD 卡片顶部中央) */}
       <g className={`fiba-line ${active('FINAL') ? 'is-active' : ''}`}>
-        <polyline points={`50,${FINAL_Y + 10} 50,${THIRD_Y - 6}`} fill="none" />
+        <line x1={50} y1={FINAL_Y + 10} x2={50} y2={THIRD_Y - 6} />
       </g>
       {/* SF 下面 → Final */}
       <g className={`fiba-line ${active('FINAL') ? 'is-active' : ''}`}>
-        <polyline points={`${colLeft(4)},${FINAL_Y} ${midX(4, 5)},${FINAL_Y} ${midX(4, 5)},${SF_LOWER_Y} ${colRight(5)},${SF_LOWER_Y}`} fill="none" />
+        <line x1={colLeft(4)} y1={FINAL_Y} x2={colRight(5)} y2={SF_LOWER_Y} />
       </g>
-      {/* QF 下面 2 场 → SF 下面 1 场 */}
+      {/* QF 下面 2 场 → SF 下面 1 场 (用 line) */}
       <g className={`fiba-line ${active('SF') ? 'is-active' : ''}`}>
-        <polyline points={`${colLeft(5)},${SF_LOWER_Y} ${midX(4, 5)},${SF_LOWER_Y} ${midX(4, 5)},${QF_Y[0]} ${colRight(6)},${QF_Y[0]}`} fill="none" />
-        <polyline points={`${colLeft(5)},${SF_LOWER_Y} ${midX(4, 5)},${SF_LOWER_Y} ${midX(4, 5)},${QF_Y[1]} ${colRight(6)},${QF_Y[1]}`} fill="none" />
+        <line x1={colLeft(5)} y1={SF_LOWER_Y} x2={colRight(6)} y2={QF_Y[0]} />
+        <line x1={colLeft(5)} y1={SF_LOWER_Y} x2={colRight(6)} y2={QF_Y[1]} />
       </g>
       {/* R16 下面 4 场 → QF 下面 2 场 */}
       {Array.from({ length: 2 }).map((_, k) => {
