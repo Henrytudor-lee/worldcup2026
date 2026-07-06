@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏆 2026 KO 进度追踪</title>
+<style>
+:root { --bg:#0d1117; --bg-2:#161b22; --bg-3:#21262d; --border:#30363d; --text:#e6edf3; --text-2:#adbac7; --text-3:#7d8590; --green:#3fb950; --red:#f85149; --gold:#ffd700; --bronze:#cd7f32; --blue:#58a6ff; }
+* { box-sizing:border-box; }
+body { font-family:-apple-system,"PingFang SC","Helvetica Neue",sans-serif; background:var(--bg); color:var(--text); margin:0; padding:20px; min-height:100vh; }
+h1 { margin:0 0 6px 0; font-size:24px; color:var(--gold); }
+.sub { color:var(--text-2); font-size:13px; margin-bottom:16px; }
+.progress { background:var(--bg-2); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:16px; }
+.progress-bar { height:22px; background:var(--bg-3); border-radius:11px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,#3fb950,#58a6ff); display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:12px; }
+.progress-meta { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-top:6px; font-size:11px; color:var(--text-3); }
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:8px; margin-bottom:16px; }
+.stat { background:var(--bg-2); border:1px solid var(--border); border-radius:6px; padding:8px 12px; }
+.stat .v { font-size:18px; font-weight:700; color:var(--gold); }
+.stat .l { font-size:10px; color:var(--text-3); margin-top:2px; }
+.bracket { display:grid; grid-template-columns: 0.9fr 1.4fr 1.4fr 1.1fr 0.9fr 0.5fr; gap:8px; align-items:start; }
+.col { display:flex; flex-direction:column; gap:6px; }
+.col-title { text-align:center; font-size:11px; font-weight:700; color:var(--text-2); padding:8px 4px; background:var(--bg-2); border:1px solid var(--border); border-radius:6px; margin-bottom:4px; }
+.col-title .count { font-size:10px; color:var(--text-3); margin-left:4px; }
+.col-title.final { background:linear-gradient(135deg,#ffd70033,#cd7f32); color:var(--gold); }
+.col-title.3rd { background:var(--bg-3); color:var(--bronze); }
+.r32-card { background:var(--bg-2); border:1px solid var(--border); border-radius:4px; padding:4px 7px; font-size:11px; display:flex; align-items:center; gap:4px; cursor:help; }
+.r32-card.real { border-left:2px solid var(--green); }
+.r32-card.pending { border-left:2px solid var(--text-3); opacity:0.7; }
+.r32-card.ok { background:#0d2818; color:var(--green); }
+.r32-card.bad { background:#2d0d0d; color:var(--red); }
+.r32-pen { color:var(--gold); font-weight:700; font-size:10px; }
+.match { background:var(--bg-2); border:1px solid var(--border); border-radius:8px; padding:9px 11px; transition:transform 0.2s; position:relative; }
+.match:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,0,0,0.4); }
+.match.real { border-left:3px solid var(--green); }
+.match.pending { border-left:3px solid var(--text-3); opacity:0.75; }
+.match.real.pred-correct { box-shadow:inset 0 0 0 1px var(--green); }
+.match.real.pred-wrong { box-shadow:inset 0 0 0 1px var(--red); }
+.match-date { font-size:10px; color:var(--text-3); margin-bottom:4px; }
+.team { display:flex; justify-content:space-between; align-items:center; padding:2px 0; font-size:13px; }
+.team.winner { font-weight:700; color:var(--green); }
+.team.loser { color:var(--text-3); }
+.team-name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.team-score { font-weight:700; margin-left:6px; font-variant-numeric:tabular-nums; min-width:16px; text-align:right; }
+.badge { position:absolute; top:5px; right:7px; font-size:9px; padding:1px 5px; border-radius:3px; font-weight:700; }
+.badge.win { background:var(--green); color:white; }
+.badge.pen { background:var(--gold); color:black; }
+.badge.todo { background:var(--text-3); color:white; }
+.pred-mark { position:absolute; bottom:5px; right:7px; font-size:10px; font-weight:700; }
+.pred-mark.ok { color:var(--green); }
+.pred-mark.bad { color:var(--red); }
+.pred-mark.pred { color:var(--text-3); }
+.legend { margin-top:16px; padding:10px; background:var(--bg-2); border-radius:6px; font-size:11px; color:var(--text-3); display:flex; flex-wrap:wrap; gap:12px; }
+.legend-item { display:flex; align-items:center; gap:5px; }
+.legend-dot { width:9px; height:9px; border-radius:2px; }
+@media (max-width:1100px) { .bracket { grid-template-columns:1fr 1fr; } .col-r32, .col-r16, .col-qf, .col-sf { grid-column:span 1; } .col-final, .col-3rd { grid-column:span 2; max-width:380px; margin:0 auto; } }
+@media (max-width:600px) { body { padding:12px; } .bracket { grid-template-columns:1fr; } .col-final, .col-3rd { grid-column:1; max-width:100%; } h1 { font-size:18px; } }
+</style>
+</head>
+<body>
+<h1>🏆 2026 KO 进度追踪</h1>
+<div class="sub">数据 2026-07-06 22:30 BJT · 已完赛 14/32 (44%) · 下一场 <strong>7/6 23:00 荷兰 vs 法国 (R16)</strong></div>
+
+<div class="progress">
+  <div class="progress-bar"><div class="progress-fill" style="width:43.8%">44%</div></div>
+  <div class="progress-meta">
+    <span>R32: 12/16</span>
+    <span>R16: 2/8</span>
+    <span>QF: 0/4</span>
+    <span>SF: 0/2</span>
+    <span>Final: 0/1</span>
+    <span>3RD: 0/1</span>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="v">2/8</div><div class="l">R16 已完赛 (剩 6 场)</div></div>
+  <div class="stat"><div class="v">10/12</div><div class="l">R32 算法命中 (83%)</div></div>
+  <div class="stat"><div class="v">1/2</div><div class="l">R16 算法命中 (50%)</div></div>
+  <div class="stat"><div class="v">2</div><div class="l">R32 错分 (点球 1+弱主胜 1)</div></div>
+</div>
+
+<div class="bracket">
+  <div class="col col-r32">
+    <div class="col-title">R32 胜者 <span class="count">12/16</span></div>
+<div class="r32-card pending" title="南非 None 加拿大 预测:加拿大">加拿大</div>
+<div class="r32-card pending" title="巴西 None 日本 预测:巴西">巴西</div>
+<div class="r32-card pending" title="德国 None 巴拉圭 预测:德国">德国</div>
+<div class="r32-card pending" title="荷兰 None 摩洛哥 预测:荷兰">荷兰</div>
+<div class="r32-card real ok" title="科特迪瓦 1-2 挪威 预测:挪威">挪威</div>
+<div class="r32-card real ok" title="法国 3-0 瑞典 预测:法国">法国</div>
+<div class="r32-card real ok" title="墨西哥 2-0 厄瓜多尔 预测:墨西哥">墨西哥</div>
+<div class="r32-card real ok" title="英格兰 2-1 民主刚果 预测:英格兰">英格兰</div>
+<div class="r32-card real bad" title="比利时 3-2 塞内加尔 预测:塞内加尔">比利时</div>
+<div class="r32-card real ok" title="美国 2-0 波黑 预测:美国">美国</div>
+<div class="r32-card real ok" title="西班牙 3-0 奥地利 预测:西班牙">西班牙</div>
+<div class="r32-card real ok" title="葡萄牙 2-1 克罗地亚 预测:葡萄牙">葡萄牙</div>
+<div class="r32-card real ok" title="瑞士 2-0 阿尔及利亚 预测:瑞士">瑞士</div>
+<div class="r32-card real ok" title="澳大利亚 1-1 埃及 预测:埃及">埃及<span class="r32-pen">*</span></div>
+<div class="r32-card real ok" title="阿根廷 3-2 佛得角 预测:阿根廷">阿根廷</div>
+<div class="r32-card real ok" title="哥伦比亚 1-0 加纳 预测:哥伦比亚">哥伦比亚</div>
+  </div>
+  <div class="col col-r16">
+    <div class="col-title">R16 <span class="count">2/8</span></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-05</div><div class="team"><span class="team-name">加拿大</span><span class="team-score"></span></div><div class="team"><span class="team-name">德国</span><span class="team-score"></span></div><div class="pred-mark pred">65%</div></div>
+<div class="match real pred-wrong"><div class="badge win">完</div><div class="match-date">2026-07-05</div><div class="team loser"><span class="team-name">巴西</span><span class="team-score">1</span></div><div class="team winner"><span class="team-name">挪威</span><span class="team-score">2</span></div><div class="pred-mark bad">✗</div></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-06</div><div class="team"><span class="team-name">荷兰</span><span class="team-score"></span></div><div class="team"><span class="team-name">法国</span><span class="team-score"></span></div><div class="pred-mark pred">37%</div></div>
+<div class="match real pred-correct"><div class="badge win">完</div><div class="match-date">2026-07-06</div><div class="team loser"><span class="team-name">墨西哥</span><span class="team-score">2</span></div><div class="team winner"><span class="team-name">英格兰</span><span class="team-score">3</span></div><div class="pred-mark ok">✓</div></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-07</div><div class="team"><span class="team-name">西班牙</span><span class="team-score"></span></div><div class="team"><span class="team-name">葡萄牙</span><span class="team-score"></span></div><div class="pred-mark pred">40%</div></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-07</div><div class="team"><span class="team-name">塞内加尔</span><span class="team-score"></span></div><div class="team"><span class="team-name">美国</span><span class="team-score"></span></div><div class="pred-mark pred">44%</div></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-08</div><div class="team"><span class="team-name">埃及</span><span class="team-score"></span></div><div class="team"><span class="team-name">哥伦比亚</span><span class="team-score"></span></div><div class="pred-mark pred">33%</div></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-08</div><div class="team"><span class="team-name">瑞士</span><span class="team-score"></span></div><div class="team"><span class="team-name">阿根廷</span><span class="team-score"></span></div><div class="pred-mark pred">60%</div></div>
+  </div>
+  <div class="col col-qf">
+    <div class="col-title">QF <span class="count">0/4</span></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-10</div><div class="team"><span class="team-name">德国</span><span class="team-score"></span></div><div class="team"><span class="team-name">巴西</span><span class="team-score"></span></div><div class="pred-mark pred">37%</div></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-11</div><div class="team"><span class="team-name">荷兰</span><span class="team-score"></span></div><div class="team"><span class="team-name">英格兰</span><span class="team-score"></span></div><div class="pred-mark pred">37%</div></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-12</div><div class="team"><span class="team-name">葡萄牙</span><span class="team-score"></span></div><div class="team"><span class="team-name">塞内加尔</span><span class="team-score"></span></div><div class="pred-mark pred">42%</div></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-12</div><div class="team"><span class="team-name">哥伦比亚</span><span class="team-score"></span></div><div class="team"><span class="team-name">阿根廷</span><span class="team-score"></span></div><div class="pred-mark pred">58%</div></div>
+  </div>
+  <div class="col col-sf">
+    <div class="col-title">SF <span class="count">0/2</span></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-15</div><div class="team"><span class="team-name">德国</span><span class="team-score"></span></div><div class="team"><span class="team-name">荷兰</span><span class="team-score"></span></div><div class="pred-mark pred">37%</div></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-16</div><div class="team"><span class="team-name">葡萄牙</span><span class="team-score"></span></div><div class="team"><span class="team-name">阿根廷</span><span class="team-score"></span></div><div class="pred-mark pred">37%</div></div>
+  </div>
+  <div class="col col-final">
+    <div class="col-title final">🏆 Final <span class="count">0/1</span></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-20</div><div class="team"><span class="team-name">德国</span><span class="team-score"></span></div><div class="team"><span class="team-name">葡萄牙</span><span class="team-score"></span></div><div class="pred-mark pred">37%</div></div>
+  </div>
+  <div class="col col-3rd">
+    <div class="col-title 3rd">🥉 3RD <span class="count">0/1</span></div>
+<div class="match pending"><div class="badge todo">待</div><div class="match-date">2026-07-19</div><div class="team"><span class="team-name">荷兰</span><span class="team-score"></span></div><div class="team"><span class="team-name">阿根廷</span><span class="team-score"></span></div><div class="pred-mark pred">37%</div></div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--green);"></div>胜</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--gold);"></div>点球</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--text-3);"></div>待</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#0d2818;"></div>算法✓</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#2d0d0d;"></div>算法✗</div>
+  <div style="margin-left:auto;">数据: match_results.csv + predictions</div>
+</div>
+
+</body>
+</html>
