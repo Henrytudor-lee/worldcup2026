@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>7/3 三场 16 强预测 v3.0 + 战术修正 v2</title>
+<style>
+  body { font-family: -apple-system, "PingFang SC", sans-serif; max-width: 1100px; margin: 30px auto; padding: 20px; background: #f8f8f5; color: #1a1a1a; }
+  h1 { color: #2c5f2d; text-align: center; }
+  h2 { color: #5a3a1f; border-bottom: 2px solid #d4a574; padding-bottom: 6px; margin-top: 30px; }
+  h3 { color: #5a3a1f; margin-bottom: 8px; }
+  .match-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin: 20px 0; padding: 20px; }
+  .match-header { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #fef7e8, #f5e6c8); padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+  .match-time { font-size: 32px; font-weight: 700; color: #5a3a1f; }
+  .match-teams { font-size: 24px; font-weight: 600; color: #1a1a1a; }
+  .vs { color: #d4a574; font-weight: 700; padding: 0 12px; }
+  .venue { font-size: 12px; color: #888; margin-top: 4px; }
+  .prediction-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+  .pred-box { background: #faf6ee; padding: 16px; border-radius: 8px; }
+  .pred-box h4 { color: #5a3a1f; margin: 0 0 12px 0; }
+  .prob-bar { background: #e8e0d0; height: 24px; border-radius: 4px; position: relative; margin: 6px 0; overflow: hidden; }
+  .prob-fill { height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 12px; }
+  .ph { background: #2c5f2d; }
+  .pd { background: #d4a574; }
+  .pa { background: #8b4513; }
+  .verdict { background: #5a3a1d; color: #fff; padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 16px; text-align: center; font-weight: 600; }
+  .section { margin: 12px 0; }
+  .label { font-weight: 600; color: #5a3a1f; }
+  .note-list { background: #fef7e8; padding: 12px; border-radius: 6px; margin: 8px 0; }
+  .note-list li { margin: 4px 0; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 12px 0; }
+  .stat-item { background: #faf6ee; padding: 10px; border-radius: 6px; text-align: center; }
+  .stat-num { font-size: 20px; font-weight: 700; color: #5a3a1f; }
+  .stat-label { font-size: 11px; color: #888; margin-top: 2px; }
+  .diff { color: #c0392b; font-size: 12px; }
+  .meta { font-size: 12px; color: #888; text-align: center; margin: 20px 0; }
+  .arrow-down { color: #c0392b; font-size: 10px; }
+  .arrow-up { color: #2c5f2d; font-size: 10px; }
+</style>
+</head>
+<body>
+<h1>⚽ 7月3日 三场 16 强预测</h1>
+<p class="meta">v3.0 KO 算法 + 战术修正 v2 | 生成时间: 2026-07-02 16:09:51 | 算法 v3.0 改造: is_knockout=True 触发 4 项 KO 调整 (λ×0.85 + draw_floor 25% + 加时加成 20% + 红牌×0.7)</p>
+
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">03:00</div>
+      <div class="venue">📍 BC Place, Vancouver</div>
+    </div>
+    <div class="match-teams">
+      <b>西班牙</b> <span class="vs">vs</span> <b>奥地利</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">R16 · 16 强</div>
+      <div style="font-size:12px;color:#888">R16_M11</div>
+    </div>
+  </div>
+
+  <div class="prediction-grid">
+    <div class="pred-box">
+      <h4>📊 v3.0 算法预测</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">
+        FIFA #2 西班牙 · λ 3.49<br>
+        FIFA #24 奥地利 · λ 1.56
+      </div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:63.9%">63.9% 西班牙</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:23.7%">23.7% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:12.4%">12.4% 奥地利</div></div>
+      <div class="verdict">预测比分 3-1 · 冠军: 西班牙</div>
+    </div>
+    
+    <div class="pred-box">
+      <h4>🎯 战术修正 v2 (含伤停)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">
+        基于 v3 概率 + 伤停/战术微调
+      </div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:68.0%">68.0% 西班牙</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:21.8%">21.8% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:10.2%">10.2% 奥地利</div></div>
+      <div class="verdict" style="background: #2c5f2d">战术预测: 西班牙 胜 (估计 3-0)</div>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-item">
+      <div class="stat-num">22290</div>
+      <div class="stat-label">西班牙 FW 评分</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">361</div>
+      <div class="stat-label">奥地利 FW 评分</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">15566</div>
+      <div class="stat-label">西班牙 DEF 评分</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3829</div>
+      <div class="stat-label">奥地利 DEF 评分</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">🏥 伤停情况:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>西班牙</b>: 尼科·威廉姆斯伤缺（皮诺/穆尼奥斯已康复可首发）<br>
+      <b>奥地利</b>: 阿拉巴腿筋伤缺 + 鲍姆加特纳重伤 + 波施下颌骨折出战存疑
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="label">⚽ 战术形态:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>西班牙</b>: 小组赛 2 胜 1 平零失球（5 球/0 失球）；过去 10 场 6 胜 4 平不败；莫拉塔已康复首发出任支点<br>
+      <b>奥地利</b>: 小组赛 1 胜 1 平 1 负（6 球/6 失球）；进攻端阿瑙托维奇 3 球火热但体能存疑；后防三大主力受伤
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="label">📝 战术修正要点:</div>
+    <ul class="note-list">
+<li>西缺尼科削弱边路 (-5%)</li><li>奥后防 3 大主力受伤 → 主胜上调 (+10%)</li><li>莫拉塔已康复首发出任支点 (+3%)</li>    </ul>
+  </div>
+  
+  <div class="section">
+    <div class="label">🎲 KO 调整 (v3):</div>
+    <div style="font-size:13px">{'lambda_reducer': 0.85, 'draw_floor_applied': True}</div>
+  </div>
+</div>
+
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">07:00</div>
+      <div class="venue">📍 AT&T Stadium, Arlington</div>
+    </div>
+    <div class="match-teams">
+      <b>葡萄牙</b> <span class="vs">vs</span> <b>克罗地亚</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">R16 · 16 强</div>
+      <div style="font-size:12px;color:#888">R16_M12</div>
+    </div>
+  </div>
+
+  <div class="prediction-grid">
+    <div class="pred-box">
+      <h4>📊 v3.0 算法预测</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">
+        FIFA #5 葡萄牙 · λ 3.83<br>
+        FIFA #11 克罗地亚 · λ 1.72
+      </div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:63.7%">63.7% 葡萄牙</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:24.1%">24.1% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:12.2%">12.2% 克罗地亚</div></div>
+      <div class="verdict">预测比分 3-1 · 冠军: 葡萄牙</div>
+    </div>
+    
+    <div class="pred-box">
+      <h4>🎯 战术修正 v2 (含伤停)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">
+        基于 v3 概率 + 伤停/战术微调
+      </div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:61.0%">61.0% 葡萄牙</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:25.6%">25.6% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:13.5%">13.5% 克罗地亚</div></div>
+      <div class="verdict" style="background: #2c5f2d">战术预测: 葡萄牙 胜 (估计 2-1)</div>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-item">
+      <div class="stat-num">16295</div>
+      <div class="stat-label">葡萄牙 FW 评分</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">1872</div>
+      <div class="stat-label">克罗地亚 FW 评分</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">16185</div>
+      <div class="stat-label">葡萄牙 DEF 评分</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">10646</div>
+      <div class="stat-label">克罗地亚 DEF 评分</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">🏥 伤停情况:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>葡萄牙</b>: 若昂·内维斯有望重回首发（无新增伤病）<br>
+      <b>克罗地亚</b>: 格瓦迪奥尔伤愈回归首发 + 莫德里奇国家队 200 场里程碑
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="label">⚽ 战术形态:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>葡萄牙</b>: 小组赛冷热不均（vs 哥伦比亚全场被轰 24 脚射门暴露防守漏洞）<br>
+      <b>克罗地亚</b>: 小组赛 2 胜 1 平（vs 加纳 2-1 苦战胜出）；39 岁魔笛最后一届世界杯
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="label">📝 战术修正要点:</div>
+    <ul class="note-list">
+<li>葡对哥伦比亚全场被轰 24 脚射门 — 防守漏洞严重</li><li>克罗格瓦迪奥尔伤愈回归首发 → 后防稳定</li><li>魔笛 200 场里程碑 + 大赛经验</li>    </ul>
+  </div>
+  
+  <div class="section">
+    <div class="label">🎲 KO 调整 (v3):</div>
+    <div style="font-size:13px">{'lambda_reducer': 0.85, 'draw_floor_applied': True}</div>
+  </div>
+</div>
+
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">11:00</div>
+      <div class="venue">📍 Lumen Field, Seattle</div>
+    </div>
+    <div class="match-teams">
+      <b>瑞士</b> <span class="vs">vs</span> <b>阿尔及利亚</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">R16 · 16 强</div>
+      <div style="font-size:12px;color:#888">R16_M13</div>
+    </div>
+  </div>
+
+  <div class="prediction-grid">
+    <div class="pred-box">
+      <h4>📊 v3.0 算法预测</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">
+        FIFA #19 瑞士 · λ 2.02<br>
+        FIFA #28 阿尔及利亚 · λ 1.86
+      </div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:33.3%">33.3% 瑞士</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:38.2%">38.2% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:28.5%">28.5% 阿尔及利亚</div></div>
+      <div class="verdict">预测比分 2-1 · 冠军: 瑞士</div>
+    </div>
+    
+    <div class="pred-box">
+      <h4>🎯 战术修正 v2 (含伤停)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">
+        基于 v3 概率 + 伤停/战术微调
+      </div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:33.9%">33.9% 瑞士</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:42.6%">42.6% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:23.5%">23.5% 阿尔及利亚</div></div>
+      <div class="verdict" style="background: #2c5f2d">战术预测: 瑞士 胜 (估计 2-1)</div>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-item">
+      <div class="stat-num">6504</div>
+      <div class="stat-label">瑞士 FW 评分</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4497</div>
+      <div class="stat-label">阿尔及利亚 FW 评分</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3321</div>
+      <div class="stat-label">瑞士 DEF 评分</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">5292</div>
+      <div class="stat-label">阿尔及利亚 DEF 评分</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">🏥 伤停情况:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>瑞士</b>: 主力后卫雅克出战存疑 + 穆海姆伤愈备用<br>
+      <b>阿尔及利亚</b>: 主力前锋阿穆拉因伤缺席（锋线深度受考验）
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="label">⚽ 战术形态:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>瑞士</b>: 小组赛 2 胜 1 平顺利晋级；扎卡+恩博洛双核 + 新星曼赞比抢眼<br>
+      <b>阿尔及利亚</b>: 靠 3-3 力平奥地利晋级；马赫雷斯独揽两球是绝对核心（反击威力十足）
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="label">📝 战术修正要点:</div>
+    <ul class="note-list">
+<li>瑞主力后卫雅克出战存疑</li><li>阿主力前锋阿穆拉伤缺</li><li>阿门将评分仅 53（瑞门将 2865，差 54 倍 — 数据异常低）</li>    </ul>
+  </div>
+  
+  <div class="section">
+    <div class="label">🎲 KO 调整 (v3):</div>
+    <div style="font-size:13px">{'lambda_reducer': 0.85, 'draw_extra_time_added': 0.2}</div>
+  </div>
+</div>
+</body></html>

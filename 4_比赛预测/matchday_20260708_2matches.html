@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>7/8 两场 R16 战术预测</title>
+<style>
+  body { font-family: -apple-system, "PingFang SC", sans-serif; max-width: 1100px; margin: 30px auto; padding: 20px; background: #f8f8f5; color: #1a1a1a; }
+  h1 { color: #2c5f2d; text-align: center; }
+  .match-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin: 20px 0; padding: 20px; }
+  .match-header { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #fef7e8, #f5e6c8); padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+  .match-time { font-size: 22px; font-weight: 700; color: #5a3a1f; }
+  .match-teams { font-size: 22px; font-weight: 600; }
+  .vs { color: #d4a574; font-weight: 700; padding: 0 10px; }
+  .prediction-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+  .pred-box { background: #faf6ee; padding: 16px; border-radius: 8px; }
+  .pred-box h4 { color: #5a3a1f; margin: 0 0 12px 0; }
+  .prob-bar { background: #e8e0d0; height: 24px; border-radius: 4px; position: relative; margin: 6px 0; overflow: hidden; }
+  .prob-fill { height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 12px; }
+  .ph { background: #2c5f2d; }
+  .pd { background: #d4a574; }
+  .pa { background: #8b4513; }
+  .verdict { background: #5a3a1d; color: #fff; padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 16px; text-align: center; font-weight: 600; }
+  .section { margin: 12px 0; }
+  .label { font-weight: 600; color: #5a3a1f; }
+  .note-list { background: #fef7e8; padding: 12px; border-radius: 6px; margin: 8px 0; }
+  .note-list li { margin: 4px 0; }
+  .meta { font-size: 12px; color: #888; text-align: center; margin: 20px 0; }
+  .tactical-score { background: linear-gradient(90deg, #5a3a1f, #8b5e3c); color: #fff; padding: 8px 16px; border-radius: 6px; display: inline-block; font-weight: 700; font-size: 18px; margin-top: 8px; }
+  .warn { background: #fef7e8; border-left: 4px solid #d4a574; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 13px; }
+</style>
+</head>
+<body>
+<h1>⚽ 7/8 两场 R16 战术预测</h1>
+<p class="meta">v3.0 KO 算法 + 战术修正 v2 | 2026-07-06 15:05:16</p>
+
+<div class="warn">
+  <b>📊 战术预测累计战绩 (7/3-7/6, 9 场)</b>: 胜方 8/9 (89%) | 比分完全命中 3/9 (33%)<br>
+  <b>R16 配对 bug 已修复</b> (7/6): r16_indices 改成 FIFA 2026 官方实际配对, 8/8 场跟实际 1-1 吻合
+</div>
+
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">后天 03:00 CST</div>
+      <div style="font-size:12px;color:#888">📍 Mercedes-Benz Stadium, Atlanta</div>
+    </div>
+    <div class="match-teams">
+      <b>阿根廷</b> <span class="vs">vs</span> <b>埃及</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">R16 · 16 强</div>
+      <div style="font-size:12px;color:#888">R16-7</div>
+    </div>
+  </div>
+  <div class="prediction-grid">
+    <div class="pred-box">
+      <h4>📊 v3.0 算法预测</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">λ: 3.83 vs 1.95</div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:60.7%">60.7% 阿根廷</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:24.4%">24.4% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:14.9%">14.9% 埃及</div></div>
+      <div class="verdict">v3 比分 3-1 · 冠军: 阿根廷</div>
+    </div>
+    <div class="pred-box">
+      <h4>🎯 战术修正 v2 (含伤停)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">基于 v3 + 伤停/战术微调</div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:61.9%">61.9% 阿根廷</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:23.6%">23.6% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:14.4%">14.4% 埃及</div></div>
+      <div class="verdict" style="background: #2c5f2d">战术冠军: 阿根廷</div>
+      <div style="text-align:center; margin-top: 12px;">
+        <div style="font-size:11px; color:#888; margin-bottom:4px">战术预测比分</div>
+        <div class="tactical-score">2-1 阿根廷胜</div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">🏥 伤停情况:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>阿根廷</b>: 全主力, 阵容齐整, 梅西+阿尔瓦雷斯+劳塔罗三叉戟<br>
+      <b>埃及</b>: 萨拉赫大腿伤, 小组赛末战伊朗 1-1 后被换下, 状态存疑 (上场对澳 1-1 PK 1-0 勉强晋级)
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">⚽ 战术形态:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>阿根廷</b>: FIFA #3, 身价 10.8 亿欧; 4-3-3/4-4-2, 卫冕冠军, 40 场不败, 梅西 39 岁最后一届<br>
+      <b>埃及</b>: FIFA #29, 身价仅 0.4 亿欧; 防守反击, 萨拉赫为核心 (受伤影响 60% 火力), 4 维全面落后
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">📜 历史:</div>
+    <div style="font-size:13px">1990 世界杯揭幕战阿根廷 1-0 埃及 (卡尼吉亚绝杀), 36 年后再战</div>
+  </div>
+  <div class="section">
+    <div class="label">📝 战术修正要点:</div>
+    <ul class="note-list"><li>FIFA 排名 #3 vs #29, 4 维全面碾压 (FW 23k vs 9k / MID 23k vs 0.6k / DEF 6.4k vs 0.3k)</li><li>阿根廷身价 10.8 亿欧 vs 埃及 0.4 亿欧 (27 倍差距)</li><li>萨拉赫大腿伤未愈, 即使出场也只 70% 状态</li><li>阿尔瓦雷斯 + 劳塔罗 一快一壮, 埃及后卫难以应对</li><li>埃及史上首次晋级淘汰赛, 经验不足</li><li>梅西最后一届世界杯, 全队斗志 + 战意历史级别</li><li>斯卡洛尼 4-3-3/4-4-2 切换, 战术成熟度碾压</li><li>大马丁 (阿斯顿维拉) 门线技术顶级, 埃及难破门</li><li>1990 世界杯阿根廷 1-0 埃及揭幕战, 卡尼吉亚绝杀, 历史心理优势</li></ul>
+  </div>
+</div>
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">后天 08:00 CST</div>
+      <div style="font-size:12px;color:#888">📍 BC Place, Vancouver</div>
+    </div>
+    <div class="match-teams">
+      <b>瑞士</b> <span class="vs">vs</span> <b>哥伦比亚</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">R16 · 16 强</div>
+      <div style="font-size:12px;color:#888">R16-8</div>
+    </div>
+  </div>
+  <div class="prediction-grid">
+    <div class="pred-box">
+      <h4>📊 v3.0 算法预测</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">λ: 1.90 vs 2.03</div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:29.1%">29.1% 瑞士</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:38.1%">38.1% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:32.9%">32.9% 哥伦比亚</div></div>
+      <div class="verdict">v3 比分 1-2 · 冠军: 哥伦比亚</div>
+    </div>
+    <div class="pred-box">
+      <h4>🎯 战术修正 v2 (含伤停)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">基于 v3 + 伤停/战术微调</div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:27.9%">27.9% 瑞士</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:42.1%">42.1% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:30.0%">30.0% 哥伦比亚</div></div>
+      <div class="verdict" style="background: #2c5f2d">战术冠军: 平局/加时</div>
+      <div style="text-align:center; margin-top: 12px;">
+        <div style="font-size:11px; color:#888; margin-bottom:4px">战术预测比分</div>
+        <div class="tactical-score">1-1 (PK 哥伦比亚胜)</div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">🏥 伤停情况:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>瑞士</b>: 全主力, 阵容齐整, 沙奇里+扎卡+恩博洛<br>
+      <b>哥伦比亚</b>: 前锋科尔多瓦**肌肉撕裂 3 周**, 提前告别世界杯; J罗 35 岁老将体能不足, 场均被换下
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">⚽ 战术形态:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>瑞士</b>: FIFA #19, 防守固若金汤 (32 强 2-0 阿尔及利亚 0 失球), 中场沙奇里+扎卡+恩博洛 "精密机器"<br>
+      <b>哥伦比亚</b>: FIFA #13, 32 强 1-0 加纳; 高位防线 + 莱尔马 + 普埃尔塔; 迪亚斯+苏亚雷斯冲锋
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">📜 历史:</div>
+    <div style="font-size:13px">无直接世界杯交锋, 瑞士 2018 1-0 哥 (小组赛)</div>
+  </div>
+  <div class="section">
+    <div class="label">📝 战术修正要点:</div>
+    <ul class="note-list"><li>FIFA 排名 #19 vs #13, 接近, 不像阿 vs 埃那样悬殊</li><li>瑞士 32 强 2-0 阿尔及利亚 0 失球, 防守极稳</li><li>哥伦比亚主力前锋科尔多瓦伤缺 (肌肉撕裂 3 周)</li><li>J罗 35 岁告别战, 体能差, 每场都被换下, 关键时刻难发力</li><li>22 岁普埃尔塔中场表现出色, 哥伦比亚中场深度够</li><li>瑞士 "精密机器" 配合默契, 哥伦比亚 "高位防线+边后卫前压" 风格</li><li>v3 算法 P(平) = 37.5% (8 场 R16 中最高), 战术预测 PK</li><li>PK 看经验: 哥伦比亚 2014 8 强 (J罗 6 球金靴), 瑞士 PK 弱</li><li>迪亚斯 + 苏亚雷斯 (黄卡仁) 反击快, 瑞士后防需谨慎</li></ul>
+  </div>
+</div></body></html>

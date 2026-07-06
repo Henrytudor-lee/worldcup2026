@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>7/5 R16 真实对阵预测 v3.0 + 战术修正</title>
+<style>
+  body { font-family: -apple-system, "PingFang SC", sans-serif; max-width: 1100px; margin: 30px auto; padding: 20px; background: #f8f8f5; color: #1a1a1a; }
+  h1 { color: #2c5f2d; text-align: center; }
+  h2 { color: #5a3a1f; border-bottom: 2px solid #d4a574; padding-bottom: 6px; margin-top: 30px; }
+  .match-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin: 20px 0; padding: 20px; }
+  .match-header { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #fef7e8, #f5e6c8); padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+  .match-time { font-size: 32px; font-weight: 700; color: #5a3a1f; }
+  .match-teams { font-size: 24px; font-weight: 600; }
+  .vs { color: #d4a574; font-weight: 700; padding: 0 12px; }
+  .prediction-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+  .pred-box { background: #faf6ee; padding: 16px; border-radius: 8px; }
+  .pred-box h4 { color: #5a3a1f; margin: 0 0 12px 0; }
+  .prob-bar { background: #e8e0d0; height: 24px; border-radius: 4px; position: relative; margin: 6px 0; overflow: hidden; }
+  .prob-fill { height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 12px; }
+  .ph { background: #2c5f2d; }
+  .pd { background: #d4a574; }
+  .pa { background: #8b4513; }
+  .verdict { background: #5a3a1d; color: #fff; padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 16px; text-align: center; font-weight: 600; }
+  .section { margin: 12px 0; }
+  .label { font-weight: 600; color: #5a3a1f; }
+  .note-list { background: #fef7e8; padding: 12px; border-radius: 6px; margin: 8px 0; }
+  .note-list li { margin: 4px 0; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 12px 0; }
+  .stat-item { background: #faf6ee; padding: 10px; border-radius: 6px; text-align: center; }
+  .stat-num { font-size: 20px; font-weight: 700; color: #5a3a1f; }
+  .stat-label { font-size: 11px; color: #888; margin-top: 2px; }
+  .meta { font-size: 12px; color: #888; text-align: center; margin: 20px 0; }
+  .v3-banner { background: linear-gradient(90deg, #2c5f2d, #4a8b4f); color: #fff; padding: 16px 24px; border-radius: 10px; text-align: center; margin: 16px 0; font-size: 16px; }
+  .warn { background: #fef7e8; border-left: 4px solid #d4a574; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 13px; }
+  .tactical-score { background: linear-gradient(90deg, #5a3a1f, #8b5e3c); color: #fff; padding: 8px 16px; border-radius: 6px; display: inline-block; font-weight: 700; font-size: 18px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<h1>⚽ 7月5日 R16 真实对阵预测</h1>
+<p class="meta">v3.0 KO 算法 + 战术修正 v2 | 生成时间: 2026-07-04 17:23:19 | ⚠️ 算法代码 r16_indices 配置错误 (跟 FIFA 2026 实际配对不符), 现按 ESPN schedule 真实对阵跑预测</p>
+
+<div class="warn">
+  <b>⚠️ 算法 bug 发现</b>: 之前 v3 算法跑 R16 用的 r16_indices = [(0,2), (1,4), (3,5), ...] 跟 FIFA 2026 实际配对规则不符. 实际 7/5 是 (M1 vs M4, M3 vs M6). 已记录到方法论 bug 清单, 后续修.
+</div>
+
+<div class="v3-banner">
+  📊 7/3 三场战绩: 战术预测 3-0 / 2-1 / 2-1 → 实际 3-0 / 2-1 / 2-0 (2 场完全命中, 1 场差 1 球)
+</div>
+
+<div class="match-card">
+<h2>📋 7/4 三场战术预测 vs 实际 (部分确认)</h2>
+<table style="width:100%; border-collapse: collapse; font-size:13px;">
+<thead><tr style="background:#5a3a1f;color:#fff;"><th>时间</th><th>比赛</th><th>战术预测</th><th>实际</th><th>对比</th></tr></thead>
+<tbody><tr><td>02:00</td><td>澳大利亚 vs 埃及</td><td>1-1 (PK 澳大利亚)</td><td>待确认 (760499/760500 还未 ETL)</td><td>?</td></tr><tr><td>06:00</td><td>阿根廷 vs 佛得角</td><td>3-0</td><td>待确认</td><td>?</td></tr><tr><td>09:30</td><td>哥伦比亚 vs 加纳</td><td>2-1</td><td>1-0 (760501 已确认)</td><td>差 1 球 (实际 1-0)</td></tr></tbody></table></div>
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">01:00</div>
+      <div style="font-size:12px;color:#888">📍 BMO Field, Toronto</div>
+    </div>
+    <div class="match-teams">
+      <b>加拿大</b> <span class="vs">vs</span> <b>摩洛哥</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">R16 · 16 强</div>
+      <div style="font-size:12px;color:#888">R16-1</div>
+    </div>
+  </div>
+
+  <div class="prediction-grid">
+    <div class="pred-box">
+      <h4>📊 v3.0 算法预测</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">
+        λ: 1.55 vs 2.50
+      </div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:18.2%">18.2% 加拿大</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:36.1%">36.1% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:45.7%">45.7% 摩洛哥</div></div>
+      <div class="verdict">v3 比分 1-2 · 冠军: 摩洛哥</div>
+    </div>
+    
+    <div class="pred-box">
+      <h4>🎯 战术修正 v2 (含伤停)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">
+        基于 v3 概率 + 伤停/战术微调
+      </div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:16.9%">16.9% 加拿大</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:40.6%">40.6% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:42.4%">42.4% 摩洛哥</div></div>
+      <div class="verdict" style="background: #2c5f2d">战术冠军: 摩洛哥</div>
+      <div style="text-align:center; margin-top: 12px;">
+        <div style="font-size:11px; color:#888; margin-bottom:4px">战术预测比分</div>
+        <div class="tactical-score">1-1 (PK 摩洛哥胜出)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">🏥 伤停情况:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>加拿大</b>: 科内 (中场) 小腿骨折确认缺席 + 阿方索·戴维斯 (队长/后卫) 出战成疑 + 欧斯塔基奥 (中场核心) 出战成疑 + 琼斯 (后卫) 出战成疑<br>
+      <b>摩洛哥</b>: 阿格尔德 (中后卫) + 阿布德 (前场) 待定 + 齐耶赫伤愈复出 (中场创造力提升)
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="label">⚽ 战术形态:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>加拿大</b>: FIFA #30, B 组第 2 (1胜1平1负 4分), 16 强首秀; 边路高速突击 + 反击 + 戴维/拉林锋线 + 阿方索后防<br>
+      <b>摩洛哥</b>: FIFA #6, C 组第 2 (2胜1平 7 分, 与巴西同分净胜球少屈居第 2), 16 强; 上届 4 强; 阿什拉夫+马兹拉维边路走廊; 上一场 120 分钟 + PK 4-3 淘汰荷兰 (体能消耗大); 防守强硬 + 反击迅猛
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="label">📜 历史交手:</div>
+    <div style="font-size:13px">摩洛哥 2 战 2 胜加拿大 (2022 小组赛 2-1, 2016 友谊赛 4-0)</div>
+  </div>
+  
+  <div class="section">
+    <div class="label">📝 战术修正要点:</div>
+    <ul class="note-list">
+<li>加拿大中场多人出战成疑: 科内缺席 + 戴维斯/欧斯塔基奥/琼斯出战成疑</li><li>摩洛哥体能消耗大: 上一场 120 分钟 + PK 4-3 淘汰荷兰</li><li>摩洛哥 FIFA #6 vs 加拿大 #30, 实力占优</li><li>历史交手摩洛哥 2 战 2 胜加拿大 (含 2022 小组赛 2-1)</li><li>阿方索·戴维斯出战成疑削弱加拿大边路</li><li>齐耶赫伤愈复出提升摩洛哥中场创造力</li><li>球天下预测: 常规 1-1 平局 → 加时/PK 摩洛哥晋级</li>    </ul>
+  </div>
+  
+  <div class="section">
+    <div class="label">🎲 KO 调整 (v3):</div>
+    <div style="font-size:13px">{'lambda_reducer': 0.85, 'draw_extra_time_added': 0.2}</div>
+  </div>
+</div>
+
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">05:00</div>
+      <div style="font-size:12px;color:#888">📍 AT&T Stadium, Arlington, TX</div>
+    </div>
+    <div class="match-teams">
+      <b>巴拉圭</b> <span class="vs">vs</span> <b>法国</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">R16 · 16 强</div>
+      <div style="font-size:12px;color:#888">R16-2</div>
+    </div>
+  </div>
+
+  <div class="prediction-grid">
+    <div class="pred-box">
+      <h4>📊 v3.0 算法预测</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">
+        λ: 1.34 vs 3.83
+      </div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:8.1%">8.1% 巴拉圭</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:23.7%">23.7% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:68.2%">68.2% 法国</div></div>
+      <div class="verdict">v3 比分 1-3 · 冠军: 法国</div>
+    </div>
+    
+    <div class="pred-box">
+      <h4>🎯 战术修正 v2 (含伤停)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">
+        基于 v3 概率 + 伤停/战术微调
+      </div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:6.8%">6.8% 巴拉圭</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:23.2%">23.2% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:70.0%">70.0% 法国</div></div>
+      <div class="verdict" style="background: #2c5f2d">战术冠军: 法国</div>
+      <div style="text-align:center; margin-top: 12px;">
+        <div style="font-size:11px; color:#888; margin-bottom:4px">战术预测比分</div>
+        <div class="tactical-score">1-2 (法国常规时间小胜)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">🏥 伤停情况:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>巴拉圭</b>: 主力中卫阿尔德雷特有伤, 大概率无缘本场<br>
+      <b>法国</b>: 中场大将楚阿梅尼确认缺席
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="label">⚽ 战术形态:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>巴拉圭</b>: FIFA #40, 时隔 16 年重回世界杯; 铁血防守 + 摆大巴 + 不惜犯规代价 (本届黄牌 9 张全部球队第 1); 上一场 PK 1-1 vs 德国晋级<br>
+      <b>法国</b>: FIFA #1, D 组第 1 (3胜0负 9 分) + 32 强 3-0 瑞典; 4 场 13 球 (姆巴佩 7 + 登贝莱 4 + 巴尔科拉 2 + 奥利塞 5 助攻); 控球 + 两翼齐飞 + 任意球
+    </div>
+  </div>
+  
+  <div class="section">
+    <div class="label">📜 历史交手:</div>
+    <div style="font-size:13px">法国 2 胜 3 平不败 (最近 2017 友谊赛 5-0)</div>
+  </div>
+  
+  <div class="section">
+    <div class="label">📝 战术修正要点:</div>
+    <ul class="note-list">
+<li>巴拉圭主力中卫阿尔德雷特受伤, 后防削弱</li><li>巴拉圭摆大巴策略, 拖入点球有戏 (黄牌 9 张全部球队第 1)</li><li>法国楚阿梅尼缺席但不影响锋线</li><li>法国 4 场 13 球, 姆巴佩 7 球领跑射手榜</li><li>法国历史对巴拉圭 2 胜 3 平不败 (最近 2017 友谊赛 5-0)</li><li>法国 + 巴拉圭胜者下一轮 vs 加拿大/摩洛哥胜者</li>    </ul>
+  </div>
+  
+  <div class="section">
+    <div class="label">🎲 KO 调整 (v3):</div>
+    <div style="font-size:13px">{'lambda_reducer': 0.85, 'draw_floor_applied': True}</div>
+  </div>
+</div>
+</body></html>

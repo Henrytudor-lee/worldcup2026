@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>R32 16 场验证 - 2026 世界杯</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; background: #0d1117; color: #c9d1d9; padding: 24px; }
+h1 { color: #f0883e; font-size: 22px; margin-bottom: 8px; }
+h1 .badge { display: inline-block; background: #21262d; color: #8b949e; font-size: 11px; padding: 4px 10px; border-radius: 4px; margin-left: 12px; font-weight: normal; }
+.subtitle { color: #8b949e; font-size: 13px; margin-bottom: 24px; }
+.summary { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; }
+.summary b { color: #f0883e; }
+.legend { display: flex; gap: 16px; margin-bottom: 16px; font-size: 12px; color: #8b949e; flex-wrap: wrap; }
+.legend span { display: flex; align-items: center; gap: 4px; }
+.legend .dot { width: 8px; height: 8px; border-radius: 50%; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead { background: #161b22; }
+th { text-align: left; padding: 10px 12px; color: #f0883e; font-size: 12px; font-weight: 600; border-bottom: 2px solid #30363d; }
+td { padding: 12px; border-bottom: 1px solid #21262d; vertical-align: middle; }
+tr:hover { background: #161b22; }
+.M-num { color: #f0883e; font-weight: bold; font-family: monospace; font-size: 12px; }
+.date { color: #c9d1d9; font-size: 12px; font-family: monospace; }
+.matchup { font-weight: 600; font-size: 14px; }
+.tag { display: inline-block; font-size: 10px; padding: 3px 8px; border-radius: 3px; font-weight: 500; }
+.tag-1v2 { background: #1f6feb33; color: #58a6ff; }
+.tag-1v3 { background: #a371f733; color: #a371f7; }
+.tag-2v2 { background: #2ea04333; color: #2ea043; }
+.venue { color: #c9d1d9; font-size: 12px; }
+.venue .city { color: #8b949e; }
+.prob { font-family: monospace; font-size: 12px; }
+.prob .home { color: #2ea043; font-weight: bold; }
+.prob .draw { color: #8b949e; }
+.prob .away { color: #f85149; font-weight: bold; }
+.score { color: #ffd700; font-weight: bold; font-family: monospace; font-size: 14px; }
+.bar { display: inline-block; height: 6px; background: #30363d; border-radius: 3px; width: 100px; margin-left: 8px; position: relative; }
+.bar .home-fill { position: absolute; left: 0; top: 0; height: 100%; background: #2ea043; border-radius: 3px 0 0 3px; }
+.bar .away-fill { position: absolute; right: 0; top: 0; height: 100%; background: #f85149; border-radius: 0 3px 3px 0; }
+</style>
+</head>
+<body>
+<h1>🏆 R32 16 场完整对阵 <span class="badge">数据来源: 5_算法/all_104_predictions.json</span></h1>
+<div class="subtitle">小组赛 72 场已结束 → 按真实出线配对 → FIFA 官方对阵表</div>
+<div class="summary">
+<b>📅 赛程分布:</b> 6/29 (1场) · 6/30 (3场) · 7/1 (3场) · 7/2 (3场) · 7/3 (3场) · 7/4 (3场) = 16 场 ✓
+</div>
+<div class="legend">
+<span><span class="dot" style="background:#f0883e"></span>M# = R32 顺序</span>
+<span><span class="dot" style="background:#58a6ff"></span>1v2 = 小组第1 vs 小组第2</span>
+<span><span class="dot" style="background:#a371f7"></span>1v3 = 小组第1 vs 晋级第3</span>
+<span><span class="dot" style="background:#2ea043"></span>2v2 = 跨组第2 对决</span>
+</div>
+<table>
+<thead>
+<tr>
+<th style="width:60px">M#</th>
+<th style="width:100px">日期 (北京时间)</th>
+<th>对阵</th>
+<th style="width:140px">配对</th>
+<th>球场 / 城市</th>
+<th style="width:240px">预测概率</th>
+<th style="width:80px">最可能比分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td class="M-num">M1</td>
+  <td class="date">2026-06-29</td>
+  <td class="matchup"><b>南非</b> vs <b>加拿大</b></td>
+  <td><span class="tag tag-2v2">2v2 (跨组第2)</span></td>
+  <td class="venue">SoFi Stadium<br><span class="city">Inglewood, California</span></td>
+  <td class="prob">
+    <span class="home">13.0%</span> ·
+    <span class="draw">27.1%</span> ·
+    <span class="away">59.9%</span>
+    <span class="bar"><span class="home-fill" style="width:13.0px"></span><span class="away-fill" style="width:59.9px"></span></span>
+  </td>
+  <td class="score">0-1</td>
+</tr>
+<tr>
+  <td class="M-num">M2</td>
+  <td class="date">2026-06-30</td>
+  <td class="matchup"><b>巴西</b> vs <b>日本</b></td>
+  <td><span class="tag tag-1v2">1v2 (同组1/2)</span></td>
+  <td class="venue">NRG Stadium<br><span class="city">Houston, Texas</span></td>
+  <td class="prob">
+    <span class="home">84.2%</span> ·
+    <span class="draw">10.5%</span> ·
+    <span class="away">5.3%</span>
+    <span class="bar"><span class="home-fill" style="width:84.2px"></span><span class="away-fill" style="width:5.3px"></span></span>
+  </td>
+  <td class="score">4-1</td>
+</tr>
+<tr>
+  <td class="M-num">M3</td>
+  <td class="date">2026-06-30</td>
+  <td class="matchup"><b>德国</b> vs <b>巴拉圭</b></td>
+  <td><span class="tag tag-1v3">1v3 (含晋级第3)</span></td>
+  <td class="venue">Gillette Stadium<br><span class="city">Foxborough, Massachusetts</span></td>
+  <td class="prob">
+    <span class="home">78.3%</span> ·
+    <span class="draw">13.2%</span> ·
+    <span class="away">8.5%</span>
+    <span class="bar"><span class="home-fill" style="width:78.3px"></span><span class="away-fill" style="width:8.5px"></span></span>
+  </td>
+  <td class="score">4-1</td>
+</tr>
+<tr>
+  <td class="M-num">M4</td>
+  <td class="date">2026-06-30</td>
+  <td class="matchup"><b>荷兰</b> vs <b>摩洛哥</b></td>
+  <td><span class="tag tag-1v2">1v2 (同组1/2)</span></td>
+  <td class="venue">Estadio BBVA<br><span class="city">Guadalupe, Mexico</span></td>
+  <td class="prob">
+    <span class="home">53.5%</span> ·
+    <span class="draw">20.7%</span> ·
+    <span class="away">25.7%</span>
+    <span class="bar"><span class="home-fill" style="width:53.5px"></span><span class="away-fill" style="width:25.7px"></span></span>
+  </td>
+  <td class="score">4-3</td>
+</tr>
+<tr>
+  <td class="M-num">M5</td>
+  <td class="date">2026-07-01</td>
+  <td class="matchup"><b>科特迪瓦</b> vs <b>挪威</b></td>
+  <td><span class="tag tag-1v2">1v2 (同组1/2)</span></td>
+  <td class="venue">AT&T Stadium<br><span class="city">Arlington, Texas</span></td>
+  <td class="prob">
+    <span class="home">33.8%</span> ·
+    <span class="draw">22.0%</span> ·
+    <span class="away">44.2%</span>
+    <span class="bar"><span class="home-fill" style="width:33.8px"></span><span class="away-fill" style="width:44.2px"></span></span>
+  </td>
+  <td class="score">3-4</td>
+</tr>
+<tr>
+  <td class="M-num">M6</td>
+  <td class="date">2026-07-01</td>
+  <td class="matchup"><b>法国</b> vs <b>瑞典</b></td>
+  <td><span class="tag tag-1v3">1v3 (含晋级第3)</span></td>
+  <td class="venue">MetLife Stadium<br><span class="city">East Rutherford, New Jersey</span></td>
+  <td class="prob">
+    <span class="home">46.6%</span> ·
+    <span class="draw">22.0%</span> ·
+    <span class="away">31.4%</span>
+    <span class="bar"><span class="home-fill" style="width:46.6px"></span><span class="away-fill" style="width:31.4px"></span></span>
+  </td>
+  <td class="score">4-3</td>
+</tr>
+<tr>
+  <td class="M-num">M7</td>
+  <td class="date">2026-07-01</td>
+  <td class="matchup"><b>墨西哥</b> vs <b>厄瓜多尔</b></td>
+  <td><span class="tag tag-1v3">1v3 (含晋级第3)</span></td>
+  <td class="venue">Estadio Banorte<br><span class="city">Mexico City, Mexico</span></td>
+  <td class="prob">
+    <span class="home">28.2%</span> ·
+    <span class="draw">26.7%</span> ·
+    <span class="away">45.1%</span>
+    <span class="bar"><span class="home-fill" style="width:28.199999999999996px"></span><span class="away-fill" style="width:45.1px"></span></span>
+  </td>
+  <td class="score">1-2</td>
+</tr>
+<tr>
+  <td class="M-num">M8</td>
+  <td class="date">2026-07-02</td>
+  <td class="matchup"><b>英格兰</b> vs <b>民主刚果</b></td>
+  <td><span class="tag tag-1v3">1v3 (含晋级第3)</span></td>
+  <td class="venue">Mercedes-Benz Stadium<br><span class="city">Atlanta, Georgia</span></td>
+  <td class="prob">
+    <span class="home">74.5%</span> ·
+    <span class="draw">14.7%</span> ·
+    <span class="away">10.8%</span>
+    <span class="bar"><span class="home-fill" style="width:74.5px"></span><span class="away-fill" style="width:10.8px"></span></span>
+  </td>
+  <td class="score">4-1</td>
+</tr>
+<tr>
+  <td class="M-num">M9</td>
+  <td class="date">2026-07-02</td>
+  <td class="matchup"><b>比利时</b> vs <b>塞内加尔</b></td>
+  <td><span class="tag tag-1v3">1v3 (含晋级第3)</span></td>
+  <td class="venue">Lumen Field<br><span class="city">Seattle, Washington</span></td>
+  <td class="prob">
+    <span class="home">26.4%</span> ·
+    <span class="draw">20.9%</span> ·
+    <span class="away">52.8%</span>
+    <span class="bar"><span class="home-fill" style="width:26.400000000000002px"></span><span class="away-fill" style="width:52.800000000000004px"></span></span>
+  </td>
+  <td class="score">2-3</td>
+</tr>
+<tr>
+  <td class="M-num">M10</td>
+  <td class="date">2026-07-02</td>
+  <td class="matchup"><b>美国</b> vs <b>波黑</b></td>
+  <td><span class="tag tag-1v3">1v3 (含晋级第3)</span></td>
+  <td class="venue">Levi's Stadium<br><span class="city">Santa Clara, California</span></td>
+  <td class="prob">
+    <span class="home">75.9%</span> ·
+    <span class="draw">15.6%</span> ·
+    <span class="away">8.4%</span>
+    <span class="bar"><span class="home-fill" style="width:75.9px"></span><span class="away-fill" style="width:8.4px"></span></span>
+  </td>
+  <td class="score">3-1</td>
+</tr>
+<tr>
+  <td class="M-num">M11</td>
+  <td class="date">2026-07-03</td>
+  <td class="matchup"><b>西班牙</b> vs <b>奥地利</b></td>
+  <td><span class="tag tag-1v2">1v2 (同组1/2)</span></td>
+  <td class="venue">SoFi Stadium<br><span class="city">Inglewood, California</span></td>
+  <td class="prob">
+    <span class="home">70.7%</span> ·
+    <span class="draw">16.4%</span> ·
+    <span class="away">13.0%</span>
+    <span class="bar"><span class="home-fill" style="width:70.7px"></span><span class="away-fill" style="width:13.0px"></span></span>
+  </td>
+  <td class="score">4-1</td>
+</tr>
+<tr>
+  <td class="M-num">M12</td>
+  <td class="date">2026-07-03</td>
+  <td class="matchup"><b>葡萄牙</b> vs <b>克罗地亚</b></td>
+  <td><span class="tag tag-2v2">2v2 (跨组第2)</span></td>
+  <td class="venue">BMO Field<br><span class="city">Toronto, Canada</span></td>
+  <td class="prob">
+    <span class="home">71.1%</span> ·
+    <span class="draw">15.9%</span> ·
+    <span class="away">13.0%</span>
+    <span class="bar"><span class="home-fill" style="width:71.1px"></span><span class="away-fill" style="width:13.0px"></span></span>
+  </td>
+  <td class="score">4-2</td>
+</tr>
+<tr>
+  <td class="M-num">M13</td>
+  <td class="date">2026-07-03</td>
+  <td class="matchup"><b>瑞士</b> vs <b>阿尔及利亚</b></td>
+  <td><span class="tag tag-1v3">1v3 (含晋级第3)</span></td>
+  <td class="venue">BC Place<br><span class="city">Vancouver, Canada</span></td>
+  <td class="prob">
+    <span class="home">40.7%</span> ·
+    <span class="draw">24.7%</span> ·
+    <span class="away">34.6%</span>
+    <span class="bar"><span class="home-fill" style="width:40.7px"></span><span class="away-fill" style="width:34.6px"></span></span>
+  </td>
+  <td class="score">2-2</td>
+</tr>
+<tr>
+  <td class="M-num">M14</td>
+  <td class="date">2026-07-04</td>
+  <td class="matchup"><b>澳大利亚</b> vs <b>埃及</b></td>
+  <td><span class="tag tag-1v2">1v2 (同组1/2)</span></td>
+  <td class="venue">AT&T Stadium<br><span class="city">Arlington, Texas</span></td>
+  <td class="prob">
+    <span class="home">12.0%</span> ·
+    <span class="draw">22.4%</span> ·
+    <span class="away">65.6%</span>
+    <span class="bar"><span class="home-fill" style="width:12.0px"></span><span class="away-fill" style="width:65.6px"></span></span>
+  </td>
+  <td class="score">0-2</td>
+</tr>
+<tr>
+  <td class="M-num">M15</td>
+  <td class="date">2026-07-04</td>
+  <td class="matchup"><b>阿根廷</b> vs <b>佛得角</b></td>
+  <td><span class="tag tag-2v2">2v2 (跨组第2)</span></td>
+  <td class="venue">Hard Rock Stadium<br><span class="city">Miami Gardens, Florida</span></td>
+  <td class="prob">
+    <span class="home">92.4%</span> ·
+    <span class="draw">5.9%</span> ·
+    <span class="away">1.7%</span>
+    <span class="bar"><span class="home-fill" style="width:92.4px"></span><span class="away-fill" style="width:1.7000000000000002px"></span></span>
+  </td>
+  <td class="score">4-0</td>
+</tr>
+<tr>
+  <td class="M-num">M16</td>
+  <td class="date">2026-07-04</td>
+  <td class="matchup"><b>哥伦比亚</b> vs <b>加纳</b></td>
+  <td><span class="tag tag-1v3">1v3 (含晋级第3)</span></td>
+  <td class="venue">GEHA Field at Arrowhead Stadium<br><span class="city">Kansas City, Missouri</span></td>
+  <td class="prob">
+    <span class="home">42.1%</span> ·
+    <span class="draw">24.1%</span> ·
+    <span class="away">33.8%</span>
+    <span class="bar"><span class="home-fill" style="width:42.1px"></span><span class="away-fill" style="width:33.8px"></span></span>
+  </td>
+  <td class="score">2-2</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
