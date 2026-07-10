@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔍 挪威 vs 英格兰 球员深度分析</title>
+<style>
+:root { --bg:#0a0e14; --bg-2:#151b23; --bg-3:#1f2630; --border:#2a3441; --text:#e6edf3; --text-2:#adbac7; --text-3:#7d8590; --green:#3fb950; --red:#f85149; --gold:#ffd700; --blue:#58a6ff; --purple:#bc8cff; --orange:#f0883e; --norway:#ef2b2d; --england:#cf142b; }
+*{ box-sizing:border-box; }
+body { font-family:-apple-system,"PingFang SC","Helvetica Neue",sans-serif; background:var(--bg); color:var(--text); margin:0; padding:18px; min-height:100vh; max-width:1200px; margin:0 auto; line-height:1.5; }
+h1 { margin:0 0 4px 0; font-size:24px; }
+.sub { color:var(--text-2); font-size:12px; margin-bottom:20px; }
+h2 { font-size:15px; color:var(--gold); margin:24px 0 10px 0; padding:8px 12px; background:var(--bg-2); border-radius:6px; border-left:4px solid var(--gold); }
+h3 { font-size:13px; color:var(--text-2); margin:14px 0 6px 0; }
+.flag { font-size:18px; margin-right:4px; }
+.tag-nor { background:var(--norway); color:white; padding:1px 6px; border-radius:3px; font-size:10px; font-weight:700; }
+.tag-eng { background:var(--england); color:white; padding:1px 6px; border-radius:3px; font-size:10px; font-weight:700; }
+.section { background:var(--bg-2); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:14px; }
+.fun-fact { background:linear-gradient(135deg,#1a1a3d,#3d2a5a); border:1px solid var(--purple); padding:12px 16px; border-radius:8px; margin:8px 0; color:var(--text); }
+.fun-fact strong { color:var(--gold); }
+.stat-bar { display:flex; align-items:center; margin:4px 0; gap:8px; }
+.stat-bar .name { width:90px; font-size:12px; }
+.stat-bar .bar { flex:1; height:18px; background:var(--bg-3); border-radius:4px; overflow:hidden; display:flex; }
+.stat-bar .nor-bar { background:linear-gradient(90deg,#ef2b2d,#ff5b5b); height:100%; display:flex; align-items:center; justify-content:flex-start; padding-left:6px; color:white; font-size:10px; font-weight:600; }
+.stat-bar .eng-bar { background:linear-gradient(90deg,#cf142b,#ff3344); height:100%; display:flex; align-items:center; justify-content:flex-end; padding-right:6px; color:white; font-size:10px; font-weight:600; }
+.top-list { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.top-list .col { background:var(--bg-3); border-radius:6px; padding:10px 14px; }
+.top-list h4 { margin:0 0 6px 0; font-size:12px; color:var(--gold); }
+.top-row { display:flex; justify-content:space-between; padding:3px 0; font-size:12px; border-bottom:1px solid var(--border); }
+.top-row:last-child { border-bottom:none; }
+.top-row .name { flex:1; }
+.top-row .val { color:var(--gold); font-weight:700; min-width:60px; text-align:right; }
+.comparison { display:grid; grid-template-columns:1fr 1px 1fr; gap:14px; align-items:start; }
+.comparison .vs { background:var(--border); width:1px; height:100%; }
+.club-tag { display:inline-block; background:var(--bg-3); border:1px solid var(--border); padding:2px 8px; border-radius:12px; font-size:11px; margin:2px; }
+.club-tag.hot { background:linear-gradient(90deg,#3d2a5a,#1a1a3d); border-color:var(--purple); color:var(--gold); }
+.player { padding:3px 0; font-size:12px; }
+.player .name { color:var(--text); }
+.player .info { color:var(--text-3); font-size:10px; }
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px; }
+.stat-card { background:var(--bg-3); border-radius:6px; padding:10px 14px; }
+.stat-card .v { font-size:20px; font-weight:700; color:var(--gold); }
+.stat-card .l { font-size:10px; color:var(--text-3); margin-top:2px; }
+.network { background:linear-gradient(135deg,#0d2818,#1a4d2e); border:1px solid var(--green); padding:10px 14px; border-radius:6px; margin:6px 0; }
+.network.danger { background:linear-gradient(135deg,#2d0d0d,#4d1a1a); border-color:var(--red); }
+.network h4 { margin:0 0 4px 0; font-size:12px; color:var(--green); }
+.network.danger h4 { color:var(--red); }
+.network ul { margin:4px 0; padding-left:18px; font-size:11px; }
+.network li { margin:2px 0; }
+.emoji { font-size:16px; }
+.legend { font-size:11px; color:var(--text-3); margin-top:8px; line-height:1.6; }
+</style>
+</head>
+<body>
+<h1>🔍 挪威 vs 英格兰 — 球员深度分析</h1>
+<div class="sub">📊 2026-07-10 21:15 BJT · 数据 1248 球员 (双方各 26 人) · 7/12 05:00 BJT Miami Hard Rock</div>
+
+<div class="fun-fact">
+  <strong>🔥 最有意思的数据: 5 个阿森纳球员同场反目</strong><br>
+  阿森纳队内 4 英格兰 (赖斯/萨卡/埃泽/马杜埃凯) + 1 挪威 (厄德高) — 这场比赛 阿森纳系球员 会占据 5 个首发位置! 厄德高面对俱乐部队友赖斯+萨卡的逼抢, 是这场比赛最大的"内部暗战"看点!
+</div>
+
+<div class="fun-fact">
+  <strong>💰 身价差距悬殊</strong>: 挪威总身价 6.0 亿欧 vs 英格兰 12.1 亿欧 — <span style="color:var(--gold);">英格兰是挪威的 2 倍</span>! 但挪威靠哈兰德一人 2 亿欧 + 厄德高 5500 万欧两人合计 2.55 亿, 占全队 42%!
+</div>
+
+<h2>📊 1. 球队总览</h2>
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="v">26 vs 26</div>
+    <div class="l">球员数 (双方各 26 人)</div>
+  </div>
+  <div class="stat-card">
+    <div class="v">26.3 vs 26.7</div>
+    <div class="l">平均年龄 (挪威 vs 英格兰)</div>
+  </div>
+  <div class="stat-card">
+    <div class="v">2310 vs 4646</div>
+    <div class="l">平均身价 (万欧) — 英格兰 2 倍</div>
+  </div>
+  <div class="stat-card">
+    <div class="v">65% vs 96%</div>
+    <div class="l">五 big-5 联赛占比</div>
+  </div>
+  <div class="stat-card">
+    <div class="v">6.0 vs 12.1</div>
+    <div class="l">总身价 (亿欧)</div>
+  </div>
+  <div class="stat-card">
+    <div class="v">7 vs 21</div>
+    <div class="l">英超球员数 (挪威 7 / 英格兰 21)</div>
+  </div>
+</div>
+
+<h2>🌍 2. 联赛分布对比</h2>
+<div class="section">
+  <div class="comparison">
+    <div>
+      <h3><span class="flag">🇳🇴</span>挪威</h3>
+      <div class="stat-bar"><div class="name">英超</div><div class="bar"><div class="nor-bar" style="width:26.923076923076923%;">7人</div></div></div><div class="stat-bar"><div class="name">意甲</div><div class="bar"><div class="nor-bar" style="width:19.230769230769234%;">5人</div></div></div><div class="stat-bar"><div class="name">挪超</div><div class="bar"><div class="nor-bar" style="width:15.384615384615385%;">4人</div></div></div><div class="stat-bar"><div class="name">德甲</div><div class="bar"><div class="nor-bar" style="width:11.538461538461538%;">3人</div></div></div><div class="stat-bar"><div class="name">西甲</div><div class="bar"><div class="nor-bar" style="width:7.6923076923076925%;">2人</div></div></div><div class="stat-bar"><div class="name">英冠</div><div class="bar"><div class="nor-bar" style="width:7.6923076923076925%;">2人</div></div></div><div class="stat-bar"><div class="name">葡超</div><div class="bar"><div class="nor-bar" style="width:7.6923076923076925%;">2人</div></div></div><div class="stat-bar"><div class="name">苏超</div><div class="bar"><div class="nor-bar" style="width:3.8461538461538463%;">1人</div></div></div>
+    </div>
+    <div class="vs"></div>
+    <div>
+      <h3><span class="flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>英格兰</h3>
+      <div class="stat-bar"><div class="name">英超</div><div class="bar"><div class="eng-bar" style="width:80.76923076923077%;">21人</div></div></div><div class="stat-bar"><div class="name">德甲</div><div class="bar"><div class="eng-bar" style="width:7.6923076923076925%;">2人</div></div></div><div class="stat-bar"><div class="name">西甲</div><div class="bar"><div class="eng-bar" style="width:7.6923076923076925%;">2人</div></div></div><div class="stat-bar"><div class="name">沙特联</div><div class="bar"><div class="eng-bar" style="width:3.8461538461538463%;">1人</div></div></div>
+    </div>
+  </div>
+  <div class="legend">
+    💡 <strong>关键差异</strong>: 挪威有 4 名挪威超本土球员 (博德闪耀 3 + 维京 1), 而英格兰 21/26 = 81% 在英超踢球! 这意味着挪威球员对英超节奏熟悉, 但英格兰有"主场优势".
+  </div>
+</div>
+
+<h2>🏟 3. 跨队 "老队友" 反目网络 ★★★</h2>
+<div class="section">
+  <div class="fun-fact">
+    <strong>🔥 3 个俱乐部双方都有球员</strong>:
+  </div>
+  <div class="network danger">
+    <h4>🔴 阿森纳 — 5 个球员同场反目 (本场最大看点!)</h4>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:6px;">
+      <div>
+        <div class="tag-nor">🇳🇴 挪威</div>
+        <div class="player">
+          <div class="name">马丁·厄德高 <span class="club-tag hot">阿森纳 队长</span></div>
+          <div class="info">中场, 27岁, 身价 5500 万欧</div>
+        </div>
+      </div>
+      <div>
+        <div class="tag-eng">🏴󠁧󠁢󠁥󠁮󠁧󠁿 英格兰</div>
+        <div class="player"><div class="name">德克兰·赖斯</div><div class="info">中场, 27岁, 身价 12000 万欧</div></div>
+        <div class="player"><div class="name">埃泽</div><div class="info">中场, 身价 4500 万欧</div></div>
+        <div class="player"><div class="name">布卡约·萨卡</div><div class="info">前锋, 24岁, 身价 12000 万欧</div></div>
+        <div class="player"><div class="name">马杜埃凯</div><div class="info">前锋, 身价 4500 万欧</div></div>
+      </div>
+    </div>
+    <div class="legend" style="margin-top:8px;">
+      ⚔️ 厄德高作为阿森纳队长, 跟赖斯+萨卡在俱乐部配合 1 赛季 (2023-2024 起). 这场比赛 萨卡 跟 厄德高 直接对话 是最大看点: 萨卡惯用左路内切, 厄德高踢前腰, 在俱乐部 厄德高 给 萨卡 喂饼无数. 但国家队反目, 萨卡 防守压力 + 厄德高 组织进攻.
+    </div>
+  </div>
+  <div class="network">
+    <h4>🟢 布伦特福德 — 2 个球员对决</h4>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+      <div><div class="tag-nor">🇳🇴</div><div class="player"><div class="name">克里斯托弗·阿耶尔</div><div class="info">后卫, 28岁, 身价 3000 万欧</div></div></div>
+      <div><div class="tag-eng">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div><div class="player"><div class="name">乔丹·亨德森</div><div class="info">中场, 身价 ?</div></div></div>
+    </div>
+  </div>
+  <div class="network">
+    <h4>🟢 水晶宫 — 2 个球员对决</h4>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+      <div><div class="tag-nor">🇳🇴</div><div class="player"><div class="name">约尔根·斯特兰德·拉尔森</div><div class="info">前锋, 26岁, 身价 4500 万欧</div></div></div>
+      <div><div class="tag-eng">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div><div class="player"><div class="name">迪恩·亨德森</div><div class="info">门将</div></div></div>
+    </div>
+  </div>
+</div>
+
+<h2>👥 4. 挪威队内 "前队友" 组合 (同一俱乐部)</h2>
+<div class="section">
+  <div class="network"><h4>🏟 博德闪耀 (3人)</h4><ul><li>弗雷德里克·比约坎 (后卫, 身价700万欧)</li><li>帕特里克·贝格 (中场, 身价800万欧)</li><li>延斯·彼得·豪格 (中场, 身价1200万欧)</li></ul></div><div class="network"><h4>🏟 富勒姆 (2人)</h4><ul><li>桑德·博格 (中场, 身价3000万欧)</li><li>奥斯卡·鲍勃 (中场, 身价3000万欧)</li></ul></div><div class="network"><h4>🏟 本菲卡 (2人)</h4><ul><li>弗雷德里克·奥尔斯内斯 (中场, 身价1700万欧)</li><li>安德烈亚斯·谢尔德鲁普 (前锋, 身价2000万欧)</li></ul></div>
+  <div class="legend">
+    💡 <strong>博德闪耀 (3人)</strong> 是挪威国内班霸, 去年欧冠黑马! 帕特里克·贝格+豪格+比约坎 都在 25 岁以下, 是挪威中后场的未来班底.
+  </div>
+</div>
+
+<h2>⚽ 5. 哈兰德 / 厄德高 球队内部网络</h2>
+<div class="section">
+  <h3>🇳🇴 哈兰德 (曼城) — 队内 <span style="color:var(--red);">无挪威队友</span></h3>
+  <div class="legend">
+    哈兰德在曼城是"孤胆英雄", 队内没有其他挪威人. 但他跟 <strong style="color:var(--england);">格伊 (英格兰, 后卫 5000万欧)</strong> 是俱乐部队友 — 这场比赛 哈兰德 vs 格伊 同场!
+  </div>
+  <h3>🇳🇴 厄德高 (阿森纳) — 队内有 4 个英格兰人 (上节详述)</h3>
+</div>
+
+<h2>💰 6. 身价 TOP 10 对比</h2>
+<div class="top-list">
+  <div class="col">
+    <h4><span class="tag-nor">🇳🇴</span> 挪威 TOP 10</h4>
+    <div class="top-row"><div class="name">1. 埃尔林·哈兰德 (曼彻斯特城)</div><div class="val">20,000万</div></div><div class="top-row"><div class="name">2. 马丁·厄德高 (阿森纳)</div><div class="val">5,500万</div></div><div class="top-row"><div class="name">3. 约尔根·斯特兰德·拉尔森 (水晶宫)</div><div class="val">4,500万</div></div><div class="top-row"><div class="name">4. 安东尼奥·努萨 (RB莱比锡)</div><div class="val">3,200万</div></div><div class="top-row"><div class="name">5. 克里斯托弗·阿耶尔 (布伦特福德)</div><div class="val">3,000万</div></div><div class="top-row"><div class="name">6. 桑德·博格 (富勒姆)</div><div class="val">3,000万</div></div><div class="top-row"><div class="name">7. 奥斯卡·鲍勃 (富勒姆)</div><div class="val">3,000万</div></div><div class="top-row"><div class="name">8. 亚历山大·瑟洛特 (马德里竞技)</div><div class="val">2,000万</div></div><div class="top-row"><div class="name">9. 安德烈亚斯·谢尔德鲁普 (本菲卡)</div><div class="val">2,000万</div></div><div class="top-row"><div class="name">10. 弗雷德里克·奥尔斯内斯 (本菲卡)</div><div class="val">1,700万</div></div>
+  </div>
+  <div class="col">
+    <h4><span class="tag-eng">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> 英格兰 TOP 10</h4>
+    <div class="top-row"><div class="name">1. 裘德·贝林厄姆 (皇家马德里)</div><div class="val">14,000万</div></div><div class="top-row"><div class="name">2. 德克兰·赖斯 (阿森纳)</div><div class="val">12,000万</div></div><div class="top-row"><div class="name">3. 布卡约·萨卡 (阿森纳)</div><div class="val">12,000万</div></div><div class="top-row"><div class="name">4. 哈里·凯恩 (拜仁慕尼黑)</div><div class="val">9,000万</div></div><div class="top-row"><div class="name">5. 摩根·罗杰斯 (阿斯顿维拉)</div><div class="val">5,500万</div></div><div class="top-row"><div class="name">6. 马克·格伊 (曼城)</div><div class="val">5,000万</div></div><div class="top-row"><div class="name">7. 埃兹里·孔萨 (阿斯顿维拉)</div><div class="val">5,000万</div></div><div class="top-row"><div class="name">8. 梅努 (曼联)</div><div class="val">5,000万</div></div><div class="top-row"><div class="name">9. 安东尼·戈登 (纽卡斯尔联)</div><div class="val">5,000万</div></div><div class="top-row"><div class="name">10. 里斯·詹姆斯 (切尔西)</div><div class="val">4,500万</div></div>
+  </div>
+</div>
+
+<h2>⚽ 7. 国家队进球 / 助攻 王牌</h2>
+<div class="top-list">
+  <div class="col">
+    <h4><span class="tag-nor">🇳🇴</span> 进球 TOP 5</h4>
+    <div class="top-row"><div class="name">埃尔林·哈兰德 (前锋)</div><div class="val">55 球</div></div><div class="top-row"><div class="name">亚历山大·瑟洛特 (前锋)</div><div class="val">21 球</div></div><div class="top-row"><div class="name">约尔根·斯特兰德·拉尔森 (前锋)</div><div class="val">9 球</div></div><div class="top-row"><div class="name">马丁·厄德高 (中场)</div><div class="val">4 球</div></div><div class="top-row"><div class="name">安东尼奥·努萨 (中场)</div><div class="val">4 球</div></div>
+    <h4 style="margin-top:10px;">助攻 TOP 5</h4>
+    <div class="top-row"><div class="name">马丁·厄德高 (中场)</div><div class="val">5 助</div></div><div class="top-row"><div class="name">埃尔林·哈兰德 (前锋)</div><div class="val">5 助</div></div><div class="top-row"><div class="name">亚历山大·瑟洛特 (前锋)</div><div class="val">4 助</div></div><div class="top-row"><div class="name">帕特里克·贝格 (中场)</div><div class="val">3 助</div></div><div class="top-row"><div class="name">约尔根·斯特兰德·拉尔森 (前锋)</div><div class="val">3 助</div></div>
+  </div>
+  <div class="col">
+    <h4><span class="tag-eng">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> 进球 TOP 5</h4>
+    <div class="top-row"><div class="name">哈里·凯恩 (前锋)</div><div class="val">78 球</div></div><div class="top-row"><div class="name">拉什福德 (前锋)</div><div class="val">20 球</div></div><div class="top-row"><div class="name">布卡约·萨卡 (前锋)</div><div class="val">14 球</div></div><div class="top-row"><div class="name">裘德·贝林厄姆 (中场)</div><div class="val">8 球</div></div><div class="top-row"><div class="name">奥利·沃特金斯 (前锋)</div><div class="val">4 球</div></div>
+    <h4 style="margin-top:10px;">助攻 TOP 5</h4>
+    <div class="top-row"><div class="name">哈里·凯恩 (前锋)</div><div class="val">20 助</div></div><div class="top-row"><div class="name">布卡约·萨卡 (前锋)</div><div class="val">10 助</div></div><div class="top-row"><div class="name">里斯·詹姆斯 (后卫)</div><div class="val">8 助</div></div><div class="top-row"><div class="name">裘德·贝林厄姆 (中场)</div><div class="val">5 助</div></div><div class="top-row"><div class="name">德克兰·赖斯 (中场)</div><div class="val">5 助</div></div>
+  </div>
+</div>
+
+<div class="fun-fact">
+  <strong>🏆 哈兰德 vs 凯恩 直接对比</strong>:
+  <ul>
+    <li>🇳🇴 哈兰德 (25岁, 曼城): 国家队 55 球 / 5 助 — <strong>场均 0.9 球</strong>! 身价 2 亿欧 (挪威史上最高)</li>
+    <li>🏴󠁧󠁢󠁥󠁮󠁧󠁿 凯恩 (32岁, 拜仁): 国家队 78 球 / 20 助 — <strong>场均 0.6 球</strong>, 但 78 球是英格兰历史第 1</li>
+    <li>🆚 <strong>历史交锋</strong>: 哈兰德 国家队进球率高, 凯恩总数多, 两人风格完全不同 — 哈兰德禁区杀手 vs 凯恩回撤组织</li>
+  </ul>
+</div>
+
+<h2>🎯 8. 5 大关键球员对位 (本场核心看点)</h2>
+<div class="section">
+  <div class="fun-fact" style="background:linear-gradient(135deg,#2d0d0d,#4d1a1a); border-color:var(--red);">
+    <strong style="color:var(--red);">⚔️ 关键对位 1</strong>: 哈兰德 (挪威 9 号) vs 英格兰中卫组合<br>
+    英格兰中卫: 马克·格伊 (曼城, 5000万欧) + 孔萨 (维拉) — 格伊 是 哈兰德曼城俱乐部队友! 每天训练互相对位, 这场国家队比赛相当于"俱乐部训练赛".
+  </div>
+  <div class="fun-fact" style="background:linear-gradient(135deg,#2d0d0d,#4d1a1a); border-color:var(--red);">
+    <strong style="color:var(--red);">⚔️ 关键对位 2</strong>: 厄德高 (挪威 10 号) vs 赖斯 (英格兰 4 号)<br>
+    两人是阿森纳中场搭档 1 赛季, 互相了解 — 赖斯知道厄德高的跑位习惯, 反过来厄德高也知道赖斯的抢断时机. 谁能在国家队"知己知彼"中占优?
+  </div>
+  <div class="fun-fact" style="background:linear-gradient(135deg,#1a1a3d,#3d2a5a); border-color:var(--purple);">
+    <strong style="color:var(--purple);">⚔️ 关键对位 3</strong>: 萨卡 (英格兰 7 号) vs 挪威左后卫<br>
+    萨卡左路内切是英格兰主要进攻手段, 挪威左后卫 (奥尔斯内斯 / 阿尔德森) 能否限制?
+  </div>
+  <div class="fun-fact" style="background:linear-gradient(135deg,#1a1a3d,#3d2a5a); border-color:var(--purple);">
+    <strong style="color:var(--purple);">⚔️ 关键对位 4</strong>: 凯恩 (英格兰 9 号) vs 挪威中卫阿耶尔 (布伦特福德, 3000万欧)<br>
+    阿耶尔是布伦特福德防空核心, 但 1.94m 高中卫面对凯恩这种回撤组织型前锋很难受.
+  </div>
+  <div class="fun-fact" style="background:linear-gradient(135deg,#1a1a3d,#3d2a5a); border-color:var(--purple);">
+    <strong style="color:var(--purple);">⚔️ 关键对位 5</strong>: 努萨 (挪威, 21岁) vs 英格兰右后卫里斯·詹姆斯 (切尔西, 4500万欧)<br>
+    努萨是挪威新一代速度型边锋, 詹姆斯是英格兰防守核心, 年轻 vs 经验.
+  </div>
+</div>
+
+<h2>📈 9. 年龄结构对比</h2>
+<div class="section">
+  <div class="comparison">
+    <div>
+      <h3><span class="flag">🇳🇴</span>挪威</h3>
+      <div class="stat-bar"><div class="name">≤22</div><div class="bar"><div class="nor-bar" style="width:11.538461538461538%;">3人</div></div></div>
+<div class="stat-bar"><div class="name">23-26</div><div class="bar"><div class="nor-bar" style="width:38.46153846153847%;">10人</div></div></div>
+<div class="stat-bar"><div class="name">27-30</div><div class="bar"><div class="nor-bar" style="width:46.15384615384615%;">12人</div></div></div>
+<div class="stat-bar"><div class="name">≥31</div><div class="bar"><div class="nor-bar" style="width:3.8461538461538463%;">1人</div></div></div>
+    </div>
+    <div class="vs"></div>
+    <div>
+      <h3><span class="flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>英格兰</h3>
+      <div class="stat-bar"><div class="name">≤22</div><div class="bar"><div class="eng-bar" style="width:11.538461538461538%;">3人</div></div></div>
+<div class="stat-bar"><div class="name">23-26</div><div class="bar"><div class="eng-bar" style="width:42.30769230769231%;">11人</div></div></div>
+<div class="stat-bar"><div class="name">27-30</div><div class="bar"><div class="eng-bar" style="width:26.923076923076923%;">7人</div></div></div>
+<div class="stat-bar"><div class="name">≥31</div><div class="bar"><div class="eng-bar" style="width:19.230769230769234%;">5人</div></div></div>
+    </div>
+  </div>
+  <div class="legend">
+    💡 挪威 <strong>27-30 岁黄金期球员 12 人</strong> (占 46%), 但 <strong>≥31 老将仅 1 人</strong> — 团队年龄结构更紧凑. 英格兰有 5 名老将 (凯恩/亨德森/沃克等), 经验丰富但体能存疑.
+  </div>
+</div>
+
+<div class="fun-fact" style="background:linear-gradient(135deg,#1a1a3d,#3d2a5a); border-color:var(--purple);">
+  <strong>🎲 总结: 这场为什么是 "五五开" (38% vs 38%)</strong>
+  <ul>
+    <li>💰 <strong>身价 2 倍差距</strong> — 英格兰 12.1 亿欧 vs 挪威 6.0 亿欧, 但挪威靠 2 巨星 (哈兰德+厄德高 = 2.55 亿, 占 42%) 弥补</li>
+    <li>🤝 <strong>5 个阿森纳球员同场反目</strong> — 厄德高 vs 萨卡/赖斯 的"俱乐部恩怨"是最大看点</li>
+    <li>⚽ <strong>哈兰德 55 球 vs 凯恩 78 球</strong> — 进球率 0.9 vs 0.6, 哈兰德更高效</li>
+    <li>🛡️ <strong>格伊 俱乐部知哈兰德</strong> — 每天训练互相对位, 国家队比赛相当于"内部训练赛"</li>
+    <li>👶 <strong>年龄结构</strong> — 挪威 46% 黄金年龄, 英格兰有 5 老将但体能存疑</li>
+    <li>🏠 <strong>加时概率 20%</strong> — λ 双 2.98 实力完全对等, 极可能拖入加时</li>
+  </ul>
+  <strong style="color:var(--gold);">算法预测: 英格兰 38% vs 38% (五五开!), 加时风险 20%</strong>
+</div>
+
+</body>
+</html>
