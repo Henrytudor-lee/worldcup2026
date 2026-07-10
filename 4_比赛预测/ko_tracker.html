@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏆 2026 KO 进度追踪 v5</title>
+<title>🏆 2026 KO 进度追踪 v6</title>
 <style>
 :root { --bg:#0a0e14; --bg-2:#151b23; --bg-3:#1f2630; --border:#2a3441; --text:#e6edf3; --text-2:#adbac7; --text-3:#7d8590; --green:#3fb950; --red:#f85149; --gold:#ffd700; --bronze:#cd7f32; --blue:#58a6ff; --purple:#bc8cff; --orange:#f0883e; }
 *{ box-sizing:border-box; }
@@ -51,6 +51,7 @@ h1 { margin:0 0 4px 0; font-size:22px; color:var(--gold); }
 .badge.pen { background:var(--gold); color:black; }
 .badge.todo { background:var(--text-3); color:white; }
 .pred-mark { position:absolute; bottom:5px; right:7px; font-size:9px; color:var(--gold); font-weight:600; }
+.note-et { font-size:10px; color:var(--gold); margin-top:3px; }
 .legend { margin-top:14px; padding:10px; background:var(--bg-2); border-radius:6px; font-size:11px; color:var(--text-3); display:flex; flex-wrap:wrap; gap:12px; }
 .legend-item { display:flex; align-items:center; gap:5px; }
 .legend-dot { width:9px; height:9px; border-radius:2px; }
@@ -60,7 +61,7 @@ h1 { margin:0 0 4px 0; font-size:22px; color:var(--gold); }
 </head>
 <body>
 <h1>🏆 2026 KO 进度追踪</h1>
-<div class="sub">📊 2026-07-10 19:34 BJT · 已完赛 <strong>24/32</strong> (75%) · 下一场 <strong>7/11 04:00 BJT</strong></div>
+<div class="sub">📊 2026-07-10 20:12 BJT · 已完赛 <strong>24/32</strong> (75%) · 下一场 <strong>7/11 03:00 BJT 西班牙 vs 比利时</strong></div>
 
 <div class="progress">
   <div class="progress-bar"><div class="progress-fill" style="width:75.0%">75%</div></div>
@@ -78,31 +79,31 @@ h1 { margin:0 0 4px 0; font-size:22px; color:var(--gold); }
   <div class="qualified-title">🏅 已晋级 SF 球队 (1/4) · 已晋级 QF 球队 (8/8) ✓</div>
   <div class="qualified-list">
     <div class="qualified-team sf">★ 法国</div>
-    <div class="qualified-team" style="opacity:0.6;">挪威 或 英格兰</div>
-<div class="qualified-team" style="opacity:0.6;">西班牙 或 比利时</div>
-<div class="qualified-team" style="opacity:0.6;">阿根廷 或 瑞士</div>
+    <div class="qualified-team" style="opacity:0.6;">待: 西班牙 vs 比利时</div>
+<div class="qualified-team" style="opacity:0.6;">待: 挪威 vs 英格兰</div>
+<div class="qualified-team" style="opacity:0.6;">待: 阿根廷 vs 瑞士</div>
   </div>
 </div>
 
 <div class="bracket">
   <div class="col col-r32">
     <div class="col-title">R32 胜者 <span class="count">15/16</span></div>
-<div class="r32 pending" title="待: 南非 vs 加拿大"><span class="r32-w">?</span></div>
-<div class="r32 real" title="巴西(2) vs 日本(1)"><span class="r32-w">巴西</span></div>
-<div class="r32 real" title="德国(1) vs 巴拉圭(1)"><span class="r32-w">巴拉圭*</span></div>
-<div class="r32 real" title="荷兰(1) vs 摩洛哥(1)"><span class="r32-w">摩洛哥*</span></div>
-<div class="r32 real" title="科特迪瓦(1) vs 挪威(2)"><span class="r32-w">挪威</span></div>
-<div class="r32 real" title="法国(3) vs 瑞典(0)"><span class="r32-w">法国</span></div>
-<div class="r32 real" title="墨西哥(2) vs 厄瓜多尔(0)"><span class="r32-w">墨西哥</span></div>
-<div class="r32 real" title="英格兰(2) vs 刚果民主共和国(1)"><span class="r32-w">英格兰</span></div>
-<div class="r32 real" title="比利时(3) vs 塞内加尔(2)"><span class="r32-w">比利时</span></div>
-<div class="r32 real" title="美国(2) vs 波黑(0)"><span class="r32-w">美国</span></div>
-<div class="r32 real" title="西班牙(3) vs 奥地利(0)"><span class="r32-w">西班牙</span></div>
-<div class="r32 real" title="葡萄牙(2) vs 克罗地亚(1)"><span class="r32-w">葡萄牙</span></div>
-<div class="r32 real" title="瑞士(2) vs 阿尔及利亚(0)"><span class="r32-w">瑞士</span></div>
-<div class="r32 real" title="澳大利亚(1) vs 埃及(1)"><span class="r32-w">埃及*</span></div>
-<div class="r32 real" title="阿根廷(3) vs 佛得角(2)"><span class="r32-w">阿根廷</span></div>
-<div class="r32 real" title="哥伦比亚(1) vs 加纳(0)"><span class="r32-w">哥伦比亚</span></div>
+<div class="r32 pending"><span class="r32-w">?</span></div>
+<div class="r32 real"><span class="r32-w">巴西</span></div>
+<div class="r32 real"><span class="r32-w">巴拉圭*</span></div>
+<div class="r32 real"><span class="r32-w">摩洛哥*</span></div>
+<div class="r32 real"><span class="r32-w">挪威</span></div>
+<div class="r32 real"><span class="r32-w">法国</span></div>
+<div class="r32 real"><span class="r32-w">墨西哥</span></div>
+<div class="r32 real"><span class="r32-w">英格兰</span></div>
+<div class="r32 real"><span class="r32-w">比利时</span></div>
+<div class="r32 real"><span class="r32-w">美国</span></div>
+<div class="r32 real"><span class="r32-w">西班牙</span></div>
+<div class="r32 real"><span class="r32-w">葡萄牙</span></div>
+<div class="r32 real"><span class="r32-w">瑞士</span></div>
+<div class="r32 real"><span class="r32-w">埃及*</span></div>
+<div class="r32 real"><span class="r32-w">阿根廷</span></div>
+<div class="r32 real"><span class="r32-w">哥伦比亚</span></div>
   </div>
   <div class="col col-r16">
     <div class="col-title">R16 <span class="count">8/8</span></div>
@@ -136,43 +137,43 @@ h1 { margin:0 0 4px 0; font-size:22px; color:var(--gold); }
 <div class="match qf real"><div class="badge win">完</div><div class="match-date">7/10 04:00 BJT</div>
 <div class="team loser"><span class="team-name">摩洛哥</span><span class="team-score">0</span></div>
 <div class="team winner"><span class="team-name">法国</span><span class="team-score">2</span></div></div>
-<div class="match qf pending"><div class="badge todo">待</div><div class="match-date">7/11 04:00 BJT</div>
-<div class="team"><span class="team-name">挪威</span><span class="team-prob">38%</span></div>
-<div class="team"><span class="team-name">英格兰</span><span class="team-prob">38%</span></div>
-<div class="pred-mark">英格兰</div></div>
-<div class="match qf pending"><div class="badge todo">待</div><div class="match-date">7/12 04:00 BJT</div>
+<div class="match qf pending"><div class="badge todo">待</div><div class="match-date">7/11 03:00 BJT</div>
 <div class="team"><span class="team-name">西班牙</span><span class="team-prob">47%</span></div>
 <div class="team"><span class="team-name">比利时</span><span class="team-prob">29%</span></div>
-<div class="pred-mark">西班牙</div></div>
-<div class="match qf pending"><div class="badge todo">待</div><div class="match-date">7/13 04:00 BJT</div>
+<div class="pred-mark">→ 西班牙</div></div>
+<div class="match qf pending"><div class="badge todo">待</div><div class="match-date">7/12 05:00 BJT</div>
+<div class="team"><span class="team-name">挪威</span><span class="team-prob">38%</span></div>
+<div class="team"><span class="team-name">英格兰</span><span class="team-prob">38%</span></div>
+<div class="pred-mark">→ 英格兰</div></div>
+<div class="match qf pending"><div class="badge todo">待</div><div class="match-date">7/13 09:00 BJT</div>
 <div class="team"><span class="team-name">阿根廷</span><span class="team-prob">53%</span></div>
 <div class="team"><span class="team-name">瑞士</span><span class="team-prob">23%</span></div>
-<div class="pred-mark">阿根廷</div></div>
+<div class="pred-mark">→ 阿根廷</div></div>
   </div>
   <div class="col col-sf">
     <div class="col-title">SF <span class="count">0/2</span></div>
-<div class="match sf pending tbd"><div class="badge todo">待</div><div class="match-date">7/15-7/16 BJT</div>
+<div class="match sf pending"><div class="badge todo">待</div><div class="match-date">7/15-7/16 BJT</div>
 <div class="team"><span class="team-name">法国</span><span class="team-prob">50%</span></div>
 <div class="team"><span class="team-name">(QF M2 胜者)</span><span class="team-prob">50%</span></div>
-<div class="pred-mark">(QF M2 胜者)</div></div>
-<div class="match sf pending tbd"><div class="badge todo">待</div><div class="match-date">7/15-7/16 BJT</div>
+<div class="pred-mark">→ (QF M2 胜者)</div></div>
+<div class="match sf pending"><div class="badge todo">待</div><div class="match-date">7/15-7/16 BJT</div>
 <div class="team"><span class="team-name">(QF M3 胜者)</span><span class="team-prob">50%</span></div>
 <div class="team"><span class="team-name">(QF M4 胜者)</span><span class="team-prob">50%</span></div>
-<div class="pred-mark">(QF M4 胜者)</div></div>
+<div class="pred-mark">→ (QF M4 胜者)</div></div>
   </div>
   <div class="col col-final">
     <div class="col-title final">🏆 Final <span class="count">0/1</span></div>
-<div class="match final pending tbd"><div class="badge todo">待</div><div class="match-date">7/20 03:00 BJT</div>
+<div class="match final pending"><div class="badge todo">待</div><div class="match-date">7/20 03:00 BJT</div>
 <div class="team"><span class="team-name">(SF1 胜者)</span><span class="team-prob">50%</span></div>
 <div class="team"><span class="team-name">(SF2 胜者)</span><span class="team-prob">50%</span></div>
-<div class="pred-mark">(SF2 胜者)</div></div>
+<div class="pred-mark">→ (SF2 胜者)</div></div>
   </div>
   <div class="col col-3rd">
     <div class="col-title 3rd">🥉 3RD <span class="count">0/1</span></div>
-<div class="match third pending tbd"><div class="badge todo">待</div><div class="match-date">7/19 05:00 BJT</div>
+<div class="match third pending"><div class="badge todo">待</div><div class="match-date">7/19 05:00 BJT</div>
 <div class="team"><span class="team-name">(SF1 负者)</span><span class="team-prob">50%</span></div>
 <div class="team"><span class="team-name">(SF2 负者)</span><span class="team-prob">50%</span></div>
-<div class="pred-mark">(SF2 负者)</div></div>
+<div class="pred-mark">→ (SF2 负者)</div></div>
   </div>
 </div>
 
