@@ -6,9 +6,9 @@
       "data_status": "pending",
       "stage": "R32",
       "match_num": 1,
+      "date": "6/29 03:00",
       "p_home_win": 0.5,
-      "p_away_win": 0.5,
-      "date": "6/29 03:00"
+      "p_away_win": 0.5
     },
     {
       "home": "巴西",
@@ -199,7 +199,7 @@
       "away_score": 3,
       "winner": "摩洛哥",
       "went_to_pen": false,
-      "date": "7/5 01:00",
+      "date": "7/4 19:00 BJT",
       "data_status": "real",
       "stage": "R16",
       "match_num": 1
@@ -211,7 +211,7 @@
       "away_score": 1,
       "winner": "法国",
       "went_to_pen": false,
-      "date": "7/5 05:00",
+      "date": "7/4 23:00 BJT",
       "data_status": "real",
       "stage": "R16",
       "match_num": 2
@@ -223,7 +223,7 @@
       "away_score": 2,
       "winner": "挪威",
       "went_to_pen": false,
-      "date": "7/6 04:00",
+      "date": "7/6 04:00 BJT",
       "data_status": "real",
       "stage": "R16",
       "match_num": 3
@@ -235,7 +235,7 @@
       "away_score": 3,
       "winner": "英格兰",
       "went_to_pen": false,
-      "date": "7/6 08:00",
+      "date": "7/7 08:00 BJT",
       "data_status": "real",
       "stage": "R16",
       "match_num": 4
@@ -243,118 +243,119 @@
     {
       "home": "葡萄牙",
       "away": "西班牙",
-      "home_score": null,
-      "away_score": null,
-      "winner": null,
-      "went_to_pen": false,
-      "date": "2026-07-07",
-      "data_status": "pending",
+      "home_score": 0,
+      "away_score": 0,
+      "winner": "西班牙",
+      "went_to_pen": true,
+      "date": "7/7 03:00 BJT",
+      "data_status": "real",
       "stage": "R16",
-      "match_num": 5,
-      "p_home_win": 0.4039,
-      "p_away_win": 0.3333
+      "match_num": 5
     },
     {
       "home": "美国",
       "away": "比利时",
-      "data_status": "pending",
+      "home_score": 1,
+      "away_score": 4,
+      "winner": "比利时",
+      "went_to_pen": false,
+      "date": "7/7 20:00 BJT",
+      "data_status": "real",
       "stage": "R16",
-      "match_num": 6,
-      "p_home_win": 0.5,
-      "p_away_win": 0.5,
-      "date": ""
+      "match_num": 6
     },
     {
       "home": "阿根廷",
       "away": "埃及",
-      "data_status": "pending",
+      "home_score": 3,
+      "away_score": 2,
+      "winner": "阿根廷",
+      "went_to_pen": false,
+      "date": "7/8 00:00 BJT",
+      "data_status": "real",
       "stage": "R16",
-      "match_num": 7,
-      "p_home_win": 0.5,
-      "p_away_win": 0.5,
-      "date": ""
+      "match_num": 7
     },
     {
       "home": "瑞士",
       "away": "哥伦比亚",
-      "data_status": "pending",
+      "home_score": 0,
+      "away_score": 0,
+      "winner": "瑞士",
+      "went_to_pen": true,
+      "date": "7/8 16:00 BJT",
+      "data_status": "real",
       "stage": "R16",
-      "match_num": 8,
-      "p_home_win": 0.5,
-      "p_away_win": 0.5,
-      "date": ""
+      "match_num": 8
     }
   ],
   "qf": [
     {
       "home": "摩洛哥",
       "away": "法国",
-      "home_score": null,
-      "away_score": null,
-      "winner": null,
+      "home_score": 0,
+      "away_score": 2,
+      "winner": "法国",
       "went_to_pen": false,
-      "data_status": "pending",
+      "date": "7/10 04:00 BJT",
+      "data_status": "real",
       "stage": "QF",
-      "match_num": 1,
-      "p_home_win": 0.5,
-      "p_away_win": 0.5,
-      "date": ""
+      "match_num": 1
     },
     {
       "home": "挪威",
       "away": "英格兰",
-      "home_score": null,
-      "away_score": null,
-      "winner": null,
-      "went_to_pen": false,
+      "p_home_win": 0.3774,
+      "p_draw": 0.2452,
+      "p_away_win": 0.3774,
       "data_status": "pending",
       "stage": "QF",
       "match_num": 2,
-      "p_home_win": 0.5,
-      "p_away_win": 0.5,
-      "date": ""
+      "date": "7/11 04:00 BJT"
     },
     {
-      "home": "(R16 M5 胜者)",
-      "away": "(R16 M6 胜者)",
+      "home": "西班牙",
+      "away": "比利时",
+      "p_home_win": 0.4717,
+      "p_draw": 0.2412,
+      "p_away_win": 0.2871,
       "data_status": "pending",
       "stage": "QF",
       "match_num": 3,
-      "p_home_win": 0.5,
-      "p_away_win": 0.5,
-      "date": "7/10-7/12"
+      "date": "7/12 04:00 BJT"
     },
     {
-      "home": "(R16 M7 胜者)",
-      "away": "(R16 M8 胜者)",
+      "home": "阿根廷",
+      "away": "瑞士",
+      "p_home_win": 0.531,
+      "p_draw": 0.2391,
+      "p_away_win": 0.2298,
       "data_status": "pending",
       "stage": "QF",
       "match_num": 4,
-      "p_home_win": 0.5,
-      "p_away_win": 0.5,
-      "date": "7/10-7/12"
+      "date": "7/13 04:00 BJT"
     }
   ],
   "sf": [
     {
-      "home": "(QF M1 胜者)",
+      "home": "法国",
       "away": "(QF M2 胜者)",
+      "p_home_win": 0.5,
+      "p_away_win": 0.5,
       "data_status": "pending",
       "stage": "SF",
       "match_num": 1,
-      "p_home_win": 0.5,
-      "p_away_win": 0.5,
-      "date": "7/14-7/15"
+      "date": "7/15-7/16 BJT"
     },
     {
       "home": "(QF M3 胜者)",
       "away": "(QF M4 胜者)",
+      "p_home_win": 0.5,
+      "p_away_win": 0.5,
       "data_status": "pending",
       "stage": "SF",
       "match_num": 2,
-      "p_home_win": 0.5,
-      "p_away_win": 0.5,
-      "date": "7/14-7/15"
+      "date": "7/15-7/16 BJT"
     }
   ],
   "final": [
@@ -364,9 +365,7 @@
       "data_status": "pending",
       "stage": "FINAL",
       "match_num": 1,
-      "p_home_win": 0.5,
-      "p_away_win": 0.5,
-      "date": "7/19"
+      "date": "7/20 03:00 BJT"
     }
   ],
   "third": [
@@ -376,9 +375,7 @@
       "data_status": "pending",
       "stage": "3RD",
       "match_num": 1,
-      "p_home_win": 0.5,
-      "p_away_win": 0.5,
-      "date": "7/18"
+      "date": "7/19 05:00 BJT"
     }
   ]
 }
