@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📅 明日 R16 预测</title>
+<style>
+:root { --bg:#0a0e14; --bg-2:#151b23; --bg-3:#1f2630; --border:#2a3441; --text:#e6edf3; --text-2:#adbac7; --text-3:#7d8590; --green:#3fb950; --red:#f85149; --gold:#ffd700; --blue:#58a6ff; --purple:#bc8cff; --orange:#f0883e; }
+* { box-sizing:border-box; }
+body { font-family:-apple-system,"PingFang SC","Helvetica Neue",sans-serif; background:var(--bg); color:var(--text); margin:0; padding:18px; min-height:100vh; max-width:900px; margin:0 auto; }
+h1 { margin:0 0 6px 0; font-size:22px; color:var(--gold); }
+.sub { color:var(--text-2); font-size:12px; margin-bottom:16px; }
+.sub strong { color:var(--gold); }
+.match-card { background:var(--bg-2); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-bottom:12px; border-left:4px solid var(--blue); }
+.match-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:11px; color:var(--text-3); }
+.match-stage { background:var(--purple); color:white; padding:2px 8px; border-radius:4px; font-weight:700; font-size:10px; }
+.team-row { display:flex; align-items:center; padding:6px 0; border-bottom:1px solid var(--border); }
+.team-row:last-of-type { border-bottom:none; }
+.team-name { flex:1; font-size:16px; font-weight:600; }
+.team-bar-wrap { flex:2; margin:0 12px; }
+.team-bar-bg { height:8px; background:var(--bg-3); border-radius:4px; overflow:hidden; }
+.team-bar-fill { height:100%; background:linear-gradient(90deg,var(--blue),var(--purple)); border-radius:4px; }
+.team-bar-fill.win { background:linear-gradient(90deg,var(--green),#58d68d); }
+.team-bar-fill.lose { background:linear-gradient(90deg,var(--text-3),#555); }
+.team-prob { font-size:14px; font-weight:700; min-width:50px; text-align:right; font-variant-numeric:tabular-nums; }
+.team-name.winner { color:var(--green); }
+.team-name.loser { color:var(--text-2); }
+.draw-row { display:flex; align-items:center; padding:6px 0; font-size:12px; color:var(--gold); }
+.prediction { margin-top:10px; padding:8px 12px; background:linear-gradient(90deg,#0d2818,#1a4d2e); border-radius:6px; font-size:13px; }
+.prediction-title { color:var(--text-3); font-size:11px; margin-bottom:4px; }
+.prediction-text { color:var(--green); font-weight:700; font-size:14px; }
+.lambda-row { margin-top:8px; padding:6px 10px; background:var(--bg-3); border-radius:4px; font-size:11px; color:var(--text-2); display:flex; justify-content:space-between; }
+.note { background:#3d2a0d; border-left:3px solid var(--gold); padding:8px 12px; margin-top:8px; font-size:11px; color:var(--gold); border-radius:4px; }
+.history { margin-top:20px; padding:12px; background:var(--bg-2); border-radius:8px; }
+.history h3 { margin:0 0 8px 0; font-size:13px; color:var(--text-2); }
+.history-row { display:flex; justify-content:space-between; padding:4px 0; font-size:12px; }
+.history-row .ok { color:var(--green); font-weight:700; }
+.history-row .bad { color:var(--red); font-weight:700; }
+.summary { background:linear-gradient(135deg,var(--bg-2),var(--bg-3)); border-radius:8px; padding:12px 16px; margin-bottom:16px; border:1px solid var(--border); }
+.summary-stat { display:flex; justify-content:space-around; flex-wrap:wrap; gap:10px; }
+.summary-stat .stat { text-align:center; }
+.summary-stat .stat .v { font-size:20px; font-weight:700; color:var(--gold); }
+.summary-stat .stat .l { font-size:10px; color:var(--text-3); margin-top:2px; }
+</style>
+</head>
+<body>
+<h1>📅 明日 R16 预测</h1>
+<div class="sub">📊 2026-07-07 BJT · v23 算法 + KO 加时 + sit_lambda</div>
+
+<div class="summary">
+  <div class="summary-stat">
+    <div class="stat"><div class="v">2</div><div class="l">明日比赛</div></div>
+    <div class="stat"><div class="v">75%</div><div class="l">R16 历史命中率</div></div>
+    <div class="stat"><div class="v">3/4</div><div class="l">已命中场次</div></div>
+    <div class="stat"><div class="v">1</div><div class="l">算法错分 (巴西)</div></div>
+  </div>
+</div>
+
+<div class="match-card">
+  <div class="match-header">
+    <span class="match-stage">R16 M5</span>
+    <span>📅 2026-07-07 03:00 BJT</span>
+  </div>
+  
+  <div class="team-row">
+    <div class="team-name loser">葡萄牙</div>
+    <div class="team-bar-wrap"><div class="team-bar-bg"><div class="team-bar-fill lose" style="width:38%"></div></div></div>
+    <div class="team-prob">37.7%</div>
+  </div>
+  
+  <div class="team-row">
+    <div class="team-name loser">西班牙</div>
+    <div class="team-bar-wrap"><div class="team-bar-bg"><div class="team-bar-fill lose" style="width:38%"></div></div></div>
+    <div class="team-prob">37.7%</div>
+  </div>
+  
+  <div class="draw-row">
+    <div style="flex:1;">⚖️ 平局 (→ 加时/点球)</div>
+    <div style="min-width:50px; text-align:right; font-variant-numeric:tabular-nums;">24.5%</div>
+  </div>
+  
+  <div class="prediction">
+    <div class="prediction-title">🏆 算法预测</div>
+    <div class="prediction-text">西班牙 胜 (38% 信心)</div>
+  </div>
+  
+  <div class="lambda-row">
+    <span>λ 主场: <strong>2.98</strong></span>
+    <span>λ 客场: <strong>2.98</strong></span>
+  </div>
+<div class="note">⚠️ 平局概率 25% → 加时/点球风险高</div></div>
+<div class="match-card">
+  <div class="match-header">
+    <span class="match-stage">R16 M6</span>
+    <span>📅 2026-07-07 08:00 BJT</span>
+  </div>
+  
+  <div class="team-row">
+    <div class="team-name winner">美国</div>
+    <div class="team-bar-wrap"><div class="team-bar-bg"><div class="team-bar-fill win" style="width:41%"></div></div></div>
+    <div class="team-prob">40.7%</div>
+  </div>
+  
+  <div class="team-row">
+    <div class="team-name loser">比利时</div>
+    <div class="team-bar-wrap"><div class="team-bar-bg"><div class="team-bar-fill lose" style="width:35%"></div></div></div>
+    <div class="team-prob">35.2%</div>
+  </div>
+  
+  <div class="draw-row">
+    <div style="flex:1;">⚖️ 平局 (→ 加时/点球)</div>
+    <div style="min-width:50px; text-align:right; font-variant-numeric:tabular-nums;">24.1%</div>
+  </div>
+  
+  <div class="prediction">
+    <div class="prediction-title">🏆 算法预测</div>
+    <div class="prediction-text">美国 胜 (41% 信心)</div>
+  </div>
+  
+  <div class="lambda-row">
+    <span>λ 主场: <strong>2.51</strong></span>
+    <span>λ 客场: <strong>2.34</strong></span>
+  </div>
+<div class="note">⚠️ 平局概率 24% → 加时/点球风险高</div></div>
+<div class="history">
+  <h3>📊 v23 算法 R16 历史 (已完赛 4 场)</h3>
+  <div class="history-row"><span>✓ M1 摩洛哥 vs 加拿大</span><span class="ok">预测对</span></div>
+  <div class="history-row"><span>✓ M2 巴拉圭 vs 法国</span><span class="ok">预测对</span></div>
+  <div class="history-row"><span>✗ M3 巴西 vs 挪威</span><span class="bad">预测错 (实际挪威爆冷)</span></div>
+  <div class="history-row"><span>✓ M4 墨西哥 vs 英格兰</span><span class="ok">预测对</span></div>
+</div>
+
+<div style="margin-top:14px; padding:8px 12px; background:var(--bg-2); border-radius:6px; font-size:11px; color:var(--text-3);">
+  💡 算法说明: λ = 1.3 × 持球率 × √(attack × 0.001) × 教练 × 场地 × FIFA, lambda_cap=3.5
+  · v23 加轮次桶 + sit_lambda (5 桶末轮形势) + KO 加时/点球调整
+</div>
+
+</body>
+</html>

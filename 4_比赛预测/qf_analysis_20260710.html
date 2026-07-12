@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏆 2026 QF 完整预测分析</title>
+<style>
+:root { --bg:#0a0e14; --bg-2:#151b23; --bg-3:#1f2630; --border:#2a3441; --text:#e6edf3; --text-2:#adbac7; --text-3:#7d8590; --green:#3fb950; --red:#f85149; --gold:#ffd700; --blue:#58a6ff; --purple:#bc8cff; --orange:#f0883e; }
+*{ box-sizing:border-box; }
+body { font-family:-apple-system,"PingFang SC","Helvetica Neue",sans-serif; background:var(--bg); color:var(--text); margin:0; padding:18px; min-height:100vh; max-width:1100px; margin:0 auto; }
+h1 { margin:0 0 4px 0; font-size:24px; color:var(--gold); }
+.sub { color:var(--text-2); font-size:12px; margin-bottom:16px; }
+.sub strong { color:var(--gold); }
+.qf-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(330px, 1fr)); gap:14px; margin-bottom:18px; }
+.qf-card { background:var(--bg-2); border:1px solid var(--border); border-radius:10px; padding:14px; border-top:4px solid var(--purple); }
+.qf-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.qf-stage { background:var(--purple); color:white; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700; }
+.qf-time { color:var(--gold); font-size:11px; font-weight:600; }
+.qf-hours { color:var(--orange); font-size:10px; }
+.qf-venue { font-size:11px; color:var(--text-3); margin-bottom:10px; }
+.qf-vs { display:grid; grid-template-columns:1fr auto 1fr; gap:8px; align-items:center; margin-bottom:10px; }
+.qf-team { text-align:center; padding:8px; border-radius:6px; }
+.qf-team.win { background:linear-gradient(135deg,#0d2818,#1a4d2e); border:1px solid var(--green); }
+.qf-team.lose { background:var(--bg-3); border:1px solid var(--border); opacity:0.7; }
+.qf-flag { font-size:24px; margin-bottom:3px; }
+.qf-name { font-size:13px; font-weight:600; margin-bottom:3px; }
+.qf-team.win .qf-name { color:var(--green); }
+.qf-pct { font-size:16px; font-weight:700; }
+.qf-team.win .qf-pct { color:var(--green); }
+.qf-draw { text-align:center; padding:6px 2px; background:var(--bg-3); border-radius:6px; border:1px dashed var(--gold); }
+.qf-draw > div:first-child { color:var(--gold); font-size:11px; }
+.qf-pct-draw { font-size:13px; font-weight:700; color:var(--gold); margin:2px 0; }
+.qf-et { font-size:9px; color:var(--text-3); }
+.qf-lambda { font-size:10px; color:var(--text-3); text-align:center; margin-bottom:8px; }
+.qf-prediction { background:linear-gradient(90deg,#0d2818,#1a4d2e); padding:8px 12px; border-radius:6px; font-size:12px; text-align:center; color:var(--green); border:1px solid var(--green); }
+.qf-prediction strong { font-size:14px; }
+.qf-scores { margin-top:8px; font-size:11px; color:var(--text-2); }
+.qf-scores summary { cursor:pointer; color:var(--gold); padding:4px 0; }
+.qf-scores summary:hover { color:var(--orange); }
+.score-row { display:flex; justify-content:space-between; padding:2px 8px; }
+.score-row:hover { background:var(--bg-3); }
+.score-pct { color:var(--text-3); font-variant-numeric:tabular-nums; }
+.section { background:var(--bg-2); border:1px solid var(--border); border-radius:10px; padding:14px; margin-bottom:14px; }
+.section h2 { margin:0 0 10px 0; font-size:14px; color:var(--gold); }
+.history-row { display:flex; justify-content:space-between; padding:4px 0; font-size:12px; border-bottom:1px solid var(--border); }
+.history-row:last-child { border-bottom:none; }
+.history-row .ok { color:var(--green); font-weight:700; }
+.history-row .bad { color:var(--red); font-weight:700; }
+.champion-bar { display:flex; align-items:center; margin:4px 0; gap:8px; }
+.champion-bar .name { width:80px; font-size:12px; font-weight:600; }
+.champion-bar .bar { flex:1; height:18px; background:var(--bg-3); border-radius:4px; overflow:hidden; position:relative; }
+.champion-bar .fill { height:100%; background:linear-gradient(90deg,var(--gold),var(--orange)); }
+.champion-bar .pct { font-size:11px; color:var(--text-2); font-variant-numeric:tabular-nums; min-width:45px; text-align:right; }
+.sf-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.notes { font-size:11px; color:var(--text-3); padding:10px 12px; background:var(--bg-3); border-radius:6px; line-height:1.6; }
+.notes strong { color:var(--gold); }
+.notes ul { margin:6px 0; padding-left:20px; }
+.notes li { margin:3px 0; }
+</style>
+</head>
+<body>
+<h1>🏆 2026 世界杯 QF 完整预测分析</h1>
+<div class="sub">📊 2026-07-10 20:13 BJT · v23 + Poisson · 蒙特卡洛 5000 次模拟</div>
+
+<div class="qf-grid">
+
+<div class="qf-card">
+  <div class="qf-header">
+    <span class="qf-stage">QF2</span>
+    <span class="qf-time">7/11 03:00 BJT</span>
+    <span class="qf-hours">距开赛 7h</span>
+  </div>
+  <div class="qf-venue">📍 Los Angeles SoFi</div>
+  <div class="qf-vs">
+    <div class="qf-team win">
+      <div class="qf-flag">🇪🇸</div>
+      <div class="qf-name">西班牙</div>
+      <div class="qf-pct">47%</div>
+    </div>
+    <div class="qf-draw">
+      <div>⚖️ 平</div>
+      <div class="qf-pct-draw">24%</div>
+      <div class="qf-et">加时 20%</div>
+    </div>
+    <div class="qf-team lose">
+      <div class="qf-flag">🇧🇪</div>
+      <div class="qf-name">比利时</div>
+      <div class="qf-pct">29%</div>
+    </div>
+  </div>
+  <div class="qf-lambda">λ 主 2.98 | λ 客 2.34</div>
+  <div class="qf-prediction">🏆 预测 <strong>西班牙</strong> 胜 (47% 信心)</div>
+  <details class="qf-scores">
+    <summary>📊 比分概率 TOP 5</summary>
+    <div class="score-row"><span>2-2</span><span class="score-pct">6.0%</span></div><div class="score-row"><span>3-2</span><span class="score-pct">5.9%</span></div><div class="score-row"><span>2-1</span><span class="score-pct">5.1%</span></div><div class="score-row"><span>3-1</span><span class="score-pct">5.1%</span></div><div class="score-row"><span>2-3</span><span class="score-pct">4.6%</span></div>
+  </details>
+</div>
+<div class="qf-card">
+  <div class="qf-header">
+    <span class="qf-stage">QF3</span>
+    <span class="qf-time">7/12 05:00 BJT</span>
+    <span class="qf-hours">距开赛 33h</span>
+  </div>
+  <div class="qf-venue">📍 Miami Hard Rock</div>
+  <div class="qf-vs">
+    <div class="qf-team lose">
+      <div class="qf-flag">🇳🇴</div>
+      <div class="qf-name">挪威</div>
+      <div class="qf-pct">38%</div>
+    </div>
+    <div class="qf-draw">
+      <div>⚖️ 平</div>
+      <div class="qf-pct-draw">25%</div>
+      <div class="qf-et">加时 20%</div>
+    </div>
+    <div class="qf-team lose">
+      <div class="qf-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</div>
+      <div class="qf-name">英格兰</div>
+      <div class="qf-pct">38%</div>
+    </div>
+  </div>
+  <div class="qf-lambda">λ 主 2.98 | λ 客 2.98</div>
+  <div class="qf-prediction">🏆 预测 <strong>英格兰</strong> 胜 (38% 信心)</div>
+  <details class="qf-scores">
+    <summary>📊 比分概率 TOP 5</summary>
+    <div class="score-row"><span>2-2</span><span class="score-pct">5.1%</span></div><div class="score-row"><span>2-3</span><span class="score-pct">5.1%</span></div><div class="score-row"><span>3-2</span><span class="score-pct">5.1%</span></div><div class="score-row"><span>3-3</span><span class="score-pct">5.0%</span></div><div class="score-row"><span>2-4</span><span class="score-pct">3.8%</span></div>
+  </details>
+</div>
+<div class="qf-card">
+  <div class="qf-header">
+    <span class="qf-stage">QF4</span>
+    <span class="qf-time">7/13 09:00 BJT</span>
+    <span class="qf-hours">距开赛 56h</span>
+  </div>
+  <div class="qf-venue">📍 Kansas City</div>
+  <div class="qf-vs">
+    <div class="qf-team win">
+      <div class="qf-flag">🇦🇷</div>
+      <div class="qf-name">阿根廷</div>
+      <div class="qf-pct">53%</div>
+    </div>
+    <div class="qf-draw">
+      <div>⚖️ 平</div>
+      <div class="qf-pct-draw">24%</div>
+      <div class="qf-et">加时 20%</div>
+    </div>
+    <div class="qf-team lose">
+      <div class="qf-flag">🇨🇭</div>
+      <div class="qf-name">瑞士</div>
+      <div class="qf-pct">23%</div>
+    </div>
+  </div>
+  <div class="qf-lambda">λ 主 2.98 | λ 客 1.97</div>
+  <div class="qf-prediction">🏆 预测 <strong>阿根廷</strong> 胜 (53% 信心)</div>
+  <details class="qf-scores">
+    <summary>📊 比分概率 TOP 5</summary>
+    <div class="score-row"><span>2-1</span><span class="score-pct">6.2%</span></div><div class="score-row"><span>3-1</span><span class="score-pct">6.2%</span></div><div class="score-row"><span>2-2</span><span class="score-pct">6.1%</span></div><div class="score-row"><span>3-2</span><span class="score-pct">6.1%</span></div><div class="score-row"><span>4-1</span><span class="score-pct">4.6%</span></div>
+  </details>
+</div>
+</div>
+
+<div class="section">
+  <h2>📊 v23 算法 KO 历史表现 (完赛 25 场)</h2>
+  <div class="history-row"><span>R32 完赛: 15/16</span><span class="ok">14/16 = 88%</span></div>
+  <div class="history-row"><span>R16 完赛: 8/8</span><span class="ok">6/8 = 75%</span></div>
+  <div class="history-row"><span>QF 完赛: 1/4 (法国 2-0 摩洛哥)</span><span class="ok">1/1 = 100%</span></div>
+  <div class="history-row" style="font-weight:700;"><span>累计</span><span class="ok">21/25 = 84%</span></div>
+  <div style="margin-top:8px; font-size:11px; color:var(--text-3);">
+    错分案例: 巴拉圭点球胜德国, 摩洛哥点球胜荷兰 (R32) + 巴西 vs 挪威, 美国 vs 比利时 (R16)
+  </div>
+</div>
+
+<div class="section">
+  <h2>🔮 SF 模拟 (假设 QF 按预测结果)</h2>
+  <div class="sf-grid">
+    <div class="qf-card" style="border-top-color:var(--blue);">
+      <div class="qf-header">
+        <span class="qf-stage" style="background:var(--blue);">SF1</span>
+        <span class="qf-time">7/15 03:00 BJT</span>
+        <span class="qf-hours">Dallas</span>
+      </div>
+      <div class="qf-vs">
+        <div class="qf-team lose"><div class="qf-name">🇫🇷 法国</div><div class="qf-pct">38%</div></div>
+        <div class="qf-draw"><div>⚖️ 平</div><div class="qf-pct-draw">25%</div></div>
+        <div class="qf-team lose"><div class="qf-name">🇪🇸 西班牙</div><div class="qf-pct">38%</div></div>
+      </div>
+      <div class="qf-prediction">🏆 预测 <strong>西班牙</strong> (38% 信心)</div>
+    </div>
+    <div class="qf-card" style="border-top-color:var(--blue);">
+      <div class="qf-header">
+        <span class="qf-stage" style="background:var(--blue);">SF2</span>
+        <span class="qf-time">7/16 03:00 BJT</span>
+        <span class="qf-hours">Atlanta</span>
+      </div>
+      <div class="qf-vs">
+        <div class="qf-team lose"><div class="qf-name">🏴󠁧󠁢󠁥󠁮󠁧󠁿 英格兰</div><div class="qf-pct">38%</div></div>
+        <div class="qf-draw"><div>⚖️ 平</div><div class="qf-pct-draw">25%</div></div>
+        <div class="qf-team lose"><div class="qf-name">🇦🇷 阿根廷</div><div class="qf-pct">38%</div></div>
+      </div>
+      <div class="qf-prediction">🏆 预测 <strong>阿根廷</strong> (38% 信心)</div>
+    </div>
+  </div>
+  <div style="margin-top:8px; font-size:11px; color:var(--text-3);">
+    假设: 西班牙赢 QF2, 英格兰赢 QF3, 阿根廷赢 QF4
+  </div>
+</div>
+
+<div class="section">
+  <h2>🏆 冠军概率 (蒙特卡洛 5K 模拟)</h2>
+  <div class="champion-bar"><div class="name">法国</div><div class="bar"><div class="fill" style="width:28.18%;"></div></div><div class="pct">28.2%</div></div><div class="champion-bar"><div class="name">阿根廷</div><div class="bar"><div class="fill" style="width:16.939999999999998%;"></div></div><div class="pct">16.9%</div></div><div class="champion-bar"><div class="name">西班牙</div><div class="bar"><div class="fill" style="width:15.079999999999998%;"></div></div><div class="pct">15.1%</div></div><div class="champion-bar"><div class="name">挪威</div><div class="bar"><div class="fill" style="width:14.16%;"></div></div><div class="pct">14.2%</div></div><div class="champion-bar"><div class="name">英格兰</div><div class="bar"><div class="fill" style="width:14.14%;"></div></div><div class="pct">14.1%</div></div><div class="champion-bar"><div class="name">比利时</div><div class="bar"><div class="fill" style="width:6.92%;"></div></div><div class="pct">6.9%</div></div><div class="champion-bar"><div class="name">瑞士</div><div class="bar"><div class="fill" style="width:4.58%;"></div></div><div class="pct">4.6%</div></div>
+  <div class="notes" style="margin-top:10px;">
+    <strong>概率说明</strong>: 模拟 5000 次完整 KO 阶段, 每次根据 v23 算法概率随机决定 QF → SF → Final 结果。QF1 法国 100% 晋级 (已完赛)。
+  </div>
+</div>
+
+<div class="section">
+  <h2>💡 算法 & 关键看点</h2>
+  <div class="notes">
+    <p><strong>🎯 v23 算法核心</strong>: λ = 1.3 × 持球率 × √(attack × 0.001) × 教练 × 场地 × FIFA, lambda_cap=3.5 + 末轮 sit_lambda (5 桶) + KO 加时/点球调整</p>
+    <p><strong>📈 冠军热门分析</strong>:</p>
+    <ul>
+      <li>🇦🇷 <strong>阿根廷</strong>: 卫冕冠军, 梅西领衔 8 球金靴, 中前场深度冠绝</li>
+      <li>🇫🇷 <strong>法国</strong>: 姆巴佩 + 登贝莱 + 巴尔科拉, 小组赛全胜 + R16 1-0 + QF 2-0, 攻守兼备</li>
+      <li>🇪🇸 <strong>西班牙</strong>: 4 战 0 失球, 防守冠绝, 但攻击端亚马尔+尼科威廉姆斯年轻可能经验不足</li>
+      <li>🏴󠁧󠁢󠁥󠁮󠁧󠁿 <strong>英格兰</strong>: 凯恩 6 球状态火, 但 R16 3-2 险胜墨西哥, 防守不稳</li>
+      <li>🇧🇪 <strong>比利时</strong>: 4-1 美国, 攻击爆发, 但小组赛 0-0 佛得角 0-0 伊朗暴露控制力问题</li>
+    </ul>
+    <p><strong>⚠️ 黑马警报</strong>:</p>
+    <ul>
+      <li>🇨🇭 <strong>瑞士</strong>: 2 场点球全胜, 心理素质超神, 但阿根廷面前实力差距大</li>
+      <li>🇳🇴 <strong>挪威</strong>: 哈兰德 8 战小组赛+淘汰赛共 5+ 球, 但从未踢过 KO 加时</li>
+    </ul>
+  </div>
+</div>
+
+</body>
+</html>

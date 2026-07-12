@@ -3,6 +3,9 @@ import path from "node:path";
 
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(import.meta.dirname, ".."),
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;

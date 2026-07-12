@@ -416,9 +416,22 @@ def calibrate(n_iter=20, use_bayes=True, verbose=True, log_callback=None):
         'best_weights': to_native(best_weights),
         'iterations': to_native(all_iterations),
     }
+    # v3.0.1 修 (2026-07-06): save_best 加"破纪录判断"
+    # 旧逻辑: 无条件 save_best → best.json 总是"本次最佳" (不是历史最低)
+    # 新逻辑: 只在 best_loss < 历史全局最低 (all_time_min) 时才 save_best
+    # 这样 calibration_best.json 才是真正意义的"best of all time"
+    # 注意: 必须在 history.append() 之前算 all_time_min, 否则本条新记录会自动成为 min
+    all_time_losses = [h.get('best_loss') for h in history if h.get('best_loss') is not None]
+    all_time_min = min(all_time_losses) if all_time_losses else float('inf')
+    is_new_record = best_loss < all_time_min
+    if is_new_record:
+        save_best(best_weights, best_loss)
+        log('done', f"  🏆 NEW RECORD: loss {best_loss:.2f} < all_time_min {all_time_min:.2f}, best.json 已更新")
+    else:
+        log('done', f"  ⏸️  未破纪录: best_loss {best_loss:.2f} >= all_time_min {all_time_min:.2f}, best.json 保持不变")
+
     history.append(record)
     save_history(history)
-    save_best(best_weights, best_loss)
 
     if verbose:
         print(f"\n=== 校准完成 ===")

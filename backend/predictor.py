@@ -710,8 +710,15 @@ def poisson_pmf(lam, k):
 def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=25,
                   venue_humidity=60, weather_note='', venue_cfg=None,
                   home_leagues=None, away_leagues=None, adaptation_weight=0.5,
-                  weights=None):
-    """预测单场比赛"""
+                  weights=None, is_knockout=False, knockout_red_cards=None):
+    """预测单场比赛
+
+    v3.0 KO 阶段调整 (7/2 加):
+    - is_knockout=True: λ 整体乘 knockout_lambda_reducer (默认 0.85, -15%)
+    - knockout_red_cards={home: n, away: n}: 红牌后 λ 乘数 (默认 0.7 × n)
+    - P(平) 至少 extra_time_min_draw_prob (默认 25%)
+    - P(平) 额外加 extra_time_prob (默认 +20%, KO 加时可见性)
+    """
     if weights is None:
         weights = {}  # 让 team_metrics 用 default
     H = team_metrics(home, ranking_dict, fifa_data, is_home=True,
@@ -727,6 +734,28 @@ def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=2
                           adaptation_weight=adaptation_weight, weights=weights,
                           availability_map=load_availability())
 
+    # === v3.0 KO 调整 1: λ reducer ===
+    ko_adjustments = {}  # 记录调整明细 (前端展示)
+    if is_knockout:
+        ko_reducer = (weights or {}).get('knockout_lambda_reducer', 0.85)
+        lh *= ko_reducer
+        la *= ko_reducer
+        ko_adjustments['lambda_reducer'] = ko_reducer
+
+    # === v3.0 KO 调整 2: 红牌惩罚 ===
+    if knockout_red_cards:
+        red_card_pen = (weights or {}).get('red_card_penalty', 0.70)
+        home_rc = knockout_red_cards.get('home', 0) or knockout_red_cards.get(home, 0)
+        away_rc = knockout_red_cards.get('away', 0) or knockout_red_cards.get(away, 0)
+        if home_rc > 0:
+            lh *= red_card_pen ** home_rc  # 多次红牌累乘
+            ko_adjustments['home_red_cards'] = home_rc
+            ko_adjustments['home_lambda_penalty'] = red_card_pen ** home_rc
+        if away_rc > 0:
+            la *= red_card_pen ** away_rc
+            ko_adjustments['away_red_cards'] = away_rc
+            ko_adjustments['away_lambda_penalty'] = red_card_pen ** away_rc
+
     score_probs = {}
     for k in range(7):
         for m in range(7):
@@ -741,6 +770,21 @@ def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=2
     # 拉高 p_draw 后, 把赢/输的部分按比例压回去
     draw_boost = (weights or {}).get('draw_boost', 1.0)
     p_draw *= draw_boost
+
+    # === v3.0 KO 调整 3: 加时/点球场景 ===
+    if is_knockout:
+        # a) P(平) 至少 extra_time_min_draw_prob (强制 25%)
+        min_draw = (weights or {}).get('extra_time_min_draw_prob', 0.25)
+        if p_draw < min_draw:
+            ko_adjustments['draw_floor_applied'] = True
+            p_draw = min_draw
+        # b) P(平) 额外加 extra_time_prob (默认 +20%, 但不能超过 min_draw)
+        extra_time = (weights or {}).get('extra_time_prob', 0.20)
+        # 已 floor 过就不再加
+        if not ko_adjustments.get('draw_floor_applied'):
+            p_draw += extra_time
+            ko_adjustments['draw_extra_time_added'] = extra_time
+
     total_p = p_win + p_draw + p_lose
     if total_p > 0:
         p_win /= total_p; p_draw /= total_p; p_lose /= total_p
@@ -813,12 +857,46 @@ def predict_match(home, away, ranking_dict, fifa_data, venue_alt=0, venue_temp=2
         'weather_note': weather_note,
         'algorithm_breakdown': algorithm_breakdown,
         'score_distribution': score_dist,
+        # v3.0 KO 调整输出
+        'is_knockout': is_knockout,
+        'ko_adjustments': ko_adjustments if is_knockout else {},
     }
 
 
 # ============================================================
 # compute_predictions(weights) → 104 场全预测
 # ============================================================
+def _get_red_cards_for_match(home, away):
+    """从 match_events.csv 查某场比赛的红牌数 (v3.0)
+    返回: {'home': n, 'away': n}
+    """
+    import csv as _csv
+    res = {'home': 0, 'away': 0}
+    try:
+        csv_path = Path(__file__).parent.parent / '1_数据基础' / 'match_events.csv'
+        if not csv_path.exists():
+            return res
+        # match_id 格式: 2026-06-30_法国_vs_瑞典 或 _日期_主_vs_客
+        target_keys = [
+            f'_{home}_vs_{away}',
+            f'_{away}_vs_{home}',  # 反向
+        ]
+        with open(csv_path, encoding='utf-8') as f:
+            for r in _csv.DictReader(f):
+                mid = r.get('match_id', '')
+                if not any(k in mid for k in target_keys):
+                    continue
+                if 'Red Card' in r.get('event_type', ''):
+                    team = r.get('team_cn', '')
+                    if team == home:
+                        res['home'] += 1
+                    elif team == away:
+                        res['away'] += 1
+    except Exception:
+        pass
+    return res
+
+
 def compute_predictions(weights):
     """跑 72 场小组 + 32 场 KO = 104 场"""
     import csv
@@ -1120,21 +1198,22 @@ def compute_predictions(weights):
     _ko_counter = {'R32': 0, 'R16': 0, 'QF': 0, 'SF': 0, '3RD': 0, 'FINAL': 0}
 
     def make_ko_pred(home, away, stage, round_name, prefix, date, stadium='', city=''):
-        # v2.2.4-8 改: KO 阶段用临时 lambda_cap=4.5 (强队决赛能突破 weights 的 3.5 上限)
-        # 旧版 cap=5.5 太高导致 5-3 5-5; 用 weights 自己的 3.5 又太低, 60% KO 走点球
-        # 4.5 是中间值, 强队 λ ~4.0 反映真实, 但不会出 5-5 这种夸张比分
+        """单场 KO 预测 — v3.0: is_knockout=True + knockout_red_cards 触发 KO 调整"""
         ko_weights = {**weights, 'lambda_cap': 4.5} if weights else {'lambda_cap': 4.5}
+        knockout_red_cards = _get_red_cards_for_match(home, away)
         pred = predict_match(home, away, ranking_dict, fifa_data, venue_cfg=venue_cfg,
-                             home_leagues={'fw': ranking_dict.get(home, {}).get('fw_leagues', []),
-                                           'mid': ranking_dict.get(home, {}).get('mid_leagues', []),
-                                           'def': ranking_dict.get(home, {}).get('def_leagues', []),
-                                           'gk': ranking_dict.get(home, {}).get('gk_league', '')},
-                             away_leagues={'fw': ranking_dict.get(away, {}).get('fw_leagues', []),
-                                           'mid': ranking_dict.get(away, {}).get('mid_leagues', []),
-                                           'def': ranking_dict.get(away, {}).get('def_leagues', []),
-                                           'gk': ranking_dict.get(away, {}).get('gk_league', '')},
-                             adaptation_weight=adaptation_weight,
-                             weights=ko_weights)
+                              home_leagues={'fw': ranking_dict.get(home, {}).get('fw_leagues', []),
+                                            'mid': ranking_dict.get(home, {}).get('mid_leagues', []),
+                                            'def': ranking_dict.get(home, {}).get('def_leagues', []),
+                                            'gk': ranking_dict.get(home, {}).get('gk_league', '')},
+                              away_leagues={'fw': ranking_dict.get(away, {}).get('fw_leagues', []),
+                                            'mid': ranking_dict.get(away, {}).get('mid_leagues', []),
+                                            'def': ranking_dict.get(away, {}).get('def_leagues', []),
+                                            'gk': ranking_dict.get(away, {}).get('gk_league', '')},
+                              adaptation_weight=adaptation_weight,
+                              weights=ko_weights,
+                              is_knockout=True,
+                              knockout_red_cards=knockout_red_cards)
         pred['match_id'] = f"{prefix}_{home}_vs_{away}"
         pred['round'] = round_name
         pred['stage'] = stage
@@ -1185,10 +1264,18 @@ def compute_predictions(weights):
         make_ko_pred(h, a, 'R32', '32强', 'R32', date, stadium, city)
     r32_winners = [p['winner'] for p in all_predictions[-16:]]
 
-    # v2.3.7: R16 配对严格按 FIFA 2026 官方对阵表（基于 bracket 几何相邻合并）
-    # 上半 (M1..M8) 4 场: M1-M3, M2-M5, M4-M6, M7-M8
-    # 下半 (M9..M16) 4 场: M11-M12, M9-M10, M14-M16, M13-M15
-    r16_indices = [(0,2), (1,4), (3,5), (6,7), (10,11), (8,9), (13,15), (12,14)]
+    # v3.0.1 修 (2026-07-06): R16 配对严格按 FIFA 2026 官方对阵表 + 已踢 4 场反推验证
+    # 旧版 [(0,2), (1,4), (3,5), (6,7), (10,11), (8,9), (13,15), (12,14)] 5/8 场错
+    # 实际配对 (按 R32 赢家顺序 M1..M16, home=first, away=second):
+    #   R16-1: M1 vs M4   (加 vs 摩)  7/5 04:00 休斯敦 NRG
+    #   R16-2: M3 vs M6   (巴 vs 法)  7/5 04:00 费城 Lincoln
+    #   R16-3: M2 vs M5   (巴 vs 挪)  7/6 04:00 东卢瑟福 MetLife
+    #   R16-4: M7 vs M8   (墨 vs 英)  7/6 09:00 墨西哥城 Banorte
+    #   R16-5: M12 vs M11 (葡 vs 西)  7/7 03:00 阿灵顿 AT&T
+    #   R16-6: M10 vs M9  (美 vs 比)  7/7 08:00 西雅图 Lumen
+    #   R16-7: M15 vs M14 (阿 vs 埃)  7/8 03:00 亚特兰大 Mercedes-Benz
+    #   R16-8: M13 vs M16 (瑞 vs 哥)  7/8 08:00 温哥华 BC Place
+    r16_indices = [(0,3), (2,5), (1,4), (6,7), (11,10), (9,8), (14,13), (12,15)]
     r16_pairs = [(r32_winners[a], r32_winners[b]) for a, b in r16_indices]
     for i, (h, a) in enumerate(r16_pairs):
         date = ko_date_for('R16', i)
@@ -1196,7 +1283,15 @@ def compute_predictions(weights):
         make_ko_pred(h, a, 'R16', '16强', 'R16', date, stadium, city)
     r16_winners = [p['winner'] for p in all_predictions[-8:]]
 
-    qf_pairs = [(r16_winners[i], r16_winners[i+1]) for i in range(0, 8, 2)]
+    # v3.0.1 修 (2026-07-10): QF 配对按 FIFA 官方对阵表 (按 bracket 几何位置, 不是按时间)
+    # 旧版 qf_pairs = [(r16[i], r16[i+1]) for i in range(0, 8, 2)] 按时间顺序配对, 错了 QF-2 + QF-3
+    # 实际 FIFA 2026 (按官方比赛编号 97-100):
+    #   比赛 97 (QF-1): R16-1 vs R16-2 (摩 vs 法)
+    #   比赛 98 (QF-2): R16-5 vs R16-6 (西 vs 比)  ← 之前错配为 R16-3 vs R16-4
+    #   比赛 99 (QF-3): R16-3 vs R16-4 (挪 vs 英)  ← 之前错配为 R16-5 vs R16-6
+    #   比赛 100 (QF-4): R16-7 vs R16-8 (阿 vs 哥)
+    qf_indices = [(0, 1), (4, 5), (2, 3), (6, 7)]
+    qf_pairs = [(r16_winners[a], r16_winners[b]) for a, b in qf_indices]
     for i, (h, a) in enumerate(qf_pairs):
         date = ko_date_for('QF', i)
         stadium, city = ko_venue_for('QF', i)

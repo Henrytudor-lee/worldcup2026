@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>1/4 决赛 QF 4 场战术预测</title>
+<style>
+  body { font-family: -apple-system, "PingFang SC", sans-serif; max-width: 1100px; margin: 30px auto; padding: 20px; background: #f8f8f5; color: #1a1a1a; }
+  h1 { color: #2c5f2d; text-align: center; }
+  .match-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin: 20px 0; padding: 20px; }
+  .match-header { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #fef7e8, #f5e6c8); padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+  .match-time { font-size: 22px; font-weight: 700; color: #5a3a1f; }
+  .match-teams { font-size: 22px; font-weight: 600; }
+  .vs { color: #d4a574; font-weight: 700; padding: 0 10px; }
+  .prediction-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+  .pred-box { background: #faf6ee; padding: 16px; border-radius: 8px; }
+  .pred-box h4 { color: #5a3a1f; margin: 0 0 12px 0; }
+  .prob-bar { background: #e8e0d0; height: 24px; border-radius: 4px; position: relative; margin: 6px 0; overflow: hidden; }
+  .prob-fill { height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 12px; }
+  .ph { background: #2c5f2d; }
+  .pd { background: #d4a574; }
+  .pa { background: #8b4513; }
+  .verdict { background: #5a3a1d; color: #fff; padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 16px; text-align: center; font-weight: 600; }
+  .section { margin: 12px 0; }
+  .label { font-weight: 600; color: #5a3a1f; }
+  .note-list { background: #fef7e8; padding: 12px; border-radius: 6px; margin: 8px 0; }
+  .meta { font-size: 12px; color: #888; text-align: center; margin: 20px 0; }
+  .tactical-score { background: linear-gradient(90deg, #5a3a1f, #8b5e3c); color: #fff; padding: 8px 16px; border-radius: 6px; display: inline-block; font-weight: 700; font-size: 18px; margin-top: 8px; }
+  .info { background: #e8f5e9; border-left: 4px solid #2c5f2d; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  th { background: #5a3a1f; color: #fff; padding: 8px; text-align: left; }
+  td { padding: 8px; border-bottom: 1px solid #e8e0d0; }
+  tr:nth-child(even) { background: #faf6ee; }
+  .ok { color: #2c5f2d; font-weight: 700; }
+  .miss { color: #c0392b; font-weight: 700; }
+</style>
+</head>
+<body>
+<h1>⚽ 2026 世界杯 1/4 决赛 QF 4 场战术预测</h1>
+<p class="meta">v3.0 KO 算法 (calibrate 后 best_weights) + 战术修正 v2 | 2026-07-09 11:21:24</p>
+
+<div class="info">
+  <b>📊 战术预测累计战绩 (7/3-7/8, 13 场)</b>: 胜方 11/13 (85%) | 比分完全命中 3/13 (23%)
+  <table>
+    <tr><th>日期</th><th>比赛</th><th>战术预测</th><th>实际</th><th>胜方</th><th>比分</th></tr>
+    <tr><td>7/3</td><td>🇪🇸 vs 🇦🇹</td><td>3-0</td><td>3-0</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+    <tr><td>7/3</td><td>🇵🇹 vs 🇭🇷</td><td>2-1</td><td>2-1</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+    <tr><td>7/3</td><td>🇨🇭 vs 🇩🇿</td><td>2-1</td><td>2-0</td><td class="ok">✓</td><td class="miss">差</td></tr>
+    <tr><td>7/4</td><td>🇦🇺 vs 🇪🇬</td><td>1-1 PK 澳</td><td>1-1</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+    <tr><td>7/4</td><td>🇦🇷 vs 🇨🇻</td><td>3-0</td><td>3-2</td><td class="ok">✓</td><td class="miss">差</td></tr>
+    <tr><td>7/4</td><td>🇨🇴 vs 🇬🇭</td><td>2-1</td><td>1-0</td><td class="ok">✓</td><td class="miss">差</td></tr>
+    <tr><td>7/5</td><td>🇨🇦 vs 🇲🇦</td><td>1-1 PK 摩</td><td>0-3</td><td class="miss">✗</td><td class="miss">差</td></tr>
+    <tr><td>7/5</td><td>🇵🇾 vs 🇫🇷</td><td>1-2</td><td>0-1</td><td class="ok">✓</td><td class="miss">差</td></tr>
+    <tr><td>7/6</td><td>🇲🇽 vs 🏴</td><td>2-0</td><td>2-3</td><td class="miss">✗</td><td class="miss">差</td></tr>
+    <tr><td>7/7</td><td>🇵🇹 vs 🇪🇸</td><td>1-2</td><td>0-1</td><td class="ok">✓</td><td class="miss">差</td></tr>
+    <tr><td>7/7</td><td>🇺🇸 vs 🇧🇪</td><td>1-2</td><td>1-4</td><td class="ok">✓</td><td class="miss">差</td></tr>
+    <tr><td>7/8</td><td>🇦🇷 vs 🇪🇬</td><td>2-1</td><td>3-2</td><td class="ok">✓</td><td class="miss">差</td></tr>
+    <tr><td>7/8</td><td>🇨🇭 vs 🇨🇴</td><td>1-1 PK 哥</td><td>0-0</td><td class="ok">✓</td><td class="miss">差</td></tr>
+    <tr style="background:#fef7e8"><td colspan="4" style="text-align:right"><b>累计</b></td><td><b>11/13 (85%)</b></td><td><b>3/13 (23%)</b></td></tr>
+  </table>
+</div>
+
+<div class="info">
+  <b>🏆 1/4 决赛 4 场对阵 (按 R16 实际赢家链)</b>:
+  <ul>
+    <li><b>QF-1</b>: 摩洛哥 vs 法国 (R16-1 摩 vs R16-2 法) - 7/10 04:00 CST 福克斯伯勒</li>
+    <li><b>QF-2</b>: 挪威 vs 英格兰 (R16-3 挪 vs R16-4 英) - 7/11 03:00 CST 洛杉矶</li>
+    <li><b>QF-3</b>: 西班牙 vs 比利时 (R16-5 西 vs R16-6 比) - 7/11 09:00 CST 迈阿密</li>
+    <li><b>QF-4</b>: 阿根廷 vs 哥伦比亚 (R16-7 阿 vs R16-8 哥) - 7/12 03:00 CST 堪萨斯城</li>
+  </ul>
+</div>
+
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">7/10 04:00 CST</div>
+      <div style="font-size:12px;color:#888">📍 Gillette Stadium, Foxborough</div>
+    </div>
+    <div class="match-teams">
+      <b>摩洛哥</b> <span class="vs">vs</span> <b>法国</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">QF · 8 强</div>
+      <div style="font-size:12px;color:#888">QF-1</div>
+    </div>
+  </div>
+  <div class="prediction-grid">
+    <div class="pred-box">
+      <h4>📊 v3.0 算法 (calibrate 后 best_weights)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">λ: 2.50 vs 3.83</div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:21.7%">21.7% 摩洛哥</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:24.9%">24.9% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:53.3%">53.3% 法国</div></div>
+      <div class="verdict">v3 比分 2-3 · 冠军: 法国</div>
+    </div>
+    <div class="pred-box">
+      <h4>🎯 战术修正 v2 (含伤停+战术+历史)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">基于 v3 + 4 维 λ + 战术形态</div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:24.0%">24.0% 摩洛哥</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:25.1%">25.1% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:50.9%">50.9% 法国</div></div>
+      <div class="verdict" style="background: #2c5f2d">战术冠军: 法国</div>
+      <div style="text-align:center; margin-top: 12px;">
+        <div style="font-size:11px; color:#888; margin-bottom:4px">战术预测比分</div>
+        <div class="tactical-score">2-1 法国胜</div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">🏥 伤停情况:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>摩洛哥</b>: 全主力, 阿什拉夫+恩内斯里+齐耶赫, 黑马体能保持<br>
+      <b>法国</b>: 姆巴佩伤愈复出 (小组末轮休息), 格列兹曼+登贝莱+图拉姆
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">⚽ 战术形态:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>摩洛哥</b>: FIFA #11, 防守反击+反击速度; 阿什拉夫右路推进, 恩内斯里中锋<br>
+      <b>法国</b>: FIFA #3, 身价 12.6 亿欧; 4-2-3-1, 姆巴佩+登贝莱+图拉姆三叉戟, 楚阿梅尼+卡马文加双后腰
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">📈 近期状态:</div>
+    <div style="font-size:13px">摩 4 场 6 球 5 失 (小组 2 胜 1 平 + 32 强 0-3 加拿大); 法 4 场 9 球 2 失 (小组 2 胜 1 平 + 32 强 0-1 巴拉圭)</div>
+  </div>
+  <div class="section">
+    <div class="label">📜 历史:</div>
+    <div style="font-size:13px">摩洛哥 2022 世界杯 4 强 (黑马); 法国 2018 世界杯冠军 + 2022 亚军 + 2024 奥运会亚军</div>
+  </div>
+  <div class="section">
+    <div class="label">📝 战术修正要点:</div>
+    <ul class="note-list"><li>【黑马】摩洛哥 2022 4 强光环, 但 32 强 0-3 加拿大说明黑马成色减弱 (防守被打穿)</li><li>【法】姆巴佩伤愈后状态火热, 32 强 0-1 巴虽输, 但场面占优 (预期进球 xG 远高于巴)</li><li>【4 维】法 FW 22290 vs 摩 FW 9411, 中场法 18300 vs 摩 3500, 法整体碾压</li><li>【防守】法 DEF 15566 vs 摩 DEF 2972, 防线差距极大 (这是 0-3 加拿大能进的原因)</li><li>【黑马体能】摩 4 场 6 球 5 失, 防线每场都丢, 难以抵挡法三叉戟</li><li>【姆巴佩】伤愈后爆发, 7/4 32 强 vs 巴未出场, 本场满血, 速度碾压摩后防</li><li>【历史】法 vs 摩 2007 友谊赛法 2-0, 但 2022 摩 4 强光环仍在</li><li>【战术】摩防守反击 vs 法控球进攻, 法控球率高 + 姆巴佩反击速度</li><li>【关键】摩必须 100% 防守, 任何失误都会被姆巴佩反击</li><li>【预测】法 4 维优势, 但摩黑马不会崩盘, 战术预测 2-1 法 (小胜, 不会大比分)</li></ul>
+  </div>
+</div>
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">7/11 03:00 CST</div>
+      <div style="font-size:12px;color:#888">📍 SoFi Stadium, Los Angeles</div>
+    </div>
+    <div class="match-teams">
+      <b>挪威</b> <span class="vs">vs</span> <b>英格兰</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">QF · 8 强</div>
+      <div style="font-size:12px;color:#888">QF-2</div>
+    </div>
+  </div>
+  <div class="prediction-grid">
+    <div class="pred-box">
+      <h4>📊 v3.0 算法 (calibrate 后 best_weights)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">λ: 3.44 vs 3.83</div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:32.7%">32.7% 挪威</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:26.2%">26.2% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:41.1%">41.1% 英格兰</div></div>
+      <div class="verdict">v3 比分 3-3 · 冠军: 英格兰</div>
+    </div>
+    <div class="pred-box">
+      <h4>🎯 战术修正 v2 (含伤停+战术+历史)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">基于 v3 + 4 维 λ + 战术形态</div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:29.2%">29.2% 挪威</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:26.0%">26.0% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:44.8%">44.8% 英格兰</div></div>
+      <div class="verdict" style="background: #2c5f2d">战术冠军: 英格兰</div>
+      <div style="text-align:center; margin-top: 12px;">
+        <div style="font-size:11px; color:#888; margin-bottom:4px">战术预测比分</div>
+        <div class="tactical-score">1-2 英格兰胜</div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">🏥 伤停情况:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>挪威</b>: 全主力, 哈兰德+厄德高+索尔洛特, 体能消耗大但士气高昂<br>
+      <b>英格兰</b>: 凯恩+萨卡+贝林厄姆全主力, 福登伤愈, 沃克停赛
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">⚽ 战术形态:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>挪威</b>: FIFA #37, 防守反击+哈兰德单点爆破; 厄德高组织, 索尔洛特中场搅局<br>
+      <b>英格兰</b>: FIFA #5, 身价 15.2 亿欧; 4-2-3-1, 凯恩单箭头 + 萨卡+福登+贝林厄姆前场三人组
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">📈 近期状态:</div>
+    <div style="font-size:13px">挪 4 场 8 球 4 失 (小组 2 胜 1 平 + 32 强 2-1 巴西大冷门); 英 4 场 7 球 3 失 (小组 2 胜 1 平 + 32 强 2-3 逆转墨西哥)</div>
+  </div>
+  <div class="section">
+    <div class="label">📜 历史:</div>
+    <div style="font-size:13px">挪威 1998 后首次 16 强 + 直接 8 强 (黑马); 英 2018 4 强 + 2020 欧洲杯亚军 + 2024 欧洲杯亚军</div>
+  </div>
+  <div class="section">
+    <div class="label">📝 战术修正要点:</div>
+    <ul class="note-list"><li>【黑马】挪威 2-1 巴西爆冷, 哈兰德 1 球 + 全队拼搏精神, 黑马成色十足</li><li>【英】32 强 2-3 逆转墨西哥, 凯恩梅开二度, 状态火热</li><li>【4 维】英 FW 17110 vs 挪 FW 6504, 中场英 17112 vs 挪 8600, 英全面碾压</li><li>【哈兰德】FIFA 当世第一中锋, 但挪威整体跟英超班底差距大</li><li>【凯恩】大场面先生, 32 强梅开二度, 关键时刻稳定</li><li>【沃克】英格兰主力右后卫停赛, 防守有隐患 (挪反击可能利用)</li><li>【黑马体能】挪 32 强 2-1 巴, 体能消耗相对少 (无加时), 体能保持</li><li>【战术】挪防守反击 + 哈兰德反击; 英控球+边路推进, 萨卡/福登速度</li><li>【历史】英挪 2012 友谊赛英 1-0, 但 2026 挪威今非昔比</li><li>【关键】挪如果先进 1 球, 哈兰德反击会非常危险, 英必须控制节奏</li><li>【预测】英整体实力强, 但挪黑马 + 哈兰德单点爆破, 战术预测 1-2 英 (小胜, 不轻松)</li></ul>
+  </div>
+</div>
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">7/11 09:00 CST</div>
+      <div style="font-size:12px;color:#888">📍 Hard Rock Stadium, Miami</div>
+    </div>
+    <div class="match-teams">
+      <b>西班牙</b> <span class="vs">vs</span> <b>比利时</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">QF · 8 强</div>
+      <div style="font-size:12px;color:#888">QF-3</div>
+    </div>
+  </div>
+  <div class="prediction-grid">
+    <div class="pred-box">
+      <h4>📊 v3.0 算法 (calibrate 后 best_weights)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">λ: 2.95 vs 2.25</div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:48.2%">48.2% 西班牙</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:24.1%">24.1% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:27.7%">27.7% 比利时</div></div>
+      <div class="verdict">v3 比分 2-2 · 冠军: 西班牙</div>
+    </div>
+    <div class="pred-box">
+      <h4>🎯 战术修正 v2 (含伤停+战术+历史)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">基于 v3 + 4 维 λ + 战术形态</div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:47.9%">47.9% 西班牙</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:28.7%">28.7% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:23.4%">23.4% 比利时</div></div>
+      <div class="verdict" style="background: #2c5f2d">战术冠军: 平局/加时</div>
+      <div style="text-align:center; margin-top: 12px;">
+        <div style="font-size:11px; color:#888; margin-bottom:4px">战术预测比分</div>
+        <div class="tactical-score">1-1 (PK 西班牙胜)</div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">🏥 伤停情况:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>西班牙</b>: 全主力, 亚马尔+奥尔莫+莫拉塔, 年轻体力充沛<br>
+      <b>比利时</b>: 德布劳内+卢卡库+库尔图瓦 (黄金一代), 32 强体能消耗大 (3-2 逆转塞内加尔加时)
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">⚽ 战术形态:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>西班牙</b>: FIFA #3, 身价 9.5 亿欧; 4-3-3 控球, 罗德里+佩德里+法比安中场<br>
+      <b>比利时</b>: FIFA #9, 身价 9.7 亿欧; 4-3-3 反击, 德布劳内组织, 卢卡库突前
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">📈 近期状态:</div>
+    <div style="font-size:13px">西 5 场 9 球 0 失 (4 场 8 球 0 失 + R16 1-0 葡); 比 5 场 8 球 6 失 (4 场 5 球 4 失 + R16 3-2 加时逆转塞内加尔)</div>
+  </div>
+  <div class="section">
+    <div class="label">📜 历史:</div>
+    <div style="font-size:13px">西 2012 欧洲杯冠军 + 2024 欧洲杯冠军; 比利时 2018 4 强 (黄金一代巅峰)</div>
+  </div>
+  <div class="section">
+    <div class="label">📝 战术修正要点:</div>
+    <ul class="note-list"><li>【西】4 场 + R16 共 9 球 0 失球 (本届最强防线), 控球+快速反击完美结合</li><li>【比】R16 加时 30 分钟逆转塞内加尔, 黄金一代体能消耗极大</li><li>【黄金一代】德布劳内+卢卡库+库尔图瓦最后一届, 战意历史级别, 但体能+年龄问题</li><li>【亚马尔】18 岁天才, R16 vs 奥当选最佳, 决赛战意满满</li><li>【4 维】西 FW 22290 vs 比 FW 12650, 中场西 23544 vs 比 606, 西中场碾压</li><li>【PK】西 PK 历史强 (2024 欧国联 PK 胜克罗地亚); 比 PK 弱 (2022 世界杯 PK 输摩洛哥)</li><li>【战术】西控球消耗比黄金一代体能, 比反击靠德布劳内单点</li><li>【关键】比必须前 60 分钟进球, 否则 70 分钟后德布劳内体能下降, 西控球+亚马尔反击</li><li>【黑马】西已 5 场 0 失球, 比想 90 分钟内解决战斗非常难</li><li>【预测】战术预测 1-1 PK 西 (黄金一代体能+年龄扛不到 PK)</li></ul>
+  </div>
+</div>
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">7/12 03:00 CST</div>
+      <div style="font-size:12px;color:#888">📍 GEHA Field, Kansas City</div>
+    </div>
+    <div class="match-teams">
+      <b>阿根廷</b> <span class="vs">vs</span> <b>哥伦比亚</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">QF · 8 强</div>
+      <div style="font-size:12px;color:#888">QF-4</div>
+    </div>
+  </div>
+  <div class="prediction-grid">
+    <div class="pred-box">
+      <h4>📊 v3.0 算法 (calibrate 后 best_weights)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">λ: 3.83 vs 2.03</div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:59.8%">59.8% 阿根廷</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:24.5%">24.5% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:15.8%">15.8% 哥伦比亚</div></div>
+      <div class="verdict">v3 比分 3-2 · 冠军: 阿根廷</div>
+    </div>
+    <div class="pred-box">
+      <h4>🎯 战术修正 v2 (含伤停+战术+历史)</h4>
+      <div style="font-size:13px;color:#888;margin-bottom:8px">基于 v3 + 4 维 λ + 战术形态</div>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:63.1%">63.1% 阿根廷</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:23.4%">23.4% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:13.5%">13.5% 哥伦比亚</div></div>
+      <div class="verdict" style="background: #2c5f2d">战术冠军: 阿根廷</div>
+      <div style="text-align:center; margin-top: 12px;">
+        <div style="font-size:11px; color:#888; margin-bottom:4px">战术预测比分</div>
+        <div class="tactical-score">2-1 阿根廷胜</div>
+      </div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">🏥 伤停情况:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>阿根廷</b>: 全主力, 梅西+阿尔瓦雷斯+劳塔罗三叉戟<br>
+      <b>哥伦比亚</b>: J罗 35 岁体能差; 科尔多瓦肌肉撕裂无缘世界杯; 体能消耗大 (PK 5-4 vs 瑞士)
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">⚽ 战术形态:</div>
+    <div style="font-size:13px;margin:4px 0">
+      <b>阿根廷</b>: FIFA #3, 身价 10.8 亿欧; 4-3-3/4-4-2, 卫冕冠军, 40 场不败<br>
+      <b>哥伦比亚</b>: FIFA #13, 身价仅 0.5 亿欧; 高位防线+莱尔马+普埃尔塔+迪亚斯反击
+    </div>
+  </div>
+  <div class="section">
+    <div class="label">📈 近期状态:</div>
+    <div style="font-size:13px">阿 5 场 13 球 5 失 (小组 3 胜 + 32 强 3-0 佛 + R16 3-2 埃); 哥 5 场 4 球 1 失 (小组 2 胜 1 平 + 32 强 1-0 加 + R16 0-0 PK 5-4 瑞)</div>
+  </div>
+  <div class="section">
+    <div class="label">📜 历史:</div>
+    <div style="font-size:13px">阿 2022 世界杯冠军 + 2024 美洲杯冠军; 哥 2014 8 强 (J罗 6 球金靴) + 2026 R16 PK 晋级</div>
+  </div>
+  <div class="section">
+    <div class="label">📝 战术修正要点:</div>
+    <ul class="note-list"><li>【阿】5 场 13 球 5 失, 卫冕冠军状态火热, 4 维全面碾压</li><li>【哥】R16 PK 5-4 瑞士, 体能消耗极大 (120 分钟 + 5 轮点球)</li><li>【J罗】35 岁体能差, 每场都被换下, 关键时刻难发力</li><li>【科尔多瓦】肌肉撕裂无缘世界杯, 哥主力前锋缺阵</li><li>【4 维】阿 FW 23012 vs 哥 FW 9598, 中场阿 23544 vs 哥 4471, 阿全面碾压</li><li>【身价】阿 10.8 亿欧 vs 哥 0.5 亿欧 (21 倍差距)</li><li>【战术】阿 4-3-3 控球进攻; 哥高位防线+迪亚斯反击</li><li>【黑马】哥防线稳 (5 场 1 失), 但进攻弱 (5 场 4 球), 难以破阿</li><li>【关键】哥必须撑过 60 分钟体能极限, 否则阿会一波带走</li><li>【预测】战术预测 2-1 阿 (哥体能极限, 阿不会大胜但稳定取胜)</li></ul>
+  </div>
+</div>
+<div class="info">
+  <b>📅 战术预测跟踪计划</b>:
+  <ul>
+    <li><b>QF-1 摩 vs 法</b>: tactical 2-1 法, v3 2-3 法 → <b>一致, 法小胜</b></li>
+    <li><b>QF-2 挪 vs 英</b>: tactical 1-2 英, v3 3-3 英胜 → <b>接近, 黑马难挡</b></li>
+    <li><b>QF-3 西 vs 比</b>: tactical 1-1 PK 西, v3 2-2 西 → <b>分歧, 黄金一代体能极限</b></li>
+    <li><b>QF-4 阿 vs 哥</b>: tactical 2-1 阿, v3 3-2 阿 → <b>一致, 阿 4 维碾压</b></li>
+  </ul>
+  <b>战术预测累计 (新增 4 场后目标)</b>: 17 场, 目标胜方 15/17 (88%)
+</div>
+</body></html>

@@ -54,10 +54,33 @@ def fetch_scoreboard(d: date):
 
 
 def fetch_summary(event_id: str):
-    """拉单场 summary, 存到 espn_match_data/{id}.json"""
+    """拉单场 summary, 存到 espn_match_data/{id}.json
+
+    v3.0.1 修 (2026-07-07): 兜底重抓
+    - 旧逻辑: 已缓存就跳过 → 7/5 760502/503 抓的是 Scheduled 状态 (比赛还没踢), 永远卡死
+    - 新逻辑: 如果缓存文件 status='Scheduled' 但比赛日期已过 (≥2 天), 自动重抓
+    """
     out = RAW / f'{event_id}.json'
+    need_refetch = False
     if out.exists():
-        return None  # 已缓存
+        try:
+            with open(out, encoding='utf-8') as f:
+                cached = json.load(f)
+            status_state = cached.get('header', {}).get('competitions', [{}])[0].get('status', {}).get('type', {}).get('state', '')
+            status_desc = cached.get('header', {}).get('competitions', [{}])[0].get('status', {}).get('type', {}).get('description', '')
+            # v3.0.1: 兜底 — Scheduled 状态缓存, 但比赛日期已过 (≥2 天), 强制重抓
+            if status_state == 'pre' and status_desc == 'Scheduled':
+                # 看 scoreboard 哪天发现这场比赛 (data 里的日期可能没, 用文件 mtime 兜底)
+                import datetime as _dt
+                mtime = _dt.datetime.fromtimestamp(out.stat().st_mtime)
+                age_days = (_dt.datetime.now() - mtime).days
+                if age_days >= 2:
+                    need_refetch = True
+                    print(f'  🔄 {event_id} 缓存是 Scheduled 状态 (mtime {age_days} 天前), 强制重抓')
+        except Exception:
+            pass
+        if not need_refetch:
+            return None  # 已缓存
     url = f'{ESPN_BASE}/summary?event={event_id}'
     try:
         with urllib.request.urlopen(url, timeout=20) as r:
@@ -83,8 +106,14 @@ def main():
             comps = e.get('competitions', [{}])[0].get('competitors', [])
             if len(comps) < 2:
                 continue
-            status = e.get('status', {}).get('type', {}).get('description', '')
-            if status != 'Full Time':
+            # v2.3.7 修: status 过滤必须包含加时/点球大战 (Final Score - After Extra Time / After Penalties)
+            # 之前只过滤 "Full Time" 会漏掉加时赛和点球大战的比赛 (760499 澳大利亚 1-1 埃及 / 760500 阿根廷 3-2 佛得角)
+            status_obj = e.get('status', {}).get('type', {})
+            status_desc = status_obj.get('description', '')
+            status_state = status_obj.get('state', '')
+            status_completed = status_obj.get('completed', False)
+            # state='post' + completed=True 是统一的"比赛已踢完"标记, 覆盖 Full Time / AET / PK
+            if not (status_state == 'post' and status_completed):
                 continue
             h_en = comps[0].get('team', {}).get('displayName', '')
             a_en = comps[1].get('team', {}).get('displayName', '')
@@ -139,6 +168,23 @@ def main():
     n_player = count_rows(player_csv)
     n_event = count_rows(event_csv)
 
+    # v3.0.1 加 (2026-07-07): 历史持久化 (cron_history.jsonl)
+    # 旧版 espn_cron_report.json 是覆盖式, 没法看趋势
+    # 新版: 每次跑追加一行 (json lines), 供 trend_chart.py 生成趋势图
+    history_path = DATA / 'cron_history.jsonl'
+    history_record = {
+        'date': date.today().isoformat(),
+        'new_matches': new_count,
+        'skipped_matches': skip_count,
+        'failed_matches': fail_count,
+        'team_rows': n_team,
+        'player_rows': n_player,
+        'event_rows': n_event,
+    }
+    with open(history_path, 'a', encoding='utf-8') as hf:
+        hf.write(json.dumps(history_record, ensure_ascii=False) + '\n')
+    print(f'  📈 历史已追加: {history_path}')
+
     # 5) 输出报告 (cron 会用这个给用户)
     print(f'\n=== 报告 ===')
     print(f'今日新增 ESPN 场次: {new_count}')
@@ -164,6 +210,21 @@ def main():
     }
     with open(DATA / 'espn_cron_report.json', 'w') as f:
         json.dump(report, f, ensure_ascii=False, indent=2)
+
+    # v3.0.1 加 (2026-07-07): cron 跑完自动生成趋势图
+    # 0_scripts/trend_chart.py 读 cron_history.jsonl 输出 HTML
+    # 明天的 cron 报告就会自动附带最新趋势
+    try:
+        trend_script = PROJECT / '0_scripts' / 'trend_chart.py'
+        if trend_script.exists():
+            subprocess.run(
+                [sys.executable, str(trend_script)],
+                capture_output=True, text=True, cwd=str(PROJECT),
+                timeout=15,
+            )
+            print(f'  📈 趋势图已自动生成: 4_可视化/cron_trend_chart.html')
+    except Exception as ex:
+        print(f'  ⚠️  趋势图生成失败: {ex}', file=sys.stderr)
 
     sys.exit(0 if result.returncode == 0 and fail_count == 0 else 1)
 

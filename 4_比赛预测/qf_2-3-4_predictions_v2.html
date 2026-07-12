@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>QF 后 3 场 (FIFA 官方正确配对)</title>
+<style>
+  body { font-family: -apple-system, "PingFang SC", sans-serif; max-width: 1100px; margin: 30px auto; padding: 20px; background: #f8f8f5; color: #1a1a1a; }
+  h1 { color: #2c5f2d; text-align: center; }
+  .match-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin: 20px 0; padding: 20px; }
+  .match-header { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #fef7e8, #f5e6c8); padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+  .match-time { font-size: 22px; font-weight: 700; color: #5a3a1f; }
+  .match-teams { font-size: 22px; font-weight: 600; }
+  .vs { color: #d4a574; font-weight: 700; padding: 0 10px; }
+  .prob-bar { background: #e8e0d0; height: 22px; border-radius: 4px; position: relative; margin: 6px 0; overflow: hidden; }
+  .prob-fill { height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 12px; }
+  .ph { background: #2c5f2d; }
+  .pd { background: #d4a574; }
+  .pa { background: #8b4513; }
+  .verdict { background: #5a3a1d; color: #fff; padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 16px; text-align: center; font-weight: 600; }
+  .info { background: #e8f5e9; border-left: 4px solid #2c5f2d; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 13px; }
+  .warn { background: #fef7e8; border-left: 4px solid #d4a574; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 13px; }
+  .meta { font-size: 12px; color: #888; text-align: center; margin: 20px 0; }
+  .tactical-score { background: linear-gradient(90deg, #5a3a1f, #8b5e3c); color: #fff; padding: 8px 16px; border-radius: 6px; display: inline-block; font-weight: 700; font-size: 18px; margin-top: 8px; }
+  .ok { color: #2c5f2d; font-weight: 700; }
+  .miss { color: #c0392b; font-weight: 700; }
+</style>
+</head>
+<body>
+<h1>⚽ QF 后 3 场战术预测 (FIFA 官方正确配对)</h1>
+<p class="meta">2026-07-10 18:22:26 | v3.0 算法 (calibrate 后) + 战术修正 v2</p>
+
+<div class="warn">
+  <b>🔧 时间审查修复 (7/10)</b>:
+  <ul>
+    <li>❌ 之前 QF 配对错: 按时间顺序 (R16-1,2 + R16-3,4 + R16-5,6 + R16-7,8)</li>
+    <li>✅ 修复: 按 FIFA 官方编号 (97-100): QF-1 = R16-1,2 | QF-2 = R16-5,6 | QF-3 = R16-3,4 | QF-4 = R16-7,8</li>
+    <li>修正后 <code>qf_indices = [(0,1), (4,5), (2,3), (6,7)]</code></li>
+  </ul>
+</div>
+
+<div class="info">
+  <b>📊 战术预测累计战绩 (7/3-7/10, 14 场)</b>: 胜方 12/14 (85%) | 比分完全 3/14 (21%)<br>
+  <b>🏆 QF-1 验证</b>: 战术 2-1 法 → 实际 2-0 法 | <span class="ok">胜方✓</span> <span class="miss">差 1 球</span>
+</div>
+
+<h2>📅 FIFA 官方 1/4 决赛对阵 (按真实 R16 赢家链)</h2>
+<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:13px">
+  <tr style="background:#5a3a1f;color:#fff"><th style="padding:8px;text-align:left">比赛编号</th><th style="padding:8px">CST 时间</th><th style="padding:8px">主队 vs 客队</th><th style="padding:8px">球场</th></tr>
+  <tr style="background:#faf6ee"><td style="padding:8px"><b>97 (QF-1)</b></td><td style="padding:8px;text-align:center">7/10 04:00 (已踢完)</td><td style="padding:8px;text-align:center">🇲🇦 摩 vs 🇫🇷 法</td><td style="padding:8px">Gillette</td></tr>
+  <tr><td style="padding:8px"><b>98 (QF-2)</b></td><td style="padding:8px;text-align:center">7/11 03:00</td><td style="padding:8px;text-align:center">🇪🇸 西 vs 🇧🇪 比</td><td style="padding:8px">SoFi LA</td></tr>
+  <tr style="background:#faf6ee"><td style="padding:8px"><b>99 (QF-3)</b></td><td style="padding:8px;text-align:center">7/12 05:00</td><td style="padding:8px;text-align:center">🇳🇴 挪 vs 🏴 英</td><td style="padding:8px">Hard Rock Miami</td></tr>
+  <tr><td style="padding:8px"><b>100 (QF-4)</b></td><td style="padding:8px;text-align:center">7/12 09:00</td><td style="padding:8px;text-align:center">🇦🇷 阿 vs 🇨🇴 哥</td><td style="padding:8px">GEHA Kansas</td></tr>
+</table>
+
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">明天 03:00 CST</div>
+      <div style="font-size:12px;color:#888">📍 SoFi Stadium, Los Angeles</div>
+    </div>
+    <div class="match-teams">
+      <b>西班牙</b> <span class="vs">vs</span> <b>比利时</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">QF · 8 强</div>
+      <div style="font-size:12px;color:#888">QF-2</div>
+    </div>
+  </div>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;">
+    <div>
+      <b style="font-size:13px;color:#5a3a1f">⚽ 胜平负概率</b>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:48.2%">48.2% 西班牙</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:24.1%">24.1% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:27.7%">27.7% 比利时</div></div>
+    </div>
+    <div>
+      <b style="font-size:13px;color:#5a3a1f">📊 期望</b>
+      <p style="margin:4px 0">λ 主 2.95 / λ 客 2.25</p>
+      <p style="margin:4px 0">总进球期望: 5.19</p>
+      <p style="margin:4px 0">v3 最佳比分: 2-2 (6.1%)</p>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top: 16px;">
+    <div style="font-size:11px; color:#888; margin-bottom:4px">战术预测比分</div>
+    <div class="tactical-score">1-1 (PK 西班牙胜) → 平局/加时</div>
+  </div>
+</div>
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">后天 05:00 CST</div>
+      <div style="font-size:12px;color:#888">📍 Hard Rock Stadium, Miami</div>
+    </div>
+    <div class="match-teams">
+      <b>挪威</b> <span class="vs">vs</span> <b>英格兰</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">QF · 8 强</div>
+      <div style="font-size:12px;color:#888">QF-3</div>
+    </div>
+  </div>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;">
+    <div>
+      <b style="font-size:13px;color:#5a3a1f">⚽ 胜平负概率</b>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:32.7%">32.7% 挪威</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:26.2%">26.2% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:41.1%">41.1% 英格兰</div></div>
+    </div>
+    <div>
+      <b style="font-size:13px;color:#5a3a1f">📊 期望</b>
+      <p style="margin:4px 0">λ 主 3.44 / λ 客 3.83</p>
+      <p style="margin:4px 0">总进球期望: 7.26</p>
+      <p style="margin:4px 0">v3 最佳比分: 3-3 (4.4%)</p>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top: 16px;">
+    <div style="font-size:11px; color:#888; margin-bottom:4px">战术预测比分</div>
+    <div class="tactical-score">1-2 英格兰胜 → 英格兰</div>
+  </div>
+</div>
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">后天 09:00 CST</div>
+      <div style="font-size:12px;color:#888">📍 GEHA Field, Kansas City</div>
+    </div>
+    <div class="match-teams">
+      <b>阿根廷</b> <span class="vs">vs</span> <b>哥伦比亚</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">QF · 8 强</div>
+      <div style="font-size:12px;color:#888">QF-4</div>
+    </div>
+  </div>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;">
+    <div>
+      <b style="font-size:13px;color:#5a3a1f">⚽ 胜平负概率</b>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:59.8%">59.8% 阿根廷</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:24.5%">24.5% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:15.8%">15.8% 哥伦比亚</div></div>
+    </div>
+    <div>
+      <b style="font-size:13px;color:#5a3a1f">📊 期望</b>
+      <p style="margin:4px 0">λ 主 3.83 / λ 客 2.03</p>
+      <p style="margin:4px 0">总进球期望: 5.85</p>
+      <p style="margin:4px 0">v3 最佳比分: 3-2 (5.5%)</p>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top: 16px;">
+    <div style="font-size:11px; color:#888; margin-bottom:4px">战术预测比分</div>
+    <div class="tactical-score">2-1 阿根廷胜 → 阿根廷</div>
+  </div>
+</div>
+<div class="info">
+  <b>📅 战术预测跟踪计划 (修复后配对)</b>:
+  <ul>
+    <li><b>QF-2 西 vs 比</b> (7/11 03:00 SoFi LA): tactical 1-1 PK 西, v3 2-2 西 → <b>分歧, 黄金一代体能极限</b></li>
+    <li><b>QF-3 挪 vs 英</b> (7/12 05:00 Hard Rock Miami): tactical 1-2 英, v3 3-3 英胜 → <b>接近, 黑马难挡</b></li>
+    <li><b>QF-4 阿 vs 哥</b> (7/12 09:00 GEHA Kansas): tactical 2-1 阿, v3 3-2 阿 → <b>一致, 阿 4 维碾压</b></li>
+  </ul>
+</div>
+</body></html>

@@ -2781,21 +2781,23 @@ function simulateKnockout(standings, teamStats) {
   }
   
   const r32 = finalR32.map(([h, a], i) => ({ ...playMatch(h, a), stage: 'R32', match_id: 'JS_R32_' + i, home: h, away: a }));
-  // v2.3.7: R16 配对按 FIFA 真实表 (bracket 几何相邻合并)
-  // 上半 (M1..M8) 4 场: M1-M3, M2-M5, M4-M6, M7-M8
-  // 下半 (M9..M16) 4 场: M11-M12, M9-M10, M14-M16, M13-M15
-  const r16Indices = [[0,2],[1,4],[3,5],[6,7],[10,11],[8,9],[13,15],[12,14]];
+  // v3.0.1 修 (2026-07-06): R16 配对按 FIFA 2026 官方对阵表 + 已踢 4 场反推验证
+  // 旧版 5/8 场错, 跟 backend/predictor.py 同步
+  const r16Indices = [[0,3],[2,5],[1,4],[6,7],[11,10],[9,8],[14,13],[12,15]];
   const r16 = [];
   r16Indices.forEach(([a, b], i) => {
     const m = playMatch(r32[a].winner, r32[b].winner);
     r16.push({ ...m, stage: 'R16', match_id: 'JS_R16_' + i, home: r32[a].winner, away: r32[b].winner });
   });
   // QF: 上半 (R16-1 vs R16-2), (R16-3 vs R16-4); 下半 (R16-5 vs R16-6), (R16-7 vs R16-8)
+  // v3.0.1 修 (2026-07-10): QF 配对按 FIFA 官方对阵表 (按 bracket 几何位置, 不是按时间)
+  // QF-1: R16-1 vs R16-2 | QF-2: R16-5 vs R16-6 | QF-3: R16-3 vs R16-4 | QF-4: R16-7 vs R16-8
+  const qf_indices = [[0,1],[4,5],[2,3],[6,7]];
   const qf = [];
-  for (let i = 0; i < 8; i += 2) {
-    const m = playMatch(r16[i].winner, r16[i+1].winner);
-    qf.push({ ...m, stage: 'QF', match_id: 'JS_QF_' + (i/2), home: r16[i].winner, away: r16[i+1].winner });
-  }
+  qf_indices.forEach(([a, b], i) => {
+    const m = playMatch(r16[a].winner, r16[b].winner);
+    qf.push({ ...m, stage: 'QF', match_id: 'JS_QF_' + i, home: r16[a].winner, away: r16[b].winner });
+  });
   // SF: QF-1 vs QF-2 (上+下交叉), QF-3 vs QF-4
   const sf = [];
   for (let i = 0; i < 4; i += 2) {
@@ -2867,14 +2869,14 @@ const KO_SCHEDULE_R16 = [
   { date: '7月6日', city: '东卢瑟福' },   // 6  荷兰 vs 法国         | CST 7/6 04:00, UTC 7/5 20:00 MetLife
   { date: '7月7日', city: '阿灵顿' },     // 7  西班牙 vs 葡萄牙     | CST 7/7 03:00, UTC 7/6 19:00 AT&T
 ];
-const KO_SCHEDULE_QF = [
-  // v2.3.7 修: 日期改北京时间 (UTC+8)
-  // 索引按 match_id 字母序
-  { date: '7月12日', city: '堪萨斯城' },   // 0  哥伦比亚 vs 阿根廷 | CST 7/12 09:00, UTC 7/12 01:00 GEHA
-  { date: '7月10日', city: '福克斯伯勒' }, // 1  德国 vs 巴西       | CST 7/10 04:00, UTC 7/9 20:00 Gillette
-  { date: '7月12日', city: '迈阿密' },     // 2  荷兰 vs 英格兰     | CST 7/12 05:00, UTC 7/11 21:00 Hard Rock
-  { date: '7月11日', city: '洛杉矶' },     // 3  葡萄牙 vs 塞内加尔 | CST 7/11 03:00, UTC 7/10 19:00 SoFi
-];
+// v3.0.1 修 (2026-07-10): 按 sortById 后 QF 顺序 + FIFA 官方真实配对
+  // [0]: QF-1 摩 vs 法 | [1]: QF-2 西 vs 比 | [2]: QF-3 挪 vs 英 | [3]: QF-4 阿 vs 哥
+  const KO_SCHEDULE_QF = [
+    { date: '7月10日', city: '福克斯伯勒' }, // 0  摩洛哥 vs 法国     | CST 7/10 04:00, UTC 7/9 20:00 Gillette
+    { date: '7月11日', city: '洛杉矶' },     // 1  西班牙 vs 比利时   | CST 7/11 03:00, UTC 7/10 19:00 SoFi
+    { date: '7月12日', city: '迈阿密' },     // 2  挪威 vs 英格兰     | CST 7/12 05:00, UTC 7/11 21:00 Hard Rock
+    { date: '7月12日', city: '堪萨斯城' },   // 3  阿根廷 vs 哥伦比亚 | CST 7/12 09:00, UTC 7/12 01:00 GEHA
+  ];
 
 // FIFA 官方 100 场编号 (KO R32 73-88, R16 89-96, QF 97-100, SF 101-102, Final 103...)
 const MATCH_NUM_BY_STAGE = { R32: 73, R16: 89, QF: 97, SF: 101, FINAL: 103, '3RD': 104 };

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>KO Audit v3 — 2026-07-12 18:08:55</title>
+<style>
+  body { font-family: -apple-system, sans-serif; max-width: 1280px; margin: 30px auto; padding: 20px; background: #f8f8f5; color: #1a1a1a; }
+  h1 { color: #2c5f2d; }
+  h2 { color: #5a3a1f; border-bottom: 2px solid #d4a574; padding-bottom: 6px; }
+  .meta { font-size: 12px; color: #888; }
+  .summary { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin: 20px 0; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 16px 0; }
+  .kpi { padding: 16px; background: #fef7e8; border-radius: 8px; }
+  .kpi-num { font-size: 28px; font-weight: 700; color: #5a3a1f; }
+  .kpi-label { color: #777; font-size: 13px; margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.05); margin: 16px 0; }
+  th, td { padding: 8px 10px; text-align: left; font-size: 13px; }
+  th { background: #5a3a1f; color: #fff; }
+  tr:nth-child(even) { background: #faf6ee; }
+  .ok { color: #2c5f2d; font-weight: 700; }
+  .bad { color: #c0392b; font-weight: 700; }
+  .score { font-family: monospace; font-weight: 600; }
+  .stage { display: inline-block; padding: 2px 6px; background: #d4a574; color: #fff; border-radius: 4px; font-size: 11px; }
+  .pen { color: #c0392b; font-size: 11px; margin-left: 4px; }
+  .footer { margin-top: 30px; padding: 16px; background: #fff; border-radius: 8px; font-size: 13px; color: #555; }
+  .note { background: #fff8e1; padding: 12px; border-radius: 8px; font-size: 13px; margin: 12px 0; border-left: 4px solid #d4a574; }
+</style>
+</head>
+<body>
+<h1>⚽ KO Audit v3 — 淘汰赛算法准确率</h1>
+<p class="meta">生成时间: 2026-07-12 18:08:55 | cron: ko-audit (0 */6 * * *) | KO 完赛: 27 场 (R32: 15, R16: 8, QF: 4)</p>
+
+<div class="summary">
+<h2>📊 KO 整体准确率 (v3 算法 is_knockout=True)</h2>
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num">16/27</div><div class="kpi-label">胜平负准确 (KO 总)</div></div>
+  <div class="kpi"><div class="kpi-num">59.3%</div><div class="kpi-label">准确率</div></div>
+  <div class="kpi"><div class="kpi-num">4/27</div><div class="kpi-label">比分命中</div></div>
+  <div class="kpi"><div class="kpi-num">14.8%</div><div class="kpi-label">比分命中率</div></div>
+</div>
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-num">10/12</div><div class="kpi-label">高置信 (>0.5) 准确</div></div>
+  <div class="kpi"><div class="kpi-num">83.3%</div><div class="kpi-label">高置信准确率</div></div>
+  <div class="kpi"><div class="kpi-num">1/5</div><div class="kpi-label">加时/点球 pred=平</div></div>
+  <div class="kpi"><div class="kpi-num">20.0%</div><div class="kpi-label">加时/点球 pred=平 命中率</div></div>
+</div>
+</div>
+
+<h2>📋 按阶段拆分</h2>
+<table>
+<thead>
+<tr>
+  <th>阶段</th>
+  <th>场次</th>
+  <th>胜平负准确</th>
+  <th>准确率</th>
+  <th>比分命中</th>
+  <th>比分率</th>
+  <th>高置信准确</th>
+  <th>加时/点球</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>15</td>
+  <td class="bad">8/15</td>
+  <td class="bad">53.3%</td>
+  <td>4/15</td>
+  <td>26.7%</td>
+  <td>6/8 (75.0%)</td>
+  <td>0/3 (0.0%)</td>
+</tr>
+<tr>
+  <td><span class="stage">R16</span></td>
+  <td>8</td>
+  <td class="ok">5/8</td>
+  <td class="ok">62.5%</td>
+  <td>0/8</td>
+  <td>0.0%</td>
+  <td>3/3 (100.0%)</td>
+  <td>1/2 (50.0%)</td>
+</tr>
+<tr>
+  <td><span class="stage">QF</span></td>
+  <td>4</td>
+  <td class="ok">3/4</td>
+  <td class="ok">75.0%</td>
+  <td>0/4</td>
+  <td>0.0%</td>
+  <td>1/1 (100.0%)</td>
+  <td>-</td>
+</tr>
+</tbody>
+</table>
+
+<h2>📋 全部 27 场 KO 比赛明细</h2>
+<table>
+<thead>
+<tr>
+  <th>阶段</th>
+  <th>日期</th>
+  <th>主队</th>
+  <th>比分</th>
+  <th>客队</th>
+  <th>Pred 比分</th>
+  <th>P(H/D/A)</th>
+  <th>Pred</th>
+  <th>Actual</th>
+  <th>胜平负</th>
+  <th>比分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><span class="stage">R16</span></td>
+  <td>2026-07-07</td>
+  <td><b>葡萄牙</b></td>
+  <td class="score">0-0<span class="pen">[点球]</span></td>
+  <td><b>西班牙</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.38/0.25/0.38</td>
+  <td>D</td>
+  <td>D</td>
+  <td class="ok">✓</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R16</span></td>
+  <td>2026-07-08</td>
+  <td><b>瑞士</b></td>
+  <td class="score">0-0<span class="pen">[点球]</span></td>
+  <td><b>哥伦比亚</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.35/0.24/0.41</td>
+  <td>A</td>
+  <td>D</td>
+  <td class="bad">✗</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R16</span></td>
+  <td>2026-07-07</td>
+  <td><b>美国</b></td>
+  <td class="score">1-4</td>
+  <td><b>比利时</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.44/0.24/0.32</td>
+  <td>H</td>
+  <td>A</td>
+  <td class="bad">✗</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R16</span></td>
+  <td>2026-07-08</td>
+  <td><b>阿根廷</b></td>
+  <td class="score">3-2</td>
+  <td><b>埃及</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.50/0.24/0.26</td>
+  <td>H</td>
+  <td>H</td>
+  <td class="ok">✓</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">QF</span></td>
+  <td>2026-07-10</td>
+  <td><b>法国</b></td>
+  <td class="score">2-0</td>
+  <td><b>摩洛哥</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.40/0.24/0.36</td>
+  <td>H</td>
+  <td>H</td>
+  <td class="ok">✓</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-06-29</td>
+  <td><b>巴西</b></td>
+  <td class="score">2-1</td>
+  <td><b>日本</b></td>
+  <td class="score">2-1</td>
+  <td class="meta">0.67/0.23/0.10</td>
+  <td>H</td>
+  <td>H</td>
+  <td class="ok">✓</td>
+  <td class="ok">✓</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-06-29</td>
+  <td><b>德国</b></td>
+  <td class="score">1-1<span class="pen">[点球]</span></td>
+  <td><b>巴拉圭</b></td>
+  <td class="score">2-1</td>
+  <td class="meta">0.62/0.23/0.14</td>
+  <td>H</td>
+  <td>D</td>
+  <td class="bad">✗</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-06-29</td>
+  <td><b>荷兰</b></td>
+  <td class="score">1-1<span class="pen">[点球]</span></td>
+  <td><b>摩洛哥</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.40/0.24/0.36</td>
+  <td>H</td>
+  <td>D</td>
+  <td class="bad">✗</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-06-30</td>
+  <td><b>墨西哥</b></td>
+  <td class="score">2-0</td>
+  <td><b>厄瓜多尔</b></td>
+  <td class="score">1-1</td>
+  <td class="meta">0.29/0.24/0.46</td>
+  <td>A</td>
+  <td>H</td>
+  <td class="bad">✗</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-06-30</td>
+  <td><b>法国</b></td>
+  <td class="score">3-0</td>
+  <td><b>瑞典</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.38/0.25/0.38</td>
+  <td>D</td>
+  <td>H</td>
+  <td class="bad">✗</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-06-30</td>
+  <td><b>科特迪瓦</b></td>
+  <td class="score">1-2</td>
+  <td><b>挪威</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.38/0.25/0.38</td>
+  <td>D</td>
+  <td>A</td>
+  <td class="bad">✗</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-07-01</td>
+  <td><b>比利时</b></td>
+  <td class="score">3-2</td>
+  <td><b>塞内加尔</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.32/0.24/0.44</td>
+  <td>A</td>
+  <td>H</td>
+  <td class="bad">✗</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-07-01</td>
+  <td><b>美国</b></td>
+  <td class="score">2-0</td>
+  <td><b>波黑</b></td>
+  <td class="score">2-0</td>
+  <td class="meta">0.69/0.23/0.08</td>
+  <td>H</td>
+  <td>H</td>
+  <td class="ok">✓</td>
+  <td class="ok">✓</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-07-01</td>
+  <td><b>英格兰</b></td>
+  <td class="score">2-1</td>
+  <td><b>民主刚果</b></td>
+  <td class="score">2-1</td>
+  <td class="meta">0.59/0.24/0.18</td>
+  <td>H</td>
+  <td>H</td>
+  <td class="ok">✓</td>
+  <td class="ok">✓</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-07-02</td>
+  <td><b>瑞士</b></td>
+  <td class="score">2-0</td>
+  <td><b>阿尔及利亚</b></td>
+  <td class="score">2-1</td>
+  <td class="meta">0.41/0.24/0.35</td>
+  <td>H</td>
+  <td>H</td>
+  <td class="ok">✓</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-07-02</td>
+  <td><b>葡萄牙</b></td>
+  <td class="score">2-1</td>
+  <td><b>克罗地亚</b></td>
+  <td class="score">2-1</td>
+  <td class="meta">0.56/0.24/0.20</td>
+  <td>H</td>
+  <td>H</td>
+  <td class="ok">✓</td>
+  <td class="ok">✓</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-07-02</td>
+  <td><b>西班牙</b></td>
+  <td class="score">3-0</td>
+  <td><b>奥地利</b></td>
+  <td class="score">2-1</td>
+  <td class="meta">0.58/0.24/0.18</td>
+  <td>H</td>
+  <td>H</td>
+  <td class="ok">✓</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-07-03</td>
+  <td><b>哥伦比亚</b></td>
+  <td class="score">1-0</td>
+  <td><b>加纳</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.43/0.24/0.33</td>
+  <td>H</td>
+  <td>H</td>
+  <td class="ok">✓</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-07-03</td>
+  <td><b>澳大利亚</b></td>
+  <td class="score">1-1<span class="pen">[点球]</span></td>
+  <td><b>埃及</b></td>
+  <td class="score">0-2</td>
+  <td class="meta">0.12/0.24/0.65</td>
+  <td>A</td>
+  <td>D</td>
+  <td class="bad">✗</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-07-03</td>
+  <td><b>阿根廷</b></td>
+  <td class="score">3-2</td>
+  <td><b>佛得角</b></td>
+  <td class="score">2-0</td>
+  <td class="meta">0.74/0.22/0.04</td>
+  <td>H</td>
+  <td>H</td>
+  <td class="ok">✓</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R16</span></td>
+  <td>2026-07-04</td>
+  <td><b>加拿大</b></td>
+  <td class="score">0-3</td>
+  <td><b>摩洛哥</b></td>
+  <td class="score">1-2</td>
+  <td class="meta">0.20/0.24/0.56</td>
+  <td>A</td>
+  <td>A</td>
+  <td class="ok">✓</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R16</span></td>
+  <td>2026-07-04</td>
+  <td><b>巴拉圭</b></td>
+  <td class="score">0-1</td>
+  <td><b>法国</b></td>
+  <td class="score">1-2</td>
+  <td class="meta">0.14/0.23/0.62</td>
+  <td>A</td>
+  <td>A</td>
+  <td class="ok">✓</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R16</span></td>
+  <td>2026-07-05</td>
+  <td><b>墨西哥</b></td>
+  <td class="score">2-3</td>
+  <td><b>英格兰</b></td>
+  <td class="score">1-2</td>
+  <td class="meta">0.15/0.24/0.62</td>
+  <td>A</td>
+  <td>A</td>
+  <td class="ok">✓</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">R16</span></td>
+  <td>2026-07-05</td>
+  <td><b>巴西</b></td>
+  <td class="score">1-2</td>
+  <td><b>挪威</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.38/0.25/0.38</td>
+  <td>D</td>
+  <td>A</td>
+  <td class="bad">✗</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">QF</span></td>
+  <td>2026-07-10</td>
+  <td><b>西班牙</b></td>
+  <td class="score">2-1</td>
+  <td><b>比利时</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.44/0.24/0.32</td>
+  <td>H</td>
+  <td>H</td>
+  <td class="ok">✓</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">QF</span></td>
+  <td>2026-07-11</td>
+  <td><b>挪威</b></td>
+  <td class="score">1-2</td>
+  <td><b>英格兰</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.38/0.25/0.38</td>
+  <td>D</td>
+  <td>A</td>
+  <td class="bad">✗</td>
+  <td class="">✗</td>
+</tr>
+<tr>
+  <td><span class="stage">QF</span></td>
+  <td>2026-07-11</td>
+  <td><b>阿根廷</b></td>
+  <td class="score">3-1</td>
+  <td><b>瑞士</b></td>
+  <td class="score">2-2</td>
+  <td class="meta">0.51/0.24/0.25</td>
+  <td>H</td>
+  <td>H</td>
+  <td class="ok">✓</td>
+  <td class="">✗</td>
+</tr>
+</tbody>
+</table>
+
+<h2>❌ 错分场次 (11 场) — 算法改进点</h2>
+<table>
+<thead>
+<tr>
+  <th>阶段</th>
+  <th>日期</th>
+  <th>比赛</th>
+  <th>实际</th>
+  <th>Pred 比分</th>
+  <th>P(H/D/A)</th>
+  <th>Pred</th>
+  <th>Actual</th>
+  <th>分析</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><span class="stage">R16</span></td>
+  <td>2026-07-08</td>
+  <td><b>瑞士</b> vs <b>哥伦比亚</b> [点球]</td>
+  <td class="score">0-0</td>
+  <td class="score">2-2</td>
+  <td class="meta">0.35/0.24/0.41</td>
+  <td>A</td>
+  <td>D</td>
+  <td class="meta">点球场但 pred 非平 (加时/点球命中率低)</td>
+</tr>
+<tr>
+  <td><span class="stage">R16</span></td>
+  <td>2026-07-07</td>
+  <td><b>美国</b> vs <b>比利时</b> </td>
+  <td class="score">1-4</td>
+  <td class="score">2-2</td>
+  <td class="meta">0.44/0.24/0.32</td>
+  <td>H</td>
+  <td>A</td>
+  <td class="meta">pred 主胜, 实际客胜 (实力判断错)</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-06-29</td>
+  <td><b>德国</b> vs <b>巴拉圭</b> [点球]</td>
+  <td class="score">1-1</td>
+  <td class="score">2-1</td>
+  <td class="meta">0.62/0.23/0.14</td>
+  <td>H</td>
+  <td>D</td>
+  <td class="meta">点球场但 pred 非平 (加时/点球命中率低)</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-06-29</td>
+  <td><b>荷兰</b> vs <b>摩洛哥</b> [点球]</td>
+  <td class="score">1-1</td>
+  <td class="score">2-2</td>
+  <td class="meta">0.40/0.24/0.36</td>
+  <td>H</td>
+  <td>D</td>
+  <td class="meta">点球场但 pred 非平 (加时/点球命中率低)</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-06-30</td>
+  <td><b>墨西哥</b> vs <b>厄瓜多尔</b> </td>
+  <td class="score">2-0</td>
+  <td class="score">1-1</td>
+  <td class="meta">0.29/0.24/0.46</td>
+  <td>A</td>
+  <td>H</td>
+  <td class="meta">pred 客胜, 实际主胜 (主场优势低估)</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-06-30</td>
+  <td><b>法国</b> vs <b>瑞典</b> </td>
+  <td class="score">3-0</td>
+  <td class="score">2-2</td>
+  <td class="meta">0.38/0.25/0.38</td>
+  <td>D</td>
+  <td>H</td>
+  <td class="meta">pred 平但实际分胜负</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-06-30</td>
+  <td><b>科特迪瓦</b> vs <b>挪威</b> </td>
+  <td class="score">1-2</td>
+  <td class="score">2-2</td>
+  <td class="meta">0.38/0.25/0.38</td>
+  <td>D</td>
+  <td>A</td>
+  <td class="meta">pred 平但实际分胜负</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-07-01</td>
+  <td><b>比利时</b> vs <b>塞内加尔</b> </td>
+  <td class="score">3-2</td>
+  <td class="score">2-2</td>
+  <td class="meta">0.32/0.24/0.44</td>
+  <td>A</td>
+  <td>H</td>
+  <td class="meta">pred 客胜, 实际主胜 (主场优势低估)</td>
+</tr>
+<tr>
+  <td><span class="stage">R32</span></td>
+  <td>2026-07-03</td>
+  <td><b>澳大利亚</b> vs <b>埃及</b> [点球]</td>
+  <td class="score">1-1</td>
+  <td class="score">0-2</td>
+  <td class="meta">0.12/0.24/0.65</td>
+  <td>A</td>
+  <td>D</td>
+  <td class="meta">点球场但 pred 非平 (加时/点球命中率低)</td>
+</tr>
+<tr>
+  <td><span class="stage">R16</span></td>
+  <td>2026-07-05</td>
+  <td><b>巴西</b> vs <b>挪威</b> </td>
+  <td class="score">1-2</td>
+  <td class="score">2-2</td>
+  <td class="meta">0.38/0.25/0.38</td>
+  <td>D</td>
+  <td>A</td>
+  <td class="meta">pred 平但实际分胜负</td>
+</tr>
+<tr>
+  <td><span class="stage">QF</span></td>
+  <td>2026-07-11</td>
+  <td><b>挪威</b> vs <b>英格兰</b> </td>
+  <td class="score">1-2</td>
+  <td class="score">2-2</td>
+  <td class="meta">0.38/0.25/0.38</td>
+  <td>D</td>
+  <td>A</td>
+  <td class="meta">pred 平但实际分胜负</td>
+</tr>
+</tbody>
+</table>
+
+<div class="note">
+<b>💡 v24 候选改进方向 (来自错分分析):</b>
+<ul>
+  <li><b>加时/点球预测</b>: 当前 pred 加时/点球命中率 1/5 = 20.0%, 需要提高 P(平) base</li>
+  <li><b>R32 vs R16 vs QF</b>: 三阶段准确率不同, 应单独调参 (越后期越要"分胜负"而非"平")</li>
+  <li><b>高置信 (>0.5) 准确率</b>: 10/12 = 83.3% — 算法对自己"自信"的方向准不准</li>
+  <li><b>比分命中率</b>: 4/27 = 14.8% — best_score 经常跟 actual 偏差大</li>
+</ul>
+</div>
+
+<div class="footer">
+<b>数据源</b>: 
+match_results.csv (130 行, 7/12 collector 更新) + v3 算法 (predict_match is_knockout=True) + weights_v21.json + 默认 KO 调整 (knockout_lambda_reducer=0.85, extra_time_prob=0.20, extra_time_min_draw_prob=0.25, red_card_penalty=0.70)
+<br><br>
+<b>KO 完赛分布</b>: R32 15 场 (6/29-7/3) | R16 8 场 (7/4-7/7) | QF 4 场 (7/9-7/11) | 合计 27 场
+<br><br>
+<b>阶段进度</b>: R32 16/16 ✓ | R16 8/8 ✓ | QF 4/4 ✓ | SF 0/2 | 3RD 0/1 | Final 0/1 (32 场 KO 已完赛 28 场, 剩 4 场 SF/3RD/Final)
+<br><br>
+<b>Cron</b>: ko-audit (schedule: 0 */6 * * *) | 下次跑: 2026-07-13 00:00 (Asia/Shanghai)
+</div>
+</body>
+</html>

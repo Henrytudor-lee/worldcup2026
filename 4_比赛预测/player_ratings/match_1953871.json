@@ -49,7 +49,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -133,7 +141,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 3,
+    "shots_on_target": 0,
+    "tackles_total": 5,
+    "tackle_successful": 3,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -218,7 +234,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -276,7 +300,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -345,7 +377,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 1,
+    "tackles_total": 6,
+    "tackle_successful": 6,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -364,7 +404,7 @@
     "final_rating": 7.76,
     "max_minute": 104,
     "goals": 0,
-    "assists": 0,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -428,7 +468,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 2,
+    "shots_on_target": 0,
+    "tackles_total": 11,
+    "tackle_successful": 8,
+    "dribbles_attempted": 4,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -495,7 +543,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -548,7 +604,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 1,
+    "dribbles_attempted": 4,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -602,7 +666,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 2,
+    "dribbles_attempted": 4,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -680,7 +752,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 2,
+    "shots_on_target": 1,
+    "tackles_total": 9,
+    "tackle_successful": 2,
+    "dribbles_attempted": 5,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -743,7 +823,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 1,
+    "tackles_total": 1,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 5,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -795,7 +883,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -826,7 +922,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -868,7 +972,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 1,
+    "shots_on_target": 1,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -886,7 +998,7 @@
     "is_man_of_match": true,
     "final_rating": 8.06,
     "max_minute": 104,
-    "goals": 0,
+    "goals": 2,
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
@@ -908,7 +1020,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 2,
+    "shots_on_target": 3,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -951,7 +1071,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1022,7 +1150,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1085,7 +1221,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 1,
+    "dribbles_attempted": 5,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1104,7 +1248,7 @@
     "final_rating": 6.57,
     "max_minute": 103,
     "goals": 0,
-    "assists": 0,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -1157,7 +1301,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1228,7 +1380,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 0,
+    "dribbles_attempted": 2,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1299,7 +1459,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 3,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1361,7 +1529,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 7,
+    "tackle_successful": 7,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1413,7 +1589,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 2,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 2,
+    "dribbles_attempted": 5,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1431,7 +1615,7 @@
     "is_man_of_match": false,
     "final_rating": 6.78,
     "max_minute": 104,
-    "goals": 0,
+    "goals": 1,
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
@@ -1473,7 +1657,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 1,
+    "tackles_total": 1,
+    "tackle_successful": 0,
+    "dribbles_attempted": 2,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1542,7 +1734,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 5,
+    "tackle_successful": 4,
+    "dribbles_attempted": 5,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1605,7 +1805,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 2,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 3,
+    "dribbles_attempted": 8,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1657,7 +1865,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 1,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1694,7 +1910,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1729,7 +1953,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1768,7 +2000,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1802,7 +2042,15 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 2,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1838,6 +2086,14 @@
     },
     "venue": "Toronto Stadium",
     "referee": "Juan Gabriel Benítez",
-    "score": "2 : 1"
+    "score": "2 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   }
 ]

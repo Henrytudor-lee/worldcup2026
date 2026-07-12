@@ -71,7 +71,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -108,7 +116,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -127,7 +143,7 @@
     "final_rating": 6.96,
     "max_minute": 103,
     "goals": 0,
-    "assists": 0,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -172,7 +188,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 1,
+    "tackles_total": 2,
+    "tackle_successful": 2,
+    "dribbles_attempted": 0,
+    "aerials_won": 4,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -239,7 +263,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 2,
+    "dribbles_attempted": 1,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -297,7 +329,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 1,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -316,7 +356,7 @@
     "final_rating": 7.08,
     "max_minute": 103,
     "goals": 0,
-    "assists": 0,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -365,7 +405,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 1,
+    "shots_on_target": 1,
+    "tackles_total": 2,
+    "tackle_successful": 1,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -410,7 +458,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -481,7 +537,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -545,7 +609,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 0,
+    "dribbles_attempted": 3,
+    "aerials_won": 6,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -563,7 +635,7 @@
     "is_man_of_match": true,
     "final_rating": 8.82,
     "max_minute": 103,
-    "goals": 0,
+    "goals": 2,
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
@@ -596,7 +668,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 2,
+    "shots_on_target": 3,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 4,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -638,7 +718,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -657,7 +745,7 @@
     "final_rating": 6.95,
     "max_minute": 102,
     "goals": 0,
-    "assists": 0,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -680,7 +768,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 2,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -698,7 +794,7 @@
     "is_man_of_match": false,
     "final_rating": 7.24,
     "max_minute": 103,
-    "goals": 0,
+    "goals": 1,
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
@@ -739,7 +835,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 1,
+    "shots_on_target": 1,
+    "tackles_total": 2,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -773,7 +877,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -814,7 +926,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -847,7 +967,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 1,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -896,7 +1024,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -972,7 +1108,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 2,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 2,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1031,7 +1175,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1116,7 +1268,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 2,
+    "dribbles_attempted": 1,
+    "aerials_won": 3,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1172,7 +1332,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1249,7 +1417,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1306,7 +1482,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 2,
+    "dribbles_attempted": 3,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1324,7 +1508,7 @@
     "is_man_of_match": false,
     "final_rating": 7.33,
     "max_minute": 103,
-    "goals": 0,
+    "goals": 2,
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
@@ -1365,7 +1549,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 3,
+    "tackles_total": 3,
+    "tackle_successful": 1,
+    "dribbles_attempted": 3,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1423,7 +1615,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 2,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1495,7 +1695,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 5,
+    "shots_on_target": 0,
+    "tackles_total": 4,
+    "tackle_successful": 3,
+    "dribbles_attempted": 6,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1514,7 +1722,7 @@
     "final_rating": 7.24,
     "max_minute": 97,
     "goals": 0,
-    "assists": 0,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -1553,7 +1761,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 1,
+    "shots_on_target": 1,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 4,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1593,7 +1809,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1640,7 +1864,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 2,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 4,
+    "aerials_won": 3,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1686,7 +1918,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1732,7 +1972,15 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 2,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1772,6 +2020,14 @@
     },
     "venue": "New York New Jersey Stadium",
     "referee": "Wilton Pereira Sampaio",
-    "score": "3 : 2"
+    "score": "3 : 2",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   }
 ]

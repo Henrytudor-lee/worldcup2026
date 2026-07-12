@@ -53,7 +53,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -74,7 +82,7 @@
     "goals": 0,
     "assists": 0,
     "total_shots": 0,
-    "yellow_cards": 0,
+    "yellow_cards": 1,
     "red_cards": 0,
     "ratings_trajectory": {
       "0": 6,
@@ -111,7 +119,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 6,
+    "tackle_successful": 4,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -132,7 +148,7 @@
     "goals": 0,
     "assists": 0,
     "total_shots": 0,
-    "yellow_cards": 0,
+    "yellow_cards": 1,
     "red_cards": 0,
     "ratings_trajectory": {
       "0": 6,
@@ -194,7 +210,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 2,
+    "dribbles_attempted": 0,
+    "aerials_won": 3,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -250,7 +274,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -320,7 +352,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -372,7 +412,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -451,7 +499,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 2,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 2,
+    "dribbles_attempted": 3,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -505,7 +561,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 2,
+    "dribbles_attempted": 2,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -589,7 +653,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 3,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 2,
+    "dribbles_attempted": 5,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -607,7 +679,7 @@
     "is_man_of_match": false,
     "final_rating": 7.03,
     "max_minute": 107,
-    "goals": 0,
+    "goals": 1,
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
@@ -645,7 +717,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 3,
+    "tackles_total": 1,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 4,
+    "penalty_goals": 1,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -663,7 +743,7 @@
     "is_man_of_match": false,
     "final_rating": 7.14,
     "max_minute": 83,
-    "goals": 0,
+    "goals": 1,
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
@@ -703,7 +783,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 3,
+    "shots_on_target": 1,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -737,7 +825,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -794,7 +890,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 2,
+    "dribbles_attempted": 0,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -825,7 +929,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -868,7 +980,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 3,
+    "shots_on_target": 1,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -912,7 +1032,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -983,7 +1111,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1005,7 +1141,7 @@
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
-    "red_cards": 0,
+    "red_cards": 1,
     "ratings_trajectory": {
       "0": 6,
       "3": 5.99,
@@ -1032,7 +1168,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 2,
+    "dribbles_attempted": 1,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1098,7 +1242,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1119,7 +1271,7 @@
     "goals": 0,
     "assists": 0,
     "total_shots": 0,
-    "yellow_cards": 0,
+    "yellow_cards": 1,
     "red_cards": 0,
     "ratings_trajectory": {
       "0": 6.01,
@@ -1162,7 +1314,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1183,7 +1343,7 @@
     "goals": 0,
     "assists": 0,
     "total_shots": 0,
-    "yellow_cards": 0,
+    "yellow_cards": 1,
     "red_cards": 0,
     "ratings_trajectory": {
       "0": 6,
@@ -1214,7 +1374,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 1,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1235,7 +1403,7 @@
     "goals": 0,
     "assists": 0,
     "total_shots": 0,
-    "yellow_cards": 0,
+    "yellow_cards": 1,
     "red_cards": 0,
     "ratings_trajectory": {
       "0": 5.88,
@@ -1271,7 +1439,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1327,7 +1503,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 5,
+    "tackle_successful": 5,
+    "dribbles_attempted": 0,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1346,7 +1530,7 @@
     "final_rating": 7.01,
     "max_minute": 56,
     "goals": 0,
-    "assists": 0,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -1372,7 +1556,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 3,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1390,7 +1582,7 @@
     "is_man_of_match": true,
     "final_rating": 9.34,
     "max_minute": 105,
-    "goals": 0,
+    "goals": 2,
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
@@ -1438,7 +1630,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 3,
+    "tackles_total": 3,
+    "tackle_successful": 3,
+    "dribbles_attempted": 7,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1500,7 +1700,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 1,
+    "shots_on_target": 1,
+    "tackles_total": 7,
+    "tackle_successful": 3,
+    "dribbles_attempted": 7,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1518,8 +1726,8 @@
     "is_man_of_match": false,
     "final_rating": 7.5,
     "max_minute": 93,
-    "goals": 0,
-    "assists": 0,
+    "goals": 1,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -1553,7 +1761,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 1,
+    "shots_on_target": 1,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 2,
+    "aerials_won": 1,
+    "penalty_goals": 1,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1590,7 +1806,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1625,7 +1849,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1662,7 +1894,15 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1693,6 +1933,14 @@
     },
     "venue": "Mexico City Stadium",
     "referee": "Alireza Faghani",
-    "score": "2 : 3"
+    "score": "2 : 3",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   }
 ]

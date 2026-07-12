@@ -563,3 +563,476 @@ match_id,espn_event_id,date,clock,event_type,team_cn,player_en,description,sourc
 2026-06-27_巴拿马_vs_英格兰,760485,2026-06-27,84',Substitution,英格兰,Ollie Watkins,Ollie Watkins Substitution,ESPN
 2026-06-27_巴拿马_vs_英格兰,760485,2026-06-27,88',Substitution,巴拿马,Alberto Quintero,Alberto Quintero Substitution,ESPN
 2026-06-27_巴拿马_vs_英格兰,760485,2026-06-27,88',Substitution,巴拿马,Éric Davis,Éric Davis Substitution,ESPN
+2026-06-28_南非_vs_加拿大,760486,2026-06-28,45',Substitution,南非,Thalente Mbatha,Thalente Mbatha Substitution,ESPN
+2026-06-28_南非_vs_加拿大,760486,2026-06-28,54',Yellow Card,加拿大,Nathan Saliba,Nathan Saliba Yellow Card,ESPN
+2026-06-28_南非_vs_加拿大,760486,2026-06-28,59',Substitution,加拿大,Niko Sigur,Niko Sigur Substitution,ESPN
+2026-06-28_南非_vs_加拿大,760486,2026-06-28,59',Substitution,加拿大,Luc de Fougerolles,Luc de Fougerolles Substitution,ESPN
+2026-06-28_南非_vs_加拿大,760486,2026-06-28,67',Yellow Card,加拿大,Niko Sigur,Niko Sigur Yellow Card,ESPN
+2026-06-28_南非_vs_加拿大,760486,2026-06-28,70',Substitution,加拿大,Promise David,Promise David Substitution,ESPN
+2026-06-28_南非_vs_加拿大,760486,2026-06-28,70',Substitution,加拿大,Jacob Shaffelburg,Jacob Shaffelburg Substitution,ESPN
+2026-06-28_南非_vs_加拿大,760486,2026-06-28,75',Substitution,加拿大,Alphonso Davies,Alphonso Davies Substitution,ESPN
+2026-06-28_南非_vs_加拿大,760486,2026-06-28,86',Substitution,南非,Iqraam Rayners,Iqraam Rayners Substitution,ESPN
+2026-06-28_南非_vs_加拿大,760486,2026-06-28,86',Substitution,南非,Tshepang Moremi,Tshepang Moremi Substitution,ESPN
+2026-06-28_南非_vs_加拿大,760486,2026-06-28,90'+2',Goal,加拿大,Stephen Eustáquio,Stephen Eustáquio Goal,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,12',Yellow Card,日本,Kaishu Sano,Kaishu Sano Yellow Card,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,14',Yellow Card,巴西,Casemiro,Casemiro Yellow Card,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,29',Goal,日本,Kaishu Sano,Kaishu Sano Goal,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,45',Yellow Card,日本,Daichi Kamada,Daichi Kamada Yellow Card,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,45',Substitution,巴西,Endrick,Endrick Substitution,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,48',Yellow Card,巴西,Danilo,Danilo Yellow Card,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,56',Goal - Header,巴西,Casemiro,Casemiro Goal - Header,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,66',Substitution,巴西,Gabriel Martinelli,Gabriel Martinelli Substitution,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,66',Substitution,日本,Junnosuke Suzuki,Junnosuke Suzuki Substitution,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,66',Substitution,日本,Yukinari Sugawara,Yukinari Sugawara Substitution,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,78',Substitution,日本,Shuto Machino,Shuto Machino Substitution,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,78',Substitution,日本,Ao Tanaka,Ao Tanaka Substitution,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,84',Yellow Card,日本,Junnosuke Suzuki,Junnosuke Suzuki Yellow Card,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,90'+3',Substitution,巴西,Fabinho,Fabinho Substitution,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,90'+5',Goal,巴西,Gabriel Martinelli,Gabriel Martinelli Goal,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,90'+7',Substitution,日本,Koki Ogawa,Koki Ogawa Substitution,ESPN
+2026-06-29_巴西_vs_日本,760487,2026-06-29,90'+8',Substitution,巴西,Danilo Santos,Danilo Santos Substitution,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,47',Yellow Card,摩洛哥,Issa Diop,Issa Diop Yellow Card,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,71',Substitution,荷兰,Teun Koopmeiners,Teun Koopmeiners Substitution,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,71',Substitution,荷兰,Wout Weghorst,Wout Weghorst Substitution,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,72',Goal,荷兰,Cody Gakpo,Cody Gakpo Goal,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,75',Substitution,摩洛哥,Anass Salah-Eddine,Anass Salah-Eddine Substitution,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,79',Substitution,摩洛哥,Gessime Yassine,Gessime Yassine Substitution,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,79',Substitution,摩洛哥,Samir El Mourabet,Samir El Mourabet Substitution,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,86',Substitution,摩洛哥,Soufiane Rahimi,Soufiane Rahimi Substitution,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,86',Substitution,荷兰,Jorrel Hato,Jorrel Hato Substitution,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,86',Substitution,荷兰,Quinten Timber,Quinten Timber Substitution,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,87',Substitution,摩洛哥,Chemsdine Talbi,Chemsdine Talbi Substitution,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,90'+1',Goal - Header,摩洛哥,Issa Diop,Issa Diop Goal - Header,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,90',Start Extra Time,,,,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,105'+1',Halftime Extra Time,,,,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,105',Start 2nd Half Extra Time,,,,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,110',Substitution,荷兰,Marten de Roon,Marten de Roon Substitution,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,113',Substitution,荷兰,Justin Kluivert,Justin Kluivert Substitution,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,120'+2',End Extra Time,,,,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,120',Start Shootout,,,,ESPN
+2026-06-30_荷兰_vs_摩洛哥,760488,2026-06-30,120',End Match,,,,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,42',Goal - Header,巴拉圭,Julio Enciso,Julio Enciso Goal - Header,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,45',Substitution,德国,Leon Goretzka,Leon Goretzka Substitution,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,54',Goal - Header,德国,Kai Havertz,Kai Havertz Goal - Header,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,55',Substitution,巴拉圭,Gustavo Caballero,Gustavo Caballero Substitution,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,57',Substitution,巴拉圭,Maurício,Maurício Substitution,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,63',Substitution,德国,Jamal Musiala,Jamal Musiala Substitution,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,65',Yellow Card,巴拉圭,Andrés Cubas,Andrés Cubas Yellow Card,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,79',Substitution,德国,Waldemar Anton,Waldemar Anton Substitution,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,88',Substitution,德国,Nick Woltemade,Nick Woltemade Substitution,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,90',Substitution,巴拉圭,Gustavo Velázquez,Gustavo Velázquez Substitution,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,90',Start Extra Time,,,,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,99',Substitution,巴拉圭,Braian Ojeda,Braian Ojeda Substitution,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,99',Substitution,巴拉圭,Antonio Sanabria,Antonio Sanabria Substitution,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,105'+5',Halftime Extra Time,,,,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,105',Start 2nd Half Extra Time,,,,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,106',Yellow Card,德国,Kai Havertz,Kai Havertz Yellow Card,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,110',Substitution,德国,Nadiem Amiri,Nadiem Amiri Substitution,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,110',Substitution,德国,Malick Thiaw,Malick Thiaw Substitution,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,115',Yellow Card,德国,Jamal Musiala,Jamal Musiala Yellow Card,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,117',Yellow Card,巴拉圭,Matías Galarza,Matías Galarza Yellow Card,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,120'+2',Substitution,巴拉圭,Fabián Balbuena,Fabián Balbuena Substitution,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,120'+3',End Extra Time,,,,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,120',Start Shootout,,,,ESPN
+2026-06-29_德国_vs_巴拉圭,760489,2026-06-29,120',End Match,,,,ESPN
+2026-06-30_科特迪瓦_vs_挪威,760490,2026-06-30,39',Goal,挪威,Antonio Nusa,Antonio Nusa Goal,ESPN
+2026-06-30_科特迪瓦_vs_挪威,760490,2026-06-30,45'+1',Yellow Card,挪威,Antonio Nusa,Antonio Nusa Yellow Card,ESPN
+2026-06-30_科特迪瓦_vs_挪威,760490,2026-06-30,60',Substitution,科特迪瓦,Amad Diallo,Amad Diallo Substitution,ESPN
+2026-06-30_科特迪瓦_vs_挪威,760490,2026-06-30,60',Substitution,科特迪瓦,Elye Wahi,Elye Wahi Substitution,ESPN
+2026-06-30_科特迪瓦_vs_挪威,760490,2026-06-30,71',Substitution,挪威,Andreas Schjelderup,Andreas Schjelderup Substitution,ESPN
+2026-06-30_科特迪瓦_vs_挪威,760490,2026-06-30,71',Substitution,挪威,Oscar Bobb,Oscar Bobb Substitution,ESPN
+2026-06-30_科特迪瓦_vs_挪威,760490,2026-06-30,74',Goal,科特迪瓦,Amad Diallo,Amad Diallo Goal,ESPN
+2026-06-30_科特迪瓦_vs_挪威,760490,2026-06-30,83',Substitution,挪威,Fredrik Aursnes,Fredrik Aursnes Substitution,ESPN
+2026-06-30_科特迪瓦_vs_挪威,760490,2026-06-30,86',Goal,挪威,Erling Haaland,Erling Haaland Goal,ESPN
+2026-06-30_科特迪瓦_vs_挪威,760490,2026-06-30,87',Substitution,科特迪瓦,Oumar Diakité,Oumar Diakité Substitution,ESPN
+2026-06-30_科特迪瓦_vs_挪威,760490,2026-06-30,90'+3',Substitution,科特迪瓦,Evann Guessand,Evann Guessand Substitution,ESPN
+2026-06-30_科特迪瓦_vs_挪威,760490,2026-06-30,90'+3',Substitution,科特迪瓦,Bazoumana Touré,Bazoumana Touré Substitution,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,22',Goal,墨西哥,Julián Quiñones,Julián Quiñones Goal,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,31',Goal,墨西哥,Raúl Jiménez,Raúl Jiménez Goal,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,45'+1',Yellow Card,厄瓜多尔,Alan Franco,Alan Franco Yellow Card,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,45',Substitution,厄瓜多尔,Ángelo Preciado,Ángelo Preciado Substitution,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,45',Substitution,厄瓜多尔,Yaimar Medina,Yaimar Medina Substitution,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,58',Substitution,墨西哥,Brian Gutiérrez,Brian Gutiérrez Substitution,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,59',Substitution,厄瓜多尔,Kevin Rodríguez,Kevin Rodríguez Substitution,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,73',Substitution,墨西哥,Obed Vargas,Obed Vargas Substitution,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,74',Substitution,墨西哥,Santiago Gimenez,Santiago Gimenez Substitution,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,79',Substitution,厄瓜多尔,Jordy Caicedo,Jordy Caicedo Substitution,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,79',Substitution,厄瓜多尔,Kendry Páez,Kendry Páez Substitution,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,80',Substitution,墨西哥,Orbelín Pineda,Orbelín Pineda Substitution,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,80',Substitution,墨西哥,Israel Reyes,Israel Reyes Substitution,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,90'+3',Yellow Card,厄瓜多尔,Kendry Páez,Kendry Páez Yellow Card,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,90'+5',Red Card,厄瓜多尔,Piero Hincapié,Piero Hincapié Red Card,ESPN
+2026-07-01_墨西哥_vs_厄瓜多尔,760491,2026-07-01,90'+9',Yellow Card,厄瓜多尔,Moisés Caicedo,Moisés Caicedo Yellow Card,ESPN
+2026-06-30_法国_vs_瑞典,760492,2026-06-30,45',Goal,法国,Kylian Mbappé,Kylian Mbappé Goal,ESPN
+2026-06-30_法国_vs_瑞典,760492,2026-06-30,53',Goal,法国,Bradley Barcola,Bradley Barcola Goal,ESPN
+2026-06-30_法国_vs_瑞典,760492,2026-06-30,66',Substitution,瑞典,Taha Ali,Taha Ali Substitution,ESPN
+2026-06-30_法国_vs_瑞典,760492,2026-06-30,66',Substitution,瑞典,Besfort Zeneli,Besfort Zeneli Substitution,ESPN
+2026-06-30_法国_vs_瑞典,760492,2026-06-30,74',Goal,法国,Kylian Mbappé,Kylian Mbappé Goal,ESPN
+2026-06-30_法国_vs_瑞典,760492,2026-06-30,75',Substitution,法国,Malo Gusto,Malo Gusto Substitution,ESPN
+2026-06-30_法国_vs_瑞典,760492,2026-06-30,75',Substitution,法国,Désiré Doué,Désiré Doué Substitution,ESPN
+2026-06-30_法国_vs_瑞典,760492,2026-06-30,78',Substitution,法国,Theo Hernández,Theo Hernández Substitution,ESPN
+2026-06-30_法国_vs_瑞典,760492,2026-06-30,82',Substitution,瑞典,Mattias Svanberg,Mattias Svanberg Substitution,ESPN
+2026-06-30_法国_vs_瑞典,760492,2026-06-30,82',Substitution,瑞典,Benjamin Nygren,Benjamin Nygren Substitution,ESPN
+2026-06-30_法国_vs_瑞典,760492,2026-06-30,85',Substitution,法国,Jean-Philippe Mateta,Jean-Philippe Mateta Substitutio,ESPN
+2026-06-30_法国_vs_瑞典,760492,2026-06-30,85',Substitution,法国,Rayan Cherki,Rayan Cherki Substitution,ESPN
+2026-06-30_法国_vs_瑞典,760492,2026-06-30,89',Substitution,瑞典,Gustaf Nilsson,Gustaf Nilsson Substitution,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,24',Goal,塞内加尔,Habib Diarra,Habib Diarra Goal,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,45',Substitution,比利时,Romelu Lukaku,Romelu Lukaku Substitution,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,51',Goal,塞内加尔,Ismaïla Sarr,Ismaïla Sarr Goal,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,56',Substitution,比利时,Dodi Lukébakio,Dodi Lukébakio Substitution,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,56',Substitution,比利时,Nicolas Raskin,Nicolas Raskin Substitution,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,63',Substitution,比利时,Diego Moreira,Diego Moreira Substitution,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,64',Yellow Card,比利时,Brandon Mechele,Brandon Mechele Yellow Card,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,66',Substitution,塞内加尔,Lamine Camara,Lamine Camara Substitution,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,67',Yellow Card,塞内加尔,Lamine Camara,Lamine Camara Yellow Card,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,73',Substitution,塞内加尔,Ibrahim Mbaye,Ibrahim Mbaye Substitution,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,73',Substitution,塞内加尔,Pape Matar Sarr,Pape Matar Sarr Substitution,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,78',Substitution,比利时,Thomas Meunier,Thomas Meunier Substitution,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,86',Goal,比利时,Romelu Lukaku,Romelu Lukaku Goal,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,89',Goal - Header,比利时,Youri Tielemans,Youri Tielemans Goal - Header,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,90',Start Extra Time,,,,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,94',Substitution,塞内加尔,Nicolas Jackson,Nicolas Jackson Substitution,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,94',Substitution,塞内加尔,El Hadji Malick Diouf,El Hadji Malick Diouf Substituti,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,96',Substitution,塞内加尔,Bara Sapoko Ndiaye,Bara Sapoko Ndiaye Substitution,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,105'+1',Halftime Extra Time,,,,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,105',Start 2nd Half Extra Time,,,,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,109',Substitution,比利时,Amadou Onana,Amadou Onana Substitution,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,120'+5',Penalty - Scored,比利时,Youri Tielemans,Youri Tielemans Penalty - Scored,ESPN
+2026-07-01_比利时_vs_塞内加尔,760493,2026-07-01,120'+12',End Extra Time,,,,ESPN
+2026-07-02_美国_vs_波黑,760494,2026-07-02,45',Goal,美国,Folarin Balogun,Folarin Balogun Goal,ESPN
+2026-07-02_美国_vs_波黑,760494,2026-07-02,51',Substitution,波黑,Esmir Bajraktarevic,Esmir Bajraktarevic Substitution,ESPN
+2026-07-02_美国_vs_波黑,760494,2026-07-02,51',Substitution,波黑,Benjamin Tahirovic,Benjamin Tahirovic Substitution,ESPN
+2026-07-02_美国_vs_波黑,760494,2026-07-02,51',Substitution,波黑,Ermin Mahmic,Ermin Mahmic Substitution,ESPN
+2026-07-02_美国_vs_波黑,760494,2026-07-02,64',Red Card,美国,Folarin Balogun,Folarin Balogun Red Card,ESPN
+2026-07-02_美国_vs_波黑,760494,2026-07-02,75',Substitution,波黑,Haris Tabakovic,Haris Tabakovic Substitution,ESPN
+2026-07-02_美国_vs_波黑,760494,2026-07-02,75',Substitution,波黑,Amar Memic,Amar Memic Substitution,ESPN
+2026-07-02_美国_vs_波黑,760494,2026-07-02,80',Yellow Card,波黑,Stjepan Radeljic,Stjepan Radeljic Yellow Card,ESPN
+2026-07-02_美国_vs_波黑,760494,2026-07-02,82',Goal - Free-kick,美国,Malik Tillman,Malik Tillman Goal - Free-kick,ESPN
+2026-07-02_美国_vs_波黑,760494,2026-07-02,87',Substitution,美国,Sebastian Berhalter,Sebastian Berhalter Substitution,ESPN
+2026-07-02_美国_vs_波黑,760494,2026-07-02,88',Substitution,美国,Ricardo Pepi,Ricardo Pepi Substitution,ESPN
+2026-07-02_美国_vs_波黑,760494,2026-07-02,90'+5',Substitution,美国,Giovanni Reyna,Giovanni Reyna Substitution,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,7',Goal,民主刚果,Brian Cipenga,Brian Cipenga Goal,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,19',Yellow Card,英格兰,Jude Bellingham,Jude Bellingham Yellow Card,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,28',Yellow Card,民主刚果,Noah Sadiki,Noah Sadiki Yellow Card,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,61',Substitution,英格兰,Bukayo Saka,Bukayo Saka Substitution,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,61',Substitution,英格兰,Anthony Gordon,Anthony Gordon Substitution,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,64',Substitution,民主刚果,Meschack Elia,Meschack Elia Substitution,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,70',Substitution,英格兰,Eberechi Eze,Eberechi Eze Substitution,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,75',Goal - Header,英格兰,Harry Kane,Harry Kane Goal - Header,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,76',Substitution,民主刚果,Théo Bongonda,Théo Bongonda Substitution,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,76',Substitution,民主刚果,Edo Kayembe,Edo Kayembe Substitution,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,86',Goal,英格兰,Harry Kane,Harry Kane Goal,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,89',Substitution,民主刚果,Joris Kayembe,Joris Kayembe Substitution,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,89',Substitution,民主刚果,Fiston Mayele,Fiston Mayele Substitution,ESPN
+2026-07-01_英格兰_vs_民主刚果,760495,2026-07-01,90'+1',Substitution,英格兰,John Stones,John Stones Substitution,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,17',Yellow Card,葡萄牙,Rúben Dias,Rúben Dias Yellow Card,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,45',Substitution,克罗地亚,Igor Matanovic,Igor Matanovic Substitution,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,53',Goal,克罗地亚,Ivan Perisic,Ivan Perisic Goal,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,59',Yellow Card,克罗地亚,Luka Modric,Luka Modric Yellow Card,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,62',Substitution,葡萄牙,Bernardo Silva,Bernardo Silva Substitution,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,63',Substitution,葡萄牙,Francisco Conceição,Francisco Conceição Substitution,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,63',Substitution,葡萄牙,Nélson Semedo,Nélson Semedo Substitution,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,63',Substitution,葡萄牙,Gonçalo Ramos,Gonçalo Ramos Substitution,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,68',Penalty - Scored,葡萄牙,Cristiano Ronaldo,Cristiano Ronaldo Penalty - Scor,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,68',Substitution,克罗地亚,Mario Pasalic,Mario Pasalic Substitution,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,81',Substitution,葡萄牙,Rúben Neves,Rúben Neves Substitution,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,90'+2',Substitution,克罗地亚,Josko Gvardiol,Josko Gvardiol Substitution,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,90'+4',Goal - Header,葡萄牙,Gonçalo Ramos,Gonçalo Ramos Goal - Header,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,90'+6',Substitution,克罗地亚,Andrej Kramaric,Andrej Kramaric Substitution,ESPN
+2026-07-02_葡萄牙_vs_克罗地亚,760496,2026-07-02,90'+8',Yellow Card,克罗地亚,Ivan Perisic,Ivan Perisic Yellow Card,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,36',Goal,西班牙,Mikel Oyarzabal,Mikel Oyarzabal Goal,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,45',Substitution,奥地利,Florian Grillitsch,Florian Grillitsch Substitution,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,45',Substitution,奥地利,Carney Chukwuemeka,Carney Chukwuemeka Substitution,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,60',Substitution,奥地利,Sasa Kalajdzic,Sasa Kalajdzic Substitution,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,60',Substitution,奥地利,Marko Arnautovic,Marko Arnautovic Substitution,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,66',Goal - Header,西班牙,Pedro Porro,Pedro Porro Goal - Header,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,71',Substitution,西班牙,Ferran Torres,Ferran Torres Substitution,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,71',Substitution,西班牙,Mikel Merino,Mikel Merino Substitution,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,83',Yellow Card,奥地利,Stefan Posch,Stefan Posch Yellow Card,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,85',Substitution,西班牙,Gavi,Gavi Substitution,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,85',Substitution,奥地利,Alexander Prass,Alexander Prass Substitution,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,89',Goal,西班牙,Mikel Oyarzabal,Mikel Oyarzabal Goal,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,90'+3',Substitution,西班牙,Fabián Ruiz,Fabián Ruiz Substitution,ESPN
+2026-07-02_西班牙_vs_奥地利,760497,2026-07-02,90'+3',Substitution,西班牙,Marc Pubill,Marc Pubill Substitution,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,10',Goal,瑞士,Breel Embolo,Breel Embolo Goal,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,36',Yellow Card,阿尔及利亚,Farès Chaïbi,Farès Chaïbi Yellow Card,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,46',Goal,瑞士,Dan Ndoye,Dan Ndoye Goal,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,58',Substitution,阿尔及利亚,Jaouen Hadjam,Jaouen Hadjam Substitution,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,58',Substitution,阿尔及利亚,Amine Gouiri,Amine Gouiri Substitution,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,71',Substitution,瑞士,Fabian Rieder,Fabian Rieder Substitution,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,71',Substitution,瑞士,Noah Okafor,Noah Okafor Substitution,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,71',Substitution,阿尔及利亚,Anis Hadj Moussa,Anis Hadj Moussa Substitution,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,71',Substitution,阿尔及利亚,Hicham Boudaoui,Hicham Boudaoui Substitution,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,72',Yellow Card,阿尔及利亚,Hicham Boudaoui,Hicham Boudaoui Yellow Card,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,82',Substitution,阿尔及利亚,Adil Boulbina,Adil Boulbina Substitution,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,83',Substitution,瑞士,Zeki Amdouni,Zeki Amdouni Substitution,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,87',Substitution,瑞士,Silvan Widmer,Silvan Widmer Substitution,ESPN
+2026-07-03_瑞士_vs_阿尔及利亚,760498,2026-07-03,87',Substitution,瑞士,Michel Aebischer,Michel Aebischer Substitution,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,13',Goal - Header,埃及,Emam Ashour,Emam Ashour Goal - Header,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,45',Substitution,澳大利亚,Kai Trewin,Kai Trewin Substitution,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,55',Own Goal,澳大利亚,Mohamed Hany,Mohamed Hany Own Goal,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,67',Substitution,埃及,Haissem Hassan,Haissem Hassan Substitution,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,67',Substitution,埃及,Hossam Abdelmaguid,Hossam Abdelmaguid Substitution,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,74',Substitution,澳大利亚,Ajdin Hrustic,Ajdin Hrustic Substitution,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,74',Substitution,澳大利亚,Mohamed Toure,Mohamed Toure Substitution,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,80',Substitution,埃及,Trézéguet,Trézéguet Substitution,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,90',Substitution,澳大利亚,Paul Okon-Engstler,Paul Okon-Engstler Substitution,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,90',Substitution,澳大利亚,Awer Mabil,Awer Mabil Substitution,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,90',Start Extra Time,,,,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,105',Yellow Card,埃及,Haissem Hassan,Haissem Hassan Yellow Card,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,105'+1',Halftime Extra Time,,,,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,105',Substitution,埃及,Hamza Abdelkarim,Hamza Abdelkarim Substitution,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,105',Start 2nd Half Extra Time,,,,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,119',Substitution,澳大利亚,Mathew Ryan,Mathew Ryan Substitution,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,120',Yellow Card,埃及,Yasser Ibrahim,Yasser Ibrahim Yellow Card,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,120'+1',Substitution,埃及,Mahmoud Saber,Mahmoud Saber Substitution,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,120'+3',End Extra Time,,,,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,120',Start Shootout,,,,ESPN
+2026-07-03_澳大利亚_vs_埃及,760499,2026-07-03,120',End Match,,,,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,29',Goal,阿根廷,Lionel Messi,Lionel Messi Goal,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,59',Goal,佛得角,Deroy Duarte,Deroy Duarte Goal,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,63',Substitution,阿根廷,Julián Álvarez,Julián Álvarez Substitution,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,64',Substitution,阿根廷,Nico González,Nico González Substitution,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,67',Substitution,佛得角,Jamiro Monteiro,Jamiro Monteiro Substitution,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,67',Substitution,佛得角,Dailon Livramento,Dailon Livramento Substitution,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,68',Yellow Card,佛得角,Kevin Pina,Kevin Pina Yellow Card,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,80',Substitution,佛得角,Willy Semedo,Willy Semedo Substitution,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,80',Substitution,佛得角,Hélio Varela,Hélio Varela Substitution,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,84',Substitution,阿根廷,Leandro Paredes,Leandro Paredes Substitution,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,86',Substitution,阿根廷,Nicolás Tagliafico,Nicolás Tagliafico Substitution,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,90',Start Extra Time,,,,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,92',Goal,阿根廷,Lisandro Martínez,Lisandro Martínez Goal,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,100',Substitution,佛得角,Yannick Semedo,Yannick Semedo Substitution,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,100',Substitution,佛得角,Gilson Benchimol,Gilson Benchimol Substitution,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,103',Goal,佛得角,Sidny Lopes Cabral,Sidny Lopes Cabral Goal,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,104',Substitution,阿根廷,Gonzalo Montiel,Gonzalo Montiel Substitution,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,105'+4',Halftime Extra Time,,,,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,105',Start 2nd Half Extra Time,,,,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,111',Own Goal,阿根廷,Diney Borges,Diney Borges Own Goal,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,115',Yellow Card,阿根廷,Gonzalo Montiel,Gonzalo Montiel Yellow Card,ESPN
+2026-07-03_阿根廷_vs_佛得角,760500,2026-07-03,120'+4',End Extra Time,,,,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,8',Substitution,哥伦比亚,Luis Suárez,Luis Suárez Substitution,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,12',Yellow Card,哥伦比亚,Jhon Arias,Jhon Arias Yellow Card,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,13',Substitution,加纳,Alidu Seidu,Alidu Seidu Substitution,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,14',Goal,哥伦比亚,Jhon Arias,Jhon Arias Goal,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,45',Substitution,哥伦比亚,Richard Ríos,Richard Ríos Substitution,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,49',Yellow Card,加纳,Caleb Yirenkyi,Caleb Yirenkyi Yellow Card,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,62',Substitution,加纳,Fatawu Issahaku,Fatawu Issahaku Substitution,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,62',Substitution,加纳,Elisha Owusu,Elisha Owusu Substitution,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,66',Yellow Card,加纳,Fatawu Issahaku,Fatawu Issahaku Yellow Card,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,73',Substitution,哥伦比亚,Juan Fernando Quintero,Juan Fernando Quintero Substitut,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,76',Yellow Card,加纳,Alidu Seidu,Alidu Seidu Yellow Card,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,78',Yellow Card,哥伦比亚,Richard Ríos,Richard Ríos Yellow Card,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,79',Substitution,加纳,Ernest Nuamah,Ernest Nuamah Substitution,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,79',Substitution,加纳,Prince Adu,Prince Adu Substitution,ESPN
+2026-07-04_哥伦比亚_vs_加纳,760501,2026-07-04,90',Substitution,哥伦比亚,Jáminton Campaz,Jáminton Campaz Substitution,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,20',Yellow Card,摩洛哥,Redouane Halhal,Redouane Halhal Yellow Card,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,22',Substitution,摩洛哥,Soufiane Rahimi,Soufiane Rahimi Substitution,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,40',Yellow Card,摩洛哥,Achraf Hakimi,Achraf Hakimi Yellow Card,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,40',Yellow Card,加拿大,Richie Laryea,Richie Laryea Yellow Card,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,43',Yellow Card,加拿大,Jonathan David,Jonathan David Yellow Card,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,45',Yellow Card,摩洛哥,Azzedine Ounahi,Azzedine Ounahi Yellow Card,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,45'+6',Yellow Card,摩洛哥,Bilal El Khannouss,Bilal El Khannouss Yellow Card,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,49',Yellow Card,加拿大,Luc de Fougerolles,Luc de Fougerolles Yellow Card,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,50',Goal,摩洛哥,Azzedine Ounahi,Azzedine Ounahi Goal,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,63',Substitution,摩洛哥,Chemsdine Talbi,Chemsdine Talbi Substitution,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,63',Substitution,摩洛哥,Sofyan Amrabat,Sofyan Amrabat Substitution,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,63',Substitution,加拿大,Cyle Larin,Cyle Larin Substitution,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,67',Yellow Card,加拿大,Cyle Larin,Cyle Larin Yellow Card,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,78',Substitution,加拿大,Promise David,Promise David Substitution,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,78',Substitution,加拿大,Jacob Shaffelburg,Jacob Shaffelburg Substitution,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,82',Goal,摩洛哥,Azzedine Ounahi,Azzedine Ounahi Goal,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,87',Substitution,摩洛哥,Marwane Saadane,Marwane Saadane Substitution,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,87',Substitution,摩洛哥,Samir El Mourabet,Samir El Mourabet Substitution,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,87',Substitution,加拿大,Jonathan Osorio,Jonathan Osorio Substitution,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,87',Substitution,加拿大,Jayden Nelson,Jayden Nelson Substitution,ESPN
+2026-07-04_加拿大_vs_摩洛哥,760502,2026-07-04,90'+8',Goal,摩洛哥,Soufiane Rahimi,Soufiane Rahimi Goal,ESPN
+2026-07-04_巴拉圭_vs_法国,760503,2026-07-04,19',Yellow Card,法国,Bradley Barcola,Bradley Barcola Yellow Card,ESPN
+2026-07-04_巴拉圭_vs_法国,760503,2026-07-04,58',Substitution,巴拉圭,José Canale,José Canale Substitution,ESPN
+2026-07-04_巴拉圭_vs_法国,760503,2026-07-04,61',Substitution,巴拉圭,Gustavo Caballero,Gustavo Caballero Substitution,ESPN
+2026-07-04_巴拉圭_vs_法国,760503,2026-07-04,61',Substitution,法国,Désiré Doué,Désiré Doué Substitution,ESPN
+2026-07-04_巴拉圭_vs_法国,760503,2026-07-04,70',Penalty - Scored,法国,Kylian Mbappé,Kylian Mbappé Penalty - Scored,ESPN
+2026-07-04_巴拉圭_vs_法国,760503,2026-07-04,71',Substitution,巴拉圭,Maurício,Maurício Substitution,ESPN
+2026-07-04_巴拉圭_vs_法国,760503,2026-07-04,71',Substitution,巴拉圭,Gabriel Ávalos,Gabriel Ávalos Substitution,ESPN
+2026-07-04_巴拉圭_vs_法国,760503,2026-07-04,81',Yellow Card,法国,Manu Koné,Manu Koné Yellow Card,ESPN
+2026-07-04_巴拉圭_vs_法国,760503,2026-07-04,84',Substitution,法国,Rayan Cherki,Rayan Cherki Substitution,ESPN
+2026-07-04_巴拉圭_vs_法国,760503,2026-07-04,90'+7',Yellow Card,法国,Michael Olise,Michael Olise Yellow Card,ESPN
+2026-07-05_巴西_vs_挪威,760504,2026-07-05,14',Penalty - Saved,巴西,Bruno Guimarães,Bruno Guimarães Penalty - Saved,ESPN
+2026-07-05_巴西_vs_挪威,760504,2026-07-05,45',Substitution,挪威,Oscar Bobb,Oscar Bobb Substitution,ESPN
+2026-07-05_巴西_vs_挪威,760504,2026-07-05,45',Substitution,挪威,Andreas Schjelderup,Andreas Schjelderup Substitution,ESPN
+2026-07-05_巴西_vs_挪威,760504,2026-07-05,58',Substitution,巴西,Endrick,Endrick Substitution,ESPN
+2026-07-05_巴西_vs_挪威,760504,2026-07-05,63',Substitution,挪威,Fredrik Aursnes,Fredrik Aursnes Substitution,ESPN
+2026-07-05_巴西_vs_挪威,760504,2026-07-05,67',Substitution,巴西,Neymar,Neymar Substitution,ESPN
+2026-07-05_巴西_vs_挪威,760504,2026-07-05,67',Substitution,巴西,Danilo Santos,Danilo Santos Substitution,ESPN
+2026-07-05_巴西_vs_挪威,760504,2026-07-05,79',Substitution,巴西,Éderson,Éderson Substitution,ESPN
+2026-07-05_巴西_vs_挪威,760504,2026-07-05,79',Goal - Header,挪威,Erling Haaland,Erling Haaland Goal - Header,ESPN
+2026-07-05_巴西_vs_挪威,760504,2026-07-05,90',Goal,挪威,Erling Haaland,Erling Haaland Goal,ESPN
+2026-07-05_巴西_vs_挪威,760504,2026-07-05,90'+5',Substitution,挪威,Leo Østigard,Leo Østigard Substitution,ESPN
+2026-07-05_巴西_vs_挪威,760504,2026-07-05,90'+6',Yellow Card,巴西,Neymar,Neymar Yellow Card,ESPN
+2026-07-05_巴西_vs_挪威,760504,2026-07-05,90'+10',Penalty - Scored,巴西,Neymar,Neymar Penalty - Scored,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,1',Yellow Card,英格兰,Declan Rice,Declan Rice Yellow Card,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,36',Goal - Header,英格兰,Jude Bellingham,Jude Bellingham Goal - Header,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,38',Goal,英格兰,Jude Bellingham,Jude Bellingham Goal,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,42',Goal - Volley,墨西哥,Julián Quiñones,Julián Quiñones Goal - Volley,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,45',Substitution,墨西哥,Edson Álvarez,Edson Álvarez Substitution,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,54',Red Card,英格兰,Jarell Quansah,Jarell Quansah Red Card,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,57',Substitution,英格兰,John Stones,John Stones Substitution,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,60',Penalty - Scored,英格兰,Harry Kane,Harry Kane Penalty - Scored,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,61',Substitution,墨西哥,Santiago Gimenez,Santiago Gimenez Substitution,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,61',Substitution,墨西哥,Brian Gutiérrez,Brian Gutiérrez Substitution,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,68',Yellow Card,英格兰,Marc Guéhi,Marc Guéhi Yellow Card,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,69',Penalty - Scored,墨西哥,Raúl Jiménez,Raúl Jiménez Penalty - Scored,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,71',Yellow Card,墨西哥,Jorge Sánchez,Jorge Sánchez Yellow Card,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,72',Yellow Card,英格兰,Nico O'Reilly,Nico O'Reilly Yellow Card,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,74',Substitution,英格兰,Djed Spence,Djed Spence Substitution,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,75',Substitution,英格兰,Dan Burn,Dan Burn Substitution,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,79',Substitution,墨西哥,Álvaro Fidalgo,Álvaro Fidalgo Substitution,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,81',Substitution,墨西哥,Guillermo Martínez,Guillermo Martínez Substitution,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,90',Substitution,英格兰,Morgan Rogers,Morgan Rogers Substitution,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,90'+8',Yellow Card,墨西哥,Johan Vásquez,Johan Vásquez Yellow Card,ESPN
+2026-07-06_墨西哥_vs_英格兰,760505,2026-07-06,90'+8',Yellow Card,英格兰,Jordan Henderson,Jordan Henderson Yellow Card,ESPN
+2026-07-06_葡萄牙_vs_西班牙,760506,2026-07-06,56',Substitution,葡萄牙,Nélson Semedo,Nélson Semedo Substitution,ESPN
+2026-07-06_葡萄牙_vs_西班牙,760506,2026-07-06,71',Substitution,葡萄牙,Diogo Dalot,Diogo Dalot Substitution,ESPN
+2026-07-06_葡萄牙_vs_西班牙,760506,2026-07-06,71',Substitution,葡萄牙,Rafael Leão,Rafael Leão Substitution,ESPN
+2026-07-06_葡萄牙_vs_西班牙,760506,2026-07-06,75',Substitution,西班牙,Ferran Torres,Ferran Torres Substitution,ESPN
+2026-07-06_葡萄牙_vs_西班牙,760506,2026-07-06,83',Substitution,葡萄牙,Francisco Conceição,Francisco Conceição Substitution,ESPN
+2026-07-06_葡萄牙_vs_西班牙,760506,2026-07-06,83',Substitution,葡萄牙,Bernardo Silva,Bernardo Silva Substitution,ESPN
+2026-07-06_葡萄牙_vs_西班牙,760506,2026-07-06,85',Substitution,西班牙,Fabián Ruiz,Fabián Ruiz Substitution,ESPN
+2026-07-06_葡萄牙_vs_西班牙,760506,2026-07-06,85',Substitution,西班牙,Mikel Merino,Mikel Merino Substitution,ESPN
+2026-07-06_葡萄牙_vs_西班牙,760506,2026-07-06,89',Yellow Card,葡萄牙,Bernardo Silva,Bernardo Silva Yellow Card,ESPN
+2026-07-06_葡萄牙_vs_西班牙,760506,2026-07-06,90'+1',Goal,西班牙,Mikel Merino,Mikel Merino Goal,ESPN
+2026-07-06_葡萄牙_vs_西班牙,760506,2026-07-06,90'+4',Yellow Card,葡萄牙,Renato Veiga,Renato Veiga Yellow Card,ESPN
+2026-07-06_葡萄牙_vs_西班牙,760506,2026-07-06,90'+7',Substitution,西班牙,Borja Iglesias,Borja Iglesias Substitution,ESPN
+2026-07-06_葡萄牙_vs_西班牙,760506,2026-07-06,90'+8',Yellow Card,西班牙,Ferran Torres,Ferran Torres Yellow Card,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,9',Goal,比利时,Charles De Ketelaere,Charles De Ketelaere Goal,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,21',Substitution,比利时,Hans Vanaken,Hans Vanaken Substitution,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,31',Goal - Free-kick,美国,Malik Tillman,Malik Tillman Goal - Free-kick,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,33',Goal - Header,比利时,Charles De Ketelaere,Charles De Ketelaere Goal - Head,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,35',Yellow Card,美国,Weston McKennie,Weston McKennie Yellow Card,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,45',Substitution,美国,Giovanni Reyna,Giovanni Reyna Substitution,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,57',Goal,比利时,Hans Vanaken,Hans Vanaken Goal,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,59',Substitution,美国,Sebastian Berhalter,Sebastian Berhalter Substitution,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,67',Substitution,比利时,Jérémy Doku,Jérémy Doku Substitution,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,67',Substitution,比利时,Romelu Lukaku,Romelu Lukaku Substitution,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,69',Yellow Card,美国,Malik Tillman,Malik Tillman Yellow Card,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,72',Substitution,美国,Ricardo Pepi,Ricardo Pepi Substitution,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,89',Substitution,比利时,Alexis Saelemaekers,Alexis Saelemaekers Substitution,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,89',Substitution,比利时,Axel Witsel,Axel Witsel Substitution,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,90'+2',Substitution,美国,Max Arfsten,Max Arfsten Substitution,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,90'+2',Substitution,美国,Haji Wright,Haji Wright Substitution,ESPN
+2026-07-07_美国_vs_比利时,760507,2026-07-07,90'+3',Goal,比利时,Romelu Lukaku,Romelu Lukaku Goal,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,45',Substitution,瑞士,Djibril Sow,Djibril Sow Substitution,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,51',Yellow Card,瑞士,Granit Xhaka,Granit Xhaka Yellow Card,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,59',Yellow Card,瑞士,Denis Zakaria,Denis Zakaria Yellow Card,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,60',Yellow Card,哥伦比亚,Luis Suárez,Luis Suárez Yellow Card,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,66',Substitution,哥伦比亚,Juan Fernando Quintero,Juan Fernando Quintero Substitut,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,66',Substitution,哥伦比亚,Jáminton Campaz,Jáminton Campaz Substitution,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,71',Substitution,瑞士,Miro Muheim,Miro Muheim Substitution,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,82',Substitution,哥伦比亚,Richard Ríos,Richard Ríos Substitution,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,82',Substitution,哥伦比亚,Cucho Hernández,Cucho Hernández Substitution,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,87',Substitution,瑞士,Silvan Widmer,Silvan Widmer Substitution,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,87',Substitution,瑞士,Cedric Itten,Cedric Itten Substitution,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,90'+2',Substitution,瑞士,Rubén Vargas,Rubén Vargas Substitution,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,90',Start Extra Time,,,,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,95',Yellow Card,哥伦比亚,Davinson Sánchez,Davinson Sánchez Yellow Card,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,103',Substitution,瑞士,Zeki Amdouni,Zeki Amdouni Substitution,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,105',Yellow Card,瑞士,Miro Muheim,Miro Muheim Yellow Card,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,105'+2',Halftime Extra Time,,,,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,105',Start 2nd Half Extra Time,,,,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,119',Substitution,哥伦比亚,Yerry Mina,Yerry Mina Substitution,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,120'+2',End Extra Time,,,,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,120',Start Shootout,,,,ESPN
+2026-07-07_瑞士_vs_哥伦比亚,760508,2026-07-07,120',End Match,,,,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,15',Goal - Header,埃及,Yasser Ibrahim,Yasser Ibrahim Goal - Header,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,21',Penalty - Saved,阿根廷,Lionel Messi,Lionel Messi Penalty - Saved,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,45',Substitution,埃及,Hamdy Fathy,Hamdy Fathy Substitution,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,66',Substitution,阿根廷,Nico González,Nico González Substitution,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,66',Substitution,阿根廷,Lautaro Martínez,Lautaro Martínez Substitution,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,67',Goal,埃及,Mostafa Zico,Mostafa Zico Goal,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,73',Substitution,阿根廷,Gonzalo Montiel,Gonzalo Montiel Substitution,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,73',Substitution,埃及,Trézéguet,Trézéguet Substitution,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,79',Goal - Header,阿根廷,Cristian Romero,Cristian Romero Goal - Header,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,80',Substitution,埃及,Omar Marmoush,Omar Marmoush Substitution,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,83',Goal - Volley,阿根廷,Lionel Messi,Lionel Messi Goal - Volley,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,90'+2',Goal - Header,阿根廷,Enzo Fernández,Enzo Fernández Goal - Header,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,90'+3',Yellow Card,埃及,Mostafa Shoubir,Mostafa Shoubir Yellow Card,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,90'+4',Yellow Card,埃及,Hamdy Fathy,Hamdy Fathy Yellow Card,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,90'+5',Substitution,阿根廷,Facundo Medina,Facundo Medina Substitution,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,90'+5',Substitution,阿根廷,Nicolás Otamendi,Nicolás Otamendi Substitution,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,90'+6',Substitution,埃及,Zizo,Zizo Substitution,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,90'+8',Yellow Card,埃及,Marawan Attia,Marawan Attia Yellow Card,ESPN
+2026-07-07_阿根廷_vs_埃及,760509,2026-07-07,90'+12',Yellow Card,埃及,Haissem Hassan,Haissem Hassan Yellow Card,ESPN
+2026-07-09_法国_vs_摩洛哥,760510,2026-07-09,28',Penalty - Saved,法国,Kylian Mbappé,Kylian Mbappé Penalty - Saved,ESPN
+2026-07-09_法国_vs_摩洛哥,760510,2026-07-09,60',Goal,法国,Kylian Mbappé,Kylian Mbappé Goal,ESPN
+2026-07-09_法国_vs_摩洛哥,760510,2026-07-09,62',Substitution,摩洛哥,Soufiane Rahimi,Soufiane Rahimi Substitution,ESPN
+2026-07-09_法国_vs_摩洛哥,760510,2026-07-09,62',Substitution,摩洛哥,Sofyan Amrabat,Sofyan Amrabat Substitution,ESPN
+2026-07-09_法国_vs_摩洛哥,760510,2026-07-09,63',Yellow Card,摩洛哥,Issa Diop,Issa Diop Yellow Card,ESPN
+2026-07-09_法国_vs_摩洛哥,760510,2026-07-09,66',Goal,法国,Ousmane Dembélé,Ousmane Dembélé Goal,ESPN
+2026-07-09_法国_vs_摩洛哥,760510,2026-07-09,71',Substitution,法国,Warren Zaïre-Emery,Warren Zaïre-Emery Substitution,ESPN
+2026-07-09_法国_vs_摩洛哥,760510,2026-07-09,74',Substitution,摩洛哥,Zakaria El Ouahdi,Zakaria El Ouahdi Substitution,ESPN
+2026-07-09_法国_vs_摩洛哥,760510,2026-07-09,74',Substitution,摩洛哥,Gessime Yassine,Gessime Yassine Substitution,ESPN
+2026-07-09_法国_vs_摩洛哥,760510,2026-07-09,77',Substitution,法国,Jean-Philippe Mateta,Jean-Philippe Mateta Substitutio,ESPN
+2026-07-09_法国_vs_摩洛哥,760510,2026-07-09,77',Substitution,法国,Bradley Barcola,Bradley Barcola Substitution,ESPN
+2026-07-09_法国_vs_摩洛哥,760510,2026-07-09,85',Substitution,摩洛哥,Amine Sbaï,Amine Sbaï Substitution,ESPN
+2026-07-09_法国_vs_摩洛哥,760510,2026-07-09,87',Substitution,法国,Malo Gusto,Malo Gusto Substitution,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,30',Goal,西班牙,Fabián Ruiz,Fabián Ruiz Goal,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,41',Goal - Header,比利时,Charles De Ketelaere,Charles De Ketelaere Goal - Head,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,43',Yellow Card,西班牙,Pau Cubarsí,Pau Cubarsí Yellow Card,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,55',Substitution,西班牙,Ferran Torres,Ferran Torres Substitution,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,55',Substitution,西班牙,Pedri,Pedri Substitution,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,60',Substitution,比利时,Axel Witsel,Axel Witsel Substitution,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,60',Substitution,比利时,Romelu Lukaku,Romelu Lukaku Substitution,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,61',Substitution,比利时,Joaquin Seys,Joaquin Seys Substitution,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,71',Substitution,比利时,Senne Lammens,Senne Lammens Substitution,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,79',Substitution,西班牙,Nico Williams,Nico Williams Substitution,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,85',Yellow Card,比利时,Kevin De Bruyne,Kevin De Bruyne Yellow Card,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,86',Substitution,比利时,Alexis Saelemaekers,Alexis Saelemaekers Substitution,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,86',Substitution,西班牙,Mikel Merino,Mikel Merino Substitution,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,88',Goal,西班牙,Mikel Merino,Mikel Merino Goal,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,90'+3',Yellow Card,西班牙,Aymeric Laporte,Aymeric Laporte Yellow Card,ESPN
+2026-07-10_西班牙_vs_比利时,760511,2026-07-10,90'+5',Yellow Card,比利时,Axel Witsel,Axel Witsel Yellow Card,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,36',Goal,挪威,Andreas Schjelderup,Andreas Schjelderup Goal,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,45'+2',Goal,英格兰,Jude Bellingham,Jude Bellingham Goal,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,45',Substitution,英格兰,Bukayo Saka,Bukayo Saka Substitution,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,45',Substitution,英格兰,Eberechi Eze,Eberechi Eze Substitution,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,60',Substitution,挪威,Fredrik Aursnes,Fredrik Aursnes Substitution,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,68',Substitution,挪威,Oscar Bobb,Oscar Bobb Substitution,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,68',Substitution,挪威,Antonio Nusa,Antonio Nusa Substitution,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,71',Substitution,英格兰,Reece James,Reece James Substitution,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,86',Substitution,英格兰,Djed Spence,Djed Spence Substitution,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,89',Substitution,英格兰,Morgan Rogers,Morgan Rogers Substitution,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,90',Substitution,挪威,Marcus Holmgren Pedersen,Marcus Holmgren Pedersen Substit,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,90',Substitution,挪威,Leo Østigard,Leo Østigard Substitution,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,90',Start Extra Time,,,,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,93',Goal,英格兰,Jude Bellingham,Jude Bellingham Goal,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,105'+4',Halftime Extra Time,,,,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,105',Substitution,挪威,Jørgen Strand Larsen,Jørgen Strand Larsen Substitutio,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,105',Start 2nd Half Extra Time,,,,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,111',Substitution,英格兰,Dan Burn,Dan Burn Substitution,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,117',Yellow Card,挪威,Kristoffer Ajer,Kristoffer Ajer Yellow Card,ESPN
+2026-07-11_挪威_vs_英格兰,760512,2026-07-11,120'+3',End Extra Time,,,,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,10',Goal - Header,阿根廷,Alexis Mac Allister,Alexis Mac Allister Goal - Heade,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,44',Yellow Card,瑞士,Breel Embolo,Breel Embolo Yellow Card,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,67',Goal,瑞士,Dan Ndoye,Dan Ndoye Goal,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,72',Red Card,瑞士,Breel Embolo,Breel Embolo Red Card,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,78',Substitution,阿根廷,Nico González,Nico González Substitution,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,85',Substitution,阿根廷,Lautaro Martínez,Lautaro Martínez Substitution,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,85',Substitution,阿根廷,Gonzalo Montiel,Gonzalo Montiel Substitution,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,86',Substitution,瑞士,Silvan Widmer,Silvan Widmer Substitution,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,86',Substitution,瑞士,Zeki Amdouni,Zeki Amdouni Substitution,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,86',Substitution,瑞士,Miro Muheim,Miro Muheim Substitution,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,90'+5',Substitution,瑞士,Eray Cömert,Eray Cömert Substitution,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,90',Substitution,阿根廷,Thiago Almada,Thiago Almada Substitution,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,90',Start Extra Time,,,,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,96',Substitution,瑞士,Ardon Jashari,Ardon Jashari Substitution,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,97',Yellow Card,阿根廷,Thiago Almada,Thiago Almada Yellow Card,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,98',Yellow Card,阿根廷,Lautaro Martínez,Lautaro Martínez Yellow Card,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,105'+2',Halftime Extra Time,,,,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,105',Substitution,阿根廷,Nicolás Otamendi,Nicolás Otamendi Substitution,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,105',Start 2nd Half Extra Time,,,,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,110',Substitution,阿根廷,José Manuel López,José Manuel López Substitution,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,112',Goal,阿根廷,Julián Álvarez,Julián Álvarez Goal,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,114',Yellow Card,阿根廷,José Manuel López,José Manuel López Yellow Card,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,115',Substitution,瑞士,Rubén Vargas,Rubén Vargas Substitution,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,120'+1',Goal,阿根廷,Lautaro Martínez,Lautaro Martínez Goal,ESPN
+2026-07-12_阿根廷_vs_瑞士,760513,2026-07-12,120'+4',End Extra Time,,,,ESPN

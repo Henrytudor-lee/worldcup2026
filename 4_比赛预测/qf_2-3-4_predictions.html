@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>QF 后 3 场战术预测 + 泊松分布</title>
+<style>
+  body { font-family: -apple-system, "PingFang SC", sans-serif; max-width: 1200px; margin: 30px auto; padding: 20px; background: #f8f8f5; color: #1a1a1a; }
+  h1 { color: #2c5f2d; text-align: center; }
+  h2 { color: #5a3a1f; border-bottom: 2px solid #d4a574; padding-bottom: 8px; margin-top: 36px; }
+  .match-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); margin: 20px 0; padding: 20px; }
+  .match-header { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, #fef7e8, #f5e6c8); padding: 16px; border-radius: 8px; margin-bottom: 16px; }
+  .match-time { font-size: 22px; font-weight: 700; color: #5a3a1f; }
+  .match-teams { font-size: 22px; font-weight: 600; }
+  .vs { color: #d4a574; font-weight: 700; padding: 0 10px; }
+  .meta { font-size: 12px; color: #888; text-align: center; margin: 20px 0; }
+  .prob-bar { background: #e8e0d0; height: 22px; border-radius: 4px; position: relative; margin: 6px 0; overflow: hidden; }
+  .prob-fill { height: 100%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600; font-size: 12px; }
+  .ph { background: #2c5f2d; }
+  .pd { background: #d4a574; }
+  .pa { background: #8b4513; }
+  .verdict { background: #5a3a1d; color: #fff; padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 16px; text-align: center; font-weight: 600; }
+  .poisson-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 12px 0; }
+  .poisson-table th, .poisson-table td { padding: 4px 6px; text-align: center; border: 1px solid #e8e0d0; }
+  .poisson-table th { background: #5a3a1f; color: #fff; font-weight: 600; }
+  .poisson-table td.high { background: #fff3cd; font-weight: 700; }
+  .poisson-table td.low { background: #f8f8f5; color: #aaa; }
+  .poisson-table td.zero { background: #faf6ee; color: #ccc; }
+  .info { background: #e8f5e9; border-left: 4px solid #2c5f2d; padding: 12px 16px; border-radius: 6px; margin: 12px 0; font-size: 13px; }
+  table.stats { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 12px; }
+  table.stats th { background: #5a3a1f; color: #fff; padding: 6px; text-align: left; }
+  table.stats td { padding: 6px; border-bottom: 1px solid #e8e0d0; }
+  table.stats tr:nth-child(even) { background: #faf6ee; }
+  .ok { color: #2c5f2d; font-weight: 700; }
+  .miss { color: #c0392b; font-weight: 700; }
+</style>
+</head>
+<body>
+<h1>⚽ 1/4 决赛后 3 场战术预测 (QF-2/3/4)</h1>
+<p class="meta">v3.0 KO 算法 (calibrate 后 best_weights) + 战术修正 v2 | 2026-07-10 18:13:22</p>
+
+<div class="info">
+  <b>📊 战术预测累计战绩 (7/3-7/10, 14 场)</b>: 胜方 12/14 (<b>85%</b>) | 比分完全 3/14 (21%)<br>
+  <b>🏆 QF-1 验证</b>: 战术 2-1 法 → 实际 <b>2-0 法</b> | <span class="ok">胜方✓</span> <span class="miss">差 1 球</span> | v3 算法预测 2-3 法胜 (高估了 1 球)
+</div>
+
+<h2>📐 泊松分布模型说明</h2>
+<div class="info">
+  <b>P(X=k) = (λ^k × e^(-λ)) / k!</b><br>
+  <b>P(主 k, 客 m) = P_home(k) × P_away(m)</b> (假设主客独立)<br>
+  <p style="font-size:12px;margin-top:6px;color:#666">⚠️ 局限: 基础泊松未修正主客进球相依性 (Dixon-Coles 模型应该修正)</p>
+</div>
+
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">明天 03:00 CST</div>
+      <div style="font-size:12px;color:#888">📍 SoFi Stadium, Los Angeles</div>
+    </div>
+    <div class="match-teams">
+      <b>挪威</b> <span class="vs">vs</span> <b>英格兰</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">QF · 8 强</div>
+      <div style="font-size:12px;color:#888">QF-2</div>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;">
+    <div>
+      <b style="font-size:13px;color:#5a3a1f">⚽ 胜平负概率</b>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:32.7%">32.7% 挪威</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:26.2%">26.2% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:41.1%">41.1% 英格兰</div></div>
+    </div>
+    <div>
+      <b style="font-size:13px;color:#5a3a1f">📊 期望值</b>
+      <table class="stats">
+        <tr><td>λ 主</td><td>3.44</td><td>λ 客</td><td>3.83</td></tr>
+        <tr><td>总进球期望</td><td colspan="3">7.26</td></tr>
+        <tr><td>净胜球期望</td><td colspan="3">-0.39</td></tr>
+        <tr><td>v3 最佳比分</td><td colspan="3">3-3 (4.4%)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <b style="font-size:13px;color:#5a3a1f">📊 完整泊松分布矩阵 (7×7)</b>
+  <table class="poisson-table">
+    <tr>
+      <th>挪威 \ 英格兰</th>
+      <th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+    </tr><tr><th>0</th><td class="zero">0.07%</td><td class="zero">0.27%</td><td class="zero">0.51%</td><td class="zero">0.66%</td><td class="zero">0.63%</td><td class="zero">0.48%</td><td class="zero">0.31%</td></tr><tr><th>1</th><td class="zero">0.24%</td><td class="zero">0.92%</td><td class="low">1.77%</td><td class="low">2.25%</td><td class="low">2.15%</td><td class="low">1.65%</td><td class="low">1.05%</td></tr><tr><th>2</th><td class="zero">0.41%</td><td class="low">1.59%</td><td class="low">3.03%</td><td class="low">3.87%</td><td class="low">3.70%</td><td class="low">2.83%</td><td class="low">1.80%</td></tr><tr><th>3</th><td class="zero">0.47%</td><td class="low">1.82%</td><td class="low">3.47%</td><td class="high">4.43%</td><td class="high">4.24%</td><td class="low">3.24%</td><td class="low">2.07%</td></tr><tr><th>4</th><td class="zero">0.41%</td><td class="low">1.56%</td><td class="low">2.98%</td><td class="low">3.80%</td><td class="low">3.64%</td><td class="low">2.78%</td><td class="low">1.77%</td></tr><tr><th>5</th><td class="zero">0.28%</td><td class="low">1.07%</td><td class="low">2.05%</td><td class="low">2.61%</td><td class="low">2.50%</td><td class="low">1.91%</td><td class="low">1.22%</td></tr><tr><th>6</th><td class="zero">0.16%</td><td class="zero">0.61%</td><td class="low">1.17%</td><td class="low">1.50%</td><td class="low">1.43%</td><td class="low">1.10%</td><td class="zero">0.70%</td></tr></table>
+  <b style="font-size:13px;color:#5a3a1f">🏆 Top 5 比分概率 + 战术预测</b>
+  <table class="stats">
+    <tr><th>#</th><th>比分</th><th>概率</th><th>解读</th></tr><tr><td>1</td><td><b>3-3</b> 🏆</td><td>4.43%</td><td>平局</td></tr><tr><td>2</td><td><b>3-4</b> 🏆</td><td>4.24%</td><td>英格兰 胜</td></tr><tr><td>3</td><td><b>2-3</b> </td><td>3.87%</td><td>英格兰 胜</td></tr><tr><td>4</td><td><b>4-3</b> </td><td>3.80%</td><td>挪威 胜</td></tr><tr><td>5</td><td><b>2-4</b> </td><td>3.70%</td><td>英格兰 胜</td></tr>
+    <tr style="background:#fef7e8"><td colspan="2">🎯 战术预测</td><td colspan="2"><b>1-2 英格兰胜</b> (英格兰)</td></tr>
+  </table>
+
+  <details>
+    <summary style="cursor:pointer;color:#5a3a1f;font-size:13px">📝 战术修正要点 (10 项)</summary>
+    <ul style="font-size:12px;margin-top:8px">
+<li>【黑马】挪威 2-1 巴西爆冷, 哈兰德 1 球 + 全队拼搏精神, 黑马成色十足</li><li>【英】32 强 2-3 逆转墨西哥, 凯恩梅开二度, 状态火热</li><li>【4 维】英 FW 17110 vs 挪 FW 6504, 中场英 17112 vs 挪 8600, 英全面碾压</li><li>【哈兰德】FIFA 当世第一中锋, 但挪威整体跟英超班底差距大</li><li>【凯恩】大场面先生, 32 强梅开二度, 关键时刻稳定</li><li>【沃克】英格兰主力右后卫停赛, 防守有隐患 (挪反击可能利用)</li><li>【黑马体能】挪 32 强 2-1 巴, 体能消耗相对少 (无加时), 体能保持</li><li>【战术】挪防守反击 + 哈兰德反击; 英控球+边路推进, 萨卡/福登速度</li><li>【关键】挪如果先进 1 球, 哈兰德反击会非常危险, 英必须控制节奏</li><li>【预测】英整体实力强, 但挪黑马 + 哈兰德单点爆破, 战术预测 1-2 英 (小胜, 不轻松)</li></ul>
+  </details>
+</div>
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">明天 09:00 CST</div>
+      <div style="font-size:12px;color:#888">📍 Hard Rock Stadium, Miami</div>
+    </div>
+    <div class="match-teams">
+      <b>西班牙</b> <span class="vs">vs</span> <b>比利时</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">QF · 8 强</div>
+      <div style="font-size:12px;color:#888">QF-3</div>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;">
+    <div>
+      <b style="font-size:13px;color:#5a3a1f">⚽ 胜平负概率</b>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:48.2%">48.2% 西班牙</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:24.1%">24.1% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:27.7%">27.7% 比利时</div></div>
+    </div>
+    <div>
+      <b style="font-size:13px;color:#5a3a1f">📊 期望值</b>
+      <table class="stats">
+        <tr><td>λ 主</td><td>2.95</td><td>λ 客</td><td>2.25</td></tr>
+        <tr><td>总进球期望</td><td colspan="3">5.19</td></tr>
+        <tr><td>净胜球期望</td><td colspan="3">+0.70</td></tr>
+        <tr><td>v3 最佳比分</td><td colspan="3">2-2 (6.1%)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <b style="font-size:13px;color:#5a3a1f">📊 完整泊松分布矩阵 (7×7)</b>
+  <table class="poisson-table">
+    <tr>
+      <th>西班牙 \ 比利时</th>
+      <th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+    </tr><tr><th>0</th><td class="zero">0.55%</td><td class="low">1.25%</td><td class="low">1.40%</td><td class="low">1.05%</td><td class="zero">0.59%</td><td class="zero">0.27%</td><td class="zero">0.10%</td></tr><tr><th>1</th><td class="low">1.63%</td><td class="low">3.67%</td><td class="high">4.13%</td><td class="low">3.09%</td><td class="low">1.74%</td><td class="zero">0.78%</td><td class="zero">0.29%</td></tr><tr><th>2</th><td class="low">2.41%</td><td class="high">5.41%</td><td class="high">6.08%</td><td class="high">4.56%</td><td class="low">2.56%</td><td class="low">1.15%</td><td class="zero">0.43%</td></tr><tr><th>3</th><td class="low">2.37%</td><td class="high">5.32%</td><td class="high">5.98%</td><td class="high">4.48%</td><td class="low">2.52%</td><td class="low">1.13%</td><td class="zero">0.42%</td></tr><tr><th>4</th><td class="low">1.74%</td><td class="low">3.92%</td><td class="high">4.40%</td><td class="low">3.30%</td><td class="low">1.85%</td><td class="zero">0.83%</td><td class="zero">0.31%</td></tr><tr><th>5</th><td class="low">1.03%</td><td class="low">2.31%</td><td class="low">2.59%</td><td class="low">1.94%</td><td class="low">1.09%</td><td class="zero">0.49%</td><td class="zero">0.18%</td></tr><tr><th>6</th><td class="zero">0.50%</td><td class="low">1.13%</td><td class="low">1.27%</td><td class="zero">0.95%</td><td class="zero">0.54%</td><td class="zero">0.24%</td><td class="zero">0.09%</td></tr></table>
+  <b style="font-size:13px;color:#5a3a1f">🏆 Top 5 比分概率 + 战术预测</b>
+  <table class="stats">
+    <tr><th>#</th><th>比分</th><th>概率</th><th>解读</th></tr><tr><td>1</td><td><b>2-2</b> 🏆</td><td>6.08%</td><td>平局</td></tr><tr><td>2</td><td><b>3-2</b> 🏆</td><td>5.98%</td><td>西班牙 胜</td></tr><tr><td>3</td><td><b>2-1</b> 🏆</td><td>5.41%</td><td>西班牙 胜</td></tr><tr><td>4</td><td><b>3-1</b> 🏆</td><td>5.32%</td><td>西班牙 胜</td></tr><tr><td>5</td><td><b>2-3</b> 🏆</td><td>4.56%</td><td>比利时 胜</td></tr>
+    <tr style="background:#fef7e8"><td colspan="2">🎯 战术预测</td><td colspan="2"><b>1-1 (PK 西班牙胜)</b> (平局/加时)</td></tr>
+  </table>
+
+  <details>
+    <summary style="cursor:pointer;color:#5a3a1f;font-size:13px">📝 战术修正要点 (10 项)</summary>
+    <ul style="font-size:12px;margin-top:8px">
+<li>【西】4 场 + R16 共 9 球 0 失球 (本届最强防线), 控球+快速反击完美结合</li><li>【比】R16 加时 30 分钟逆转塞内加尔, 黄金一代体能消耗极大</li><li>【黄金一代】德布劳内+卢卡库+库尔图瓦最后一届, 战意历史级别, 但体能+年龄问题</li><li>【亚马尔】18 岁天才, R16 vs 奥当选最佳, 决赛战意满满</li><li>【4 维】西 FW 22290 vs 比 FW 12650, 中场西 23544 vs 比 606, 西中场碾压</li><li>【PK】西 PK 历史强 (2024 欧国联 PK 胜克罗地亚); 比 PK 弱 (2022 世界杯 PK 输摩洛哥)</li><li>【战术】西控球消耗比黄金一代体能, 比反击靠德布劳内单点</li><li>【关键】比必须前 60 分钟进球, 否则 70 分钟后德布劳内体能下降, 西控球+亚马尔反击</li><li>【黑马】西已 5 场 0 失球, 比想 90 分钟内解决战斗非常难</li><li>【预测】战术预测 1-1 PK 西 (黄金一代体能+年龄扛不到 PK)</li></ul>
+  </details>
+</div>
+<div class="match-card">
+  <div class="match-header">
+    <div>
+      <div class="match-time">后天 03:00 CST</div>
+      <div style="font-size:12px;color:#888">📍 GEHA Field, Kansas City</div>
+    </div>
+    <div class="match-teams">
+      <b>阿根廷</b> <span class="vs">vs</span> <b>哥伦比亚</b>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:12px;color:#888">QF · 8 强</div>
+      <div style="font-size:12px;color:#888">QF-4</div>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;">
+    <div>
+      <b style="font-size:13px;color:#5a3a1f">⚽ 胜平负概率</b>
+      <div class="prob-bar"><div class="prob-fill ph" style="width:59.8%">59.8% 阿根廷</div></div>
+      <div class="prob-bar"><div class="prob-fill pd" style="width:24.5%">24.5% 平</div></div>
+      <div class="prob-bar"><div class="prob-fill pa" style="width:15.8%">15.8% 哥伦比亚</div></div>
+    </div>
+    <div>
+      <b style="font-size:13px;color:#5a3a1f">📊 期望值</b>
+      <table class="stats">
+        <tr><td>λ 主</td><td>3.83</td><td>λ 客</td><td>2.03</td></tr>
+        <tr><td>总进球期望</td><td colspan="3">5.85</td></tr>
+        <tr><td>净胜球期望</td><td colspan="3">+1.80</td></tr>
+        <tr><td>v3 最佳比分</td><td colspan="3">3-2 (5.5%)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <b style="font-size:13px;color:#5a3a1f">📊 完整泊松分布矩阵 (7×7)</b>
+  <table class="poisson-table">
+    <tr>
+      <th>阿根廷 \ 哥伦比亚</th>
+      <th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+    </tr><tr><th>0</th><td class="zero">0.29%</td><td class="zero">0.58%</td><td class="zero">0.59%</td><td class="zero">0.40%</td><td class="zero">0.20%</td><td class="zero">0.08%</td><td class="zero">0.03%</td></tr><tr><th>1</th><td class="low">1.10%</td><td class="low">2.23%</td><td class="low">2.26%</td><td class="low">1.53%</td><td class="zero">0.77%</td><td class="zero">0.31%</td><td class="zero">0.11%</td></tr><tr><th>2</th><td class="low">2.10%</td><td class="high">4.26%</td><td class="high">4.32%</td><td class="low">2.92%</td><td class="low">1.48%</td><td class="zero">0.60%</td><td class="zero">0.20%</td></tr><tr><th>3</th><td class="low">2.68%</td><td class="high">5.44%</td><td class="high">5.51%</td><td class="low">3.72%</td><td class="low">1.88%</td><td class="zero">0.76%</td><td class="zero">0.26%</td></tr><tr><th>4</th><td class="low">2.57%</td><td class="high">5.20%</td><td class="high">5.27%</td><td class="low">3.56%</td><td class="low">1.80%</td><td class="zero">0.73%</td><td class="zero">0.25%</td></tr><tr><th>5</th><td class="low">1.96%</td><td class="low">3.98%</td><td class="high">4.03%</td><td class="low">2.72%</td><td class="low">1.38%</td><td class="zero">0.56%</td><td class="zero">0.19%</td></tr><tr><th>6</th><td class="low">1.25%</td><td class="low">2.53%</td><td class="low">2.57%</td><td class="low">1.73%</td><td class="zero">0.88%</td><td class="zero">0.36%</td><td class="zero">0.12%</td></tr></table>
+  <b style="font-size:13px;color:#5a3a1f">🏆 Top 5 比分概率 + 战术预测</b>
+  <table class="stats">
+    <tr><th>#</th><th>比分</th><th>概率</th><th>解读</th></tr><tr><td>1</td><td><b>3-2</b> 🏆</td><td>5.51%</td><td>阿根廷 胜</td></tr><tr><td>2</td><td><b>3-1</b> 🏆</td><td>5.44%</td><td>阿根廷 胜</td></tr><tr><td>3</td><td><b>4-2</b> 🏆</td><td>5.27%</td><td>阿根廷 胜</td></tr><tr><td>4</td><td><b>4-1</b> 🏆</td><td>5.20%</td><td>阿根廷 胜</td></tr><tr><td>5</td><td><b>2-2</b> 🏆</td><td>4.32%</td><td>平局</td></tr>
+    <tr style="background:#fef7e8"><td colspan="2">🎯 战术预测</td><td colspan="2"><b>2-1 阿根廷胜</b> (阿根廷)</td></tr>
+  </table>
+
+  <details>
+    <summary style="cursor:pointer;color:#5a3a1f;font-size:13px">📝 战术修正要点 (10 项)</summary>
+    <ul style="font-size:12px;margin-top:8px">
+<li>【阿】5 场 13 球 5 失, 卫冕冠军状态火热, 4 维全面碾压</li><li>【哥】R16 PK 5-4 瑞士, 体能消耗极大 (120 分钟 + 5 轮点球)</li><li>【J罗】35 岁体能差, 每场都被换下, 关键时刻难发力</li><li>【科尔多瓦】肌肉撕裂无缘世界杯, 哥主力前锋缺阵</li><li>【4 维】阿 FW 23012 vs 哥 FW 9598, 中场阿 23544 vs 哥 4471, 阿全面碾压</li><li>【身价】阿 10.8 亿欧 vs 哥 0.5 亿欧 (21 倍差距)</li><li>【战术】阿 4-3-3 控球进攻; 哥高位防线+迪亚斯反击</li><li>【黑马】哥防线稳 (5 场 1 失), 但进攻弱 (5 场 4 球), 难以破阿</li><li>【关键】哥必须撑过 60 分钟体能极限, 否则阿会一波带走</li><li>【预测】战术预测 2-1 阿 (哥体能极限, 阿不会大胜但稳定取胜)</li></ul>
+  </details>
+</div>
+<div class="info">
+  <b>📅 战术预测跟踪计划</b>:
+  <ul>
+    <li><b>QF-2 挪 vs 英</b> (7/11 03:00): tactical 1-2 英, v3 3-3 英胜 → <b>接近, 黑马难挡</b></li>
+    <li><b>QF-3 西 vs 比</b> (7/11 09:00): tactical 1-1 PK 西, v3 2-2 西 → <b>分歧, 黄金一代体能极限</b></li>
+    <li><b>QF-4 阿 vs 哥</b> (7/12 03:00): tactical 2-1 阿, v3 3-2 阿 → <b>一致, 阿 4 维碾压</b></li>
+  </ul>
+  <b>战术预测累计 (新增 3 场后目标)</b>: 17 场, 目标胜方 14/17 (82%)
+</div>
+
+<div class="info">
+  <b>🔍 v3 vs 战术预测 偏差总结</b>:
+  <ul>
+    <li>QF-1 (摩 vs 法): tactical 2-1 法 / v3 2-3 法 → 实际 2-0 法 → <b>tactical 更准</b></li>
+    <li>QF-2 (挪 vs 英): tactical 1-2 英 / v3 3-3 → 黑马 vs 大场面, 战术修正更看战意</li>
+    <li>QF-3 (西 vs 比): tactical 1-1 PK 西 / v3 2-2 西 → v3 高估西班牙常规时间结束能力</li>
+    <li>QF-4 (阿 vs 哥): tactical 2-1 阿 / v3 3-2 阿 → 一致, 大胜</li>
+  </ul>
+</div>
+</body></html>

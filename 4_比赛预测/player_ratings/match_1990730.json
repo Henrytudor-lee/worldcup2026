@@ -49,7 +49,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -121,7 +129,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 2,
+    "dribbles_attempted": 3,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -193,7 +209,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -258,7 +282,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 5,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -332,7 +364,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 1,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -399,7 +439,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 1,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -469,7 +517,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 3,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -487,7 +543,7 @@
     "is_man_of_match": true,
     "final_rating": 8.32,
     "max_minute": 109,
-    "goals": 0,
+    "goals": 1,
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
@@ -540,7 +596,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 1,
+    "shots_on_target": 1,
+    "tackles_total": 4,
+    "tackle_successful": 3,
+    "dribbles_attempted": 5,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -597,7 +661,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 1,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -615,11 +687,11 @@
     "is_man_of_match": false,
     "final_rating": 6.07,
     "max_minute": 73,
-    "goals": 0,
+    "goals": 1,
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
-    "red_cards": 0,
+    "red_cards": 1,
     "ratings_trajectory": {
       "0": 6,
       "9": 6,
@@ -643,7 +715,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 1,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -705,7 +785,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 9,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -740,7 +828,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -770,7 +866,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -802,7 +906,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -865,7 +977,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -930,7 +1050,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 5,
+    "tackle_successful": 5,
+    "dribbles_attempted": 3,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -951,7 +1079,7 @@
     "goals": 0,
     "assists": 0,
     "total_shots": 0,
-    "yellow_cards": 0,
+    "yellow_cards": 1,
     "red_cards": 0,
     "ratings_trajectory": {
       "0": 6,
@@ -1004,7 +1132,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 3,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1063,7 +1199,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 4,
+    "tackle_successful": 2,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1145,7 +1289,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 3,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1196,7 +1348,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 2,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1258,7 +1418,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 0,
+    "dribbles_attempted": 5,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1306,7 +1474,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 2,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1346,7 +1522,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1388,7 +1572,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1434,7 +1626,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 2,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 2,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1489,7 +1689,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1532,7 +1740,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1562,7 +1778,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1610,7 +1834,15 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 2,
+    "shots_on_target": 1,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1658,6 +1890,14 @@
     },
     "venue": "San Francisco Bay Area Stadium",
     "referee": "Raphael Claus",
-    "score": "2 : 0"
+    "score": "2 : 0",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   }
 ]

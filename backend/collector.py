@@ -213,9 +213,10 @@ def collect_results(start_date='2026-06-11', end_date='2026-07-19', overwrite=Fa
         time.sleep(0.3)
 
     # 写回 CSV (按日期 + 队名排序)
-    fieldnames = ['date', 'home', 'away', 'home_score', 'away_score', 'key_events', 'source', 'collected_at']
+    # v2.2.4 修: 兼容 stage/note 字段 (manual_ko_update 标 R16/QF 晋级用)
+    fieldnames = ['date', 'home', 'away', 'home_score', 'away_score', 'key_events', 'source', 'collected_at', 'stage', 'note']
     with open(CSV_RESULTS, 'w', encoding='utf-8', newline='') as f:
-        w = csv.DictWriter(f, fieldnames=fieldnames)
+        w = csv.DictWriter(f, fieldnames=fieldnames, extrasaction='ignore')
         w.writeheader()
         for key in sorted(existing.keys()):
             w.writerow(existing[key])

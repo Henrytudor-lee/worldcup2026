@@ -63,7 +63,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -130,7 +138,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 2,
+    "shots_on_target": 0,
+    "tackles_total": 4,
+    "tackle_successful": 3,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -212,7 +228,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -291,7 +315,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 3,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -362,7 +394,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 2,
+    "dribbles_attempted": 0,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -424,7 +464,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 5,
+    "tackle_successful": 3,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -474,7 +522,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -541,7 +597,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 4,
+    "tackle_successful": 3,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -580,7 +644,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -598,7 +670,7 @@
     "is_man_of_match": false,
     "final_rating": 8.62,
     "max_minute": 71,
-    "goals": 0,
+    "goals": 2,
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
@@ -623,7 +695,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 2,
+    "shots_on_target": 2,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -641,7 +721,7 @@
     "is_man_of_match": true,
     "final_rating": 10,
     "max_minute": 93,
-    "goals": 0,
+    "goals": 2,
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
@@ -694,7 +774,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 1,
+    "shots_on_target": 4,
+    "tackles_total": 2,
+    "tackle_successful": 1,
+    "dribbles_attempted": 9,
+    "aerials_won": 4,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -713,7 +801,7 @@
     "final_rating": 6.3,
     "max_minute": 100,
     "goals": 0,
-    "assists": 0,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -730,7 +818,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -767,7 +863,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -812,7 +916,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -841,7 +953,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -859,8 +979,8 @@
     "is_man_of_match": false,
     "final_rating": 7.86,
     "max_minute": 97,
-    "goals": 0,
-    "assists": 0,
+    "goals": 1,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -887,7 +1007,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 1,
+    "shots_on_target": 1,
+    "tackles_total": 2,
+    "tackle_successful": 1,
+    "dribbles_attempted": 2,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -951,7 +1079,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -970,7 +1106,7 @@
     "final_rating": 5.67,
     "max_minute": 99,
     "goals": 0,
-    "assists": 0,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -1029,7 +1165,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1108,7 +1252,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 1,
+    "tackles_total": 9,
+    "tackle_successful": 9,
+    "dribbles_attempted": 1,
+    "aerials_won": 3,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1127,7 +1279,7 @@
     "final_rating": 5.75,
     "max_minute": 99,
     "goals": 0,
-    "assists": 0,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -1187,7 +1339,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 2,
+    "dribbles_attempted": 0,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1240,7 +1400,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 2,
+    "tackle_successful": 2,
+    "dribbles_attempted": 1,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1298,7 +1466,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 3,
+    "tackle_successful": 1,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1317,7 +1493,7 @@
     "final_rating": 5.38,
     "max_minute": 58,
     "goals": 0,
-    "assists": 0,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -1349,7 +1525,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1370,7 +1554,7 @@
     "goals": 0,
     "assists": 0,
     "total_shots": 0,
-    "yellow_cards": 0,
+    "yellow_cards": 1,
     "red_cards": 0,
     "ratings_trajectory": {
       "0": 6,
@@ -1410,7 +1594,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 1,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 5,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1431,7 +1623,7 @@
     "goals": 0,
     "assists": 0,
     "total_shots": 0,
-    "yellow_cards": 0,
+    "yellow_cards": 1,
     "red_cards": 0,
     "ratings_trajectory": {
       "0": 5.98,
@@ -1467,7 +1659,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 3,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1486,7 +1686,7 @@
     "final_rating": 7.25,
     "max_minute": 99,
     "goals": 0,
-    "assists": 0,
+    "assists": 1,
     "total_shots": 0,
     "yellow_cards": 0,
     "red_cards": 0,
@@ -1531,7 +1731,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 4,
+    "shots_on_target": 1,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 1,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1592,7 +1800,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 3,
+    "shots_on_target": 3,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 2,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1610,7 +1826,7 @@
     "is_man_of_match": false,
     "final_rating": 6.87,
     "max_minute": 99,
-    "goals": 0,
+    "goals": 1,
     "assists": 0,
     "total_shots": 0,
     "yellow_cards": 0,
@@ -1636,7 +1852,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 1,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1680,7 +1904,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 0,
+    "shots_on_target": 1,
+    "tackles_total": 2,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1701,7 +1933,7 @@
     "goals": 0,
     "assists": 0,
     "total_shots": 0,
-    "yellow_cards": 0,
+    "yellow_cards": 1,
     "red_cards": 0,
     "ratings_trajectory": {
       "60": 6,
@@ -1724,7 +1956,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 1,
+    "tackle_successful": 1,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1755,7 +1995,15 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 1,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 0,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   },
   {
     "match_id": null,
@@ -1790,6 +2038,14 @@
     },
     "venue": "Houston Stadium",
     "referee": "Michael Oliver",
-    "score": "5 : 1"
+    "score": "5 : 1",
+    "passes_key": 2,
+    "shots_on_target": 0,
+    "tackles_total": 0,
+    "tackle_successful": 0,
+    "dribbles_attempted": 1,
+    "aerials_won": 0,
+    "penalty_goals": 0,
+    "penalty_missed": 0
   }
 ]
